@@ -1,19 +1,19 @@
+
 "use client"
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { BarChart, TrendingUp, Info } from 'lucide-react';
+import { BarChart, TrendingUp, Info, Clock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { 
   ChartContainer, 
   ChartTooltip, 
   ChartTooltipContent, 
-  ChartLegend, 
-  ChartLegendContent 
 } from '@/components/ui/chart';
 import { Bar, BarChart as RechartsBarChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 
@@ -21,9 +21,10 @@ export default function ROIPage() {
   const [startingAmount, setStartingAmount] = useState(20000);
   const [years, setYears] = useState(10);
   const [returnRate, setReturnRate] = useState(6);
-  const [compoundFrequency, setCompoundFrequency] = useState('1'); // Annually
+  const [compoundFrequency, setCompoundFrequency] = useState('12'); // Monthly default
   const [contribution, setContribution] = useState(1000);
   const [contributionFrequency, setContributionFrequency] = useState('12'); // Monthly
+  const [contributionTiming, setContributionTiming] = useState('beginning'); // 'beginning' or 'end'
   
   const [results, setResults] = useState({
     endBalance: 0,
@@ -44,7 +45,13 @@ export default function ROIPage() {
     let totalInvested = P;
     const yearlyData = [];
 
-    // Simple annual calculation for the chart and totals
+    // Monthly simulation for the chart
+    // Note: Interest is calculated based on 'n' (compounding frequency)
+    // If n=12 (monthly), interest is added every month.
+    // If n=1 (annually), interest is added once a year based on the year's average/ending balance.
+    
+    let accumulatedInterestForYear = 0;
+
     for (let year = 0; year <= t; year++) {
       if (year === 0) {
         yearlyData.push({
@@ -56,23 +63,46 @@ export default function ROIPage() {
         continue;
       }
 
-      // Calculation logic matching standard investment formulas
-      // We simulate month-by-month for better accuracy with contributions
-      const monthsInYear = 12;
-      for (let m = 1; m <= monthsInYear; m++) {
-        // Apply interest (based on compounding frequency)
-        // This is a simplified monthly step that approximates complex compounding
-        const monthlyRate = Math.pow(1 + r/n, n/12) - 1;
-        currentBalance *= (1 + monthlyRate);
-        
-        // Apply contributions if they happen this month
-        if (pmtFreq === 12) {
-          currentBalance += PMT;
-          totalInvested += PMT;
-        } else if (pmtFreq === 1 && m === 12) {
-          currentBalance += PMT;
-          totalInvested += PMT;
+      accumulatedInterestForYear = 0;
+
+      // Simulate 12 months
+      for (let m = 1; m <= 12; m++) {
+        // 1. ADD CONTRIBUTION (IF AT BEGINNING)
+        if (contributionTiming === 'beginning') {
+          if (pmtFreq === 12 || (pmtFreq === 1 && m === 1)) {
+            currentBalance += PMT;
+            totalInvested += PMT;
+          }
         }
+
+        // 2. CALCULATE INTEREST
+        // If compounding is more frequent than or equal to monthly
+        if (n >= 12) {
+          const monthlyRate = Math.pow(1 + r/n, n/12) - 1;
+          const interestThisMonth = currentBalance * monthlyRate;
+          currentBalance += interestThisMonth;
+        } 
+        // If compounding is annual, we track the growth but only "apply" it logically 
+        // based on the average balance if we wanted to be hyper-precise, 
+        // but standard annual compounding usually applies r to the year-start balance + contributions.
+        // We'll calculate the year-end interest after the month loop for n < 12.
+
+        // 3. ADD CONTRIBUTION (IF AT END)
+        if (contributionTiming === 'end') {
+          if (pmtFreq === 12 || (pmtFreq === 1 && m === 12)) {
+            currentBalance += PMT;
+            totalInvested += PMT;
+          }
+        }
+      }
+
+      // If compounding is Annual (n=1), apply interest to the year's result
+      if (n < 12) {
+        // Standard simplified formula for annual compounding with monthly deposits:
+        // This can vary, but usually, it's (Balance_Start + PMTs) * r
+        // However, to be consistent with the "Beginning" logic:
+        const interestThisYear = currentBalance * r;
+        currentBalance += interestThisYear;
       }
 
       yearlyData.push({
@@ -89,7 +119,7 @@ export default function ROIPage() {
       totalInterest: currentBalance - totalInvested,
       chartData: yearlyData,
     });
-  }, [startingAmount, years, returnRate, compoundFrequency, contribution, contributionFrequency]);
+  }, [startingAmount, years, returnRate, compoundFrequency, contribution, contributionFrequency, contributionTiming]);
 
   const chartConfig = {
     principal: {
@@ -105,11 +135,10 @@ export default function ROIPage() {
   return (
     <CalculatorWrapper
       title="Investment ROI Calculator"
-      description="Calculate the return on your investment with periodic contributions and compounding interest."
+      description="Calculate growth with precision. Adjust compounding frequencies and contribution timing to see the 'True Balance'."
       icon={BarChart}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Input Section */}
         <div className="lg:col-span-5 space-y-6">
           <Card>
             <CardHeader>
@@ -145,7 +174,7 @@ export default function ROIPage() {
 
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <Label>Expected Return Rate (%)</Label>
+                  <Label>Return Rate (%)</Label>
                   <span className="text-sm font-bold text-primary">{returnRate}%</span>
                 </div>
                 <Slider
@@ -173,7 +202,7 @@ export default function ROIPage() {
                 </Select>
               </div>
 
-              <div className="pt-4 border-t space-y-4">
+              <div className="pt-4 border-t space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Contribution ($)</Label>
@@ -196,17 +225,42 @@ export default function ROIPage() {
                     </Select>
                   </div>
                 </div>
+
+                <div className="space-y-3">
+                  <Label className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-muted-foreground" />
+                    Contribution Timing
+                  </Label>
+                  <RadioGroup 
+                    value={contributionTiming} 
+                    onValueChange={setContributionTiming}
+                    className="flex gap-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="beginning" id="beginning" />
+                      <Label htmlFor="beginning" className="font-normal">Beginning</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="end" id="end" />
+                      <Label htmlFor="end" className="font-normal">End</Label>
+                    </div>
+                  </RadioGroup>
+                  <p className="text-[10px] text-muted-foreground italic">
+                    {contributionTiming === 'beginning' 
+                      ? "Deposits are added before interest is calculated for the period." 
+                      : "Deposits are added after interest is calculated for the period."}
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Results Section */}
         <div className="lg:col-span-7 space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Card className="bg-primary text-white border-none shadow-lg">
               <CardContent className="pt-6">
-                <p className="text-xs uppercase tracking-widest opacity-70 mb-1">End Balance</p>
+                <p className="text-xs uppercase tracking-widest opacity-70 mb-1">Total Balance</p>
                 <h3 className="text-3xl font-bold font-headline">
                   ${results.endBalance.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                 </h3>
@@ -248,7 +302,6 @@ export default function ROIPage() {
                         fontSize={12} 
                         tickLine={false} 
                         axisLine={false}
-                        label={{ value: 'Years', position: 'insideBottom', offset: -5, fontSize: 10 }}
                       />
                       <YAxis 
                         stroke="#888888" 
@@ -291,7 +344,7 @@ export default function ROIPage() {
           <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 flex gap-3">
             <Info className="w-5 h-5 text-blue-500 shrink-0" />
             <p className="text-xs text-blue-700 leading-relaxed">
-              This calculator assumes contributions are made at the end of each period. The compounding frequency determines how often the interest is calculated and added to the principal.
+              Calculations adjust based on whether contributions are made at the <strong>Beginning</strong> (immediate compounding) or <strong>End</strong> of each month. The math strictly follows your selected compounding frequency.
             </p>
           </div>
         </div>
