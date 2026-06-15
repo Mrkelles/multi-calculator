@@ -1,123 +1,337 @@
+
 "use client"
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Home } from 'lucide-react';
+import { Home, PieChart as PieChartIcon, Info, DollarSign, Percent } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { 
+  ChartContainer, 
+  ChartTooltip, 
+  ChartTooltipContent, 
+} from '@/components/ui/chart';
+import { Pie, PieChart, Cell, ResponsiveContainer, Legend } from 'recharts';
 
 export default function MortgagePage() {
-  const [principal, setPrincipal] = useState(300000);
-  const [rate, setRate] = useState(6.5);
-  const [years, setYears] = useState(30);
-  const [monthlyPayment, setMonthlyPayment] = useState(0);
+  // Inputs
+  const [homePrice, setHomePrice] = useState(400000);
+  const [downPaymentAmount, setDownPaymentAmount] = useState(80000);
+  const [downPaymentPercent, setDownPaymentPercent] = useState(20);
+  const [loanTerm, setLoanTerm] = useState(30);
+  const [interestRate, setInterestRate] = useState(6.5);
+  const [propertyTaxRate, setPropertyTaxRate] = useState(1.2);
+  const [homeInsurance, setHomeInsurance] = useState(1500); // Annual
+  const [hoaFee, setHoaFee] = useState(0); // Monthly
+  const [pmiRate, setPmiRate] = useState(0.5); // Applied if down payment < 20%
+
+  // Results
+  const [results, setResults] = useState({
+    monthlyPI: 0,
+    monthlyTax: 0,
+    monthlyInsurance: 0,
+    monthlyHOA: 0,
+    monthlyPMI: 0,
+    totalMonthly: 0,
+    loanAmount: 0,
+    totalInterest: 0,
+    totalCost: 0,
+    chartData: [] as any[],
+  });
+
+  // Sync Down Payment
+  const updateDownPaymentAmount = (val: number) => {
+    setDownPaymentAmount(val);
+    setDownPaymentPercent(homePrice > 0 ? (val / homePrice) * 100 : 0);
+  };
+
+  const updateDownPaymentPercent = (val: number) => {
+    setDownPaymentPercent(val);
+    setDownPaymentAmount((val / 100) * homePrice);
+  };
 
   useEffect(() => {
-    const r = rate / 100 / 12;
-    const n = years * 12;
-    const p = principal;
+    const P = homePrice - downPaymentAmount;
+    const r = interestRate / 100 / 12;
+    const n = loanTerm * 12;
+    
+    // Principal & Interest
+    let pi = 0;
     if (r === 0) {
-      setMonthlyPayment(p / n);
-      return;
+      pi = P / n;
+    } else {
+      pi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
     }
-    const payment = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    setMonthlyPayment(payment);
-  }, [principal, rate, years]);
+
+    // Taxes & Insurance
+    const mTax = (homePrice * (propertyTaxRate / 100)) / 12;
+    const mIns = homeInsurance / 12;
+    const mHOA = hoaFee;
+    
+    // PMI logic: standard 0.5% - 1% annually if LTV > 80%
+    const mPMI = downPaymentPercent < 20 ? (P * (pmiRate / 100)) / 12 : 0;
+
+    const total = pi + mTax + mIns + mHOA + mPMI;
+    const totalPayments = pi * n;
+    const interestTotal = totalPayments - P;
+
+    const chartData = [
+      { name: 'P & I', value: Math.round(pi), color: 'hsl(var(--primary))' },
+      { name: 'Taxes', value: Math.round(mTax), color: 'hsl(var(--accent))' },
+      { name: 'Insurance', value: Math.round(mIns), color: '#10b981' }, // green-500
+      { name: 'HOA', value: Math.round(mHOA), color: '#f59e0b' }, // amber-500
+    ];
+
+    if (mPMI > 0) {
+      chartData.push({ name: 'PMI', value: Math.round(mPMI), color: '#ef4444' }); // red-500
+    }
+
+    setResults({
+      monthlyPI: pi,
+      monthlyTax: mTax,
+      monthlyInsurance: mIns,
+      monthlyHOA: mHOA,
+      monthlyPMI: mPMI,
+      totalMonthly: total,
+      loanAmount: P,
+      totalInterest: interestTotal,
+      totalCost: totalPayments + (mTax * n) + (mIns * n) + (mHOA * n) + (mPMI * n),
+      chartData: chartData,
+    });
+  }, [homePrice, downPaymentAmount, downPaymentPercent, loanTerm, interestRate, propertyTaxRate, homeInsurance, hoaFee, pmiRate]);
+
+  const chartConfig = {
+    value: {
+      label: "Monthly Cost",
+    }
+  };
 
   return (
     <CalculatorWrapper
-      title="Mortgage Calculator"
-      description="Calculate your monthly home mortgage payments and see how interest rates affect your budget."
+      title="Advanced Mortgage Calculator"
+      description="Calculate your total monthly home payment including taxes, insurance, and fees."
       icon={Home}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Left Column: Inputs */}
+        <div className="lg:col-span-5 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Loan Details</CardTitle>
+              <CardTitle className="text-lg">Purchase Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label htmlFor="principal">Loan Amount</Label>
-                  <span className="text-sm font-semibold text-primary">${principal.toLocaleString()}</span>
+                <Label htmlFor="homePrice">Home Price</Label>
+                <div className="relative">
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  <Input
+                    id="homePrice"
+                    type="number"
+                    className="pl-9"
+                    value={homePrice}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      setHomePrice(val);
+                      setDownPaymentAmount((downPaymentPercent / 100) * val);
+                    }}
+                  />
                 </div>
-                <Input
-                  id="principal"
-                  type="number"
-                  value={principal}
-                  onChange={(e) => setPrincipal(Number(e.target.value))}
-                />
               </div>
 
               <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label htmlFor="rate">Interest Rate (%)</Label>
-                  <span className="text-sm font-semibold text-primary">{rate}%</span>
+                <Label>Down Payment</Label>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                    <Input
+                      type="number"
+                      className="pl-9"
+                      value={Math.round(downPaymentAmount)}
+                      onChange={(e) => updateDownPaymentAmount(Number(e.target.value))}
+                    />
+                  </div>
+                  <div className="relative">
+                    <Percent className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                    <Input
+                      type="number"
+                      className="pr-9"
+                      value={downPaymentPercent.toFixed(1)}
+                      onChange={(e) => updateDownPaymentPercent(Number(e.target.value))}
+                    />
+                  </div>
                 </div>
-                <Slider
-                  value={[rate]}
-                  min={0.1}
-                  max={15}
-                  step={0.1}
-                  onValueChange={(val) => setRate(val[0])}
-                />
               </div>
 
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label htmlFor="years">Loan Term (Years)</Label>
-                  <span className="text-sm font-semibold text-primary">{years} Years</span>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Loan Term</Label>
+                  <Select value={String(loanTerm)} onValueChange={(v) => setLoanTerm(Number(v))}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="30">30 Years</SelectItem>
+                      <SelectItem value="20">20 Years</SelectItem>
+                      <SelectItem value="15">15 Years</SelectItem>
+                      <SelectItem value="10">10 Years</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <Slider
-                  value={[years]}
-                  min={1}
-                  max={40}
-                  step={1}
-                  onValueChange={(val) => setYears(val[0])}
-                />
+                <div className="space-y-2">
+                  <Label>Interest Rate (%)</Label>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    value={interestRate}
+                    onChange={(e) => setInterestRate(Number(e.target.value))}
+                  />
+                </div>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Taxes & Fees</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Property Tax (%)</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={propertyTaxRate}
+                    onChange={(e) => setPropertyTaxRate(Number(e.target.value))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Home Insurance ($/yr)</Label>
+                  <Input
+                    type="number"
+                    value={homeInsurance}
+                    onChange={(e) => setHomeInsurance(Number(e.target.value))}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>HOA Fee ($/mo)</Label>
+                  <Input
+                    type="number"
+                    value={hoaFee}
+                    onChange={(e) => setHoaFee(Number(e.target.value))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>PMI Rate (%)</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={pmiRate}
+                    disabled={downPaymentPercent >= 20}
+                    onChange={(e) => setPmiRate(Number(e.target.value))}
+                  />
+                </div>
+              </div>
+              {downPaymentPercent >= 20 && (
+                <p className="text-[10px] text-green-600 font-medium italic">
+                  PMI waived with 20% down payment.
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>
 
-        <div className="space-y-6">
-          <Card className="bg-primary text-white overflow-hidden relative">
-            <div className="absolute top-0 right-0 p-8 opacity-10">
-              <Home size={120} />
+        {/* Right Column: Results */}
+        <div className="lg:col-span-7 space-y-6">
+          <Card className="bg-primary text-white border-none shadow-xl overflow-hidden">
+            <div className="px-6 py-8 text-center bg-primary/95">
+              <p className="text-xs uppercase tracking-widest opacity-80 mb-2 font-semibold">Total Monthly Payment</p>
+              <h3 className="text-5xl font-bold font-headline">
+                ${results.totalMonthly.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              </h3>
             </div>
-            <CardHeader>
-              <CardTitle className="text-primary-foreground/80 text-sm uppercase tracking-wider font-semibold">Estimated Monthly Payment</CardTitle>
-            </CardHeader>
-            <CardContent className="pb-8">
-              <div className="text-5xl font-bold font-headline mb-2">
-                ${monthlyPayment.toLocaleString(undefined, { maximumFractionDigits: 2 })}
-              </div>
-              <p className="text-primary-foreground/70 text-sm">Principal & Interest only</p>
-            </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Summary</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-muted-foreground">Total Payments</span>
-                <span className="font-semibold">${(monthlyPayment * years * 12).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
-              </div>
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-muted-foreground">Total Interest</span>
-                <span className="font-semibold text-accent">${((monthlyPayment * years * 12) - principal).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Interest Ratio</span>
-                <span className="font-semibold">{Math.round((((monthlyPayment * years * 12) - principal) / (monthlyPayment * years * 12)) * 100)}%</span>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <PieChartIcon className="w-4 h-4 text-primary" />
+                  Monthly Breakdown
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="h-[300px]">
+                <ChartContainer config={chartConfig}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={results.chartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={80}
+                        paddingAngle={5}
+                        dataKey="value"
+                      >
+                        {results.chartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Legend verticalAlign="bottom" height={36} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Loan Summary</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm">
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-muted-foreground">Loan Amount</span>
+                  <span className="font-semibold">${results.loanAmount.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-muted-foreground">Down Payment</span>
+                  <span className="font-semibold">${downPaymentAmount.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2 text-primary">
+                  <span className="font-medium">Monthly P & I</span>
+                  <span className="font-bold">${results.monthlyPI.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+                </div>
+                <div className="flex justify-between border-b pb-2 text-accent">
+                  <span className="font-medium">Monthly Taxes</span>
+                  <span className="font-bold">${results.monthlyTax.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+                </div>
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Total Interest Paid</span>
+                  <span>${results.totalInterest.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+                </div>
+                <div className="pt-4 mt-4 border-t-2 border-dashed">
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-lg">Total Cost</span>
+                    <span className="font-bold text-xl text-primary">${results.totalCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground mt-1">Includes all P&I, Taxes, Insurance, and HOA over {loanTerm} years.</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 flex gap-3">
+            <Info className="w-5 h-5 text-blue-500 shrink-0" />
+            <p className="text-xs text-blue-700 leading-relaxed">
+              <strong>Pro Tip:</strong> Most lenders require <strong>Private Mortgage Insurance (PMI)</strong> if your down payment is less than 20% of the home price. This is included in our calculation automatically when applicable.
+            </p>
+          </div>
         </div>
       </div>
     </CalculatorWrapper>
