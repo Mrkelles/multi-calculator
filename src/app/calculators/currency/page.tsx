@@ -1,18 +1,103 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { DollarSign, ArrowLeftRight, RefreshCw, AlertCircle, Clock } from 'lucide-react';
+import { DollarSign, ArrowLeftRight, RefreshCw, AlertCircle, Clock, Search, Check } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 const API_KEY = '9e70e2c8efb14a18bf27200c3833173c';
 const API_URL = `https://api.currencyfreaks.com/v2.0/rates/latest?apikey=${API_KEY}`;
+
+// Custom Searchable Select Component for Currencies
+interface CurrencySearchSelectProps {
+  value: string;
+  onValueChange: (val: string) => void;
+  options: string[];
+  disabled?: boolean;
+  label: string;
+}
+
+function CurrencySearchSelect({
+  value,
+  onValueChange,
+  options,
+  disabled,
+  label
+}: CurrencySearchSelectProps) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState('');
+
+  const filteredOptions = useMemo(() => {
+    return options.filter(opt => opt.toLowerCase().includes(search.toLowerCase()));
+  }, [options, search]);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full justify-between font-mono h-10 px-3 border-input"
+          disabled={disabled}
+        >
+          <span className="truncate">{value || `Select ${label}...`}</span>
+          <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[240px] p-0" align="start">
+        <div className="flex items-center border-b px-3">
+          <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+          <input
+            className="flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+            placeholder={`Search ${label}...`}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            autoFocus
+          />
+        </div>
+        <ScrollArea className="h-72">
+          <div className="p-1">
+            {filteredOptions.length === 0 && (
+              <p className="p-4 text-center text-sm text-muted-foreground">No currency found.</p>
+            )}
+            {filteredOptions.map((opt) => (
+              <Button
+                key={opt}
+                variant="ghost"
+                className={cn(
+                  "w-full justify-start font-mono text-sm h-9 px-2 mb-1",
+                  value === opt && "bg-accent text-accent-foreground"
+                )}
+                onClick={() => {
+                  onValueChange(opt);
+                  setOpen(false);
+                  setSearch('');
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    value === opt ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {opt}
+              </Button>
+            ))}
+          </div>
+        </ScrollArea>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 export default function CurrencyPage() {
   const [amount, setAmount] = useState<number>(100);
@@ -62,7 +147,7 @@ export default function CurrencyPage() {
   };
 
   const result = getConvertedAmount();
-  const sortedCurrencies = Object.keys(rates).sort();
+  const sortedCurrencies = useMemo(() => Object.keys(rates).sort(), [rates]);
 
   return (
     <CalculatorWrapper
@@ -113,16 +198,12 @@ export default function CurrencyPage() {
                 {loading ? (
                   <Skeleton className="h-10 w-full" />
                 ) : (
-                  <Select value={from} onValueChange={setFrom}>
-                    <SelectTrigger className="font-mono">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {sortedCurrencies.map(c => (
-                        <SelectItem key={c} value={c}>{c}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <CurrencySearchSelect 
+                    value={from} 
+                    onValueChange={setFrom} 
+                    options={sortedCurrencies} 
+                    label="source" 
+                  />
                 )}
               </div>
               
@@ -141,16 +222,12 @@ export default function CurrencyPage() {
                 {loading ? (
                   <Skeleton className="h-10 w-full" />
                 ) : (
-                  <Select value={to} onValueChange={setTo}>
-                    <SelectTrigger className="font-mono">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {sortedCurrencies.map(c => (
-                        <SelectItem key={c} value={c}>{c}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <CurrencySearchSelect 
+                    value={to} 
+                    onValueChange={setTo} 
+                    options={sortedCurrencies} 
+                    label="target" 
+                  />
                 )}
               </div>
             </div>
