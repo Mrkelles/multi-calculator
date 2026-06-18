@@ -13,7 +13,9 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
-const API_KEY = '9e70e2c8efb14a18bf27200c3833173c';
+// Access the API key from environment variables. 
+// Note: NEXT_PUBLIC_ prefix is required for client-side access in Next.js.
+const API_KEY = process.env.NEXT_PUBLIC_CURRENCY_KEY;
 const API_URL = `https://api.currencyfreaks.com/v2.0/rates/latest?apikey=${API_KEY}`;
 
 // Custom Searchable Select Component for Currencies
@@ -112,8 +114,11 @@ export default function CurrencyPage() {
     setLoading(true);
     setError(null);
     try {
+      if (!API_KEY) {
+        throw new Error('API Key is missing from the configuration.');
+      }
       const response = await fetch(API_URL);
-      if (!response.ok) throw new Error('Failed to fetch exchange rates');
+      if (!response.ok) throw new Error('Failed to fetch exchange rates. Please check your API key.');
       const data = await response.json();
       
       // Parse rates to numbers
