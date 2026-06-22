@@ -51,38 +51,49 @@ export default function HomePage() {
               </SheetTitle>
             </SheetHeader>
             <ScrollArea className="h-[calc(100vh-85px)]">
-              <div className="p-6 space-y-8">
-                {categoryGroups.map((group) => (
-                  <div key={group.id} className="space-y-4">
-                    <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 px-2">
-                      {group.name}
-                    </h3>
-                    <nav className="grid gap-1">
-                      {group.tools.map((tool) => (
-                        <Link
-                          key={tool.id}
-                          href={tool.path}
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-foreground/80 hover:bg-primary/5 hover:text-primary transition-all group"
-                        >
-                          <div className="p-1.5 rounded-lg bg-muted group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                            <tool.icon className="h-4 w-4" />
-                          </div>
-                          {tool.name}
-                        </Link>
-                      ))}
-                    </nav>
+              <div className="p-6 space-y-8 flex flex-col min-h-full">
+                <div className="flex-1 space-y-8">
+                  {categoryGroups.map((group) => (
+                    <div key={group.id} className="space-y-4">
+                      <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 px-2">
+                        {group.name}
+                      </h3>
+                      <nav className="grid gap-1">
+                        {group.tools.map((tool) => (
+                          <Link
+                            key={tool.id}
+                            href={tool.path}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-foreground/80 hover:bg-primary/5 hover:text-primary transition-all group"
+                          >
+                            <div className="p-1.5 rounded-lg bg-muted group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                              <tool.icon className="h-4 w-4" />
+                            </div>
+                            {tool.name}
+                          </Link>
+                        ))}
+                      </nav>
+                    </div>
+                  ))}
+                  
+                  <Separator className="opacity-50" />
+                  
+                  <div className="pt-2">
+                    <Button asChild className="w-full justify-start gap-3 rounded-xl h-12" variant="default">
+                      <Link href="/all-calculators">
+                        <LayoutDashboard className="h-5 w-5" />
+                        Full Dashboard View
+                      </Link>
+                    </Button>
                   </div>
-                ))}
-                
-                <Separator className="opacity-50" />
-                
-                <div className="pt-2">
-                  <Button asChild className="w-full justify-start gap-3 rounded-xl h-12" variant="default">
-                    <Link href="/all-calculators">
-                      <LayoutDashboard className="h-5 w-5" />
-                      Full Dashboard View
-                    </Link>
-                  </Button>
+                </div>
+
+                <div className="mt-auto pt-8 pb-4">
+                  <div className="flex flex-wrap gap-x-4 gap-y-2 px-2">
+                    <Link href="/about-us" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 hover:text-primary transition-colors">About Us</Link>
+                    <Link href="/contact-us" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 hover:text-primary transition-colors">Contact</Link>
+                    <Link href="/privacy-policy" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 hover:text-primary transition-colors">Privacy</Link>
+                    <Link href="/terms-of-use" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 hover:text-primary transition-colors">Terms</Link>
+                  </div>
                 </div>
               </div>
             </ScrollArea>
@@ -213,17 +224,25 @@ export default function HomePage() {
       </main>
 
       <footer className="border-t py-12 px-6 bg-muted/20">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center gap-2">
-            <Calculator className="h-5 w-5 text-primary" />
-            <span className="font-headline font-bold text-primary">My Apex Calc</span>
+        <div className="max-w-5xl mx-auto space-y-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            <div className="flex items-center gap-2">
+              <Calculator className="h-5 w-5 text-primary" />
+              <span className="font-headline font-bold text-primary">My Apex Calc</span>
+            </div>
+            <p className="text-xs text-muted-foreground font-medium">© {new Date().getFullYear()} My Apex Calc. Professional precision tools.</p>
+            <div className="flex gap-6">
+               <Link href="/all-calculators" className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors">Dashboard</Link>
+               {categories.map(c => (
+                 <Link key={c.id} href={`/categories/${c.id}`} className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors">{c.name}</Link>
+               ))}
+            </div>
           </div>
-          <p className="text-xs text-muted-foreground font-medium">© {new Date().getFullYear()} My Apex Calc. Professional precision tools.</p>
-          <div className="flex gap-6">
-             <Link href="/all-calculators" className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors">Dashboard</Link>
-             {categories.map(c => (
-               <Link key={c.id} href={`/categories/${c.id}`} className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors">{c.name}</Link>
-             ))}
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 border-t pt-8">
+            <Link href="/about-us" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">About Us</Link>
+            <Link href="/contact-us" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Contact Us</Link>
+            <Link href="/privacy-policy" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link href="/terms-of-use" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Terms of Use</Link>
           </div>
         </div>
       </footer>
