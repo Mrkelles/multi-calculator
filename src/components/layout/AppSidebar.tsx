@@ -26,7 +26,7 @@ export function AppSidebar() {
           <div className="bg-primary text-white p-2 rounded-lg">
             <Calculator size={20} />
           </div>
-          <span className="font-bold text-lg tracking-tight group-data-[collapsible=icon]:hidden">SmartCalc Hub</span>
+          <span className="font-bold text-lg tracking-tight group-data-[collapsible=icon]:hidden">My Apex Calc</span>
         </Link>
       </SidebarHeader>
       <SidebarContent>

@@ -29,7 +29,7 @@ export default function CategoryPage() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
           <SidebarTrigger />
           <div className="flex-1">
-            <h1 className="text-xl font-bold font-headline text-primary">SmartCalc Hub</h1>
+            <h1 className="text-xl font-bold font-headline text-primary">My Apex Calc</h1>
           </div>
         </header>
         <main className="flex-1 p-6 md:p-12 lg:p-20 bg-background">

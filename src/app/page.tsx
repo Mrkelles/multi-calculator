@@ -8,16 +8,6 @@ import {
   Menu, 
   Calculator, 
   LayoutDashboard,
-  TrendingUp,
-  Home as HomeIcon,
-  Briefcase,
-  Percent,
-  DollarSign,
-  Calculator as CalcIcon,
-  BarChart,
-  Youtube,
-  User,
-  Zap
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -57,7 +47,7 @@ export default function HomePage() {
             <SheetHeader className="p-6 border-b bg-primary/5">
               <SheetTitle className="flex items-center gap-2 text-primary">
                 <Calculator className="h-6 w-6" />
-                <span className="font-headline font-bold text-xl tracking-tight">SmartCalc Hub</span>
+                <span className="font-headline font-bold text-xl tracking-tight">My Apex Calc</span>
               </SheetTitle>
             </SheetHeader>
             <ScrollArea className="h-[calc(100vh-85px)]">
@@ -101,7 +91,7 @@ export default function HomePage() {
         
         <div className="flex flex-1 items-center gap-2 overflow-hidden">
           <Calculator className="h-6 w-6 text-primary shrink-0" />
-          <h2 className="text-xl font-bold font-headline text-primary tracking-tight truncate">SmartCalc Hub</h2>
+          <h2 className="text-xl font-bold font-headline text-primary tracking-tight truncate">My Apex Calc</h2>
         </div>
 
         <nav className="hidden md:flex items-center gap-6">
@@ -128,7 +118,7 @@ export default function HomePage() {
                 <span className="text-accent">Smarter Decisions.</span>
               </h2>
               <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-2xl font-medium opacity-90">
-                Whether you're managing personal finances, tracking health metrics, or optimizing content revenue, SmartCalc Hub provides accurate data when it matters most.
+                Whether you're managing personal finances, tracking health metrics, or optimizing content revenue, My Apex Calc provides accurate data when it matters most.
               </p>
               <div className="flex flex-wrap gap-4 pt-4">
                 <Link 
@@ -216,7 +206,7 @@ export default function HomePage() {
               >
                 Open Full Dashboard <ChevronRight size={16} />
               </Link>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-black opacity-60">SmartCalc Hub v2.0</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-black opacity-60">My Apex Calc v2.0</p>
             </div>
           </div>
         </div>
@@ -226,9 +216,9 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-2">
             <Calculator className="h-5 w-5 text-primary" />
-            <span className="font-headline font-bold text-primary">SmartCalc Hub</span>
+            <span className="font-headline font-bold text-primary">My Apex Calc</span>
           </div>
-          <p className="text-xs text-muted-foreground font-medium">© {new Date().getFullYear()} SmartCalc Hub. Professional precision tools.</p>
+          <p className="text-xs text-muted-foreground font-medium">© {new Date().getFullYear()} My Apex Calc. Professional precision tools.</p>
           <div className="flex gap-6">
              <Link href="/all-calculators" className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors">Dashboard</Link>
              {categories.map(c => (

@@ -2,7 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'SmartCalc Hub | Ultimate Professional Calculators',
+  title: 'My Apex Calc | Ultimate Professional Calculators',
   description: 'A comprehensive suite of precision calculators for finance, health, and revenue.',
 };
 
