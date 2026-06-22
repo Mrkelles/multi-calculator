@@ -32,8 +32,19 @@ export default function HomePage() {
               {categories.map((cat) => (
                 <section key={cat.id} className="space-y-6">
                   <div className="flex items-center gap-4">
-                    <h3 className="text-2xl font-bold text-primary uppercase tracking-widest text-sm">{cat.name}</h3>
+                    <Link 
+                      href={`/categories/${cat.id}`}
+                      className="text-2xl font-bold text-primary uppercase tracking-widest text-sm hover:underline hover:text-accent transition-colors"
+                    >
+                      {cat.name}
+                    </Link>
                     <div className="h-px bg-border flex-1"></div>
+                    <Link 
+                      href={`/categories/${cat.id}`}
+                      className="text-[10px] font-bold uppercase tracking-tighter text-muted-foreground hover:text-primary"
+                    >
+                      View All
+                    </Link>
                   </div>
                   <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {calculators
