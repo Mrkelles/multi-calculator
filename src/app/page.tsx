@@ -217,7 +217,7 @@ export default function HomePage() {
               >
                 Open Full Dashboard <ChevronRight size={16} />
               </Link>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-black opacity-60">My Apex Calc v2.0</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-black opacity-60">My Apex Calc v1.0</p>
             </div>
           </div>
         </div>
