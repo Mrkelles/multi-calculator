@@ -9,6 +9,12 @@ import {
   Youtube,
   User,
   Zap,
+  GraduationCap,
+  CalendarDays,
+  PiggyBank,
+  CreditCard,
+  Music2,
+  TrendingDown,
   LucideIcon
 } from 'lucide-react';
 
@@ -18,7 +24,7 @@ export interface CalculatorInfo {
   description: string;
   icon: LucideIcon;
   path: string;
-  category: 'finance' | 'health' | 'content';
+  category: 'finance' | 'health' | 'content' | 'education' | 'tools';
 }
 
 export const calculators: CalculatorInfo[] = [
@@ -71,6 +77,22 @@ export const calculators: CalculatorInfo[] = [
     category: 'finance',
   },
   {
+    id: 'savings',
+    name: 'Savings Goal',
+    description: 'Plan how much you need to save to reach your target balance.',
+    icon: PiggyBank,
+    path: '/calculators/savings',
+    category: 'finance',
+  },
+  {
+    id: 'debt-payoff',
+    name: 'Debt Payoff',
+    description: 'Calculate how long it takes to clear your debt and interest saved.',
+    icon: CreditCard,
+    path: '/calculators/debt-payoff',
+    category: 'finance',
+  },
+  {
     id: 'roi',
     name: 'ROI Calculator',
     description: 'Measure the profitability and gains of your investments.',
@@ -84,6 +106,22 @@ export const calculators: CalculatorInfo[] = [
     description: 'Estimate potential channel earnings based on views and CPM.',
     icon: Youtube,
     path: '/calculators/youtube-revenue',
+    category: 'content',
+  },
+  {
+    id: 'tiktok-revenue',
+    name: 'TikTok Revenue',
+    description: 'Estimate TikTok creator fund and brand deal earnings.',
+    icon: Music2,
+    path: '/calculators/tiktok-revenue',
+    category: 'content',
+  },
+  {
+    id: 'tiktok-engagement',
+    name: 'TikTok Engagement',
+    description: 'Measure likes, comments, and shares relative to followers.',
+    icon: TrendingUp,
+    path: '/calculators/tiktok-engagement',
     category: 'content',
   },
   {
@@ -101,5 +139,37 @@ export const calculators: CalculatorInfo[] = [
     icon: Zap,
     path: '/calculators/calorie',
     category: 'health',
+  },
+  {
+    id: 'gpa',
+    name: 'GPA Calculator',
+    description: 'Calculate your semester or cumulative GPA easily.',
+    icon: GraduationCap,
+    path: '/calculators/gpa',
+    category: 'education',
+  },
+  {
+    id: 'gpa-to-percentage',
+    name: 'GPA to Percentage',
+    description: 'Convert 4.0 or 5.0 GPA scale to percentage values.',
+    icon: Percent,
+    path: '/calculators/gpa-to-percentage',
+    category: 'education',
+  },
+  {
+    id: 'age',
+    name: 'Age Calculator',
+    description: 'Calculate your exact age in years, months, and days.',
+    icon: User,
+    path: '/calculators/age',
+    category: 'tools',
+  },
+  {
+    id: 'date',
+    name: 'Date Calculator',
+    description: 'Add or subtract days from a date or find duration.',
+    icon: CalendarDays,
+    path: '/calculators/date',
+    category: 'tools',
   },
 ];
