@@ -19,6 +19,14 @@ import { Calculator } from 'lucide-react';
 export function AppSidebar() {
   const pathname = usePathname();
 
+  const categories = [
+    { id: 'finance', name: 'Finance' },
+    { id: 'content', name: 'Content & Social' },
+    { id: 'health', name: 'Health' },
+    { id: 'education', name: 'Education' },
+    { id: 'tools', name: 'Utility Tools' },
+  ];
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b border-sidebar-border h-16 flex items-center px-4">
@@ -30,59 +38,25 @@ export function AppSidebar() {
         </Link>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-sidebar-foreground/50">Finance</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {calculators.filter(c => c.category === 'finance').map((item) => (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton asChild isActive={pathname === item.path}>
-                    <Link href={item.path}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-sidebar-foreground/50">Content & Tools</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {calculators.filter(c => c.category === 'content').map((item) => (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton asChild isActive={pathname === item.path}>
-                    <Link href={item.path}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-sidebar-foreground/50">Health</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {calculators.filter(c => c.category === 'health').map((item) => (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton asChild isActive={pathname === item.path}>
-                    <Link href={item.path}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {categories.map((cat) => (
+          <SidebarGroup key={cat.id}>
+            <SidebarGroupLabel className="text-sidebar-foreground/50">{cat.name}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {calculators.filter(c => c.category === cat.id).map((item) => (
+                  <SidebarMenuItem key={item.id}>
+                    <SidebarMenuButton asChild isActive={pathname === item.path}>
+                      <Link href={item.path}>
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.name}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
     </Sidebar>
   );

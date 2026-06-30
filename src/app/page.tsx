@@ -24,7 +24,9 @@ export default function HomePage() {
   const categories = [
     { id: 'finance', name: 'Finance' },
     { id: 'health', name: 'Health' },
-    { id: 'content', name: 'Content & Tools' },
+    { id: 'content', name: 'Content' },
+    { id: 'education', name: 'Education' },
+    { id: 'tools', name: 'Utility Tools' },
   ];
 
   const categoryGroups = categories.map(cat => ({
