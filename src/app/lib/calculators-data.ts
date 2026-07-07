@@ -15,6 +15,7 @@ import {
   CreditCard,
   Music2,
   Car,
+  TrendingDown,
   LucideIcon
 } from 'lucide-react';
 
@@ -28,6 +29,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'investment',
+    name: 'Investment Calculator',
+    description: 'A professional tool to solve for any investment variable: end amount, contributions, rate, or length.',
+    icon: TrendingUp,
+    path: '/calculators/investment',
+    category: 'finance',
+  },
   {
     id: 'payment',
     name: 'Payment Calculator',
