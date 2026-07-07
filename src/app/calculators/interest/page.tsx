@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Calculator, Table as TableIcon, Info, TrendingUp, History } from 'lucide-react';
+import { Calculator, Table as TableIcon, Info, TrendingUp, History, Clock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,96 +10,102 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 export default function InterestCalculatorPage() {
   const [principal, setPrincipal] = useState(10000);
   const [years, setYears] = useState(5);
   const [rate, setRate] = useState(6);
   const [type, setType] = useState<'compound' | 'simple'>('compound');
-  const [frequency, setFrequency] = useState('12'); // Monthly default
+  const [frequency, setFrequency] = useState('12'); // Compounding Frequency
+  const [contribution, setContribution] = useState(500);
+  const [contributionFrequency, setContributionFrequency] = useState('12'); // 12 for monthly, 1 for yearly
+  const [contributionTiming, setContributionTiming] = useState<'beginning' | 'end'>('beginning');
 
   const results = useMemo(() => {
     const P = principal;
     const t = years;
     const r = rate / 100;
     const n = parseInt(frequency);
-
+    const PMT = contribution;
+    const pmtFreq = parseInt(contributionFrequency);
+    
     let totalInterest = 0;
     let finalBalance = 0;
     const yearlySchedule = [];
     const monthlySchedule = [];
 
-    if (type === 'simple') {
-      totalInterest = P * r * t;
-      finalBalance = P + totalInterest;
+    let currentBalance = P;
+    let totalInvested = P;
+    let totalIntAccumulated = 0;
 
-      // Schedules for simple interest
-      for (let i = 1; i <= t; i++) {
-        const yearInterest = P * r;
+    // We use a monthly simulation for high precision across both simple and compound
+    const totalMonths = t * 12;
+
+    for (let m = 1; m <= totalMonths; m++) {
+      const isContributionMonth = (12 / pmtFreq) === 1 || (m % (12 / pmtFreq) === 0);
+
+      // 1. BEGINNING CONTRIBUTION
+      if (contributionTiming === 'beginning' && isContributionMonth) {
+        currentBalance += PMT;
+        totalInvested += PMT;
+      }
+
+      const startBalance = currentBalance;
+      let monthInterest = 0;
+
+      if (type === 'simple') {
+        // Simple Interest: Each dollar in the account earns interest based on time remaining
+        // We calculate interest on the CURRENT principal balance for 1 month
+        monthInterest = (currentBalance * r) / 12;
+        // In simple interest, interest doesn't compound (is not added to the principal for next month's calculation)
+        // However, for the purpose of "Total Interest" and "Final Balance", we track it.
+      } else {
+        // Compound Interest: Compounding n times per year
+        // Effective Monthly Rate = (1 + r/n)^(n/12) - 1
+        const monthlyRate = Math.pow(1 + r / n, n / 12) - 1;
+        monthInterest = currentBalance * monthlyRate;
+        currentBalance += monthInterest;
+      }
+      
+      totalIntAccumulated += monthInterest;
+
+      // 2. END CONTRIBUTION
+      if (contributionTiming === 'end' && isContributionMonth) {
+        currentBalance += PMT;
+        totalInvested += PMT;
+      }
+
+      // Record Monthly Schedule
+      monthlySchedule.push({
+        period: m,
+        interest: monthInterest,
+        totalInterest: totalIntAccumulated,
+        balance: type === 'simple' ? totalInvested + totalIntAccumulated : currentBalance,
+      });
+
+      // Record Yearly Schedule
+      if (m % 12 === 0) {
+        const year = m / 12;
         yearlySchedule.push({
-          period: i,
-          interest: yearInterest,
-          totalInterest: yearInterest * i,
-          balance: P + (yearInterest * i),
-        });
-      }
-
-      const totalMonths = t * 12;
-      for (let i = 1; i <= totalMonths; i++) {
-        const monthInterest = (P * r) / 12;
-        monthlySchedule.push({
-          period: i,
-          interest: monthInterest,
-          totalInterest: monthInterest * i,
-          balance: P + (monthInterest * i),
-        });
-      }
-    } else {
-      // Compound Interest: A = P(1 + r/n)^(nt)
-      finalBalance = P * Math.pow(1 + r / n, n * t);
-      totalInterest = finalBalance - P;
-
-      // Yearly Schedule
-      let currentBalance = P;
-      for (let i = 1; i <= t; i++) {
-        const startBalance = currentBalance;
-        currentBalance = P * Math.pow(1 + r / n, n * i);
-        const yearInterest = currentBalance - startBalance;
-        yearlySchedule.push({
-          period: i,
-          interest: yearInterest,
-          totalInterest: currentBalance - P,
-          balance: currentBalance,
-        });
-      }
-
-      // Monthly Schedule
-      let currentMonthlyBalance = P;
-      const totalMonths = t * 12;
-      for (let i = 1; i <= totalMonths; i++) {
-        const startBalance = currentMonthlyBalance;
-        // Interest is compounded n times per year
-        // We simulate month by month by finding the monthly growth rate
-        // Monthly growth factor = (1 + r/n)^(n/12)
-        const monthlyGrowth = Math.pow(1 + r / n, n / 12);
-        currentMonthlyBalance *= monthlyGrowth;
-        const monthInterest = currentMonthlyBalance - startBalance;
-        monthlySchedule.push({
-          period: i,
-          interest: monthInterest,
-          totalInterest: currentMonthlyBalance - P,
-          balance: currentMonthlyBalance,
+          period: year,
+          interest: monthlySchedule.slice(-12).reduce((sum, item) => sum + item.interest, 0),
+          totalInterest: totalIntAccumulated,
+          balance: type === 'simple' ? totalInvested + totalIntAccumulated : currentBalance,
         });
       }
     }
 
-    return { totalInterest, finalBalance, yearlySchedule, monthlySchedule };
-  }, [principal, years, rate, type, frequency]);
+    finalBalance = type === 'simple' ? totalInvested + totalIntAccumulated : currentBalance;
+    totalInterest = totalIntAccumulated;
+
+    return { totalInterest, finalBalance, totalInvested, yearlySchedule, monthlySchedule };
+  }, [principal, years, rate, type, frequency, contribution, contributionFrequency, contributionTiming]);
 
   return (
     <CalculatorWrapper
       title="Interest Calculator"
-      description="Calculate simple or compound interest on your savings, investments, or loans with detailed growth schedules."
+      description="Calculate simple or compound interest with regular contributions and detailed accumulation schedules."
       icon={Calculator}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -124,7 +130,7 @@ export default function InterestCalculatorPage() {
                   <Input type="number" value={years} onChange={(e) => setYears(Number(e.target.value))} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Interest Rate (%)</Label>
+                  <Label>Annual Rate (%)</Label>
                   <Input type="number" step="0.1" value={rate} onChange={(e) => setRate(Number(e.target.value))} />
                 </div>
               </div>
@@ -159,6 +165,55 @@ export default function InterestCalculatorPage() {
                   </Select>
                 </div>
               )}
+
+              <Separator />
+
+              <div className="space-y-4 pt-2">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Contribution ($)</Label>
+                    <Input type="number" value={contribution} onChange={(e) => setContribution(Number(e.target.value))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Frequency</Label>
+                    <Select value={contributionFrequency} onValueChange={setContributionFrequency}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="12">Monthly</SelectItem>
+                        <SelectItem value="1">Annually</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-muted-foreground" />
+                    Contribution Timing
+                  </Label>
+                  <RadioGroup 
+                    value={contributionTiming} 
+                    onValueChange={(v: any) => setContributionTiming(v)}
+                    className="flex gap-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="beginning" id="beginning" />
+                      <Label htmlFor="beginning" className="font-normal cursor-pointer">Beginning</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="end" id="end" />
+                      <Label htmlFor="end" className="font-normal cursor-pointer">End</Label>
+                    </div>
+                  </RadioGroup>
+                  <p className="text-[10px] text-muted-foreground italic">
+                    {contributionTiming === 'beginning' 
+                      ? "Deposits are added before interest is calculated for the period." 
+                      : "Deposits are added after interest is calculated for the period."}
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
@@ -170,8 +225,8 @@ export default function InterestCalculatorPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="text-xs space-y-3 text-muted-foreground leading-relaxed">
-              <p><strong>Simple Interest:</strong> Interest calculated solely on the initial principal. It does not grow on top of previously earned interest.</p>
-              <p><strong>Compound Interest:</strong> Interest calculated on the initial principal and also on the accumulated interest of previous periods.</p>
+              <p><strong>Simple Interest:</strong> Interest calculated only on the principal amounts (initial and added). It does not earn interest on interest.</p>
+              <p><strong>Compound Interest:</strong> Interest earned is added back to the principal, so the next period earns interest on that interest as well.</p>
             </CardContent>
           </Card>
         </div>
@@ -216,8 +271,8 @@ export default function InterestCalculatorPage() {
                     <Table>
                       <TableHeader className="bg-muted/50">
                         <TableRow>
-                          <TableHead className="w-[100px]">Year</TableHead>
-                          <TableHead>Interest</TableHead>
+                          <TableHead className="w-[80px]">Year</TableHead>
+                          <TableHead>Year Interest</TableHead>
                           <TableHead>Total Interest</TableHead>
                           <TableHead className="text-right">Balance</TableHead>
                         </TableRow>
@@ -241,14 +296,14 @@ export default function InterestCalculatorPage() {
                     <Table>
                       <TableHeader className="bg-muted/50 sticky top-0 z-10">
                         <TableRow>
-                          <TableHead className="w-[100px]">Month</TableHead>
+                          <TableHead className="w-[80px]">Month</TableHead>
                           <TableHead>Interest</TableHead>
                           <TableHead>Total Interest</TableHead>
                           <TableHead className="text-right">Balance</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {results.monthlySchedule.slice(0, 60).map((row) => (
+                        {results.monthlySchedule.slice(0, 120).map((row) => (
                           <TableRow key={row.period}>
                             <TableCell className="font-medium">{row.period}</TableCell>
                             <TableCell>${row.interest.toLocaleString(undefined, { maximumFractionDigits: 2 })}</TableCell>
@@ -256,10 +311,10 @@ export default function InterestCalculatorPage() {
                             <TableCell className="text-right font-bold">${row.balance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</TableCell>
                           </TableRow>
                         ))}
-                        {results.monthlySchedule.length > 60 && (
+                        {results.monthlySchedule.length > 120 && (
                           <TableRow>
                             <TableCell colSpan={4} className="text-center text-muted-foreground py-4 italic">
-                              Showing first 60 months...
+                              Showing first 120 months...
                             </TableCell>
                           </TableRow>
                         )}
@@ -298,8 +353,8 @@ export default function InterestCalculatorPage() {
                     <div className="h-2 w-2 rounded-full bg-accent" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Frequency Matters</p>
-                    <p className="text-xs text-muted-foreground">The more frequently interest is compounded (e.g., daily vs. annually), the higher the total end balance will be.</p>
+                    <p className="font-bold text-sm">Timing Matters</p>
+                    <p className="text-xs text-muted-foreground">Contributing at the <strong>Beginning</strong> of a month allows that money to earn interest for that full month, significantly boosting long-term gains.</p>
                   </div>
                 </li>
                 <li className="flex gap-3">
@@ -307,8 +362,8 @@ export default function InterestCalculatorPage() {
                     <div className="h-2 w-2 rounded-full bg-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Time is Your Best Friend</p>
-                    <p className="text-xs text-muted-foreground">Small interest rates can yield massive results if left to compound for several decades.</p>
+                    <p className="font-bold text-sm">Frequency is Key</p>
+                    <p className="text-xs text-muted-foreground">The more frequently interest is compounded (e.g., daily vs. annually), the higher the total end balance will be.</p>
                   </div>
                 </li>
               </ul>
