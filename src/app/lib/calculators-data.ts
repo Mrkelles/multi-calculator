@@ -63,6 +63,14 @@ export const calculators: CalculatorInfo[] = [
     category: 'finance',
   },
   {
+    id: 'interest-rate',
+    name: 'Interest Rate Calculator',
+    description: 'Solve for the interest rate required to reach a specific financial goal.',
+    icon: Percent,
+    path: '/calculators/interest-rate',
+    category: 'finance',
+  },
+  {
     id: 'mortgage',
     name: 'Mortgage Calculator',
     description: 'Calculate monthly payments, interest, and payoff dates.',
