@@ -17,6 +17,7 @@ import {
   Car,
   TrendingDown,
   Wallet,
+  Receipt,
   LucideIcon
 } from 'lucide-react';
 
@@ -68,6 +69,14 @@ export const calculators: CalculatorInfo[] = [
     description: 'Solve for the interest rate required to reach a specific financial goal.',
     icon: Percent,
     path: '/calculators/interest-rate',
+    category: 'finance',
+  },
+  {
+    id: 'sales-tax',
+    name: 'Sales Tax Calculator',
+    description: 'Calculate sales tax or determine the original price of an item from its total.',
+    icon: Receipt,
+    path: '/calculators/sales-tax',
     category: 'finance',
   },
   {
