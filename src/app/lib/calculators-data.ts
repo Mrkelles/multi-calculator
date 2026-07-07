@@ -32,6 +32,14 @@ export interface CalculatorInfo {
 
 export const calculators: CalculatorInfo[] = [
   {
+    id: 'inflation',
+    name: 'Inflation Calculator',
+    description: 'Calculate the purchasing power of money over time using historical U.S. CPI data or flat inflation rates.',
+    icon: TrendingDown,
+    path: '/calculators/inflation',
+    category: 'finance',
+  },
+  {
     id: 'investment',
     name: 'Investment Calculator',
     description: 'A professional tool to solve for any investment variable: end amount, contributions, rate, or length.',
