@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Wallet, Info, Clock, Calendar, Briefcase, History } from 'lucide-react';
+import { Wallet, Info, Clock, Calendar, Briefcase, History, DollarSign } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -49,9 +49,6 @@ export default function SalaryCalculatorPage() {
       { label: 'Hour', value: yearlyBase / (52 * hoursPerWeek) },
     ];
 
-    // Adjusted Annual (considering holidays and vacation as unpaid or "real hours worked")
-    // Most salary calculators show the unadjusted gross breakdown.
-    
     return { breakdowns, actualWorkingDaysPerYear, hoursPerDay };
   }, [amount, period, hoursPerWeek, daysPerWeek, holidays, vacationDays]);
 
