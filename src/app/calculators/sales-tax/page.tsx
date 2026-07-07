@@ -2,12 +2,73 @@
 
 import { useState, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Receipt, Info, ArrowRightLeft, DollarSign, Percent, History, Calculator } from 'lucide-react';
+import { Receipt, Info, ArrowRightLeft, DollarSign, Percent, History, Calculator, Landmark } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '@/components/ui/table';
+
+const stateTaxRates = [
+  { state: "Alabama", rate: "4.00%" },
+  { state: "Alaska", rate: "0.00%" },
+  { state: "Arizona", rate: "5.60%" },
+  { state: "Arkansas", rate: "6.50%" },
+  { state: "California", rate: "7.25%" },
+  { state: "Colorado", rate: "2.90%" },
+  { state: "Connecticut", rate: "6.35%" },
+  { state: "Delaware", rate: "0.00%" },
+  { state: "Florida", rate: "6.00%" },
+  { state: "Georgia", rate: "4.00%" },
+  { state: "Hawaii", rate: "4.00%" },
+  { state: "Idaho", rate: "6.00%" },
+  { state: "Illinois", rate: "6.25%" },
+  { state: "Indiana", rate: "7.00%" },
+  { state: "Iowa", rate: "6.00%" },
+  { state: "Kansas", rate: "6.50%" },
+  { state: "Kentucky", rate: "6.00%" },
+  { state: "Louisiana", rate: "4.45%" },
+  { state: "Maine", rate: "5.50%" },
+  { state: "Maryland", rate: "6.00%" },
+  { state: "Massachusetts", rate: "6.25%" },
+  { state: "Michigan", rate: "6.00%" },
+  { state: "Minnesota", rate: "6.875%" },
+  { state: "Mississippi", rate: "7.00%" },
+  { state: "Missouri", rate: "4.225%" },
+  { state: "Montana", rate: "0.00%" },
+  { state: "Nebraska", rate: "5.50%" },
+  { state: "Nevada", rate: "6.85%" },
+  { state: "New Hampshire", rate: "0.00%" },
+  { state: "New Jersey", rate: "6.625%" },
+  { state: "New Mexico", rate: "5.125%" },
+  { state: "New York", rate: "4.00%" },
+  { state: "North Carolina", rate: "4.75%" },
+  { state: "North Dakota", rate: "5.00%" },
+  { state: "Ohio", rate: "5.75%" },
+  { state: "Oklahoma", rate: "4.50%" },
+  { state: "Oregon", rate: "0.00%" },
+  { state: "Pennsylvania", rate: "6.00%" },
+  { state: "Rhode Island", rate: "7.00%" },
+  { state: "South Carolina", rate: "6.00%" },
+  { state: "South Dakota", rate: "4.50%" },
+  { state: "Tennessee", rate: "7.00%" },
+  { state: "Texas", rate: "6.25%" },
+  { state: "Utah", rate: "4.85%" },
+  { state: "Vermont", rate: "6.00%" },
+  { state: "Virginia", rate: "5.30%" },
+  { state: "Washington", rate: "6.50%" },
+  { state: "West Virginia", rate: "6.00%" },
+  { state: "Wisconsin", rate: "5.00%" },
+  { state: "Wyoming", rate: "4.00%" },
+];
 
 export default function SalesTaxCalculatorPage() {
   const [mode, setMode] = useState<'before' | 'after'>('before');
@@ -211,6 +272,40 @@ export default function SalesTaxCalculatorPage() {
               </ul>
             </div>
           </div>
+
+          {/* U.S. State Sales Tax Table */}
+          <section className="space-y-6 pt-10">
+            <div className="flex items-center gap-2">
+              <Landmark className="w-6 h-6 text-primary" />
+              <h3 className="text-2xl font-bold text-primary">U.S. State Sales Tax Rates (2024 Reference)</h3>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
+              Below are the standard state-level sales tax rates for all 50 states. Please note that many local jurisdictions (counties and cities) may add their own sales taxes on top of these base rates.
+            </p>
+            <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
+              <div className="max-h-[600px] overflow-y-auto">
+                <Table>
+                  <TableHeader className="bg-muted/50 sticky top-0 z-10">
+                    <TableRow>
+                      <TableHead className="font-bold">State</TableHead>
+                      <TableHead className="text-right font-bold">Base Sales Tax Rate</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {stateTaxRates.map((item) => (
+                      <TableRow key={item.state} className="hover:bg-primary/5 transition-colors">
+                        <TableCell className="font-medium">{item.state}</TableCell>
+                        <TableCell className="text-right font-mono font-bold text-primary">{item.rate}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+            <p className="text-[10px] text-muted-foreground italic">
+              Data is for general informational purposes and may be subject to change. Always verify current rates with your local tax authority.
+            </p>
+          </section>
         </div>
       </div>
     </CalculatorWrapper>
