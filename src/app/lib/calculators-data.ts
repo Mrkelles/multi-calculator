@@ -29,6 +29,14 @@ export interface CalculatorInfo {
 
 export const calculators: CalculatorInfo[] = [
   {
+    id: 'payment',
+    name: 'Payment Calculator',
+    description: 'Calculate monthly payments or payoff terms for any loan or credit card.',
+    icon: CreditCard,
+    path: '/calculators/payment',
+    category: 'finance',
+  },
+  {
     id: 'interest',
     name: 'Interest Calculator',
     description: 'Calculate growth with schedules for simple and compound interest.',
