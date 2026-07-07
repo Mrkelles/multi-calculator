@@ -16,6 +16,7 @@ import {
   Music2,
   Car,
   TrendingDown,
+  Wallet,
   LucideIcon
 } from 'lucide-react';
 
@@ -35,6 +36,14 @@ export const calculators: CalculatorInfo[] = [
     description: 'A professional tool to solve for any investment variable: end amount, contributions, rate, or length.',
     icon: TrendingUp,
     path: '/calculators/investment',
+    category: 'finance',
+  },
+  {
+    id: 'salary',
+    name: 'Salary Calculator',
+    description: 'Convert your pay between hourly, weekly, monthly, and yearly periods with holiday adjustments.',
+    icon: Wallet,
+    path: '/calculators/salary',
     category: 'finance',
   },
   {
