@@ -14,7 +14,7 @@ import {
   PiggyBank,
   CreditCard,
   Music2,
-  TrendingDown,
+  Car,
   LucideIcon
 } from 'lucide-react';
 
@@ -34,6 +34,14 @@ export const calculators: CalculatorInfo[] = [
     description: 'Calculate monthly payments, interest, and payoff dates.',
     icon: Home,
     path: '/calculators/mortgage',
+    category: 'finance',
+  },
+  {
+    id: 'auto-loan',
+    name: 'Auto Loan Calculator',
+    description: 'Estimate monthly car payments including trade-ins, taxes, and fees.',
+    icon: Car,
+    path: '/calculators/auto-loan',
     category: 'finance',
   },
   {
