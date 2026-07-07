@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useEffect } from 'react';
@@ -45,13 +44,7 @@ export default function ROIPage() {
     let totalInvested = P;
     const yearlyData = [];
 
-    // Monthly simulation for the chart
-    // Note: Interest is calculated based on 'n' (compounding frequency)
-    // If n=12 (monthly), interest is added every month.
-    // If n=1 (annually), interest is added once a year based on the year's average/ending balance.
-    
-    let accumulatedInterestForYear = 0;
-
+    // Monthly simulation for the chart and precision
     for (let year = 0; year <= t; year++) {
       if (year === 0) {
         yearlyData.push({
@@ -63,9 +56,7 @@ export default function ROIPage() {
         continue;
       }
 
-      accumulatedInterestForYear = 0;
-
-      // Simulate 12 months
+      // Simulate 12 months for each year to handle various frequencies accurately
       for (let m = 1; m <= 12; m++) {
         // 1. ADD CONTRIBUTION (IF AT BEGINNING)
         if (contributionTiming === 'beginning') {
@@ -76,16 +67,11 @@ export default function ROIPage() {
         }
 
         // 2. CALCULATE INTEREST
-        // If compounding is more frequent than or equal to monthly
-        if (n >= 12) {
-          const monthlyRate = Math.pow(1 + r/n, n/12) - 1;
-          const interestThisMonth = currentBalance * monthlyRate;
-          currentBalance += interestThisMonth;
-        } 
-        // If compounding is annual, we track the growth but only "apply" it logically 
-        // based on the average balance if we wanted to be hyper-precise, 
-        // but standard annual compounding usually applies r to the year-start balance + contributions.
-        // We'll calculate the year-end interest after the month loop for n < 12.
+        // Calculate the effective monthly rate based on compounding frequency
+        // Effective Monthly Rate = (1 + r/n)^(n/12) - 1
+        const monthlyRate = Math.pow(1 + r/n, n/12) - 1;
+        const interestThisMonth = currentBalance * monthlyRate;
+        currentBalance += interestThisMonth;
 
         // 3. ADD CONTRIBUTION (IF AT END)
         if (contributionTiming === 'end') {
@@ -94,15 +80,6 @@ export default function ROIPage() {
             totalInvested += PMT;
           }
         }
-      }
-
-      // If compounding is Annual (n=1), apply interest to the year's result
-      if (n < 12) {
-        // Standard simplified formula for annual compounding with monthly deposits:
-        // This can vary, but usually, it's (Balance_Start + PMTs) * r
-        // However, to be consistent with the "Beginning" logic:
-        const interestThisYear = currentBalance * r;
-        currentBalance += interestThisYear;
       }
 
       yearlyData.push({
@@ -247,8 +224,8 @@ export default function ROIPage() {
                   </RadioGroup>
                   <p className="text-[10px] text-muted-foreground italic">
                     {contributionTiming === 'beginning' 
-                      ? "Deposits are added before interest is calculated for the period." 
-                      : "Deposits are added after interest is calculated for the period."}
+                      ? "Deposits are added before interest is calculated for the month." 
+                      : "Deposits are added after interest is calculated for the month."}
                   </p>
                 </div>
               </div>
@@ -342,9 +319,9 @@ export default function ROIPage() {
           </Card>
 
           <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 flex gap-3">
-            <Info className="w-5 h-5 text-blue-500 shrink-0" />
+            <Info className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
             <p className="text-xs text-blue-700 leading-relaxed">
-              Calculations adjust based on whether contributions are made at the <strong>Beginning</strong> (immediate compounding) or <strong>End</strong> of each month. The math strictly follows your selected compounding frequency.
+              <strong>Calculation Logic:</strong> Contributions are simulated monthly. Choosing <strong>Beginning</strong> means deposits earn interest for the full period they are added in, whereas <strong>End</strong> means they only begin earning interest in the subsequent period.
             </p>
           </div>
         </div>
