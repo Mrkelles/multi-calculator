@@ -29,6 +29,14 @@ export interface CalculatorInfo {
 
 export const calculators: CalculatorInfo[] = [
   {
+    id: 'interest',
+    name: 'Interest Calculator',
+    description: 'Calculate growth with schedules for simple and compound interest.',
+    icon: Calculator,
+    path: '/calculators/interest',
+    category: 'finance',
+  },
+  {
     id: 'mortgage',
     name: 'Mortgage Calculator',
     description: 'Calculate monthly payments, interest, and payoff dates.',
