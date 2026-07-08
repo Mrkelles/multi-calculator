@@ -21,6 +21,11 @@ import {
   Clock,
   Timer,
   BookOpen,
+  Construction,
+  Square,
+  Circle,
+  Hash,
+  Layers,
   LucideIcon
 } from 'lucide-react';
 
@@ -34,6 +39,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'concrete',
+    name: 'Concrete Calculator',
+    description: 'Calculate the volume and weight of concrete needed for slabs, footings, columns, and stairs.',
+    icon: Construction,
+    path: '/calculators/concrete',
+    category: 'tools',
+  },
   {
     id: 'hours',
     name: 'Hours Calculator',
