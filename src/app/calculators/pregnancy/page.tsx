@@ -77,6 +77,7 @@ export default function PregnancyCalculatorPage() {
   const [mode, setMode] = useState<PregnancyMode>('due-date');
   const [dateInput, setDateInput] = useState('');
   const [embryoAge, setEmbryoAge] = useState('5');
+  const [cycleLength, setCycleLength] = useState(28);
 
   useEffect(() => {
     setIsMounted(true);
@@ -90,6 +91,7 @@ export default function PregnancyCalculatorPage() {
     const today = startOfDay(new Date());
     let dueDate: Date;
     let lmpDate: Date;
+    let effectiveLmpDate: Date;
 
     try {
       const inputDate = startOfDay(new Date(dateInput));
@@ -97,32 +99,39 @@ export default function PregnancyCalculatorPage() {
       if (mode === 'due-date') {
         dueDate = inputDate;
         lmpDate = subDays(dueDate, 280);
+        effectiveLmpDate = lmpDate;
       } else if (mode === 'last-period') {
         lmpDate = inputDate;
-        dueDate = addDays(lmpDate, 280);
+        const cycleAdj = cycleLength - 28;
+        dueDate = addDays(lmpDate, 280 + cycleAdj);
+        effectiveLmpDate = addDays(lmpDate, cycleAdj);
       } else if (mode === 'conception') {
         lmpDate = subDays(inputDate, 14);
         dueDate = addDays(lmpDate, 280);
+        effectiveLmpDate = lmpDate;
       } else if (mode === 'ultrasound') {
         dueDate = inputDate;
         lmpDate = subDays(dueDate, 280);
+        effectiveLmpDate = lmpDate;
       } else if (mode === 'ivf') {
         const age = parseInt(embryoAge);
         const offset = 266 - age;
         dueDate = addDays(inputDate, offset);
         lmpDate = subDays(dueDate, 280);
+        effectiveLmpDate = lmpDate;
       } else {
         dueDate = inputDate;
         lmpDate = subDays(dueDate, 280);
+        effectiveLmpDate = lmpDate;
       }
 
       const totalDays = 280;
-      const daysPregnant = differenceInDays(today, lmpDate);
+      const daysPregnant = differenceInDays(today, effectiveLmpDate);
       const weeksPregnant = Math.max(0, Math.floor(daysPregnant / 7));
       const remainingDays = Math.max(0, daysPregnant % 7);
       const progressPercent = Math.min(100, Math.max(0, (daysPregnant / totalDays) * 100));
 
-      const duration = intervalToDuration({ start: lmpDate, end: today });
+      const duration = intervalToDuration({ start: effectiveLmpDate, end: today });
       const monthsStr = `${duration.years ? duration.years * 12 + (duration.months || 0) : duration.months || 0} months ${duration.days || 0} days`;
 
       let trimester = 'First';
@@ -130,11 +139,11 @@ export default function PregnancyCalculatorPage() {
       else if (weeksPregnant >= 13) trimester = 'Second';
 
       const babySize = getBabySize(weeksPregnant);
-      const likelyConception = addDays(lmpDate, 14);
+      const likelyConception = addDays(lmpDate, mode === 'last-period' ? cycleLength - 14 : 14);
 
       const schedule = [];
       for (let w = 1; w <= 42; w++) {
-        const weekStart = addDays(lmpDate, (w - 1) * 7);
+        const weekStart = addDays(effectiveLmpDate, (w - 1) * 7);
         const weekEnd = addDays(weekStart, 6);
         let trimesterLabel = '';
         if (w === 1) trimesterLabel = 'first trimester';
@@ -164,7 +173,7 @@ export default function PregnancyCalculatorPage() {
     } catch (e) {
       return null;
     }
-  }, [mode, dateInput, embryoAge, isMounted]);
+  }, [mode, dateInput, embryoAge, cycleLength, isMounted]);
 
   return (
     <CalculatorWrapper
@@ -198,7 +207,7 @@ export default function PregnancyCalculatorPage() {
 
                 <div className="space-y-2">
                   <Label className="capitalize text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                    {mode.replace('-', ' ')} {mode === 'ultrasound' ? '(Est. Due Date)' : ''}
+                    {mode === 'last-period' ? 'First Day of Your Last Period:' : `${mode.replace('-', ' ')} ${mode === 'ultrasound' ? '(Est. Due Date)' : ''}`}
                   </Label>
                   <Input 
                     type="date" 
@@ -206,6 +215,17 @@ export default function PregnancyCalculatorPage() {
                     onChange={(e) => setDateInput(e.target.value)} 
                   />
                 </div>
+
+                {mode === 'last-period' && (
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Average Length of Your Cycles (in days)</Label>
+                    <Input 
+                      type="number" 
+                      value={cycleLength} 
+                      onChange={(e) => setCycleLength(Number(e.target.value))} 
+                    />
+                  </div>
+                )}
 
                 {mode === 'ivf' && (
                   <div className="space-y-2">
