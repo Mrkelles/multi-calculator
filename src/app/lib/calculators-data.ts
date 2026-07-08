@@ -27,6 +27,7 @@ import {
   Hash,
   Layers,
   ArrowLeftRight,
+  Lock,
   LucideIcon
 } from 'lucide-react';
 
@@ -40,6 +41,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'password-generator',
+    name: 'Password Generator',
+    description: 'Create secure, random passwords with custom lengths and character sets for maximum online safety.',
+    icon: Lock,
+    path: '/calculators/password-generator',
+    category: 'tools',
+  },
   {
     id: 'conversion',
     name: 'Conversion Calculator',
