@@ -2,19 +2,25 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { User, Calendar as CalendarIcon, Clock } from 'lucide-react';
+import { User, Calendar as CalendarIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { intervalToDuration, formatDuration } from 'date-fns';
+import { intervalToDuration } from 'date-fns';
 
 export default function AgeCalculatorPage() {
+  const [isMounted, setIsMounted] = useState(false);
   const [birthDate, setBirthDate] = useState('1995-01-01');
-  const [targetDate, setTargetDate] = useState(new Date().toISOString().split('T')[0]);
+  const [targetDate, setTargetDate] = useState('');
   const [ageDetails, setAgeDetails] = useState<any>(null);
 
   useEffect(() => {
-    if (birthDate && targetDate) {
+    setIsMounted(true);
+    setTargetDate(new Date().toISOString().split('T')[0]);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted && birthDate && targetDate) {
       const birth = new Date(birthDate);
       const target = new Date(targetDate);
 
@@ -31,7 +37,7 @@ export default function AgeCalculatorPage() {
         totalDays
       });
     }
-  }, [birthDate, targetDate]);
+  }, [birthDate, targetDate, isMounted]);
 
   return (
     <CalculatorWrapper

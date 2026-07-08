@@ -2,31 +2,45 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { CalendarDays, Plus, Minus, ArrowRight } from 'lucide-react';
+import { CalendarDays, ArrowRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { addDays, subDays, format, differenceInDays } from 'date-fns';
+import { addDays, format, differenceInDays } from 'date-fns';
 
 export default function DateCalculatorPage() {
+  const [isMounted, setIsMounted] = useState(false);
+  
   // Add/Subtract
-  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
+  const [startDate, setStartDate] = useState('');
   const [daysValue, setDaysValue] = useState(30);
   const [resultDate, setResultDate] = useState<Date | null>(null);
 
   // Duration
-  const [dateOne, setDateOne] = useState(new Date().toISOString().split('T')[0]);
-  const [dateTwo, setDateTwo] = useState(addDays(new Date(), 7).toISOString().split('T')[0]);
+  const [dateOne, setDateOne] = useState('');
+  const [dateTwo, setDateTwo] = useState('');
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
-    setResultDate(addDays(new Date(startDate), daysValue));
-  }, [startDate, daysValue]);
+    setIsMounted(true);
+    const now = new Date();
+    setStartDate(now.toISOString().split('T')[0]);
+    setDateOne(now.toISOString().split('T')[0]);
+    setDateTwo(addDays(now, 7).toISOString().split('T')[0]);
+  }, []);
 
   useEffect(() => {
-    setDuration(differenceInDays(new Date(dateTwo), new Date(dateOne)));
-  }, [dateOne, dateTwo]);
+    if (isMounted && startDate) {
+      setResultDate(addDays(new Date(startDate), daysValue));
+    }
+  }, [startDate, daysValue, isMounted]);
+
+  useEffect(() => {
+    if (isMounted && dateOne && dateTwo) {
+      setDuration(differenceInDays(new Date(dateTwo), new Date(dateOne)));
+    }
+  }, [dateOne, dateTwo, isMounted]);
 
   return (
     <CalculatorWrapper
