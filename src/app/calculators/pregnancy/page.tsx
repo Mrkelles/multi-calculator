@@ -19,6 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
 import { 
   addDays, 
   subDays, 
@@ -75,16 +76,17 @@ const getBabySize = (weeks: number) => {
 export default function PregnancyCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [mode, setMode] = useState<PregnancyMode>('due-date');
-  const [dateInput, setDateInput] = useState('2025-11-04');
+  const [dateInput, setDateInput] = useState('');
   const [embryoAge, setEmbryoAge] = useState('5');
 
   useEffect(() => {
     setIsMounted(true);
-    setDateInput(format(addDays(new Date(), 280), 'yyyy-MM-dd'));
+    // Default to a date that shows some progress (e.g., 20 weeks from now)
+    setDateInput(format(addDays(new Date(), 140), 'yyyy-MM-dd'));
   }, []);
 
   const results = useMemo(() => {
-    if (!isMounted) return null;
+    if (!isMounted || !dateInput) return null;
     
     const today = startOfDay(new Date());
     let dueDate: Date;
@@ -117,12 +119,12 @@ export default function PregnancyCalculatorPage() {
 
       const totalDays = 280;
       const daysPregnant = differenceInDays(today, lmpDate);
-      const weeksPregnant = Math.floor(daysPregnant / 7);
-      const remainingDays = daysPregnant % 7;
+      const weeksPregnant = Math.max(0, Math.floor(daysPregnant / 7));
+      const remainingDays = Math.max(0, daysPregnant % 7);
       const progressPercent = Math.min(100, Math.max(0, (daysPregnant / totalDays) * 100));
 
       const duration = intervalToDuration({ start: lmpDate, end: today });
-      const monthsStr = `${duration.months || 0} months ${duration.days || 0} days`;
+      const monthsStr = `${duration.years ? duration.years * 12 + (duration.months || 0) : duration.months || 0} months ${duration.days || 0} days`;
 
       let trimester = 'First';
       if (weeksPregnant >= 28) trimester = 'Third';
@@ -179,7 +181,7 @@ export default function PregnancyCalculatorPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <Tabs value={mode} onValueChange={(v: any) => setMode(v)} className="w-full">
-                <TabsList className="grid grid-cols-3 md:grid-cols-5 h-auto p-1 bg-muted/50 rounded-xl mb-6">
+                <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 h-auto p-1 bg-muted/50 rounded-xl mb-6">
                   <TabsTrigger value="due-date" className="text-[10px] md:text-xs py-2 px-1">Due Date</TabsTrigger>
                   <TabsTrigger value="last-period" className="text-[10px] md:text-xs py-2 px-1">Last Period</TabsTrigger>
                   <TabsTrigger value="conception" className="text-[10px] md:text-xs py-2 px-1">Conception</TabsTrigger>
@@ -189,7 +191,7 @@ export default function PregnancyCalculatorPage() {
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="capitalize">
+                    <Label className="capitalize text-xs font-bold uppercase tracking-wider text-muted-foreground">
                       {mode.replace('-', ' ')} {mode === 'ultrasound' ? '(Est. Due Date)' : ''}
                     </Label>
                     <Input 
@@ -201,7 +203,7 @@ export default function PregnancyCalculatorPage() {
 
                   {mode === 'ivf' && (
                     <div className="space-y-2">
-                      <Label>Embryo Age</Label>
+                      <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Embryo Age</Label>
                       <Select value={embryoAge} onValueChange={setEmbryoAge}>
                         <SelectTrigger>
                           <SelectValue />
@@ -223,7 +225,7 @@ export default function PregnancyCalculatorPage() {
         <div className="lg:col-span-7 space-y-6">
           {!results ? (
             <Card className="bg-muted/30 border-dashed border-2 p-12 flex items-center justify-center text-muted-foreground italic">
-              Loading calculations...
+              Please enter valid dates to see results.
             </Card>
           ) : (
             <>
@@ -248,15 +250,10 @@ export default function PregnancyCalculatorPage() {
 
                   <div className="pt-4 max-w-sm mx-auto space-y-2">
                     <div className="flex justify-between text-[10px] font-bold uppercase opacity-80">
-                      <span>Progress</span>
+                      <span>Overall Progress</span>
                       <span>{Math.round(results.progressPercent)}%</span>
                     </div>
-                    <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-accent transition-all duration-1000" 
-                        style={{ width: `${results.progressPercent}%` }} 
-                      />
-                    </div>
+                    <Progress value={results.progressPercent} className="h-3 bg-white/20" />
                   </div>
                 </CardContent>
               </Card>
