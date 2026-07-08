@@ -177,21 +177,21 @@ export default function PregnancyCalculatorPage() {
         <div className="lg:col-span-5 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Calculate Based On</CardTitle>
+              <CardTitle className="text-lg font-bold text-primary">Calculation Setup</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <Tabs value={mode} onValueChange={(v: any) => setMode(v)} className="w-full">
-                <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 h-auto p-1 bg-muted/50 rounded-xl mb-6">
-                  <TabsTrigger value="due-date" className="text-[10px] md:text-xs py-2 px-1">Due Date</TabsTrigger>
-                  <TabsTrigger value="last-period" className="text-[10px] md:text-xs py-2 px-1">Last Period</TabsTrigger>
-                  <TabsTrigger value="conception" className="text-[10px] md:text-xs py-2 px-1">Conception</TabsTrigger>
-                  <TabsTrigger value="ultrasound" className="text-[10px] md:text-xs py-2 px-1">Ultrasound</TabsTrigger>
-                  <TabsTrigger value="ivf" className="text-[10px] md:text-xs py-2 px-1">IVF</TabsTrigger>
+                <TabsList className="grid grid-cols-3 lg:grid-cols-5 h-auto p-1 bg-muted/50 rounded-xl mb-6">
+                  <TabsTrigger value="due-date" className="text-[9px] sm:text-[10px] lg:text-xs py-2 px-1">Due Date</TabsTrigger>
+                  <TabsTrigger value="last-period" className="text-[9px] sm:text-[10px] lg:text-xs py-2 px-1">Last Period</TabsTrigger>
+                  <TabsTrigger value="conception" className="text-[9px] sm:text-[10px] lg:text-xs py-2 px-1">Conception</TabsTrigger>
+                  <TabsTrigger value="ultrasound" className="text-[9px] sm:text-[10px] lg:text-xs py-2 px-1">Ultrasound</TabsTrigger>
+                  <TabsTrigger value="ivf" className="text-[9px] sm:text-[10px] lg:text-xs py-2 px-1">IVF</TabsTrigger>
                 </TabsList>
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="capitalize text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    <Label className="capitalize text-[10px] font-black uppercase tracking-widest text-muted-foreground">
                       {mode.replace('-', ' ')} {mode === 'ultrasound' ? '(Est. Due Date)' : ''}
                     </Label>
                     <Input 
@@ -203,7 +203,7 @@ export default function PregnancyCalculatorPage() {
 
                   {mode === 'ivf' && (
                     <div className="space-y-2">
-                      <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Embryo Age</Label>
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Embryo Age</Label>
                       <Select value={embryoAge} onValueChange={setEmbryoAge}>
                         <SelectTrigger>
                           <SelectValue />
@@ -235,22 +235,22 @@ export default function PregnancyCalculatorPage() {
                 </div>
                 <CardContent className="pt-10 pb-10 text-center relative z-10 space-y-4">
                   <div>
-                    <p className="text-xs uppercase tracking-widest opacity-80 mb-2 font-bold">Current Status</p>
+                    <p className="text-xs uppercase tracking-widest opacity-80 mb-2 font-bold">Current Progress</p>
                     <h3 className="text-4xl md:text-5xl font-black font-headline tracking-tighter">
                       Week #{results.weeksPregnant}
                     </h3>
-                    <p className="text-lg opacity-80 mt-1">
+                    <p className="text-lg opacity-80 mt-1 font-medium">
                       ({results.weeksPregnant} weeks {results.remainingDays} days or {results.monthsStr})
                     </p>
                   </div>
                   
-                  <div className="bg-white/10 p-3 rounded-2xl inline-block px-8 border border-white/20">
-                    <p className="text-sm font-bold uppercase tracking-wider">{results.trimester} Trimester</p>
+                  <div className="bg-white/10 p-2 px-6 rounded-full inline-block border border-white/20">
+                    <p className="text-xs font-bold uppercase tracking-widest">{results.trimester} Trimester</p>
                   </div>
 
                   <div className="pt-4 max-w-sm mx-auto space-y-2">
-                    <div className="flex justify-between text-[10px] font-bold uppercase opacity-80">
-                      <span>Overall Progress</span>
+                    <div className="flex justify-between text-[10px] font-black uppercase opacity-80 tracking-widest">
+                      <span>Completion</span>
                       <span>{Math.round(results.progressPercent)}%</span>
                     </div>
                     <Progress value={results.progressPercent} className="h-3 bg-white/20" />
@@ -282,7 +282,7 @@ export default function PregnancyCalculatorPage() {
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm font-bold flex items-center gap-2">
                       <CalendarIcon className="w-4 h-4 text-accent" />
-                      Key Dates
+                      Key Estimates
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 text-sm">
@@ -307,35 +307,37 @@ export default function PregnancyCalculatorPage() {
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <HeartPulse className="w-6 h-6 text-primary" />
-                <h3 className="text-2xl font-bold text-primary">Pregnancy Milestone Schedule</h3>
+                <h3 className="text-2xl font-bold text-primary">Milestone Schedule</h3>
               </div>
-              <div className="rounded-2xl border bg-white shadow-sm overflow-hidden overflow-x-auto">
-                <Table>
-                  <TableHeader className="bg-muted/50">
-                    <TableRow>
-                      <TableHead className="font-bold w-[120px]">Week</TableHead>
-                      <TableHead className="font-bold">Date Range</TableHead>
-                      <TableHead className="font-bold">Trimester</TableHead>
-                      <TableHead className="font-bold">Important Milestones</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {results.schedule.map((row) => (
-                      <TableRow key={row.week} className={row.isToday ? "bg-primary/5 font-bold" : ""}>
-                        <TableCell className="font-medium text-primary">
-                          Week {row.week} {row.isToday && "(current)"}
-                        </TableCell>
-                        <TableCell className="text-xs">{row.range}</TableCell>
-                        <TableCell className="text-[10px] uppercase font-black text-muted-foreground/60">
-                          {row.trimester}
-                        </TableCell>
-                        <TableCell className="text-xs font-medium text-accent">
-                          {row.milestone}
-                        </TableCell>
+              <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader className="bg-muted/50">
+                      <TableRow>
+                        <TableHead className="font-bold w-[120px]">Week</TableHead>
+                        <TableHead className="font-bold">Date Range</TableHead>
+                        <TableHead className="font-bold">Trimester</TableHead>
+                        <TableHead className="font-bold">Milestones</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {results.schedule.map((row) => (
+                        <TableRow key={row.week} className={row.isToday ? "bg-primary/5 font-bold border-l-4 border-l-primary" : ""}>
+                          <TableCell className="font-medium text-primary">
+                            Week {row.week} {row.isToday && "(Today)"}
+                          </TableCell>
+                          <TableCell className="text-xs whitespace-nowrap">{row.range}</TableCell>
+                          <TableCell className="text-[10px] uppercase font-black text-muted-foreground/60">
+                            {row.trimester}
+                          </TableCell>
+                          <TableCell className="text-xs font-medium text-accent">
+                            {row.milestone}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
             </div>
           </div>
@@ -347,10 +349,10 @@ export default function PregnancyCalculatorPage() {
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
                 <History className="w-6 h-6" />
-                Understanding Pregnancy Math
+                Understanding the Math
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Pregnancy lasts about 280 days (40 weeks) beginning from the first day of the last menstrual period (LMP). Since most people don't know the exact date of conception, medical professionals use the LMP as the baseline for counting.
+                A standard pregnancy lasts about 280 days (40 weeks) from the first day of your last menstrual period (LMP). Because exact conception dates are rarely known, the LMP serves as the universal baseline for medical professionals to track growth and development.
               </p>
             </section>
 
@@ -363,7 +365,7 @@ export default function PregnancyCalculatorPage() {
                   </div>
                   <div>
                     <p className="font-bold text-sm">Gestational Age</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The age of the pregnancy from the first day of the last menstrual period. This is the standard used by doctors.</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">The age of the pregnancy measured from the first day of the last menstrual period, used to standardize prenatal care.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
@@ -371,8 +373,8 @@ export default function PregnancyCalculatorPage() {
                     <CheckCircle2 className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Full Term</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">A pregnancy is considered "full term" at 38 weeks. At this stage, the baby is fully developed and ready for birth.</p>
+                    <p className="font-bold text-sm">Full Term Status</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Considered reached at 38 weeks. By this point, fetal development is typically complete and safe for birth.</p>
                   </div>
                 </li>
               </ul>
