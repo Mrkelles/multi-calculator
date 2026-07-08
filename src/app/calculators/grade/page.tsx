@@ -36,6 +36,14 @@ interface Assignment {
   weight: number;
 }
 
+const GRADE_POINTS: Record<string, number> = {
+  'A+': 4.0, 'A': 4.0, 'A-': 3.7,
+  'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+  'C+': 2.3, 'C': 2.0, 'C-': 1.7,
+  'D+': 1.3, 'D': 1.0, 'D-': 0.7,
+  'F': 0.0
+};
+
 const LETTER_GRADE_MAP: Record<string, number> = {
   'A+': 98.5, 'A': 94.5, 'A-': 91,
   'B+': 88, 'B': 84.5, 'B-': 81,
@@ -44,14 +52,45 @@ const LETTER_GRADE_MAP: Record<string, number> = {
   'F': 30
 };
 
+const getGpaFromScore = (s: number): number => {
+  if (s >= 97) return 4.0;
+  if (s >= 93) return 4.0;
+  if (s >= 90) return 3.7;
+  if (s >= 87) return 3.3;
+  if (s >= 83) return 3.0;
+  if (s >= 80) return 2.7;
+  if (s >= 77) return 2.3;
+  if (s >= 73) return 2.0;
+  if (s >= 70) return 1.7;
+  if (s >= 67) return 1.3;
+  if (s >= 63) return 1.0;
+  if (s >= 60) return 0.7;
+  return 0.0;
+};
+
+const getLetterGradeFromGpa = (g: number): string => {
+  if (g >= 3.85) return 'A';
+  if (g >= 3.5) return 'A-';
+  if (g >= 3.15) return 'B+';
+  if (g >= 2.85) return 'B';
+  if (g >= 2.5) return 'B-';
+  if (g >= 2.15) return 'C+';
+  if (g >= 1.85) return 'C';
+  if (g >= 1.5) return 'C-';
+  if (g >= 1.15) return 'D+';
+  if (g >= 0.85) return 'D';
+  if (g >= 0.35) return 'D-';
+  return 'F';
+};
+
 export default function GradeCalculatorPage() {
   const [mode, setMode] = useState<'current' | 'final'>('current');
 
   // Mode: Current Grade
   const [assignments, setAssignments] = useState<Assignment[]>([
-    { id: '1', name: 'Homework', grade: '90', weight: 20 },
-    { id: '2', name: 'Quiz', grade: 'B+', weight: 20 },
-    { id: '3', name: 'Midterm', grade: '88', weight: 30 },
+    { id: '1', name: 'Homework 1', grade: '90', weight: 5 },
+    { id: '2', name: 'Project', grade: 'B', weight: 20 },
+    { id: '3', name: 'Midterm exam', grade: '88', weight: 20 },
   ]);
 
   // Mode: Final Grade
@@ -75,26 +114,35 @@ export default function GradeCalculatorPage() {
 
   const currentResult = useMemo(() => {
     let totalWeightedScore = 0;
+    let totalWeightedGpa = 0;
     let totalWeight = 0;
 
     assignments.forEach(a => {
-      const inputGrade = a.grade.trim().toUpperCase();
+      const input = a.grade.trim().toUpperCase();
       let score = 0;
+      let gpa = 0;
 
-      if (LETTER_GRADE_MAP[inputGrade] !== undefined) {
-        score = LETTER_GRADE_MAP[inputGrade];
+      if (LETTER_GRADE_MAP[input] !== undefined) {
+        score = LETTER_GRADE_MAP[input];
+        gpa = GRADE_POINTS[input] || 0;
       } else {
-        score = parseFloat(inputGrade);
+        score = parseFloat(input);
+        if (!isNaN(score)) {
+          gpa = getGpaFromScore(score);
+        }
       }
 
       if (!isNaN(score) && a.weight > 0) {
         totalWeightedScore += (score * (a.weight / 100));
+        totalWeightedGpa += (gpa * (a.weight / 100));
         totalWeight += a.weight;
       }
     });
 
-    const average = totalWeight > 0 ? (totalWeightedScore / totalWeight) : 0;
-    return { average, totalWeight };
+    const average = totalWeight > 0 ? (totalWeightedScore / (totalWeight / 100)) : 0;
+    const avgGpa = totalWeight > 0 ? (totalWeightedGpa / (totalWeight / 100)) : 0;
+    
+    return { average, avgGpa, totalWeight };
   }, [assignments]);
 
   const finalResult = useMemo(() => {
@@ -258,16 +306,23 @@ export default function GradeCalculatorPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-2 pb-10 relative z-10">
-              <div className="text-7xl font-black font-headline tracking-tighter">
-                {mode === 'current' ? Math.round(currentResult.average) : Math.max(0, Math.round(finalResult))}
-                <span className="text-3xl opacity-60 ml-1">%</span>
+              <div className="text-5xl font-black font-headline tracking-tighter">
+                {mode === 'current' 
+                  ? `${getLetterGradeFromGpa(currentResult.avgGpa)}` 
+                  : Math.max(0, Math.round(finalResult)) + '%'
+                }
               </div>
+              {mode === 'current' && (
+                <div className="text-2xl font-bold opacity-80 mt-2">
+                  ({currentResult.avgGpa.toFixed(2)})
+                </div>
+              )}
               <Separator className="bg-white/20 my-4" />
               <div className="space-y-1">
                 <p className="text-[10px] uppercase font-bold opacity-60">Estimation</p>
                 <p className="text-xl font-bold">
                   {mode === 'current' 
-                    ? (currentResult.average >= 90 ? 'Excellent' : currentResult.average >= 80 ? 'Good' : currentResult.average >= 70 ? 'Fair' : 'Low')
+                    ? (currentResult.avgGpa >= 3.7 ? 'Excellent' : currentResult.avgGpa >= 3.0 ? 'Good' : currentResult.avgGpa >= 2.0 ? 'Fair' : 'Low')
                     : (finalResult > 100 ? 'Needs Extra Credit' : finalResult > 90 ? 'Challenging' : 'Achievable')}
                 </p>
               </div>
@@ -296,6 +351,12 @@ export default function GradeCalculatorPage() {
                 <span className="text-muted-foreground">Course Remaining</span>
                 <span className="font-bold">{mode === 'current' ? Math.max(0, 100 - currentResult.totalWeight) : finalWeight}%</span>
               </div>
+              {mode === 'current' && (
+                <div className="flex justify-between pt-2 border-t text-accent font-bold">
+                  <span>Current Avg (%)</span>
+                  <span>{currentResult.average.toFixed(2)}%</span>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
