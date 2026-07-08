@@ -1,0 +1,409 @@
+"use client"
+
+import { useState, useMemo } from 'react';
+import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
+import { 
+  Baby, 
+  Calendar as CalendarIcon, 
+  Clock, 
+  Info, 
+  HeartPulse, 
+  CheckCircle2, 
+  History, 
+  ChevronRight,
+  TrendingUp
+} from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { 
+  addDays, 
+  subDays, 
+  differenceInDays, 
+  format, 
+  startOfDay,
+  intervalToDuration
+} from 'date-fns';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '@/components/ui/table';
+
+type PregnancyMode = 'due-date' | 'last-period' | 'ultrasound' | 'conception' | 'ivf';
+
+// Milestone data
+const MILESTONES: Record<number, string> = {
+  3: 'Baby conceived',
+  4: 'Pregnancy test positive',
+  6: 'Heartbeat detectable by ultrasound',
+  13: 'Miscarriage risk decreases',
+  18: 'Baby begins making noticeable movements, can hear sounds, and gender can be found out.',
+  23: 'Premature baby may survive',
+  28: 'Baby can breathe',
+  38: 'Full Term'
+};
+
+// Size data (approximate averages)
+const BABY_SIZES: Record<number, { lengthCm: number; lengthIn: number; weightG: number; weightLb: number }> = {
+  8: { lengthCm: 1.6, lengthIn: 0.6, weightG: 1, weightLb: 0.002 },
+  12: { lengthCm: 5.4, lengthIn: 2.1, weightG: 14, weightLb: 0.03 },
+  16: { lengthCm: 11.6, lengthIn: 4.6, weightG: 100, weightLb: 0.22 },
+  20: { lengthCm: 25.6, lengthIn: 10.1, weightG: 300, weightLb: 0.66 },
+  23: { lengthCm: 28.9, lengthIn: 11.38, weightG: 501, weightLb: 1.1 },
+  25: { lengthCm: 34.6, lengthIn: 13.62, weightG: 660, weightLb: 1.46 },
+  28: { lengthCm: 37.6, lengthIn: 14.8, weightG: 1000, weightLb: 2.2 },
+  32: { lengthCm: 42.4, lengthIn: 16.7, weightG: 1700, weightLb: 3.7 },
+  36: { lengthCm: 47.4, lengthIn: 18.7, weightG: 2600, weightLb: 5.7 },
+  40: { lengthCm: 51.2, lengthIn: 20.2, weightG: 3400, weightLb: 7.5 },
+};
+
+// Interpolation helper for baby size
+const getBabySize = (weeks: number) => {
+  const weekKeys = Object.keys(BABY_SIZES).map(Number).sort((a, b) => a - b);
+  let closestWeek = weekKeys[0];
+  for (const wk of weekKeys) {
+    if (weeks >= wk) closestWeek = wk;
+    else break;
+  }
+  return BABY_SIZES[closestWeek];
+};
+
+export default function PregnancyCalculatorPage() {
+  const [mode, setMode] = useState<PregnancyMode>('due-date');
+  const [dateInput, setDateInput] = useState(format(addDays(new Date(), 280), 'yyyy-MM-dd'));
+  const [embryoAge, setEmbryoAge] = useState('5'); // for IVF mode
+
+  const results = useMemo(() => {
+    const today = startOfDay(new Date());
+    let dueDate: Date;
+    let lmpDate: Date;
+
+    try {
+      const inputDate = startOfDay(new Date(dateInput));
+
+      if (mode === 'due-date') {
+        dueDate = inputDate;
+        lmpDate = subDays(dueDate, 280);
+      } else if (mode === 'last-period') {
+        lmpDate = inputDate;
+        dueDate = addDays(lmpDate, 280);
+      } else if (mode === 'conception') {
+        lmpDate = subDays(inputDate, 14);
+        dueDate = addDays(lmpDate, 280);
+      } else if (mode === 'ultrasound') {
+        // Assuming user enters the estimated due date given by ultrasound
+        dueDate = inputDate;
+        lmpDate = subDays(dueDate, 280);
+      } else if (mode === 'ivf') {
+        // IVF Transfer logic
+        const age = parseInt(embryoAge);
+        const offset = 266 - age;
+        dueDate = addDays(inputDate, offset);
+        lmpDate = subDays(dueDate, 280);
+      } else {
+        dueDate = inputDate;
+        lmpDate = subDays(dueDate, 280);
+      }
+
+      const totalDays = 280;
+      const daysPregnant = differenceInDays(today, lmpDate);
+      const weeksPregnant = Math.floor(daysPregnant / 7);
+      const remainingDays = daysPregnant % 7;
+      const progressPercent = Math.min(100, Math.max(0, (daysPregnant / totalDays) * 100));
+
+      const duration = intervalToDuration({ start: lmpDate, end: today });
+      const monthsStr = `${duration.months} months ${duration.days} days`;
+
+      let trimester = 'First';
+      if (weeksPregnant >= 28) trimester = 'Third';
+      else if (weeksPregnant >= 13) trimester = 'Second';
+
+      const babySize = getBabySize(weeksPregnant);
+      const likelyConception = addDays(lmpDate, 14);
+
+      // Generate Table
+      const schedule = [];
+      for (let w = 1; w <= 42; w++) {
+        const weekStart = addDays(lmpDate, (w - 1) * 7);
+        const weekEnd = addDays(weekStart, 6);
+        let trimesterLabel = '';
+        if (w === 1) trimesterLabel = 'first trimester';
+        if (w === 13) trimesterLabel = 'second trimester';
+        if (w === 28) trimesterLabel = 'third trimester';
+
+        schedule.push({
+          week: w,
+          range: `${format(weekStart, 'MMM d, yyyy')} - ${format(weekEnd, 'MMM d, yyyy')}`,
+          trimester: trimesterLabel,
+          milestone: MILESTONES[w] || '',
+          isToday: weeksPregnant === w - 1
+        });
+      }
+
+      return {
+        weeksPregnant,
+        remainingDays,
+        monthsStr,
+        trimester,
+        progressPercent,
+        dueDate,
+        likelyConception,
+        babySize,
+        schedule
+      };
+    } catch (e) {
+      return null;
+    }
+  }, [mode, dateInput, embryoAge]);
+
+  if (!results) return null;
+
+  return (
+    <CalculatorWrapper
+      title="Pregnancy Calculator"
+      description="Estimate your due date and track your pregnancy progress week by week based on your unique cycle or medical milestones."
+      icon={Baby}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Input Section */}
+        <div className="lg:col-span-5 space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Calculate Based On</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <Tabs value={mode} onValueChange={(v: any) => setMode(v)} className="w-full">
+                <TabsList className="grid grid-cols-3 md:grid-cols-5 h-auto p-1 bg-muted/50 rounded-xl mb-6">
+                  <TabsTrigger value="due-date" className="text-[10px] md:text-xs py-2 px-1">Due Date</TabsTrigger>
+                  <TabsTrigger value="last-period" className="text-[10px] md:text-xs py-2 px-1">Last Period</TabsTrigger>
+                  <TabsTrigger value="conception" className="text-[10px] md:text-xs py-2 px-1">Conception</TabsTrigger>
+                  <TabsTrigger value="ultrasound" className="text-[10px] md:text-xs py-2 px-1">Ultrasound</TabsTrigger>
+                  <TabsTrigger value="ivf" className="text-[10px] md:text-xs py-2 px-1">IVF</TabsTrigger>
+                </TabsList>
+
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="capitalize">
+                      {mode.replace('-', ' ')} {mode === 'ultrasound' ? '(Est. Due Date)' : ''}
+                    </Label>
+                    <Input 
+                      type="date" 
+                      value={dateInput} 
+                      onChange={(e) => setDateInput(e.target.value)} 
+                    />
+                  </div>
+
+                  {mode === 'ivf' && (
+                    <div className="space-y-2">
+                      <Label>Embryo Age</Label>
+                      <Select value={embryoAge} onValueChange={setEmbryoAge}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="3">Day 3 Embryo</SelectItem>
+                          <SelectItem value="5">Day 5 Embryo</SelectItem>
+                          <SelectItem value="6">Day 6 Embryo</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-[10px] text-muted-foreground italic">Embryo age affects the due date calculation by adjusting for the development stage at transfer.</p>
+                    </div>
+                  )}
+                </div>
+              </Tabs>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-primary/5 border-primary/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
+                <Info className="w-4 h-4" />
+                Note on Accuracy
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs text-muted-foreground leading-relaxed">
+              These results are estimations based on averages for a standard 40-week single pregnancy. Every journey is unique; the results for twin or multiple pregnancies differ significantly.
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Results Sidebar */}
+        <div className="lg:col-span-7 space-y-6">
+          <Card className="bg-primary text-white border-none shadow-xl overflow-hidden relative">
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+              <Baby className="w-24 h-24" />
+            </div>
+            <CardContent className="pt-10 pb-10 text-center relative z-10 space-y-4">
+              <div>
+                <p className="text-xs uppercase tracking-widest opacity-80 mb-2 font-bold">Current Status</p>
+                <h3 className="text-4xl md:text-5xl font-black font-headline tracking-tighter">
+                  Week #{results.weeksPregnant}
+                </h3>
+                <p className="text-lg opacity-80 mt-1">
+                  ({results.weeksPregnant} weeks {results.remainingDays} days or {results.monthsStr})
+                </p>
+              </div>
+              
+              <div className="bg-white/10 p-3 rounded-2xl inline-block px-8 border border-white/20">
+                <p className="text-sm font-bold uppercase tracking-wider">{results.trimester} Trimester</p>
+              </div>
+
+              <div className="pt-4 max-w-sm mx-auto space-y-2">
+                <div className="flex justify-between text-[10px] font-bold uppercase opacity-80">
+                  <span>Progress</span>
+                  <span>{Math.round(results.progressPercent)}%</span>
+                </div>
+                <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-accent transition-all duration-1000" 
+                    style={{ width: `${results.progressPercent}%` }} 
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-primary" />
+                  Estimated Baby Size
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm">
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-muted-foreground">Avg. Length</span>
+                  <span className="font-bold">{results.babySize.lengthIn.toFixed(2)} in ({results.babySize.lengthCm.toFixed(1)} cm)</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Avg. Weight</span>
+                  <span className="font-bold">{results.babySize.weightLb.toFixed(2)} lbs ({results.babySize.weightG} g)</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold flex items-center gap-2">
+                  <CalendarIcon className="w-4 h-4 text-accent" />
+                  Key Dates
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm">
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-muted-foreground">Due Date</span>
+                  <span className="font-bold text-primary">{format(results.dueDate, 'MMM d, yyyy')}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Conception</span>
+                  <span className="font-bold">{format(results.likelyConception, 'MMM d, yyyy')}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Milestone Table */}
+        <div className="lg:col-span-12 py-10 space-y-8">
+          <Separator />
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <HeartPulse className="w-6 h-6 text-primary" />
+              <h3 className="text-2xl font-bold text-primary">Pregnancy Milestone Schedule</h3>
+            </div>
+            <div className="rounded-2xl border bg-white shadow-sm overflow-hidden overflow-x-auto">
+              <Table>
+                <TableHeader className="bg-muted/50">
+                  <TableRow>
+                    <TableHead className="font-bold w-[120px]">Week</TableHead>
+                    <TableHead className="font-bold">Date Range</TableHead>
+                    <TableHead className="font-bold">Trimester</TableHead>
+                    <TableHead className="font-bold">Important Milestones</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {results.schedule.map((row) => (
+                    <TableRow key={row.week} className={row.isToday ? "bg-primary/5 font-bold" : ""}>
+                      <TableCell className="font-medium text-primary">
+                        Week {row.week} {row.isToday && "(current)"}
+                      </TableCell>
+                      <TableCell className="text-xs">{row.range}</TableCell>
+                      <TableCell className="text-[10px] uppercase font-black text-muted-foreground/60">
+                        {row.trimester}
+                      </TableCell>
+                      <TableCell className="text-xs font-medium text-accent">
+                        {row.milestone}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        </div>
+
+        {/* Informational Section */}
+        <div className="lg:col-span-12 space-y-12">
+          <Separator />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <section className="space-y-4">
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+                <History className="w-6 h-6" />
+                Understanding Pregnancy Math
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Pregnancy lasts about 280 days (40 weeks) beginning from the first day of the last menstrual period (LMP). Since most people don't know the exact date of conception, medical professionals use the LMP as the baseline for counting.
+              </p>
+              <h4 className="font-bold text-foreground">How Due Dates Are Calculated</h4>
+              <p className="text-muted-foreground leading-relaxed">
+                Standard calculations assume a regular 28-day cycle where ovulation occurs on day 14. If you have a different cycle length or used IVF, your actual conception date may vary, which is why we provide specialized modes for IVF transfers and ultrasound adjustments.
+              </p>
+            </section>
+
+            <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary">Definition of Terms</h4>
+              <ul className="space-y-6">
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <CalendarIcon className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Gestational Age</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">The age of the pregnancy from the first day of the last menstrual period. This is the standard used by doctors.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <CheckCircle2 className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Full Term</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">A pregnancy is considered "full term" at 38 weeks. At this stage, the baby is fully developed and ready for birth.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <Clock className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Trimesters</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Pregnancy is divided into three trimesters, each marking different developmental stages for both the mother and the baby.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </CalculatorWrapper>
+  );
+}

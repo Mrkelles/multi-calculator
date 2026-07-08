@@ -28,6 +28,7 @@ import {
   Layers,
   ArrowLeftRight,
   Lock,
+  Baby,
   LucideIcon
 } from 'lucide-react';
 
@@ -41,6 +42,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'pregnancy',
+    name: 'Pregnancy Calculator',
+    description: 'Calculate your due date, current week, and track major milestones throughout your pregnancy journey.',
+    icon: Baby,
+    path: '/calculators/pregnancy',
+    category: 'health',
+  },
   {
     id: 'password-generator',
     name: 'Password Generator',
