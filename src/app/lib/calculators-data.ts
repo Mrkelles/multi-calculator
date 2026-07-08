@@ -34,6 +34,22 @@ export interface CalculatorInfo {
 
 export const calculators: CalculatorInfo[] = [
   {
+    id: 'hours',
+    name: 'Hours Calculator',
+    description: 'Calculate the number of hours and minutes between two times or two specific dates.',
+    icon: Clock,
+    path: '/calculators/hours',
+    category: 'tools',
+  },
+  {
+    id: 'time-card',
+    name: 'Time Card Calculator',
+    description: 'Generate a professional weekly time card with break deductions and decimal conversions.',
+    icon: Timer,
+    path: '/calculators/time-card',
+    category: 'tools',
+  },
+  {
     id: 'inflation',
     name: 'Inflation Calculator',
     description: 'Calculate the purchasing power of money over time using historical U.S. CPI data or flat inflation rates.',
@@ -247,14 +263,6 @@ export const calculators: CalculatorInfo[] = [
     description: 'A comprehensive tool for time arithmetic, date offset, and time expression parsing.',
     icon: Clock,
     path: '/calculators/time',
-    category: 'tools',
-  },
-  {
-    id: 'hours',
-    name: 'Time Card Calculator',
-    description: 'Calculate total hours worked with lunch break deductions and weekly time card tracking.',
-    icon: Timer,
-    path: '/calculators/hours',
     category: 'tools',
   },
 ];

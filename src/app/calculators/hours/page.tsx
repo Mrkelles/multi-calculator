@@ -3,20 +3,19 @@
 import { useState, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
 import { 
-  Timer, 
-  Plus, 
-  Trash2, 
-  Calculator, 
-  Info, 
-  History, 
   Clock, 
-  Calendar, 
-  Briefcase 
+  CalendarDays, 
+  Info, 
+  ArrowRight, 
+  History, 
+  Calculator,
+  Calendar
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
 import { 
   Table, 
   TableBody, 
@@ -25,193 +24,157 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { Separator } from '@/components/ui/separator';
-
-interface TimeRow {
-  id: string;
-  day: string;
-  start: string;
-  end: string;
-  break: number; // in minutes
-}
 
 export default function HoursCalculatorPage() {
-  const [rows, setRows] = useState<TimeRow[]>([
-    { id: '1', day: 'Monday', start: '09:00', end: '17:00', break: 60 },
-    { id: '2', day: 'Tuesday', start: '09:00', end: '17:00', break: 60 },
-    { id: '3', day: 'Wednesday', start: '09:00', end: '17:00', break: 60 },
-    { id: '4', day: 'Thursday', start: '09:00', end: '17:00', break: 60 },
-    { id: '5', day: 'Friday', start: '09:00', end: '17:00', break: 60 },
-  ]);
+  const [mode, setMode] = useState<'times' | 'dates'>('times');
 
-  const updateRow = (id: string, field: keyof TimeRow, value: any) => {
-    setRows(rows.map(r => r.id === id ? { ...r, [field]: value } : r));
-  };
+  // Mode: Between Times
+  const [startTime, setStartTime] = useState('09:00');
+  const [endTime, setEndTime] = useState('17:00');
+  const [breakMin, setBreakMin] = useState(0);
 
-  const addRow = () => {
-    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const nextDay = days[rows.length % 7];
-    setRows([...rows, { 
-      id: Math.random().toString(), 
-      day: nextDay, 
-      start: '09:00', 
-      end: '17:00', 
-      break: 60 
-    }]);
-  };
+  // Mode: Between Dates
+  const [startDateTime, setStartDateTime] = useState(new Date().toISOString().slice(0, 16));
+  const [endDateTime, setEndDateTime] = useState(new Date(Date.now() + 86400000).toISOString().slice(0, 16));
 
-  const removeRow = (id: string) => {
-    if (rows.length > 1) {
-      setRows(rows.filter(r => r.id !== id));
+  const timesResult = useMemo(() => {
+    const [sH, sM] = startTime.split(':').map(Number);
+    const [eH, eM] = endTime.split(':').map(Number);
+    
+    let startTotal = sH * 60 + sM;
+    let endTotal = eH * 60 + eM;
+
+    if (endTotal < startTotal) {
+      endTotal += 24 * 60;
     }
-  };
 
-  const results = useMemo(() => {
-    let totalMinutes = 0;
-    const processedRows = rows.map(row => {
-      const [startH, startM] = row.start.split(':').map(Number);
-      const [endH, endM] = row.end.split(':').map(Number);
+    const diff = endTotal - startTotal - breakMin;
+    const hours = Math.floor(Math.max(0, diff) / 60);
+    const minutes = Math.max(0, diff) % 60;
+    const decimal = (Math.max(0, diff) / 60).toFixed(2);
+
+    return { hours, minutes, decimal, totalMin: Math.max(0, diff) };
+  }, [startTime, endTime, breakMin]);
+
+  const datesResult = useMemo(() => {
+    try {
+      const start = new Date(startDateTime);
+      const end = new Date(endDateTime);
+      const diffMs = end.getTime() - start.getTime();
+      const diffMin = Math.floor(diffMs / (1000 * 60));
       
-      let startTotal = startH * 60 + startM;
-      let endTotal = endH * 60 + endM;
+      const hours = Math.floor(Math.max(0, diffMin) / 60);
+      const minutes = Math.max(0, diffMin) % 60;
+      const decimal = (Math.max(0, diffMin) / 60).toFixed(2);
+      const days = (Math.max(0, diffMin) / 1440).toFixed(2);
 
-      // Handle overnight shift
-      if (endTotal < startTotal) {
-        endTotal += 24 * 60;
-      }
-
-      const diff = endTotal - startTotal - row.break;
-      const hours = Math.floor(Math.max(0, diff) / 60);
-      const minutes = Math.max(0, diff) % 60;
-      
-      totalMinutes += Math.max(0, diff);
-
-      return {
-        ...row,
-        rowTotal: `${hours}h ${minutes}m`,
-        rowDecimal: (Math.max(0, diff) / 60).toFixed(2)
-      };
-    });
-
-    const totalH = Math.floor(totalMinutes / 60);
-    const totalM = totalMinutes % 60;
-    const totalDecimal = (totalMinutes / 60).toFixed(2);
-
-    return { processedRows, totalH, totalM, totalDecimal };
-  }, [rows]);
+      return { hours, minutes, decimal, days, totalMin: Math.max(0, diffMin) };
+    } catch (e) {
+      return null;
+    }
+  }, [startDateTime, endDateTime]);
 
   const periodReference = [
     { period: '1 Day', hours: 24, label: 'Full Rotation' },
     { period: '1 Week', hours: 168, label: '7 Full Days' },
-    { period: '1 Fortnight', hours: 336, label: '14 Full Days' },
     { period: 'Average Month', hours: 730.48, label: '30.44 Days (avg)' },
     { period: 'Common Work Year', hours: 2080, label: '52 Weeks x 40h' },
     { period: 'Calendar Year', hours: 8760, label: '365 Days x 24h' },
-    { period: 'Leap Year', hours: 8784, label: '366 Days x 24h' },
   ];
 
   return (
     <CalculatorWrapper
-      title="Time Card Calculator"
-      description="Generate a professional weekly time card with break deductions, decimal conversions, and overnight shift support."
-      icon={Timer}
+      title="Hours Calculator"
+      description="Find the exact number of hours and minutes between two times or two dates with precision."
+      icon={Clock}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Input Section */}
-        <div className="lg:col-span-8 space-y-6">
-          <Card className="border-none shadow-md overflow-hidden">
-            <CardHeader className="bg-primary/5 border-b flex flex-row items-center justify-between">
-              <div>
-                <CardTitle className="text-lg">Time Card Log</CardTitle>
-                <p className="text-xs text-muted-foreground mt-1">Enter your clock-in and clock-out times for each day of the week.</p>
-              </div>
-              <Button onClick={addRow} size="sm" className="gap-2 rounded-xl">
-                <Plus className="w-4 h-4" /> Add Day
-              </Button>
+        <div className="lg:col-span-5 space-y-6">
+          <Card>
+            <CardHeader className="pb-4">
+              <Tabs value={mode} onValueChange={(v: any) => setMode(v)} className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="times" className="text-xs font-bold">Between Times</TabsTrigger>
+                  <TabsTrigger value="dates" className="text-xs font-bold">Between Dates</TabsTrigger>
+                </TabsList>
+              </Tabs>
             </CardHeader>
-            <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader className="bg-muted/30">
-                    <TableRow>
-                      <TableHead className="w-[120px]">Day</TableHead>
-                      <TableHead>Start Time</TableHead>
-                      <TableHead>End Time</TableHead>
-                      <TableHead>Break (min)</TableHead>
-                      <TableHead className="text-right">Total</TableHead>
-                      <TableHead className="w-[50px]"></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {results.processedRows.map((row) => (
-                      <TableRow key={row.id}>
-                        <TableCell>
-                          <Input 
-                            className="h-8 text-xs font-bold border-none bg-transparent focus:ring-1" 
-                            value={row.day} 
-                            onChange={(e) => updateRow(row.id, 'day', e.target.value)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Input 
-                            type="time" 
-                            className="h-9" 
-                            value={row.start} 
-                            onChange={(e) => updateRow(row.id, 'start', e.target.value)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Input 
-                            type="time" 
-                            className="h-9" 
-                            value={row.end} 
-                            onChange={(e) => updateRow(row.id, 'end', e.target.value)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Input 
-                            type="number" 
-                            className="h-9 w-20" 
-                            value={row.break} 
-                            onChange={(e) => updateRow(row.id, 'break', Number(e.target.value))}
-                          />
-                        </TableCell>
-                        <TableCell className="text-right font-mono font-bold text-primary">
-                          {row.rowTotal}
-                        </TableCell>
-                        <TableCell>
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="h-8 w-8 text-destructive hover:bg-destructive/10"
-                            onClick={() => removeRow(row.id)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+            <CardContent className="space-y-6">
+              {mode === 'times' ? (
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Start Time</Label>
+                    <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>End Time</Label>
+                    <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+                    <p className="text-[10px] text-muted-foreground italic">Handles overnight shifts automatically.</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Break (Minutes)</Label>
+                    <Input type="number" value={breakMin} onChange={(e) => setBreakMin(Number(e.target.value))} />
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Start Date & Time</Label>
+                    <Input type="datetime-local" value={startDateTime} onChange={(e) => setStartDateTime(e.target.value)} />
+                  </div>
+                  <div className="space-y-2 text-center text-muted-foreground"><ArrowRight className="mx-auto" /></div>
+                  <div className="space-y-2">
+                    <Label>End Date & Time</Label>
+                    <Input type="datetime-local" value={endDateTime} onChange={(e) => setEndDateTime(e.target.value)} />
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
+
+          <div className="bg-primary/5 border border-primary/10 rounded-xl p-5 flex gap-4">
+            <Info className="w-6 h-6 text-primary shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm text-primary font-bold">Pro Tip</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Use the **Between Times** mode for daily shift calculations and the **Between Dates** mode for long-term project duration tracking.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Results Sidebar */}
-        <div className="lg:col-span-4 space-y-6">
+        {/* Results Section */}
+        <div className="lg:col-span-7 space-y-6">
           <Card className="bg-primary text-white border-none shadow-xl">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs uppercase tracking-widest opacity-70 font-bold text-center">Total Duration</CardTitle>
             </CardHeader>
-            <CardContent className="text-center space-y-2 pb-10">
-              <div className="text-6xl font-black font-headline tracking-tighter">
-                {results.totalH}<span className="text-2xl opacity-60 ml-1">h</span> {results.totalM}<span className="text-2xl opacity-60 ml-1">m</span>
+            <CardContent className="text-center space-y-4 pb-10">
+              <div className="text-6xl md:text-7xl font-black font-headline tracking-tighter">
+                {mode === 'times' ? timesResult.hours : datesResult?.hours}
+                <span className="text-2xl md:text-3xl opacity-60 ml-1">h</span> 
+                {mode === 'times' ? timesResult.minutes : datesResult?.minutes}
+                <span className="text-2xl md:text-3xl opacity-60 ml-1">m</span>
               </div>
-              <Separator className="bg-white/20 my-4" />
-              <div className="space-y-1">
-                <p className="text-xs uppercase font-bold opacity-60">Decimal Hours</p>
-                <p className="text-3xl font-bold font-mono">{results.totalDecimal}</p>
+              <Separator className="bg-white/20" />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <p className="text-[10px] uppercase font-bold opacity-60 tracking-wider">Decimal Hours</p>
+                  <p className="text-3xl font-bold font-mono">{mode === 'times' ? timesResult.decimal : datesResult?.decimal}</p>
+                </div>
+                {mode === 'dates' && (
+                  <div className="space-y-1">
+                    <p className="text-[10px] uppercase font-bold opacity-60 tracking-wider">Total Days</p>
+                    <p className="text-3xl font-bold font-mono">{datesResult?.days}</p>
+                  </div>
+                )}
+                {mode === 'times' && (
+                  <div className="space-y-1">
+                    <p className="text-[10px] uppercase font-bold opacity-60 tracking-wider">Total Minutes</p>
+                    <p className="text-3xl font-bold font-mono">{timesResult.totalMin}</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -219,100 +182,60 @@ export default function HoursCalculatorPage() {
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2">
-                <Info className="w-4 h-4 text-primary" />
-                Quick Conversion
+                <History className="w-4 h-4 text-primary" />
+                Time Period Reference
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 text-sm">
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-muted-foreground">Total Minutes</span>
-                <span className="font-bold">{(Number(results.totalDecimal) * 60).toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Total Seconds</span>
-                <span className="font-bold">{(Number(results.totalDecimal) * 3600).toLocaleString()}</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 flex gap-4">
-            <Clock className="w-6 h-6 text-blue-500 shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <p className="text-sm text-blue-800 font-bold">Pro Tip</p>
-              <p className="text-xs text-blue-700 leading-relaxed">
-                Calculating pay from your time card? Multiply the <strong>Decimal Hours</strong> by your hourly rate to get your gross earnings.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Hours in different time periods table */}
-        <div className="lg:col-span-12 py-10 space-y-8">
-          <Separator />
-          <div className="max-w-4xl mx-auto space-y-6">
-            <div className="flex items-center gap-3">
-              <Calendar className="w-6 h-6 text-primary" />
-              <h3 className="text-2xl font-bold text-primary">Hours in Different Time Periods</h3>
-            </div>
-            <p className="text-sm text-muted-foreground max-w-2xl">
-              Understanding time at a macro scale helps with long-term project planning and annual goal setting. Below are the standard hour counts for common calendar periods.
-            </p>
-            <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
+            <CardContent className="p-0">
               <Table>
                 <TableHeader className="bg-muted/50">
                   <TableRow>
-                    <TableHead className="font-bold">Time Period</TableHead>
+                    <TableHead className="font-bold">Period</TableHead>
                     <TableHead className="text-right font-bold">Total Hours</TableHead>
-                    <TableHead className="text-right font-bold hidden md:table-cell">Context</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {periodReference.map((p) => (
-                    <TableRow key={p.period} className="hover:bg-primary/5 transition-colors">
-                      <TableCell className="font-medium">{p.period}</TableCell>
-                      <TableCell className="text-right font-mono font-bold text-primary">
-                        {p.hours.toLocaleString(undefined, { maximumFractionDigits: 2 })}
-                      </TableCell>
-                      <TableCell className="text-right text-xs text-muted-foreground hidden md:table-cell">
-                        {p.label}
-                      </TableCell>
+                    <TableRow key={p.period}>
+                      <TableCell className="font-medium text-xs">{p.period}</TableCell>
+                      <TableCell className="text-right font-mono text-xs font-bold">{p.hours.toLocaleString()}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Informational Text Section */}
-        <div className="lg:col-span-12 space-y-12">
+        <div className="lg:col-span-12 space-y-12 py-10">
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
                 <Calculator className="w-6 h-6" />
-                How the Time Card Calculator Works
+                How the Hours Calculator Works
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Whether you are tracking your billable hours for a client or managing your team's weekly timesheet, calculating time accurately can be tricky due to the base-60 nature of clocks. The **My Apex Time Card Calculator** does the heavy lifting by converting minutes into decimals and handling overnight shift rollovers.
+                Measuring time spans accurately can be complex due to the varying number of days in months and the transition between AM/PM. The **My Apex Hours Calculator** simplifies this process by allowing you to choose between specific daily shifts or long-term date ranges.
               </p>
-              <h4 className="font-bold text-foreground">Why use Decimal Hours for Time Cards?</h4>
+              <h4 className="font-bold text-foreground">Hours Between Two Times</h4>
               <p className="text-muted-foreground leading-relaxed">
-                Most payroll systems and billing software require time to be entered in a decimal format (e.g., 7.5 hours instead of 7 hours and 30 minutes). This allows for easy multiplication against an hourly wage or rate, ensuring your time card is accurate for accounting.
+                This mode is ideal for daily labor tracking. You can input your start and end times, subtract a lunch break, and instantly get the total billable hours. Our engine handles midnight rollovers automatically—so a shift from 10 PM to 6 AM is correctly calculated as 8 hours.
               </p>
             </section>
 
-            <div className="bg-white p-8 rounded-[2rem] border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Key Features</h4>
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary">Features & Accuracy</h4>
               <ul className="space-y-6">
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <Briefcase className="w-4 h-4 text-accent" />
+                    <CalendarDays className="w-4 h-4 text-accent" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Break Deduction</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Automatically subtract lunch or rest breaks from your total shift length to get actual "on-the-clock" time on your card.</p>
+                    <p className="font-bold text-sm">Precise Date Ranges</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Calculate exact durations over weeks or months, accounting for every minute. Perfect for long-distance travel planning or project milestone tracking.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
@@ -320,17 +243,8 @@ export default function HoursCalculatorPage() {
                     <History className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Overnight Shifts</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Our math handles transitions across midnight. If you start at 10:00 PM and end at 6:00 AM, the time card correctly identifies that as an 8-hour shift.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <Clock className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Weekly Accumulation</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The calculator sums all daily totals into a single weekly figure, making Friday payroll preparation and time card submission a breeze.</p>
+                    <p className="font-bold text-sm">Decimal Output</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Easily convert durations into decimal format (e.g., 8h 30m = 8.50) to simplify invoice generation or payroll processing.</p>
                   </div>
                 </li>
               </ul>
