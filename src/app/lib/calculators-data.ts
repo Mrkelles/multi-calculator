@@ -26,6 +26,7 @@ import {
   Circle,
   Hash,
   Layers,
+  ArrowLeftRight,
   LucideIcon
 } from 'lucide-react';
 
@@ -39,6 +40,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'conversion',
+    name: 'Conversion Calculator',
+    description: 'Convert units for length, temperature, area, volume, and weight with high precision.',
+    icon: ArrowLeftRight,
+    path: '/calculators/conversion',
+    category: 'tools',
+  },
   {
     id: 'concrete',
     name: 'Concrete Calculator',
