@@ -437,6 +437,20 @@ export default function PregnancyCalculatorPage() {
               </ul>
             </div>
           </div>
+
+          <Separator />
+          
+          <div className="space-y-8 pb-12">
+            <section className="space-y-4">
+              <h3 className="text-2xl font-bold text-primary">Pregnancy Term & Due Date</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Pregnancy is a term used to describe a woman's state over a time period (~9 months) during which one or more offspring develops inside of a woman. Childbirth usually occurs approximately 38 weeks after conception, or about 40 weeks after the last menstrual period. The World Health Organization defines a normal pregnancy term to last between 37 and 42 weeks. During a person's first OB-GYN visit, the doctor will usually provide an estimated date (based on a sonogram) at which the child will be born, or due date. Alternatively, the due date can also be estimated based on a person's last menstrual period.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                While the due date can be estimated, the actual length of pregnancy depends on various factors, including age, length of previous pregnancies, and weight of the mother at birth.<sup>1</sup> However, there are still more factors affecting natural variation in pregnancy terms that are not well understood. Studies have shown that fewer than 4% of births occur on the exact due date, 60% occur within a week of the due date, and almost 90% occur within two weeks of the due date.<sup>2</sup> As such, while it is possible to be fairly confident that a person's child will be born within about two weeks of the due date, it is currently not possible to predict the exact day of birth with certainty.
+              </p>
+            </section>
+          </div>
         </div>
       </div>
     </CalculatorWrapper>
