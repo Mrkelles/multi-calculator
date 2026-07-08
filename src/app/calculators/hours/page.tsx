@@ -112,8 +112,8 @@ export default function HoursCalculatorPage() {
 
   return (
     <CalculatorWrapper
-      title="Hours Calculator"
-      description="Calculate total hours worked over multiple days. Perfect for timesheets, payroll tracking, and productivity logs."
+      title="Time Card Calculator"
+      description="Generate a professional weekly time card with break deductions, decimal conversions, and overnight shift support."
       icon={Timer}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -122,8 +122,8 @@ export default function HoursCalculatorPage() {
           <Card className="border-none shadow-md overflow-hidden">
             <CardHeader className="bg-primary/5 border-b flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-lg">Weekly Timesheet</CardTitle>
-                <p className="text-xs text-muted-foreground mt-1">Enter start/end times and break durations for each day.</p>
+                <CardTitle className="text-lg">Time Card Log</CardTitle>
+                <p className="text-xs text-muted-foreground mt-1">Enter your clock-in and clock-out times for each day of the week.</p>
               </div>
               <Button onClick={addRow} size="sm" className="gap-2 rounded-xl">
                 <Plus className="w-4 h-4" /> Add Day
@@ -240,7 +240,7 @@ export default function HoursCalculatorPage() {
             <div className="space-y-1">
               <p className="text-sm text-blue-800 font-bold">Pro Tip</p>
               <p className="text-xs text-blue-700 leading-relaxed">
-                Need to calculate pay? Multiply the <strong>Decimal Hours</strong> by your hourly rate to get your gross earnings.
+                Calculating pay from your time card? Multiply the <strong>Decimal Hours</strong> by your hourly rate to get your gross earnings.
               </p>
             </div>
           </div>
@@ -292,14 +292,14 @@ export default function HoursCalculatorPage() {
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
                 <Calculator className="w-6 h-6" />
-                How the Hours Calculator Works
+                How the Time Card Calculator Works
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Whether you are tracking your billable hours for a client or managing your team's weekly timesheet, calculating time accurately can be tricky due to the base-60 nature of clocks. The **My Apex Hours Calculator** does the heavy lifting by converting minutes into decimals and handling overnight shift rollovers.
+                Whether you are tracking your billable hours for a client or managing your team's weekly timesheet, calculating time accurately can be tricky due to the base-60 nature of clocks. The **My Apex Time Card Calculator** does the heavy lifting by converting minutes into decimals and handling overnight shift rollovers.
               </p>
-              <h4 className="font-bold text-foreground">Why use Decimal Hours?</h4>
+              <h4 className="font-bold text-foreground">Why use Decimal Hours for Time Cards?</h4>
               <p className="text-muted-foreground leading-relaxed">
-                Most payroll systems and billing software require time to be entered in a decimal format (e.g., 7.5 hours instead of 7 hours and 30 minutes). This allows for easy multiplication against an hourly wage or rate.
+                Most payroll systems and billing software require time to be entered in a decimal format (e.g., 7.5 hours instead of 7 hours and 30 minutes). This allows for easy multiplication against an hourly wage or rate, ensuring your time card is accurate for accounting.
               </p>
             </section>
 
@@ -312,7 +312,7 @@ export default function HoursCalculatorPage() {
                   </div>
                   <div>
                     <p className="font-bold text-sm">Break Deduction</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Automatically subtract lunch or rest breaks from your total shift length to get actual "on-the-clock" time.</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Automatically subtract lunch or rest breaks from your total shift length to get actual "on-the-clock" time on your card.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
@@ -321,7 +321,7 @@ export default function HoursCalculatorPage() {
                   </div>
                   <div>
                     <p className="font-bold text-sm">Overnight Shifts</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Our math handles transitions across midnight. If you start at 10:00 PM and end at 6:00 AM, we correctly identify that as an 8-hour shift.</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Our math handles transitions across midnight. If you start at 10:00 PM and end at 6:00 AM, the time card correctly identifies that as an 8-hour shift.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
@@ -330,7 +330,7 @@ export default function HoursCalculatorPage() {
                   </div>
                   <div>
                     <p className="font-bold text-sm">Weekly Accumulation</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The calculator sums all daily totals into a single weekly figure, making Friday payroll preparation a breeze.</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">The calculator sums all daily totals into a single weekly figure, making Friday payroll preparation and time card submission a breeze.</p>
                   </div>
                 </li>
               </ul>

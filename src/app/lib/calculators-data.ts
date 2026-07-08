@@ -251,8 +251,8 @@ export const calculators: CalculatorInfo[] = [
   },
   {
     id: 'hours',
-    name: 'Hours Calculator',
-    description: 'Calculate total hours worked with lunch break deductions and weekly timesheet tracking.',
+    name: 'Time Card Calculator',
+    description: 'Calculate total hours worked with lunch break deductions and weekly time card tracking.',
     icon: Timer,
     path: '/calculators/hours',
     category: 'tools',
