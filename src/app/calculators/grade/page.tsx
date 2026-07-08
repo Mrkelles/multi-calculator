@@ -32,9 +32,17 @@ import { Separator } from '@/components/ui/separator';
 interface Assignment {
   id: string;
   name: string;
-  grade: string; // can be number or letter, we'll parse to number
+  grade: string; 
   weight: number;
 }
+
+const LETTER_GRADE_MAP: Record<string, number> = {
+  'A+': 98.5, 'A': 94.5, 'A-': 91,
+  'B+': 88, 'B': 84.5, 'B-': 81,
+  'C+': 78, 'C': 74.5, 'C-': 71,
+  'D+': 68, 'D': 64.5, 'D-': 61,
+  'F': 30
+};
 
 export default function GradeCalculatorPage() {
   const [mode, setMode] = useState<'current' | 'final'>('current');
@@ -42,7 +50,7 @@ export default function GradeCalculatorPage() {
   // Mode: Current Grade
   const [assignments, setAssignments] = useState<Assignment[]>([
     { id: '1', name: 'Homework', grade: '90', weight: 20 },
-    { id: '2', name: 'Quiz', grade: '85', weight: 20 },
+    { id: '2', name: 'Quiz', grade: 'B+', weight: 20 },
     { id: '3', name: 'Midterm', grade: '88', weight: 30 },
   ]);
 
@@ -52,7 +60,7 @@ export default function GradeCalculatorPage() {
   const [finalWeight, setFinalWeight] = useState(20);
 
   const addAssignment = () => {
-    setAssignments([...assignments, { id: Math.random().toString(), name: `Assignment ${assignments.length + 1}`, grade: '', weight: 0 }]);
+    setAssignments([...assignments, { id: Math.random().toString(), name: `Item ${assignments.length + 1}`, grade: '', weight: 0 }]);
   };
 
   const removeAssignment = (id: string) => {
@@ -70,19 +78,26 @@ export default function GradeCalculatorPage() {
     let totalWeight = 0;
 
     assignments.forEach(a => {
-      const score = parseFloat(a.grade);
+      const inputGrade = a.grade.trim().toUpperCase();
+      let score = 0;
+
+      if (LETTER_GRADE_MAP[inputGrade] !== undefined) {
+        score = LETTER_GRADE_MAP[inputGrade];
+      } else {
+        score = parseFloat(inputGrade);
+      }
+
       if (!isNaN(score) && a.weight > 0) {
         totalWeightedScore += (score * (a.weight / 100));
         totalWeight += a.weight;
       }
     });
 
-    const average = totalWeight > 0 ? (totalWeightedScore / totalWeight) * 100 : 0;
+    const average = totalWeight > 0 ? (totalWeightedScore / totalWeight) : 0;
     return { average, totalWeight };
   }, [assignments]);
 
   const finalResult = useMemo(() => {
-    // Required = (Goal - (Current * (100% - FinalWeight))) / FinalWeight
     const wRemaining = 100 - finalWeight;
     const required = (targetGrade - (currentGrade * (wRemaining / 100))) / (finalWeight / 100);
     return required;
@@ -117,45 +132,51 @@ export default function GradeCalculatorPage() {
             <CardHeader className="pb-4">
               <Tabs value={mode} onValueChange={(v: any) => setMode(v)} className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="current" className="text-xs font-bold">Grade Calculator</TabsTrigger>
-                  <TabsTrigger value="final" className="text-xs font-bold">Final Grade Calculator</TabsTrigger>
+                  <TabsTrigger value="current" className="text-xs font-bold">Weighted Grade</TabsTrigger>
+                  <TabsTrigger value="final" className="text-xs font-bold">Final Grade Goal</TabsTrigger>
                 </TabsList>
               </Tabs>
             </CardHeader>
             <CardContent className="space-y-6">
               {mode === 'current' ? (
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Assignments / Categories</Label>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Assessment Log</h3>
                     <Button variant="outline" size="sm" onClick={addAssignment} className="gap-2 h-8">
                       <Plus size={14} /> Add Row
                     </Button>
                   </div>
                   
+                  {/* Column Headers */}
+                  <div className="grid grid-cols-12 gap-3 px-1 mb-2">
+                    <div className="col-span-5"><Label className="text-[10px] uppercase font-black text-muted-foreground/60">Category / Name</Label></div>
+                    <div className="col-span-3"><Label className="text-[10px] uppercase font-black text-muted-foreground/60">Grade (% or Letter)</Label></div>
+                    <div className="col-span-3"><Label className="text-[10px] uppercase font-black text-muted-foreground/60">Weight (%)</Label></div>
+                    <div className="col-span-1"></div>
+                  </div>
+
                   <div className="space-y-3">
                     {assignments.map((a) => (
                       <div key={a.id} className="grid grid-cols-12 gap-3 items-center group">
                         <div className="col-span-5">
                           <Input 
-                            placeholder="e.g. Homework" 
+                            placeholder="e.g. Midterm" 
                             className="h-9 text-xs" 
                             value={a.name} 
                             onChange={(e) => updateAssignment(a.id, 'name', e.target.value)} 
                           />
                         </div>
-                        <div className="col-span-3 relative">
+                        <div className="col-span-3">
                           <Input 
-                            placeholder="Grade" 
-                            type="number" 
-                            className="h-9 text-xs pr-7" 
+                            placeholder="e.g. A or 95" 
+                            className="h-9 text-xs" 
                             value={a.grade} 
                             onChange={(e) => updateAssignment(a.id, 'grade', e.target.value)} 
                           />
-                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground">%</span>
                         </div>
                         <div className="col-span-3 relative">
                           <Input 
-                            placeholder="Weight" 
+                            placeholder="e.g. 25" 
                             type="number" 
                             className="h-9 text-xs pr-7" 
                             value={a.weight || ''} 
@@ -181,7 +202,7 @@ export default function GradeCalculatorPage() {
                     <div className="bg-amber-50 border border-amber-100 p-3 rounded-lg flex gap-3 text-amber-800">
                       <Info size={16} className="shrink-0 mt-0.5" />
                       <p className="text-[10px] leading-relaxed">
-                        <strong>Warning:</strong> Your total weight is {currentResult.totalWeight}%. Usually, weights sum up to 100%.
+                        <strong>Warning:</strong> Your total weight is {currentResult.totalWeight}%. Usually, weights sum to 100%. The current calculation shows the relative average of logged weights.
                       </p>
                     </div>
                   )}
@@ -189,21 +210,21 @@ export default function GradeCalculatorPage() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold">Current Grade (%)</Label>
+                    <Label className="text-xs font-bold uppercase text-muted-foreground tracking-tighter">Current Overall Grade (%)</Label>
                     <div className="relative">
                       <Input type="number" value={currentGrade} onChange={(e) => setCurrentGrade(Number(e.target.value))} className="pr-8" />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">%</span>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold">Target Grade (%)</Label>
+                    <Label className="text-xs font-bold uppercase text-muted-foreground tracking-tighter">Target Course Grade (%)</Label>
                     <div className="relative">
                       <Input type="number" value={targetGrade} onChange={(e) => setTargetGrade(Number(e.target.value))} className="pr-8" />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">%</span>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold">Final Exam Weight (%)</Label>
+                    <Label className="text-xs font-bold uppercase text-muted-foreground tracking-tighter">Final Exam Weight (%)</Label>
                     <div className="relative">
                       <Input type="number" value={finalWeight} onChange={(e) => setFinalWeight(Number(e.target.value))} className="pr-8" />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">%</span>
@@ -217,9 +238,9 @@ export default function GradeCalculatorPage() {
           <div className="bg-primary/5 border border-primary/10 rounded-2xl p-6 flex gap-4">
             <Info className="w-6 h-6 text-primary shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <p className="text-sm text-primary font-bold">How to calculate weighted grades?</p>
+              <p className="text-sm text-primary font-bold">Input Flexibility</p>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                A weighted grade is calculated by multiplying the score of each assignment by its specific weight, summing those products, and then dividing by the total weight. For example, if a midterm (weighted 30%) has a score of 90 and a final (weighted 70%) has a score of 80, the grade is: (90 × 0.3) + (80 × 0.7) = 27 + 56 = 83%.
+                You can enter numbers (e.g., "85") or letter grades (e.g., "A-") in the grade column. Letters are automatically converted to their standard percentage midpoint according to the scale below.
               </p>
             </div>
           </div>
@@ -233,7 +254,7 @@ export default function GradeCalculatorPage() {
             </div>
             <CardHeader className="pb-2 relative z-10">
               <CardTitle className="text-xs uppercase tracking-widest opacity-70 font-bold text-center">
-                {mode === 'current' ? 'Estimated Current Grade' : 'Required Final Score'}
+                {mode === 'current' ? 'Current Standing' : 'Required Final Score'}
               </CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-2 pb-10 relative z-10">
@@ -243,11 +264,11 @@ export default function GradeCalculatorPage() {
               </div>
               <Separator className="bg-white/20 my-4" />
               <div className="space-y-1">
-                <p className="text-[10px] uppercase font-bold opacity-60">Status</p>
+                <p className="text-[10px] uppercase font-bold opacity-60">Estimation</p>
                 <p className="text-xl font-bold">
                   {mode === 'current' 
-                    ? (currentResult.average >= 90 ? 'Excellent' : currentResult.average >= 80 ? 'Good' : currentResult.average >= 70 ? 'Fair' : 'Needs Improvement')
-                    : (finalResult > 100 ? 'Mathematically Impossible' : finalResult > 90 ? 'Difficult Goal' : 'Achievable')}
+                    ? (currentResult.average >= 90 ? 'Excellent' : currentResult.average >= 80 ? 'Good' : currentResult.average >= 70 ? 'Fair' : 'Low')
+                    : (finalResult > 100 ? 'Needs Extra Credit' : finalResult > 90 ? 'Challenging' : 'Achievable')}
                 </p>
               </div>
             </CardContent>
@@ -255,7 +276,7 @@ export default function GradeCalculatorPage() {
 
           {mode === 'final' && finalResult > 100 && (
             <div className="bg-red-50 border border-red-100 p-4 rounded-xl text-red-700 text-xs font-medium leading-relaxed italic">
-              * Based on your current grade and target, you would need more than 100% on the final exam. Consider adjusting your goal or talking to your instructor about extra credit.
+              * Based on your current grade and target, you would need more than 100% on the final exam. Consider Talking to your instructor about bonus work.
             </div>
           )}
 
@@ -263,7 +284,7 @@ export default function GradeCalculatorPage() {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2">
                 <History className="w-4 h-4 text-primary" />
-                Weight Summary
+                Syllabus Breakdown
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-sm">
@@ -272,7 +293,7 @@ export default function GradeCalculatorPage() {
                 <span className="font-bold">{mode === 'current' ? currentResult.totalWeight : (100 - finalWeight)}%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Remaining Weight</span>
+                <span className="text-muted-foreground">Course Remaining</span>
                 <span className="font-bold">{mode === 'current' ? Math.max(0, 100 - currentResult.totalWeight) : finalWeight}%</span>
               </div>
             </CardContent>
@@ -288,7 +309,7 @@ export default function GradeCalculatorPage() {
               <h3 className="text-2xl font-bold text-primary">Standard Grade Scale Reference</h3>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Different schools and institutions use varying grading scales. Below is the standard North American 4.0 scale used for percentage-to-letter grade conversions.
+              Use this table to understand how percentage ranges map to letter grades and GPA points. This is the logic used by our auto-parsing engine.
             </p>
             <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
               <Table>
