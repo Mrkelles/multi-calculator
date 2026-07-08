@@ -141,11 +141,11 @@ export default function ConcreteCalculatorPage() {
                       </div>
                       <div className="flex items-center justify-center bg-muted/20 rounded-2xl p-4">
                         <Image 
-                          src="https://picsum.photos/seed/concrete1/300/200" 
+                          src="https://d26tpo4cm8sb6k.cloudfront.net/img/concrete/ret-shape.svg" 
                           width={300} 
                           height={200} 
                           alt="Slab Guide" 
-                          className="rounded-lg shadow-sm"
+                          className="rounded-lg"
                           data-ai-hint="concrete slab"
                         />
                       </div>
@@ -170,11 +170,11 @@ export default function ConcreteCalculatorPage() {
                       </div>
                       <div className="flex items-center justify-center bg-muted/20 rounded-2xl p-4">
                         <Image 
-                          src="https://picsum.photos/seed/concrete2/300/200" 
+                          src="https://d26tpo4cm8sb6k.cloudfront.net/img/concrete/col-shape.svg" 
                           width={300} 
                           height={200} 
                           alt="Hole Guide" 
-                          className="rounded-lg shadow-sm"
+                          className="rounded-lg"
                           data-ai-hint="concrete column"
                         />
                       </div>
@@ -203,11 +203,11 @@ export default function ConcreteCalculatorPage() {
                       </div>
                       <div className="flex items-center justify-center bg-muted/20 rounded-2xl p-4">
                         <Image 
-                          src="https://picsum.photos/seed/concrete3/300/200" 
+                          src="https://d26tpo4cm8sb6k.cloudfront.net/img/concrete/tube-shape.svg" 
                           width={300} 
                           height={200} 
                           alt="Circular Guide" 
-                          className="rounded-lg shadow-sm"
+                          className="rounded-lg"
                           data-ai-hint="concrete tube"
                         />
                       </div>
@@ -248,11 +248,11 @@ export default function ConcreteCalculatorPage() {
                       </div>
                       <div className="flex items-center justify-center bg-muted/20 rounded-2xl p-4">
                         <Image 
-                          src="https://picsum.photos/seed/concrete4/300/200" 
+                          src="https://d26tpo4cm8sb6k.cloudfront.net/img/concrete/curb-shape.svg" 
                           width={300} 
                           height={200} 
                           alt="Curb Guide" 
-                          className="rounded-lg shadow-sm"
+                          className="rounded-lg"
                           data-ai-hint="concrete curb"
                         />
                       </div>
@@ -287,11 +287,11 @@ export default function ConcreteCalculatorPage() {
                       </div>
                       <div className="flex items-center justify-center bg-muted/20 rounded-2xl p-4">
                         <Image 
-                          src="https://picsum.photos/seed/concrete5/300/200" 
+                          src="https://d26tpo4cm8sb6k.cloudfront.net/img/concrete/stair-shape.svg" 
                           width={300} 
                           height={200} 
                           alt="Stairs Guide" 
-                          className="rounded-lg shadow-sm"
+                          className="rounded-lg"
                           data-ai-hint="concrete stairs"
                         />
                       </div>
