@@ -20,6 +20,7 @@ import {
   Receipt,
   Clock,
   Timer,
+  BookOpen,
   LucideIcon
 } from 'lucide-react';
 
@@ -239,6 +240,14 @@ export const calculators: CalculatorInfo[] = [
     description: 'Convert 4.0 or 5.0 GPA scale to percentage values.',
     icon: Percent,
     path: '/calculators/gpa-to-percentage',
+    category: 'education',
+  },
+  {
+    id: 'grade',
+    name: 'Grade Calculator',
+    description: 'Calculate your current course grade or find out what you need on your final exam.',
+    icon: BookOpen,
+    path: '/calculators/grade',
     category: 'education',
   },
   {
