@@ -78,6 +78,10 @@ export default function PregnancyCalculatorPage() {
   const [dateInput, setDateInput] = useState('');
   const [embryoAge, setEmbryoAge] = useState('5');
   const [cycleLength, setCycleLength] = useState(28);
+  
+  // Ultrasound specific fields
+  const [ultrasoundWeeks, setUltrasoundWeeks] = useState(22);
+  const [ultrasoundDays, setUltrasoundDays] = useState(6);
 
   useEffect(() => {
     setIsMounted(true);
@@ -110,9 +114,11 @@ export default function PregnancyCalculatorPage() {
         dueDate = addDays(lmpDate, 280);
         effectiveLmpDate = lmpDate;
       } else if (mode === 'ultrasound') {
-        dueDate = inputDate;
-        lmpDate = subDays(dueDate, 280);
-        effectiveLmpDate = lmpDate;
+        const totalDaysAtUltrasound = (ultrasoundWeeks * 7) + ultrasoundDays;
+        // Effective LMP = Ultrasound Date - days pregnant at that time
+        effectiveLmpDate = subDays(inputDate, totalDaysAtUltrasound);
+        dueDate = addDays(effectiveLmpDate, 280);
+        lmpDate = effectiveLmpDate;
       } else if (mode === 'ivf') {
         const age = parseInt(embryoAge);
         const offset = 266 - age;
@@ -173,7 +179,7 @@ export default function PregnancyCalculatorPage() {
     } catch (e) {
       return null;
     }
-  }, [mode, dateInput, embryoAge, cycleLength, isMounted]);
+  }, [mode, dateInput, embryoAge, cycleLength, ultrasoundWeeks, ultrasoundDays, isMounted]);
 
   return (
     <CalculatorWrapper
@@ -199,7 +205,7 @@ export default function PregnancyCalculatorPage() {
                       <SelectItem value="due-date">Due Date</SelectItem>
                       <SelectItem value="last-period">Last Period</SelectItem>
                       <SelectItem value="conception">Conception Date</SelectItem>
-                      <SelectItem value="ultrasound">Ultrasound (Estimated Due Date)</SelectItem>
+                      <SelectItem value="ultrasound">Ultrasound</SelectItem>
                       <SelectItem value="ivf">IVF Transfer Date</SelectItem>
                     </SelectContent>
                   </Select>
@@ -207,7 +213,9 @@ export default function PregnancyCalculatorPage() {
 
                 <div className="space-y-2">
                   <Label className="capitalize text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                    {mode === 'last-period' ? 'First Day of Your Last Period:' : `${mode.replace('-', ' ')} ${mode === 'ultrasound' ? '(Est. Due Date)' : ''}`}
+                    {mode === 'last-period' ? 'First Day of Your Last Period:' : 
+                     mode === 'ultrasound' ? 'Ultrasound Date:' :
+                     `${mode.replace('-', ' ')}`}
                   </Label>
                   <Input 
                     type="date" 
@@ -224,6 +232,30 @@ export default function PregnancyCalculatorPage() {
                       value={cycleLength} 
                       onChange={(e) => setCycleLength(Number(e.target.value))} 
                     />
+                  </div>
+                )}
+
+                {mode === 'ultrasound' && (
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Length of Pregnancy at the Time:</Label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          type="number" 
+                          value={ultrasoundWeeks} 
+                          onChange={(e) => setUltrasoundWeeks(Number(e.target.value))} 
+                        />
+                        <span className="text-xs text-muted-foreground">weeks</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          type="number" 
+                          value={ultrasoundDays} 
+                          onChange={(e) => setUltrasoundDays(Number(e.target.value))} 
+                        />
+                        <span className="text-xs text-muted-foreground">days</span>
+                      </div>
+                    </div>
                   </div>
                 )}
 
@@ -262,7 +294,7 @@ export default function PregnancyCalculatorPage() {
                   <div>
                     <p className="text-xs uppercase tracking-widest opacity-80 mb-2 font-bold">Current Progress</p>
                     <h3 className="text-4xl md:text-5xl font-black font-headline tracking-tighter">
-                      Week #{results.weeksPregnant}
+                      Week #{results.weeksPregnant + 1}
                     </h3>
                     <p className="text-lg opacity-80 mt-1">
                       ({results.weeksPregnant} weeks {results.remainingDays} days or {results.monthsStr})
