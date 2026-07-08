@@ -16,7 +16,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
@@ -180,44 +179,50 @@ export default function PregnancyCalculatorPage() {
               <CardTitle className="text-lg font-bold text-primary">Calculation Setup</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <Tabs value={mode} onValueChange={(v: any) => setMode(v)} className="w-full">
-                <TabsList className="grid grid-cols-3 lg:grid-cols-5 h-auto p-1 bg-muted/50 rounded-xl mb-6">
-                  <TabsTrigger value="due-date" className="text-[9px] sm:text-[10px] lg:text-xs py-2 px-1">Due Date</TabsTrigger>
-                  <TabsTrigger value="last-period" className="text-[9px] sm:text-[10px] lg:text-xs py-2 px-1">Last Period</TabsTrigger>
-                  <TabsTrigger value="conception" className="text-[9px] sm:text-[10px] lg:text-xs py-2 px-1">Conception</TabsTrigger>
-                  <TabsTrigger value="ultrasound" className="text-[9px] sm:text-[10px] lg:text-xs py-2 px-1">Ultrasound</TabsTrigger>
-                  <TabsTrigger value="ivf" className="text-[9px] sm:text-[10px] lg:text-xs py-2 px-1">IVF</TabsTrigger>
-                </TabsList>
-
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label className="capitalize text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                      {mode.replace('-', ' ')} {mode === 'ultrasound' ? '(Est. Due Date)' : ''}
-                    </Label>
-                    <Input 
-                      type="date" 
-                      value={dateInput} 
-                      onChange={(e) => setDateInput(e.target.value)} 
-                    />
-                  </div>
-
-                  {mode === 'ivf' && (
-                    <div className="space-y-2">
-                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Embryo Age</Label>
-                      <Select value={embryoAge} onValueChange={setEmbryoAge}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="3">Day 3 Embryo</SelectItem>
-                          <SelectItem value="5">Day 5 Embryo</SelectItem>
-                          <SelectItem value="6">Day 6 Embryo</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Calculate Based On:</Label>
+                  <Select value={mode} onValueChange={(v: any) => setMode(v)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select calculation mode" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="due-date">Due Date</SelectItem>
+                      <SelectItem value="last-period">Last Period</SelectItem>
+                      <SelectItem value="conception">Conception Date</SelectItem>
+                      <SelectItem value="ultrasound">Ultrasound (Estimated Due Date)</SelectItem>
+                      <SelectItem value="ivf">IVF Transfer Date</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-              </Tabs>
+
+                <div className="space-y-2">
+                  <Label className="capitalize text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                    {mode.replace('-', ' ')} {mode === 'ultrasound' ? '(Est. Due Date)' : ''}
+                  </Label>
+                  <Input 
+                    type="date" 
+                    value={dateInput} 
+                    onChange={(e) => setDateInput(e.target.value)} 
+                  />
+                </div>
+
+                {mode === 'ivf' && (
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Embryo Age</Label>
+                    <Select value={embryoAge} onValueChange={setEmbryoAge}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="3">Day 3 Embryo</SelectItem>
+                        <SelectItem value="5">Day 5 Embryo</SelectItem>
+                        <SelectItem value="6">Day 6 Embryo</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -239,7 +244,7 @@ export default function PregnancyCalculatorPage() {
                     <h3 className="text-4xl md:text-5xl font-black font-headline tracking-tighter">
                       Week #{results.weeksPregnant}
                     </h3>
-                    <p className="text-lg opacity-80 mt-1 font-medium">
+                    <p className="text-lg opacity-80 mt-1">
                       ({results.weeksPregnant} weeks {results.remainingDays} days or {results.monthsStr})
                     </p>
                   </div>
