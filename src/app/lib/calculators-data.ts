@@ -19,6 +19,7 @@ import {
   Wallet,
   Receipt,
   Clock,
+  Timer,
   LucideIcon
 } from 'lucide-react';
 
@@ -246,6 +247,14 @@ export const calculators: CalculatorInfo[] = [
     description: 'A comprehensive tool for time arithmetic, date offset, and time expression parsing.',
     icon: Clock,
     path: '/calculators/time',
+    category: 'tools',
+  },
+  {
+    id: 'hours',
+    name: 'Hours Calculator',
+    description: 'Calculate total hours worked with lunch break deductions and weekly timesheet tracking.',
+    icon: Timer,
+    path: '/calculators/hours',
     category: 'tools',
   },
 ];
