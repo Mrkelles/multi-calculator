@@ -94,9 +94,9 @@ export default function GradeCalculatorPage() {
   ]);
 
   // Mode: Final Grade
-  const [currentGrade, setCurrentGrade] = useState(85);
-  const [targetGrade, setTargetGrade] = useState(90);
-  const [finalWeight, setFinalWeight] = useState(20);
+  const [currentGradeInput, setCurrentGradeInput] = useState('88');
+  const [targetGradeInput, setTargetGradeInput] = useState('85');
+  const [finalWeightInput, setFinalWeightInput] = useState('40');
 
   const addAssignment = () => {
     setAssignments([...assignments, { id: Math.random().toString(), name: `Item ${assignments.length + 1}`, grade: '', weight: 0 }]);
@@ -145,11 +145,27 @@ export default function GradeCalculatorPage() {
     return { average, avgGpa, totalWeight };
   }, [assignments]);
 
+  const parseInputToValue = (input: string) => {
+    const trimmed = input.trim().toUpperCase();
+    if (LETTER_GRADE_MAP[trimmed] !== undefined) {
+      return LETTER_GRADE_MAP[trimmed];
+    }
+    return parseFloat(trimmed) || 0;
+  };
+
   const finalResult = useMemo(() => {
-    const wRemaining = 100 - finalWeight;
-    const required = (targetGrade - (currentGrade * (wRemaining / 100))) / (finalWeight / 100);
+    const cur = parseInputToValue(currentGradeInput);
+    const tar = parseInputToValue(targetGradeInput);
+    const weight = parseFloat(finalWeightInput) || 0;
+
+    if (weight <= 0) return 0;
+    
+    const wRemaining = 100 - weight;
+    // Target = (Current * (wRemaining/100)) + (Final * (weight/100))
+    // Final = (Target - (Current * (wRemaining/100))) / (weight/100)
+    const required = (tar - (cur * (wRemaining / 100))) / (weight / 100);
     return required;
-  }, [currentGrade, targetGrade, finalWeight]);
+  }, [currentGradeInput, targetGradeInput, finalWeightInput]);
 
   const gradeScale = [
     { grade: 'A+', range: '97-100%', gpa: '4.0' },
@@ -258,23 +274,39 @@ export default function GradeCalculatorPage() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold uppercase text-muted-foreground tracking-tighter">Current Overall Grade (%)</Label>
+                    <Label className="text-xs font-bold uppercase text-muted-foreground tracking-tighter">Your current grade:</Label>
                     <div className="relative">
-                      <Input type="number" value={currentGrade} onChange={(e) => setCurrentGrade(Number(e.target.value))} className="pr-8" />
+                      <Input 
+                        value={currentGradeInput} 
+                        onChange={(e) => setCurrentGradeInput(e.target.value)} 
+                        className="pr-8" 
+                        placeholder="e.g. 88 or B+"
+                      />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">%</span>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold uppercase text-muted-foreground tracking-tighter">Target Course Grade (%)</Label>
+                    <Label className="text-xs font-bold uppercase text-muted-foreground tracking-tighter">The grade you want:</Label>
                     <div className="relative">
-                      <Input type="number" value={targetGrade} onChange={(e) => setTargetGrade(Number(e.target.value))} className="pr-8" />
+                      <Input 
+                        value={targetGradeInput} 
+                        onChange={(e) => setTargetGradeInput(e.target.value)} 
+                        className="pr-8" 
+                        placeholder="e.g. 85 or A"
+                      />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">%</span>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold uppercase text-muted-foreground tracking-tighter">Final Exam Weight (%)</Label>
+                    <Label className="text-xs font-bold uppercase text-muted-foreground tracking-tighter">Your final is worth:</Label>
                     <div className="relative">
-                      <Input type="number" value={finalWeight} onChange={(e) => setFinalWeight(Number(e.target.value))} className="pr-8" />
+                      <Input 
+                        type="number" 
+                        value={finalWeightInput} 
+                        onChange={(e) => setFinalWeightInput(e.target.value)} 
+                        className="pr-8" 
+                        placeholder="e.g. 40"
+                      />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">%</span>
                     </div>
                   </div>
@@ -302,24 +334,20 @@ export default function GradeCalculatorPage() {
             </div>
             <CardHeader className="pb-2 relative z-10">
               <CardTitle className="text-xs uppercase tracking-widest opacity-70 font-bold text-center">
-                {mode === 'current' ? 'Current Standing' : 'Required Final Score'}
+                {mode === 'current' ? 'Current Standing' : 'Final Grade Result'}
               </CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-2 pb-10 relative z-10">
-              <div className="text-5xl font-black font-headline tracking-tighter">
+              <div className="text-4xl font-black font-headline tracking-tighter">
                 {mode === 'current' 
-                  ? `${getLetterGradeFromGpa(currentResult.avgGpa)}` 
-                  : Math.max(0, Math.round(finalResult)) + '%'
+                  ? `${getLetterGradeFromGpa(currentResult.avgGpa)} (${currentResult.avgGpa.toFixed(2)})` 
+                  : `You will need a grade of ${finalResult.toFixed(1)} or higher on the final.`
                 }
               </div>
-              {mode === 'current' && (
-                <div className="text-2xl font-bold opacity-80 mt-2">
-                  ({currentResult.avgGpa.toFixed(2)})
-                </div>
-              )}
+              
               <Separator className="bg-white/20 my-4" />
               <div className="space-y-1">
-                <p className="text-[10px] uppercase font-bold opacity-60">Estimation</p>
+                <p className="text-[10px] uppercase font-bold opacity-60">Status</p>
                 <p className="text-xl font-bold">
                   {mode === 'current' 
                     ? (currentResult.avgGpa >= 3.7 ? 'Excellent' : currentResult.avgGpa >= 3.0 ? 'Good' : currentResult.avgGpa >= 2.0 ? 'Fair' : 'Low')
@@ -331,7 +359,7 @@ export default function GradeCalculatorPage() {
 
           {mode === 'final' && finalResult > 100 && (
             <div className="bg-red-50 border border-red-100 p-4 rounded-xl text-red-700 text-xs font-medium leading-relaxed italic">
-              * Based on your current grade and target, you would need more than 100% on the final exam. Consider Talking to your instructor about bonus work.
+              * Based on your current grade and target, you would need more than 100% on the final exam. Consider talking to your instructor about bonus work.
             </div>
           )}
 
@@ -345,11 +373,11 @@ export default function GradeCalculatorPage() {
             <CardContent className="space-y-4 text-sm">
               <div className="flex justify-between border-b pb-2">
                 <span className="text-muted-foreground">Logged Weight</span>
-                <span className="font-bold">{mode === 'current' ? currentResult.totalWeight : (100 - finalWeight)}%</span>
+                <span className="font-bold">{mode === 'current' ? currentResult.totalWeight : (100 - (parseFloat(finalWeightInput) || 0))}%</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Course Remaining</span>
-                <span className="font-bold">{mode === 'current' ? Math.max(0, 100 - currentResult.totalWeight) : finalWeight}%</span>
+                <span className="font-bold">{mode === 'current' ? Math.max(0, 100 - currentResult.totalWeight) : (parseFloat(finalWeightInput) || 0)}%</span>
               </div>
               {mode === 'current' && (
                 <div className="flex justify-between pt-2 border-t text-accent font-bold">
