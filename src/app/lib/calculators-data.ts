@@ -18,6 +18,7 @@ import {
   TrendingDown,
   Wallet,
   Receipt,
+  Clock,
   LucideIcon
 } from 'lucide-react';
 
@@ -237,6 +238,14 @@ export const calculators: CalculatorInfo[] = [
     description: 'Add or subtract days from a date or find duration.',
     icon: CalendarDays,
     path: '/calculators/date',
+    category: 'tools',
+  },
+  {
+    id: 'time',
+    name: 'Time Calculator',
+    description: 'A comprehensive tool for time arithmetic, date offset, and time expression parsing.',
+    icon: Clock,
+    path: '/calculators/time',
     category: 'tools',
   },
 ];
