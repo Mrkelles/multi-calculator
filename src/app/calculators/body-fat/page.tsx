@@ -126,6 +126,17 @@ export default function BodyFatCalculatorPage() {
     setMode(newMode);
   };
 
+  const jacksonPollockData = [
+    { age: 20, women: '17.7%', men: '8.5%' },
+    { age: 25, women: '18.4%', men: '10.5%' },
+    { age: 30, women: '19.3%', men: '12.7%' },
+    { age: 35, women: '21.5%', men: '13.7%' },
+    { age: 40, women: '22.2%', men: '15.3%' },
+    { age: 45, women: '22.9%', men: '16.4%' },
+    { age: 50, women: '25.2%', men: '18.9%' },
+    { age: 55, women: '26.3%', men: '20.9%' },
+  ];
+
   return (
     <CalculatorWrapper
       title="Body Fat Calculator"
@@ -353,22 +364,25 @@ export default function BodyFatCalculatorPage() {
             <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
               <h4 className="text-xl font-bold text-primary">Jackson & Pollock Method</h4>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Another popular age-based benchmark used by clinicians to track health across the lifespan.
+                A popular age-based benchmark for understanding body fat composition targets.
               </p>
               <div className="rounded-xl border overflow-hidden">
                 <Table>
                   <TableHeader className="bg-muted/30">
                     <TableRow>
                       <TableHead className="text-[10px] font-bold">Age</TableHead>
-                      <TableHead className="text-[10px] font-bold text-right">Male (Healthy)</TableHead>
-                      <TableHead className="text-[10px] font-bold text-right">Female (Healthy)</TableHead>
+                      <TableHead className="text-[10px] font-bold text-right">Women</TableHead>
+                      <TableHead className="text-[10px] font-bold text-right">Men</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody className="text-[11px]">
-                    <TableRow><TableCell>20-29</TableCell><TableCell className="text-right">11% - 13%</TableCell><TableCell className="text-right">16% - 19%</TableCell></TableRow>
-                    <TableRow><TableCell>30-39</TableCell><TableCell className="text-right">12% - 14%</TableCell><TableCell className="text-right">17% - 20%</TableCell></TableRow>
-                    <TableRow><TableCell>40-49</TableCell><TableCell className="text-right">14% - 16%</TableCell><TableCell className="text-right">19% - 22%</TableCell></TableRow>
-                    <TableRow><TableCell>50-59</TableCell><TableCell className="text-right">15% - 18%</TableCell><TableCell className="text-right">21% - 24%</TableCell></TableRow>
+                    {jacksonPollockData.map((row) => (
+                      <TableRow key={row.age}>
+                        <TableCell>{row.age}</TableCell>
+                        <TableCell className="text-right">{row.women}</TableCell>
+                        <TableCell className="text-right">{row.men}</TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </div>
