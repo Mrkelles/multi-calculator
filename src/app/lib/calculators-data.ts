@@ -32,6 +32,7 @@ import {
   Calendar,
   Activity,
   Flame,
+  Scale,
   LucideIcon
 } from 'lucide-react';
 
@@ -45,6 +46,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'ideal-weight',
+    name: 'Ideal Weight Calculator',
+    description: 'Calculate your ideal body weight based on popular medical formulas including Robinson, Miller, Devine, and Hamwi.',
+    icon: Scale,
+    path: '/calculators/ideal-weight',
+    category: 'health',
+  },
   {
     id: 'bmr',
     name: 'BMR Calculator',
