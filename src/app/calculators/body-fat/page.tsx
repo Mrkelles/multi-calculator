@@ -56,14 +56,14 @@ export default function BodyFatCalculatorPage() {
   const [neckIn, setNeckIn] = useState(7.5);
   const [waistFt, setWaistFt] = useState(3);
   const [waistIn, setWaistIn] = useState(1.5);
-  const [hipFt, setHipFt] = useState(3);
-  const [hipIn, setHipIn] = useState(2);
+  const [hipFt, setHipFt] = useState(2);
+  const [hipIn, setHipIn] = useState(10.5);
 
   // Metric Mode (Single CM value)
   const [heightCm, setHeightCm] = useState(177.8);
   const [neckCm, setNeckCm] = useState(49.5);
   const [waistCm, setWaistCm] = useState(95.3);
-  const [hipCm, setHipCm] = useState(96.5);
+  const [hipCm, setHipCm] = useState(87.6);
 
   useEffect(() => {
     setIsMounted(true);
@@ -72,28 +72,28 @@ export default function BodyFatCalculatorPage() {
   const results = useMemo(() => {
     if (!isMounted) return null;
 
-    let h_in = 0, w_in = 0, n_in = 0, hip_in = 0;
+    let h_cm = 0, w_cm = 0, n_cm = 0, hip_cm = 0;
     const w_lbs = mode === 'us' ? weight : weight / 0.453592;
 
     if (mode === 'us') {
-      h_in = (heightFt * 12) + heightIn;
-      w_in = (waistFt * 12) + waistIn;
-      n_in = (neckFt * 12) + neckIn;
-      hip_in = (hipFt * 12) + hipIn;
+      h_cm = ((heightFt * 12) + heightIn) * 2.54;
+      w_cm = ((waistFt * 12) + waistIn) * 2.54;
+      n_cm = ((neckFt * 12) + neckIn) * 2.54;
+      hip_cm = ((hipFt * 12) + hipIn) * 2.54;
     } else {
-      h_in = heightCm / 2.54;
-      w_in = waistCm / 2.54;
-      n_in = neckCm / 2.54;
-      hip_in = hipCm / 2.54;
+      h_cm = heightCm;
+      w_cm = waistCm;
+      n_cm = neckCm;
+      hip_cm = hipCm;
     }
 
     let bodyFat = 0;
     if (gender === 'male') {
-      // Navy Formula for Men
-      bodyFat = 86.010 * Math.log10(w_in - n_in) - 70.041 * Math.log10(h_in) + 36.76;
+      // High-precision density Navy Formula for Men
+      bodyFat = 495 / (1.0324 - 0.19077 * Math.log10(w_cm - n_cm) + 0.15456 * Math.log10(h_cm)) - 450;
     } else {
-      // Navy Formula for Women
-      bodyFat = 163.205 * Math.log10(w_in + hip_in - n_in) - 97.684 * Math.log10(h_in) - 78.387;
+      // High-precision density Navy Formula for Women
+      bodyFat = 495 / (1.29579 - 0.35004 * Math.log10(w_cm + hip_cm - n_cm) + 0.22100 * Math.log10(h_cm)) - 450;
     }
 
     if (isNaN(bodyFat) || bodyFat < 0) return null;
@@ -101,8 +101,8 @@ export default function BodyFatCalculatorPage() {
     const bodyFatMass = w_lbs * (bodyFat / 100);
     const leanBodyMass = w_lbs - bodyFatMass;
 
-    // BMI Method estimation (for comparison)
-    const h_m = h_in * 0.0254;
+    // BMI Method estimation
+    const h_m = h_cm / 100;
     const w_kg = w_lbs * 0.453592;
     const bmi = w_kg / (h_m * h_m);
     const bmiBodyFat = (1.20 * bmi) + (0.23 * age) - (10.8 * (gender === 'male' ? 1 : 0)) - 5.4;
@@ -146,28 +146,22 @@ export default function BodyFatCalculatorPage() {
   const toggleMode = (newMode: UnitMode) => {
     if (newMode === mode) return;
     if (newMode === 'metric') {
-      // US to Metric
       setHeightCm(Number(((heightFt * 12 + heightIn) * 2.54).toFixed(1)));
       setWeight(Number((weight * 0.453592).toFixed(1)));
       setNeckCm(Number(((neckFt * 12 + neckIn) * 2.54).toFixed(1)));
       setWaistCm(Number(((waistFt * 12 + waistIn) * 2.54).toFixed(1)));
       setHipCm(Number(((hipFt * 12 + hipIn) * 2.54).toFixed(1)));
     } else {
-      // Metric to US
       const totalHIn = heightCm / 2.54;
       setHeightFt(Math.floor(totalHIn / 12));
       setHeightIn(Number((totalHIn % 12).toFixed(1)));
-      
       setWeight(Number((weight / 0.453592).toFixed(1)));
-      
       const totalNIn = neckCm / 2.54;
       setNeckFt(Math.floor(totalNIn / 12));
       setNeckIn(Number((totalNIn % 12).toFixed(1)));
-
       const totalWIn = waistCm / 2.54;
       setWaistFt(Math.floor(totalWIn / 12));
       setWaistIn(Number((totalWIn % 12).toFixed(1)));
-
       const totalHipIn = hipCm / 2.54;
       setHipFt(Math.floor(totalHipIn / 12));
       setHipIn(Number((totalHipIn % 12).toFixed(1)));
