@@ -30,6 +30,7 @@ import {
   Lock,
   Baby,
   Calendar,
+  Activity,
   LucideIcon
 } from 'lucide-react';
 
@@ -43,6 +44,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'body-fat',
+    name: 'Body Fat Calculator',
+    description: 'Estimate your body fat percentage using the U.S. Navy method and track your fitness category.',
+    icon: Activity,
+    path: '/calculators/body-fat',
+    category: 'health',
+  },
   {
     id: 'due-date',
     name: 'Due Date Calculator',
