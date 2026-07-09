@@ -10,14 +10,16 @@ import {
   Heart, 
   ChevronRight,
   Clock,
-  Search
+  Search,
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { addDays, subDays, format, startOfDay } from 'date-fns';
+import { addDays, subDays, format, startOfDay, differenceInDays } from 'date-fns';
 
 type ConceptionMode = 'last-period' | 'ultrasound' | 'due-date';
 
@@ -28,13 +30,13 @@ export default function ConceptionCalculatorPage() {
   const [cycleLength, setCycleLength] = useState(28);
   
   // Ultrasound specific
-  const [ultrasoundWeeks, setUltrasoundWeeks] = useState(12);
-  const [ultrasoundDays, setUltrasoundDays] = useState(0);
+  const [ultrasoundWeeks, setUltrasoundWeeks] = useState(22);
+  const [ultrasoundDays, setUltrasoundDays] = useState(6);
 
   useEffect(() => {
     setIsMounted(true);
-    // Initialize with a default date (e.g., today)
-    setDateInput(format(new Date(), 'yyyy-MM-dd'));
+    // Setting defaults to match one of the examples for testing (Jan 29, 2026 LMP)
+    setDateInput('2026-01-29');
   }, []);
 
   const results = useMemo(() => {
@@ -42,35 +44,47 @@ export default function ConceptionCalculatorPage() {
 
     try {
       const inputDate = startOfDay(new Date(dateInput));
-      let conceptionDate: Date;
+      let anchorDate: Date; // The most likely conception date
 
       if (mode === 'due-date') {
         // Conception typically happens 266 days (38 weeks) before the due date
-        conceptionDate = subDays(inputDate, 266);
+        anchorDate = subDays(inputDate, 266);
       } else if (mode === 'last-period') {
-        // Conception usually happens (Cycle Length - 14) days after the first day of the last period
-        // For standard 28-day cycle, it's day 14.
+        // Conception happens (Cycle Length - 14) days after the first day of the last period
         const offset = cycleLength - 14;
-        conceptionDate = addDays(inputDate, offset);
+        anchorDate = addDays(inputDate, offset);
       } else if (mode === 'ultrasound') {
         // Gestational age starts from LMP (roughly 2 weeks before conception)
-        // Conception Date = Ultrasound Date - (Weeks * 7 + Days) + 14 days
         const totalDaysAtScan = (ultrasoundWeeks * 7) + ultrasoundDays;
         const effectiveLMP = subDays(inputDate, totalDaysAtScan);
-        conceptionDate = addDays(effectiveLMP, 14);
+        anchorDate = addDays(effectiveLMP, 14);
       } else {
         return null;
       }
 
-      // Likely Window: 3 days around the estimate
-      const windowStart = subDays(conceptionDate, 1);
-      const windowEnd = addDays(conceptionDate, 1);
+      // Most Probable Conception: Anchor +/- 2 days
+      const probConceptionStart = subDays(anchorDate, 2);
+      const probConceptionEnd = addDays(anchorDate, 2);
+
+      // Most Probable Intercourse: Conception Start - 3 days to Conception End
+      const probIntercourseStart = subDays(probConceptionStart, 3);
+      const probIntercourseEnd = probConceptionEnd;
+
+      // Possible Conception: Anchor - 3 to Anchor + 7
+      const possibleConceptionStart = subDays(anchorDate, 3);
+      const possibleConceptionEnd = addDays(anchorDate, 7);
+
+      // Possible Intercourse: Possible Conception Start - 5 to Possible Conception End
+      const possibleIntercourseStart = subDays(possibleConceptionStart, 5);
+      const possibleIntercourseEnd = possibleConceptionEnd;
 
       return {
-        conceptionDate,
-        windowStart,
-        windowEnd,
-        dueDate: mode === 'due-date' ? inputDate : addDays(conceptionDate, 266)
+        anchorDate,
+        probConception: { start: probConceptionStart, end: probConceptionEnd },
+        probIntercourse: { start: probIntercourseStart, end: probIntercourseEnd },
+        possibleConception: { start: possibleConceptionStart, end: possibleConceptionEnd },
+        possibleIntercourse: { start: possibleIntercourseStart, end: possibleIntercourseEnd },
+        dueDate: mode === 'due-date' ? inputDate : addDays(anchorDate, 266)
       };
     } catch (e) {
       return null;
@@ -80,7 +94,7 @@ export default function ConceptionCalculatorPage() {
   return (
     <CalculatorWrapper
       title="Conception Calculator"
-      description="Estimate your date of conception based on your due date, last menstrual period, or ultrasound results."
+      description="Estimate your date of conception and the window of sexual intercourse that led to your pregnancy."
       icon={Sparkles}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -130,7 +144,7 @@ export default function ConceptionCalculatorPage() {
 
                 {mode === 'ultrasound' && (
                   <div className="space-y-2">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Pregnancy Length at Scan:</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Length of Pregnancy at Scan:</Label>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="flex items-center gap-2">
                         <Input 
@@ -159,45 +173,90 @@ export default function ConceptionCalculatorPage() {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
                 <Info className="w-4 h-4" />
-                Medical Model
+                Medical Standard
               </CardTitle>
             </CardHeader>
             <CardContent className="text-[10px] text-muted-foreground leading-relaxed">
-              Medical professionals measure pregnancy from the last menstrual period (LMP), which is typically 2 weeks before conception. Our calculator accounts for this 2-week offset in all calculations.
+              Medical professionals measure pregnancy from the last menstrual period (LMP), which is typically 2 weeks before conception. This calculator anchors on a 266-day post-conception duration.
             </CardContent>
           </Card>
         </div>
 
         <div className="lg:col-span-7 space-y-6">
           {!results ? (
-            <Card className="bg-muted/30 border-dashed border-2 p-12 flex items-center justify-center text-muted-foreground italic">
-              Please enter valid details to see results.
+            <Card className="bg-muted/30 border-dashed border-2 p-12 flex items-center justify-center text-muted-foreground italic text-center">
+              Please enter valid details to see your estimated conception window.
             </Card>
           ) : (
             <>
-              <Card className="bg-primary text-white border-none shadow-xl overflow-hidden relative">
+              {/* Primary Results Card */}
+              <Card className="border-none shadow-xl overflow-hidden relative">
                 <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <Sparkles className="w-24 h-24" />
+                  <Sparkles className="w-32 h-32 text-primary" />
                 </div>
-                <CardContent className="pt-10 pb-12 text-center relative z-10 space-y-6">
-                  <div>
-                    <p className="text-xs uppercase tracking-widest opacity-80 mb-2 font-bold">Estimated Conception Date</p>
-                    <h3 className="text-4xl md:text-5xl font-black font-headline tracking-tighter">
-                      {format(results.conceptionDate, 'MMMM d, yyyy')}
-                    </h3>
+                <CardHeader className="bg-primary text-white pb-6 pt-8 text-center relative z-10">
+                  <p className="text-xs uppercase tracking-[0.2em] font-black opacity-70 mb-2">Estimated Results</p>
+                  <CardTitle className="text-xl font-headline flex items-center justify-center gap-2">
+                    Conception Date Summary
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0 relative z-10 bg-white">
+                  <div className="p-6 space-y-8">
+                    {/* Probable Section */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-wider">
+                        <CheckCircle2 size={16} />
+                        Most Probable Window
+                      </div>
+                      <div className="grid gap-3">
+                        <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
+                          <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Conception Dates:</p>
+                          <p className="text-lg font-bold text-primary">
+                            {format(results.probConception.start, 'MMM d, yyyy')} - {format(results.probConception.end, 'MMM d, yyyy')}
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
+                          <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Sexual Intercourse Dates:</p>
+                          <p className="text-lg font-bold text-primary">
+                            {format(results.probIntercourse.start, 'MMM d, yyyy')} - {format(results.probIntercourse.end, 'MMM d, yyyy')}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Possible Section */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 text-accent font-bold text-sm uppercase tracking-wider">
+                        <Clock size={16} />
+                        Possible Window
+                      </div>
+                      <div className="grid gap-3">
+                        <div className="p-4 rounded-xl bg-accent/5 border border-accent/10">
+                          <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Conception Dates:</p>
+                          <p className="text-lg font-bold text-accent">
+                            {format(results.possibleConception.start, 'MMM d, yyyy')} - {format(results.possibleConception.end, 'MMM d, yyyy')}
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-xl bg-accent/5 border border-accent/10">
+                          <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">Sexual Intercourse Dates:</p>
+                          <p className="text-lg font-bold text-accent">
+                            {format(results.possibleIntercourse.start, 'MMM d, yyyy')} - {format(results.possibleIntercourse.end, 'MMM d, yyyy')}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="space-y-4 max-w-sm mx-auto">
-                    <div className="bg-white/10 p-3 px-6 rounded-2xl border border-white/20">
-                      <p className="text-xs font-bold uppercase tracking-widest mb-1 opacity-70">Likely Conception Window</p>
-                      <p className="text-sm font-medium">
-                        {format(results.windowStart, 'MMM d')} - {format(results.windowEnd, 'MMM d, yyyy')}
-                      </p>
-                    </div>
+                  <div className="bg-muted/30 p-4 border-t flex gap-3 items-center">
+                    <AlertCircle className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <p className="text-[10px] text-muted-foreground italic">
+                      The results of this calculator are estimations only. Biological variation means exact dates can vary.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
 
+              {/* Secondary Details */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Card>
                   <CardHeader className="pb-2">
@@ -213,7 +272,7 @@ export default function ConceptionCalculatorPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Est. LMP Date</span>
-                      <span className="font-bold">{format(subDays(results.conceptionDate, 14), 'MMM d, yyyy')}</span>
+                      <span className="font-bold">{format(subDays(results.anchorDate, 14), 'MMM d, yyyy')}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -221,18 +280,18 @@ export default function ConceptionCalculatorPage() {
                 <Card className="bg-accent/5 border-accent/20">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm font-bold flex items-center gap-2 text-accent">
-                      <Clock className="w-4 h-4" />
+                      <CalendarIcon className="w-4 h-4" />
                       Key Milestones
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 text-sm">
                     <div className="flex justify-between border-b pb-2">
                       <span className="text-muted-foreground">Heartbeat Detectable</span>
-                      <span className="font-bold">{format(addDays(results.conceptionDate, 28), 'MMM d, yyyy')}</span>
+                      <span className="font-bold">{format(addDays(results.anchorDate, 28), 'MMM d, yyyy')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">End of 1st Trimester</span>
-                      <span className="font-bold">{format(addDays(results.conceptionDate, 77), 'MMM d, yyyy')}</span>
+                      <span className="font-bold">{format(addDays(results.anchorDate, 77), 'MMM d, yyyy')}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -306,7 +365,7 @@ export default function ConceptionCalculatorPage() {
           
           <div className="space-y-8 pb-12">
             <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary">How Accurate is this estimate?</h3>
+              <h3 className="text-2xl font-bold text-primary">How accurate is this estimate?</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 While this calculator provides a highly reliable estimate based on medical standards, it is important to understand that every body is unique. 
               </p>
@@ -332,6 +391,20 @@ export default function ConceptionCalculatorPage() {
               </div>
             </section>
           </div>
+          
+          <Separator />
+
+          <section className="space-y-6 pb-12">
+            <h3 className="text-2xl font-bold text-primary">Pregnancy Term & Due Date</h3>
+            <div className="prose prose-slate max-w-none text-muted-foreground space-y-4 text-sm leading-relaxed">
+              <p>
+                Pregnancy is a term used to describe a woman's state over a time period (~9 months) during which one or more offspring develops inside of a woman. Childbirth usually occurs approximately 38 weeks after conception, or about 40 weeks after the last menstrual period. The World Health Organization defines a normal pregnancy term to last between 37 and 42 weeks. During a person's first OB-GYN visit, the doctor will usually provide an estimated date (based on a sonogram) at which the child will be born, or due date. Alternatively, the due date can also be estimated based on a person's last menstrual period.
+              </p>
+              <p>
+                While the due date can be estimated, the actual length of pregnancy depends on various factors, including age, length of previous pregnancies, and weight of the mother at birth.<sup>1</sup> However, there are still more factors affecting natural variation in pregnancy terms that are not well understood. Studies have shown that fewer than 4% of births occur on the exact due date, 60% occur within a week of the due date, and almost 90% occur within two weeks of the due date.<sup>2</sup> As such, while it is possible to be fairly confident that a person's child will be born within about two weeks of the due date, it is currently not possible to predict the exact day of birth with certainty.
+              </p>
+            </div>
+          </section>
         </div>
       </div>
     </CalculatorWrapper>
