@@ -36,21 +36,20 @@ export default function BodyFatCalculatorPage() {
   const [gender, setGender] = useState<Gender>('male');
   const [age, setAge] = useState(25);
 
-  // Measurements
+  // Measurements (US mode uses feet, Metric uses cm)
   const [weight, setWeight] = useState(170);
-  const [height, setHeight] = useState(70); // in inches for US, cm for Metric
-  const [neck, setNeck] = useState(15.5);
-  const [waist, setWaist] = useState(34);
-  const [hip, setHip] = useState(38); // For female
+  const [height, setHeight] = useState(5.8); // 5.8 feet
+  const [neck, setNeck] = useState(1.3); // ~15.6 inches
+  const [waist, setWaist] = useState(2.8); // ~33.6 inches
+  const [hip, setHip] = useState(3.2); // For female (~38.4 inches)
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   // Conversion Helpers
-  const toCm = (val: number) => mode === 'us' ? val * 2.54 : val;
-  const toInch = (val: number) => mode === 'us' ? val : val / 2.54;
-  const toKg = (val: number) => mode === 'us' ? val * 0.453592 : val;
+  // Navy Formula constants are based on inches, so we convert everything to inches for the math
+  const toInch = (val: number) => mode === 'us' ? val * 12 : val / 2.54;
   const toLbs = (val: number) => mode === 'us' ? val : val / 0.453592;
 
   const results = useMemo(() => {
@@ -61,7 +60,6 @@ export default function BodyFatCalculatorPage() {
       const w_in = toInch(waist);
       const n_in = toInch(neck);
       const hip_in = toInch(hip);
-      const weight_lbs = toLbs(weight);
 
       let bodyFat = 0;
       if (gender === 'male') {
@@ -109,19 +107,19 @@ export default function BodyFatCalculatorPage() {
   const toggleMode = (newMode: UnitMode) => {
     if (newMode === mode) return;
     if (newMode === 'metric') {
-      // US to Metric
-      setHeight(Math.round(height * 2.54));
-      setWeight(Math.round(weight * 0.453592));
-      setNeck(Number((neck * 2.54).toFixed(1)));
-      setWaist(Number((waist * 2.54).toFixed(1)));
-      setHip(Number((hip * 2.54).toFixed(1)));
+      // US (ft/lbs) to Metric (cm/kg)
+      setHeight(Number((height * 30.48).toFixed(1)));
+      setWeight(Number((weight * 0.453592).toFixed(1)));
+      setNeck(Number((neck * 30.48).toFixed(1)));
+      setWaist(Number((waist * 30.48).toFixed(1)));
+      setHip(Number((hip * 30.48).toFixed(1)));
     } else {
-      // Metric to US
-      setHeight(Math.round(height / 2.54));
-      setWeight(Math.round(weight / 0.453592));
-      setNeck(Number((neck / 2.54).toFixed(1)));
-      setWaist(Number((waist / 2.54).toFixed(1)));
-      setHip(Number((hip / 2.54).toFixed(1)));
+      // Metric (cm/kg) to US (ft/lbs)
+      setHeight(Number((height / 30.48).toFixed(2)));
+      setWeight(Number((weight / 0.453592).toFixed(1)));
+      setNeck(Number((neck / 30.48).toFixed(2)));
+      setWaist(Number((waist / 30.48).toFixed(2)));
+      setHip(Number((hip / 30.48).toFixed(2)));
     }
     setMode(newMode);
   };
@@ -185,31 +183,31 @@ export default function BodyFatCalculatorPage() {
 
                 <div className="space-y-2">
                   <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                    Height ({mode === 'us' ? 'in' : 'cm'})
+                    Height ({mode === 'us' ? 'ft' : 'cm'})
                   </Label>
-                  <Input type="number" value={height} onChange={(e) => setHeight(Number(e.target.value))} />
+                  <Input type="number" step="0.01" value={height} onChange={(e) => setHeight(Number(e.target.value))} />
                 </div>
 
                 <div className="space-y-2">
                   <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                    Neck ({mode === 'us' ? 'in' : 'cm'})
+                    Neck ({mode === 'us' ? 'ft' : 'cm'})
                   </Label>
-                  <Input type="number" step="0.1" value={neck} onChange={(e) => setNeck(Number(e.target.value))} />
+                  <Input type="number" step="0.01" value={neck} onChange={(e) => setNeck(Number(e.target.value))} />
                 </div>
 
                 <div className="space-y-2">
                   <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                    Waist ({mode === 'us' ? 'in' : 'cm'})
+                    Waist ({mode === 'us' ? 'ft' : 'cm'})
                   </Label>
-                  <Input type="number" step="0.1" value={waist} onChange={(e) => setWaist(Number(e.target.value))} />
+                  <Input type="number" step="0.01" value={waist} onChange={(e) => setWaist(Number(e.target.value))} />
                 </div>
 
                 {gender === 'female' && (
                   <div className="space-y-2">
                     <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                      Hip ({mode === 'us' ? 'in' : 'cm'})
+                      Hip ({mode === 'us' ? 'ft' : 'cm'})
                     </Label>
-                    <Input type="number" step="0.1" value={hip} onChange={(e) => setHip(Number(e.target.value))} />
+                    <Input type="number" step="0.01" value={hip} onChange={(e) => setHip(Number(e.target.value))} />
                   </div>
                 )}
               </div>
