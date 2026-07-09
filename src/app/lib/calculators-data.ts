@@ -34,7 +34,8 @@ import {
   Flame,
   Scale,
   LucideIcon,
-  Sparkles
+  Sparkles,
+  Timer as PaceIcon
 } from 'lucide-react';
 
 export interface CalculatorInfo {
@@ -47,6 +48,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'pace',
+    name: 'Pace Calculator',
+    description: 'Calculate pace, time, or distance for running and cycling, split times, and finish time predictions.',
+    icon: PaceIcon,
+    path: '/calculators/pace',
+    category: 'health',
+  },
   {
     id: 'conception',
     name: 'Conception Calculator',
