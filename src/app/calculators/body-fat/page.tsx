@@ -9,13 +9,14 @@ import {
   History, 
   TrendingUp, 
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  Target
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { 
@@ -30,115 +31,154 @@ import {
 type Gender = 'male' | 'female';
 type UnitMode = 'us' | 'metric';
 
+const jacksonPollockData = [
+  { age: 20, women: 17.7, men: 8.5 },
+  { age: 25, women: 18.4, men: 10.5 },
+  { age: 30, women: 19.3, men: 12.7 },
+  { age: 35, women: 21.5, men: 13.7 },
+  { age: 40, women: 22.2, men: 15.3 },
+  { age: 45, women: 22.9, men: 16.4 },
+  { age: 50, women: 25.2, men: 18.9 },
+  { age: 55, women: 26.3, men: 20.9 },
+];
+
 export default function BodyFatCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [mode, setMode] = useState<UnitMode>('us');
   const [gender, setGender] = useState<Gender>('male');
   const [age, setAge] = useState(25);
+  const [weight, setWeight] = useState(152);
 
-  // Measurements (US mode uses feet, Metric uses cm)
-  const [weight, setWeight] = useState(170);
-  const [height, setHeight] = useState(5.8); // 5.8 feet
-  const [neck, setNeck] = useState(1.3); // ~15.6 inches
-  const [waist, setWaist] = useState(2.8); // ~33.6 inches
-  const [hip, setHip] = useState(3.2); // For female (~38.4 inches)
+  // US Mode (Feet + Inches)
+  const [heightFt, setHeightFt] = useState(5);
+  const [heightIn, setHeightIn] = useState(10);
+  const [neckFt, setNeckFt] = useState(1);
+  const [neckIn, setNeckIn] = useState(7.5);
+  const [waistFt, setWaistFt] = useState(3);
+  const [waistIn, setWaistIn] = useState(1.5);
+  const [hipFt, setHipFt] = useState(3);
+  const [hipIn, setHipIn] = useState(2);
+
+  // Metric Mode (Single CM value)
+  const [heightCm, setHeightCm] = useState(177.8);
+  const [neckCm, setNeckCm] = useState(49.5);
+  const [waistCm, setWaistCm] = useState(95.3);
+  const [hipCm, setHipCm] = useState(96.5);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Conversion Helpers
-  // Navy Formula constants are based on inches, so we convert everything to inches for the math
-  const toInch = (val: number) => mode === 'us' ? val * 12 : val / 2.54;
-  const toLbs = (val: number) => mode === 'us' ? val : val / 0.453592;
-
   const results = useMemo(() => {
     if (!isMounted) return null;
 
-    try {
-      const h_in = toInch(height);
-      const w_in = toInch(waist);
-      const n_in = toInch(neck);
-      const hip_in = toInch(hip);
+    let h_in = 0, w_in = 0, n_in = 0, hip_in = 0;
+    const w_lbs = mode === 'us' ? weight : weight / 0.453592;
 
-      let bodyFat = 0;
-      if (gender === 'male') {
-        // Navy Formula for Men
-        bodyFat = 86.010 * Math.log10(w_in - n_in) - 70.041 * Math.log10(h_in) + 36.76;
-      } else {
-        // Navy Formula for Women
-        bodyFat = 163.205 * Math.log10(w_in + hip_in - n_in) - 97.684 * Math.log10(h_in) - 78.387;
-      }
-
-      if (isNaN(bodyFat) || bodyFat < 0) return null;
-
-      const bodyFatMass = weight * (bodyFat / 100);
-      const leanBodyMass = weight - bodyFatMass;
-
-      // Category Logic (ACE)
-      let category = '';
-      let categoryColor = '';
-      if (gender === 'male') {
-        if (bodyFat < 6) { category = 'Essential Fat'; categoryColor = 'text-blue-500'; }
-        else if (bodyFat < 14) { category = 'Athlete'; categoryColor = 'text-green-500'; }
-        else if (bodyFat < 18) { category = 'Fitness'; categoryColor = 'text-emerald-600'; }
-        else if (bodyFat < 25) { category = 'Acceptable'; categoryColor = 'text-yellow-600'; }
-        else { category = 'Obese'; categoryColor = 'text-red-500'; }
-      } else {
-        if (bodyFat < 14) { category = 'Essential Fat'; categoryColor = 'text-blue-500'; }
-        else if (bodyFat < 21) { category = 'Athlete'; categoryColor = 'text-green-500'; }
-        else if (bodyFat < 25) { category = 'Fitness'; categoryColor = 'text-emerald-600'; }
-        else if (bodyFat < 32) { category = 'Acceptable'; categoryColor = 'text-yellow-600'; }
-        else { category = 'Obese'; categoryColor = 'text-red-500'; }
-      }
-
-      return {
-        bodyFat,
-        category,
-        categoryColor,
-        bodyFatMass,
-        leanBodyMass
-      };
-    } catch (e) {
-      return null;
+    if (mode === 'us') {
+      h_in = (heightFt * 12) + heightIn;
+      w_in = (waistFt * 12) + waistIn;
+      n_in = (neckFt * 12) + neckIn;
+      hip_in = (hipFt * 12) + hipIn;
+    } else {
+      h_in = heightCm / 2.54;
+      w_in = waistCm / 2.54;
+      n_in = neckCm / 2.54;
+      hip_in = hipCm / 2.54;
     }
-  }, [isMounted, mode, gender, age, weight, height, neck, waist, hip]);
+
+    let bodyFat = 0;
+    if (gender === 'male') {
+      // Navy Formula for Men
+      bodyFat = 86.010 * Math.log10(w_in - n_in) - 70.041 * Math.log10(h_in) + 36.76;
+    } else {
+      // Navy Formula for Women
+      bodyFat = 163.205 * Math.log10(w_in + hip_in - n_in) - 97.684 * Math.log10(h_in) - 78.387;
+    }
+
+    if (isNaN(bodyFat) || bodyFat < 0) return null;
+
+    const bodyFatMass = w_lbs * (bodyFat / 100);
+    const leanBodyMass = w_lbs - bodyFatMass;
+
+    // BMI Method estimation (for comparison)
+    const h_m = h_in * 0.0254;
+    const w_kg = w_lbs * 0.453592;
+    const bmi = w_kg / (h_m * h_m);
+    const bmiBodyFat = (1.20 * bmi) + (0.23 * age) - (10.8 * (gender === 'male' ? 1 : 0)) - 5.4;
+
+    // Ideal BF (Jackson & Pollock)
+    const closestAgeRow = jacksonPollockData.reduce((prev, curr) => 
+      Math.abs(curr.age - age) < Math.abs(prev.age - age) ? curr : prev
+    );
+    const idealBf = gender === 'male' ? closestAgeRow.men : closestAgeRow.women;
+    const bfToLose = Math.max(0, bodyFatMass - (w_lbs * (idealBf / 100)));
+
+    // Category Logic (ACE)
+    let category = '';
+    let categoryColor = '';
+    if (gender === 'male') {
+      if (bodyFat < 6) { category = 'Essential Fat'; categoryColor = 'text-blue-500'; }
+      else if (bodyFat < 14) { category = 'Athlete'; categoryColor = 'text-green-500'; }
+      else if (bodyFat < 18) { category = 'Fitness'; categoryColor = 'text-emerald-600'; }
+      else if (bodyFat < 25) { category = 'Acceptable'; categoryColor = 'text-yellow-600'; }
+      else { category = 'Obese'; categoryColor = 'text-red-500'; }
+    } else {
+      if (bodyFat < 14) { category = 'Essential Fat'; categoryColor = 'text-blue-500'; }
+      else if (bodyFat < 21) { category = 'Athlete'; categoryColor = 'text-green-500'; }
+      else if (bodyFat < 25) { category = 'Fitness'; categoryColor = 'text-emerald-600'; }
+      else if (bodyFat < 32) { category = 'Acceptable'; categoryColor = 'text-yellow-600'; }
+      else { category = 'Obese'; categoryColor = 'text-red-500'; }
+    }
+
+    return {
+      bodyFat,
+      category,
+      categoryColor,
+      bodyFatMass,
+      leanBodyMass,
+      idealBf,
+      bfToLose,
+      bmiBodyFat
+    };
+  }, [isMounted, mode, gender, age, weight, heightFt, heightIn, neckFt, neckIn, waistFt, waistIn, hipFt, hipIn, heightCm, neckCm, waistCm, hipCm]);
 
   const toggleMode = (newMode: UnitMode) => {
     if (newMode === mode) return;
     if (newMode === 'metric') {
-      // US (ft/lbs) to Metric (cm/kg)
-      setHeight(Number((height * 30.48).toFixed(1)));
+      // US to Metric
+      setHeightCm(Number(((heightFt * 12 + heightIn) * 2.54).toFixed(1)));
       setWeight(Number((weight * 0.453592).toFixed(1)));
-      setNeck(Number((neck * 30.48).toFixed(1)));
-      setWaist(Number((waist * 30.48).toFixed(1)));
-      setHip(Number((hip * 30.48).toFixed(1)));
+      setNeckCm(Number(((neckFt * 12 + neckIn) * 2.54).toFixed(1)));
+      setWaistCm(Number(((waistFt * 12 + waistIn) * 2.54).toFixed(1)));
+      setHipCm(Number(((hipFt * 12 + hipIn) * 2.54).toFixed(1)));
     } else {
-      // Metric (cm/kg) to US (ft/lbs)
-      setHeight(Number((height / 30.48).toFixed(2)));
+      // Metric to US
+      const totalHIn = heightCm / 2.54;
+      setHeightFt(Math.floor(totalHIn / 12));
+      setHeightIn(Number((totalHIn % 12).toFixed(1)));
+      
       setWeight(Number((weight / 0.453592).toFixed(1)));
-      setNeck(Number((neck / 30.48).toFixed(2)));
-      setWaist(Number((waist / 30.48).toFixed(2)));
-      setHip(Number((hip / 30.48).toFixed(2)));
+      
+      const totalNIn = neckCm / 2.54;
+      setNeckFt(Math.floor(totalNIn / 12));
+      setNeckIn(Number((totalNIn % 12).toFixed(1)));
+
+      const totalWIn = waistCm / 2.54;
+      setWaistFt(Math.floor(totalWIn / 12));
+      setWaistIn(Number((totalWIn % 12).toFixed(1)));
+
+      const totalHipIn = hipCm / 2.54;
+      setHipFt(Math.floor(totalHipIn / 12));
+      setHipIn(Number((totalHipIn % 12).toFixed(1)));
     }
     setMode(newMode);
   };
 
-  const jacksonPollockData = [
-    { age: 20, women: '17.7%', men: '8.5%' },
-    { age: 25, women: '18.4%', men: '10.5%' },
-    { age: 30, women: '19.3%', men: '12.7%' },
-    { age: 35, women: '21.5%', men: '13.7%' },
-    { age: 40, women: '22.2%', men: '15.3%' },
-    { age: 45, women: '22.9%', men: '16.4%' },
-    { age: 50, women: '25.2%', men: '18.9%' },
-    { age: 55, women: '26.3%', men: '20.9%' },
-  ];
-
   return (
     <CalculatorWrapper
       title="Body Fat Calculator"
-      description="Estimate your body fat percentage using the U.S. Navy formula, which uses your height and body measurements."
+      description="Estimate your body fat percentage using the U.S. Navy formula and determine your health category."
       icon={Activity}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -181,48 +221,89 @@ export default function BodyFatCalculatorPage() {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                    Height ({mode === 'us' ? 'ft' : 'cm'})
-                  </Label>
-                  <Input type="number" step="0.01" value={height} onChange={(e) => setHeight(Number(e.target.value))} />
-                </div>
+                {mode === 'us' ? (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Height</Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="relative">
+                          <Input type="number" value={heightFt} onChange={(e) => setHeightFt(Number(e.target.value))} className="pr-7" />
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground">ft</span>
+                        </div>
+                        <div className="relative">
+                          <Input type="number" step="0.1" value={heightIn} onChange={(e) => setHeightIn(Number(e.target.value))} className="pr-7" />
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground">in</span>
+                        </div>
+                      </div>
+                    </div>
 
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                    Neck ({mode === 'us' ? 'ft' : 'cm'})
-                  </Label>
-                  <Input type="number" step="0.01" value={neck} onChange={(e) => setNeck(Number(e.target.value))} />
-                </div>
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Neck</Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="relative">
+                          <Input type="number" value={neckFt} onChange={(e) => setNeckFt(Number(e.target.value))} className="pr-7" />
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground">ft</span>
+                        </div>
+                        <div className="relative">
+                          <Input type="number" step="0.1" value={neckIn} onChange={(e) => setNeckIn(Number(e.target.value))} className="pr-7" />
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground">in</span>
+                        </div>
+                      </div>
+                    </div>
 
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                    Waist ({mode === 'us' ? 'ft' : 'cm'})
-                  </Label>
-                  <Input type="number" step="0.01" value={waist} onChange={(e) => setWaist(Number(e.target.value))} />
-                </div>
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Waist</Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="relative">
+                          <Input type="number" value={waistFt} onChange={(e) => setWaistFt(Number(e.target.value))} className="pr-7" />
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground">ft</span>
+                        </div>
+                        <div className="relative">
+                          <Input type="number" step="0.1" value={waistIn} onChange={(e) => setWaistIn(Number(e.target.value))} className="pr-7" />
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground">in</span>
+                        </div>
+                      </div>
+                    </div>
 
-                {gender === 'female' && (
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                      Hip ({mode === 'us' ? 'ft' : 'cm'})
-                    </Label>
-                    <Input type="number" step="0.01" value={hip} onChange={(e) => setHip(Number(e.target.value))} />
+                    {gender === 'female' && (
+                      <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Hip</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="relative">
+                            <Input type="number" value={hipFt} onChange={(e) => setHipFt(Number(e.target.value))} className="pr-7" />
+                            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground">ft</span>
+                          </div>
+                          <div className="relative">
+                            <Input type="number" step="0.1" value={hipIn} onChange={(e) => setHipIn(Number(e.target.value))} className="pr-7" />
+                            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground">in</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Height (cm)</Label>
+                      <Input type="number" step="0.1" value={heightCm} onChange={(e) => setHeightCm(Number(e.target.value))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Neck (cm)</Label>
+                      <Input type="number" step="0.1" value={neckCm} onChange={(e) => setNeckCm(Number(e.target.value))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Waist (cm)</Label>
+                      <Input type="number" step="0.1" value={waistCm} onChange={(e) => setWaistCm(Number(e.target.value))} />
+                    </div>
+                    {gender === 'female' && (
+                      <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Hip (cm)</Label>
+                        <Input type="number" step="0.1" value={hipCm} onChange={(e) => setHipCm(Number(e.target.value))} />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-primary/5 border-primary/10">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
-                <Info className="w-4 h-4" />
-                Measurement Tip
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-[10px] text-muted-foreground leading-relaxed">
-              Measure your neck just below the larynx, your waist at the horizontal level of the navel for men, or the narrowest point for women. Ensure the tape is level and snug but not compressing the skin.
             </CardContent>
           </Card>
         </div>
@@ -269,35 +350,44 @@ export default function BodyFatCalculatorPage() {
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm font-bold flex items-center gap-2">
                       <TrendingUp className="w-4 h-4 text-primary" />
-                      Composition
+                      Composition Summary
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4 text-sm">
+                  <CardContent className="space-y-4 text-xs">
                     <div className="flex justify-between border-b pb-2">
-                      <span className="text-muted-foreground">Body Fat Mass</span>
-                      <span className="font-bold">{results.bodyFatMass.toFixed(1)} {mode === 'us' ? 'lbs' : 'kg'}</span>
+                      <span className="text-muted-foreground font-medium">Body Fat Mass</span>
+                      <span className="font-bold">{results.bodyFatMass.toFixed(1)} lbs</span>
+                    </div>
+                    <div className="flex justify-between border-b pb-2">
+                      <span className="text-muted-foreground font-medium">Lean Body Mass</span>
+                      <span className="font-bold">{results.leanBodyMass.toFixed(1)} lbs</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Lean Body Mass</span>
-                      <span className="font-bold">{results.leanBodyMass.toFixed(1)} {mode === 'us' ? 'lbs' : 'kg'}</span>
+                      <span className="text-muted-foreground font-medium">BMI Method Est.</span>
+                      <span className="font-bold text-muted-foreground">{results.bmiBodyFat.toFixed(1)}%</span>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="bg-accent/5 border-accent/20">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm font-bold flex items-center gap-2 text-accent">
-                      <ShieldCheck className="w-4 h-4" />
-                      Goal Progress
+                      <Target className="w-4 h-4" />
+                      Goal Analysis
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4 text-sm">
+                  <CardContent className="space-y-4 text-xs">
                     <div className="flex justify-between border-b pb-2">
-                      <span className="text-muted-foreground">Ideal Range</span>
-                      <span className="font-bold text-primary">{gender === 'male' ? '14% - 24%' : '21% - 31%'}</span>
+                      <span className="text-muted-foreground font-medium">Ideal BF (for age)</span>
+                      <span className="font-bold text-primary">{results.idealBf}%</span>
                     </div>
-                    <p className="text-[10px] text-muted-foreground italic leading-tight">
-                      Consistent resistance training and high protein intake can help preserve lean mass while reducing fat.
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground font-medium">Fat to lose for ideal</span>
+                      <span className="font-bold text-accent">{results.bfToLose.toFixed(1)} lbs</span>
+                    </div>
+                    <Separator />
+                    <p className="text-[10px] text-muted-foreground leading-tight italic">
+                      Ideal percentage based on Jackson & Pollock benchmark for age {age}.
                     </p>
                   </CardContent>
                 </Card>
@@ -377,8 +467,8 @@ export default function BodyFatCalculatorPage() {
                     {jacksonPollockData.map((row) => (
                       <TableRow key={row.age}>
                         <TableCell>{row.age}</TableCell>
-                        <TableCell className="text-right">{row.women}</TableCell>
-                        <TableCell className="text-right">{row.men}</TableCell>
+                        <TableCell className="text-right">{row.women}%</TableCell>
+                        <TableCell className="text-right">{row.men}%</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
