@@ -29,6 +29,7 @@ import {
   ArrowLeftRight,
   Lock,
   Baby,
+  Calendar,
   LucideIcon
 } from 'lucide-react';
 
@@ -42,6 +43,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'due-date',
+    name: 'Due Date Calculator',
+    description: 'Find your estimated due date using multiple methods including last period, ultrasound, or IVF transfer details.',
+    icon: Calendar,
+    path: '/calculators/due-date',
+    category: 'health',
+  },
   {
     id: 'pregnancy',
     name: 'Pregnancy Calculator',
