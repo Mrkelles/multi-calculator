@@ -51,7 +51,8 @@ export default function PaceCalculatorPage() {
   const [pace, setPace] = useState({ m: 4, s: 0 });
   const [paceUnit, setPaceUnit] = useState('min/km');
 
-  // Calculator 2: Multipoint Pace
+  // Calculator 2: Multipoint Pace Calculator
+  const [multiUnit, setMultiUnit] = useState('km');
   const [splits, setSplits] = useState([
     { id: '1', dist: 1, time: { m: 4, s: 0 } },
     { id: '2', dist: 1, time: { m: 4, s: 10 } },
@@ -275,9 +276,21 @@ export default function PaceCalculatorPage() {
             <div className="bg-accent/10 p-2 rounded-xl text-accent">
               <Activity size={24} />
             </div>
-            <div>
-              <h3 className="text-2xl font-bold text-primary">Multipoint Split Calculator</h3>
-              <p className="text-sm text-muted-foreground">Log multiple splits to find your total time and average pace.</p>
+            <div className="flex-1 flex items-center justify-between">
+              <div>
+                <h3 className="text-2xl font-bold text-primary">Multipoint Pace Calculator</h3>
+                <p className="text-sm text-muted-foreground">Log multiple splits to find your total time and average pace.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Label className="text-xs font-bold whitespace-nowrap">Global Unit:</Label>
+                <Select value={multiUnit} onValueChange={setMultiUnit}>
+                  <SelectTrigger className="w-24"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="km">km</SelectItem>
+                    <SelectItem value="miles">miles</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
@@ -294,7 +307,7 @@ export default function PaceCalculatorPage() {
                   <TableHeader>
                     <TableRow className="bg-muted/50">
                       <TableHead className="w-[100px]">Split #</TableHead>
-                      <TableHead>Dist (km/mi)</TableHead>
+                      <TableHead>Distance ({multiUnit})</TableHead>
                       <TableHead>Time (Min:Sec)</TableHead>
                       <TableHead className="w-[50px]"></TableHead>
                     </TableRow>
@@ -347,14 +360,14 @@ export default function PaceCalculatorPage() {
                   <div className="text-5xl font-black font-headline">
                     {multipointResult?.m}:{String(multipointResult?.s).padStart(2, '0')}
                   </div>
-                  <p className="text-xs mt-2 opacity-60">minutes per unit</p>
+                  <p className="text-xs mt-2 opacity-60">min/{multiUnit}</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="pt-6 space-y-3 text-sm">
                   <div className="flex justify-between border-b pb-2">
                     <span className="text-muted-foreground">Total Distance</span>
-                    <span className="font-bold">{multipointResult?.totalDist}</span>
+                    <span className="font-bold">{multipointResult?.totalDist} {multiUnit}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Total Time</span>
