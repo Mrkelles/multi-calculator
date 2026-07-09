@@ -33,7 +33,8 @@ import {
   Activity,
   Flame,
   Scale,
-  LucideIcon
+  LucideIcon,
+  Sparkles
 } from 'lucide-react';
 
 export interface CalculatorInfo {
@@ -46,6 +47,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'conception',
+    name: 'Conception Calculator',
+    description: 'Estimate the date of conception based on your due date, last period, or ultrasound results.',
+    icon: Sparkles,
+    path: '/calculators/conception',
+    category: 'health',
+  },
   {
     id: 'ideal-weight',
     name: 'Ideal Weight Calculator',
