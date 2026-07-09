@@ -16,6 +16,15 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '@/components/ui/table';
 import { 
   addDays, 
   subDays, 
@@ -26,6 +35,17 @@ import {
 } from 'date-fns';
 
 type DueDateMode = 'last-period' | 'ultrasound' | 'conception' | 'ivf';
+
+const MILESTONES: Record<number, string> = {
+  3: 'Baby conceived',
+  4: 'Pregnancy test positive',
+  6: 'Heartbeat detectable by ultrasound',
+  13: 'Miscarriage risk decreases',
+  18: 'Baby begins making noticeable movements, can hear sounds, and gender can be found out.',
+  23: 'Premature baby may survive',
+  28: 'Baby can breathe',
+  38: 'Full Term'
+};
 
 export default function DueDateCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -57,7 +77,6 @@ export default function DueDateCalculatorPage() {
 
       if (mode === 'last-period') {
         lmpDate = inputDate;
-        // Naegele's Rule adjustment for cycle length
         const cycleAdj = cycleLength - 28;
         dueDate = addDays(lmpDate, 280 + cycleAdj);
         effectiveLmpDate = addDays(lmpDate, cycleAdj);
@@ -66,13 +85,10 @@ export default function DueDateCalculatorPage() {
         effectiveLmpDate = subDays(inputDate, totalDaysAtScan);
         dueDate = addDays(effectiveLmpDate, 280);
       } else if (mode === 'conception') {
-        // Conception is day 14 of a 28-day cycle
         effectiveLmpDate = subDays(inputDate, 14);
         dueDate = addDays(effectiveLmpDate, 280);
       } else if (mode === 'ivf') {
         const age = parseInt(embryoAge);
-        // Due date is 266 days after ovulation. 
-        // Ovulation is roughly Transfer Date minus Embryo Age.
         const offset = 266 - age;
         dueDate = addDays(inputDate, offset);
         effectiveLmpDate = subDays(dueDate, 280);
@@ -81,10 +97,12 @@ export default function DueDateCalculatorPage() {
         effectiveLmpDate = new Date();
       }
 
+      const totalDays = 280;
       const daysPregnant = differenceInDays(today, effectiveLmpDate);
       const weeks = Math.floor(daysPregnant / 7);
       const days = daysPregnant % 7;
       const daysRemaining = differenceInDays(dueDate, today);
+      const progressPercent = Math.min(100, Math.max(0, (daysPregnant / totalDays) * 100));
 
       const duration = intervalToDuration({ start: effectiveLmpDate, end: today });
       const monthsStr = `${duration.years ? duration.years * 12 + (duration.months || 0) : duration.months || 0} months ${duration.days || 0} days`;
@@ -93,6 +111,25 @@ export default function DueDateCalculatorPage() {
       if (weeks >= 28) trimester = 'Third';
       else if (weeks >= 13) trimester = 'Second';
 
+      // Generate schedule
+      const schedule = [];
+      for (let w = 1; w <= 42; w++) {
+        const weekStart = addDays(effectiveLmpDate, (w - 1) * 7);
+        const weekEnd = addDays(weekStart, 6);
+        let trimesterLabel = '';
+        if (w === 1) trimesterLabel = 'first trimester';
+        if (w === 13) trimesterLabel = 'second trimester';
+        if (w === 28) trimesterLabel = 'third trimester';
+
+        schedule.push({
+          week: w,
+          range: `${format(weekStart, 'MMM d, yyyy')} - ${format(weekEnd, 'MMM d, yyyy')}`,
+          trimester: trimesterLabel,
+          milestone: MILESTONES[w] || '',
+          isToday: weeks === w - 1
+        });
+      }
+
       return {
         dueDate,
         weeks,
@@ -100,6 +137,8 @@ export default function DueDateCalculatorPage() {
         daysRemaining,
         monthsStr,
         trimester,
+        progressPercent,
+        schedule,
         likelyConception: addDays(effectiveLmpDate, 14)
       };
     } catch (e) {
@@ -227,7 +266,7 @@ export default function DueDateCalculatorPage() {
                 <div className="absolute top-0 right-0 p-4 opacity-10">
                   <Baby className="w-24 h-24" />
                 </div>
-                <CardContent className="pt-10 pb-10 text-center relative z-10 space-y-4">
+                <CardContent className="pt-10 pb-10 text-center relative z-10 space-y-6">
                   <div>
                     <p className="text-xs uppercase tracking-widest opacity-80 mb-2 font-bold">Estimated Due Date</p>
                     <h3 className="text-4xl md:text-5xl font-black font-headline tracking-tighter">
@@ -240,10 +279,20 @@ export default function DueDateCalculatorPage() {
                     </p>
                   </div>
                   
-                  <div className="bg-white/10 p-2 px-6 rounded-full inline-block border border-white/20">
-                    <p className="text-xs font-bold uppercase tracking-widest">
-                      Current: {results.weeks} Weeks, {results.days} Days
-                    </p>
+                  <div className="space-y-4 max-w-sm mx-auto">
+                    <div className="bg-white/10 p-2 px-6 rounded-full inline-block border border-white/20">
+                      <p className="text-xs font-bold uppercase tracking-widest">
+                        Current: {results.weeks} Weeks, {results.days} Days
+                      </p>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-[10px] font-black uppercase tracking-widest opacity-80">
+                        <span>Progress</span>
+                        <span>{Math.round(results.progressPercent)}%</span>
+                      </div>
+                      <Progress value={results.progressPercent} className="h-2 bg-white/20" />
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -290,6 +339,49 @@ export default function DueDateCalculatorPage() {
             </>
           )}
         </div>
+
+        {/* Milestone Schedule */}
+        {results && (
+          <div className="lg:col-span-12 py-10 space-y-8">
+            <Separator />
+            <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <HeartPulse className="w-6 h-6 text-primary" />
+                <h3 className="text-2xl font-bold text-primary">Milestone Schedule</h3>
+              </div>
+              <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader className="bg-muted/50">
+                      <TableRow>
+                        <TableHead className="font-bold w-[120px]">Week</TableHead>
+                        <TableHead className="font-bold">Date Range</TableHead>
+                        <TableHead className="font-bold">Trimester</TableHead>
+                        <TableHead className="font-bold">Milestones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {results.schedule.map((row) => (
+                        <TableRow key={row.week} className={row.isToday ? "bg-primary/5 font-bold border-l-4 border-l-primary" : ""}>
+                          <TableCell className="font-medium text-primary">
+                            Week {row.week} {row.isToday && "(Today)"}
+                          </TableCell>
+                          <TableCell className="text-xs whitespace-nowrap">{row.range}</TableCell>
+                          <TableCell className="text-[10px] uppercase font-black text-muted-foreground/60">
+                            {row.trimester}
+                          </TableCell>
+                          <TableCell className="text-xs font-medium text-accent">
+                            {row.milestone}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Term Definitions Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
