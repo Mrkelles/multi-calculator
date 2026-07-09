@@ -31,6 +31,7 @@ import {
   Baby,
   Calendar,
   Activity,
+  Flame,
   LucideIcon
 } from 'lucide-react';
 
@@ -44,6 +45,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'bmr',
+    name: 'BMR Calculator',
+    description: 'Calculate your Basal Metabolic Rate to determine your daily calorie needs for maintenance or weight goals.',
+    icon: Flame,
+    path: '/calculators/bmr',
+    category: 'health',
+  },
   {
     id: 'body-fat',
     name: 'Body Fat Calculator',
