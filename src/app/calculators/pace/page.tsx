@@ -482,7 +482,7 @@ export default function PaceCalculatorPage() {
                         ))}
                       </div>
                     </CardContent>
-                  </div>
+                  </Card>
                 </div>
               </div>
             </div>
