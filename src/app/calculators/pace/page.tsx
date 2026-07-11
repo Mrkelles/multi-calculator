@@ -91,6 +91,7 @@ export default function PaceCalculatorPage() {
     let distInKm = solvedDist;
     if (solvedUnit === 'miles') distInKm = solvedDist * 1.60934;
     else if (solvedUnit === 'meters') distInKm = solvedDist / 1000;
+    else if (solvedUnit === 'yards') distInKm = solvedDist * 0.0009144;
 
     const pacePerKmSec = solvedTimeSec / distInKm;
     const pacePerMileSec = pacePerKmSec * 1.60934;
@@ -136,7 +137,7 @@ export default function PaceCalculatorPage() {
     for (let i = 1; i <= splitCount; i++) {
       const currentDist = i === splitCount ? solvedDist : i;
       splits.push({
-        dist: `${currentDist} ${solvedUnit === 'km' ? 'K' : solvedUnit === 'miles' ? 'Mile' : 'Unit'}`,
+        dist: `${currentDist} ${solvedUnit === 'km' ? 'K' : solvedUnit === 'miles' ? 'Mile' : solvedUnit === 'yards' ? 'Yards' : 'Unit'}`,
         time: formatTime(currentDist * solvedPaceSec)
       });
     }
@@ -301,6 +302,7 @@ export default function PaceCalculatorPage() {
                           <SelectItem value="km">Kilometers</SelectItem>
                           <SelectItem value="miles">Miles</SelectItem>
                           <SelectItem value="meters">Meters</SelectItem>
+                          <SelectItem value="yards">Yards</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -747,7 +749,7 @@ export default function PaceCalculatorPage() {
                 <Card className="border-none bg-green-50">
                   <CardContent className="pt-6">
                     <p className="font-bold text-green-900 mb-1">Analysis</p>
-                    <p className="text-xs text-green-700">Use the <strong>Multipoint</strong> tool after a long run to see if you stayed consistent or faded in the final miles.</p>
+                    <p className="text-xs text-blue-700">Use the <strong>Multipoint</strong> tool after a long run to see if you stayed consistent or faded in the final miles.</p>
                   </CardContent>
                 </Card>
                 <Card className="border-none bg-amber-50">
