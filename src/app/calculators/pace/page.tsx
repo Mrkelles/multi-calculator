@@ -49,10 +49,24 @@ const raceEvents = [
   { label: '10 Miles', value: 10, unit: 'miles' },
 ];
 
+type PaceMode = 'pace' | 'time' | 'distance';
+
+interface TimeValue {
+  h: number;
+  m: number;
+  s: number;
+}
+
+interface MultiSplit {
+  id: string;
+  dist: number;
+  time: TimeValue;
+}
+
 export default function PaceCalculatorPage() {
   // Calculator 1: Standard Pace/Time/Distance
   const [mode, setMode] = useState<PaceMode>('pace');
-  const [time, setTime] = useState({ h: 0, m: 20, s: 0 });
+  const [time, setTime] = useState<TimeValue>({ h: 0, m: 20, s: 0 });
   const [dist, setDist] = useState(5);
   const [distUnit, setDistUnit] = useState('km');
   const [pace, setPace] = useState({ m: 4, s: 0 });
@@ -87,7 +101,7 @@ export default function PaceCalculatorPage() {
       solvedUnit = paceUnit.split('/')[1];
     }
 
-    // Convert everything to base units (km) for consistent results dashboard
+    // Convert everything to base units (km)
     let distInKm = solvedDist;
     if (solvedUnit === 'miles') distInKm = solvedDist * 1.60934;
     else if (solvedUnit === 'meters') distInKm = solvedDist / 1000;
@@ -110,7 +124,6 @@ export default function PaceCalculatorPage() {
       return `${m} minutes and ${s} seconds`;
     };
 
-    // Pace units
     const diffUnits = [
       { label: 'per mile', value: `${formatPaceLong(pacePerMileSec)}` },
       { label: 'per kilometer', value: `${formatPaceLong(pacePerKmSec)}` },
@@ -120,7 +133,6 @@ export default function PaceCalculatorPage() {
       { label: 'meters/second', value: `${(1000 / pacePerKmSec).toFixed(2)}` },
     ];
 
-    // Popular race times
     const raceTimes = raceEvents.map(event => {
       let dKm = event.value;
       if (event.unit === 'miles') dKm = event.value * 1.60934;
@@ -131,18 +143,30 @@ export default function PaceCalculatorPage() {
       };
     });
 
-    // Splits logic
     const getSplitsForUnit = (unitInKm: number, unitLabel: string) => {
-      const splitCount = Math.ceil(distInKm / unitInKm);
       const res = [];
-      for (let i = 1; i <= splitCount; i++) {
-        const currentDistKm = i === splitCount ? distInKm : i * unitInKm;
-        const currentDistInTarget = currentDistKm / unitInKm;
+      const seenLabels = new Set<string>();
+      
+      let i = 1;
+      // Use epsilon to avoid floating point duplication of the final split
+      while (i * unitInKm < distInKm - 0.0001) {
+        const label = `${i}${unitLabel}`;
         res.push({
-          dist: `${currentDistInTarget.toFixed(1).replace(/\.0$/, '')}${unitLabel}`,
-          time: formatTime(currentDistKm * pacePerKmSec)
+          dist: label,
+          time: formatTime(i * unitInKm * pacePerKmSec)
+        });
+        seenLabels.add(label);
+        i++;
+      }
+
+      const finalDistLabel = `${(distInKm / unitInKm).toFixed(2).replace(/\.00$/, '').replace(/\.0$/, '')}${unitLabel}`;
+      if (!seenLabels.has(finalDistLabel)) {
+        res.push({
+          dist: finalDistLabel,
+          time: formatTime(distInKm * pacePerKmSec)
         });
       }
+      
       return res;
     };
 
@@ -172,9 +196,9 @@ export default function PaceCalculatorPage() {
 
   // Calculator 2: Multipoint Pace Calculator
   const [multiUnit, setMultiUnit] = useState('km');
-  const [multiSplits, setMultiSplits] = useState([
-    { id: '1', dist: 1, time: { m: 4, s: 0 } },
-    { id: '2', dist: 1, time: { m: 4, s: 10 } },
+  const [multiSplits, setMultiSplits] = useState<MultiSplit[]>([
+    { id: '1', dist: 1, time: { h: 0, m: 4, s: 0 } },
+    { id: '2', dist: 1, time: { h: 0, m: 4, s: 10 } },
   ]);
 
   const multipointResult = useMemo(() => {
@@ -182,7 +206,7 @@ export default function PaceCalculatorPage() {
     let totalS = 0;
     multiSplits.forEach(s => {
       totalD += s.dist;
-      totalS += s.time.m * 60 + s.time.s;
+      totalS += s.time.h * 3600 + s.time.m * 60 + s.time.s;
     });
     if (totalD === 0) return null;
     const avgPaceSec = totalS / totalD;
@@ -278,7 +302,7 @@ export default function PaceCalculatorPage() {
 
                 {mode !== 'time' && (
                   <div className="space-y-3">
-                    <Label className="text-xs font-black uppercase text-muted-foreground">Time</Label>
+                    <Label className="text-xs font-black uppercase text-muted-foreground">Time (hh:mm:ss)</Label>
                     <div className="grid grid-cols-3 gap-3">
                       <div className="space-y-1">
                         <Label className="text-[10px]">Hrs</Label>
@@ -458,7 +482,7 @@ export default function PaceCalculatorPage() {
                         ))}
                       </div>
                     </CardContent>
-                  </Card>
+                  </div>
                 </div>
               </div>
             </div>
@@ -481,10 +505,12 @@ export default function PaceCalculatorPage() {
               <div className="flex items-center gap-2">
                 <Label className="text-xs font-bold whitespace-nowrap">Global Unit:</Label>
                 <Select value={multiUnit} onValueChange={setMultiUnit}>
-                  <SelectTrigger className="w-24"><SelectValue /></SelectTrigger>
+                  <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="km">km</SelectItem>
                     <SelectItem value="miles">miles</SelectItem>
+                    <SelectItem value="meters">meters</SelectItem>
+                    <SelectItem value="yards">yards</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -495,7 +521,7 @@ export default function PaceCalculatorPage() {
             <Card className="lg:col-span-8">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-sm uppercase font-black text-muted-foreground tracking-widest">Splits Log</CardTitle>
-                <Button variant="outline" size="sm" onClick={() => setMultiSplits([...multiSplits, { id: Math.random().toString(), dist: 1, time: { m: 4, s: 0 } }])} className="gap-2">
+                <Button variant="outline" size="sm" onClick={() => setMultiSplits([...multiSplits, { id: Math.random().toString(), dist: 1, time: { h: 0, m: 4, s: 0 } }])} className="gap-2">
                   <Plus size={14} /> Add Split
                 </Button>
               </CardHeader>
@@ -505,7 +531,7 @@ export default function PaceCalculatorPage() {
                     <TableRow className="bg-muted/50">
                       <TableHead className="w-[100px]">Split #</TableHead>
                       <TableHead>Distance ({multiUnit})</TableHead>
-                      <TableHead>Time (Min:Sec)</TableHead>
+                      <TableHead>Time (hh:mm:ss)</TableHead>
                       <TableHead className="w-[50px]"></TableHead>
                     </TableRow>
                   </TableHeader>
@@ -522,17 +548,24 @@ export default function PaceCalculatorPage() {
                           />
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5">
                             <Input 
                               type="number" 
-                              className="h-8 w-16" 
+                              className="h-8 w-14 p-1 text-center" 
+                              value={split.time.h} 
+                              onChange={(e) => setMultiSplits(multiSplits.map(s => s.id === split.id ? { ...s, time: { ...s.time, h: Number(e.target.value) } } : s))}
+                            />
+                            <span className="text-xs">:</span>
+                            <Input 
+                              type="number" 
+                              className="h-8 w-14 p-1 text-center" 
                               value={split.time.m} 
                               onChange={(e) => setMultiSplits(multiSplits.map(s => s.id === split.id ? { ...s, time: { ...s.time, m: Number(e.target.value) } } : s))}
                             />
-                            <span>:</span>
+                            <span className="text-xs">:</span>
                             <Input 
                               type="number" 
-                              className="h-8 w-16" 
+                              className="h-8 w-14 p-1 text-center" 
                               value={split.time.s} 
                               onChange={(e) => setMultiSplits(multiSplits.map(s => s.id === split.id ? { ...s, time: { ...s.time, s: Number(e.target.value) } } : s))}
                             />
@@ -791,5 +824,3 @@ export default function PaceCalculatorPage() {
     </CalculatorWrapper>
   );
 }
-
-type PaceMode = 'pace' | 'time' | 'distance';
