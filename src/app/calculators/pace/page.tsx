@@ -110,10 +110,11 @@ export default function PaceCalculatorPage() {
     const pacePerKmSec = solvedTimeSec / distInKm;
     const pacePerMileSec = pacePerKmSec * 1.60934;
 
-    const formatTime = (seconds: number) => {
-      const h = Math.floor(seconds / 3600);
-      const m = Math.floor((seconds % 3600) / 60);
-      const s = Math.round(seconds % 60);
+    const formatTime = (totalSeconds: number) => {
+      const roundedSeconds = Math.round(totalSeconds);
+      const h = Math.floor(roundedSeconds / 3600);
+      const m = Math.floor((roundedSeconds % 3600) / 60);
+      const s = roundedSeconds % 60;
       if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
       return `${m}:${String(s).padStart(2, '0')}`;
     };
