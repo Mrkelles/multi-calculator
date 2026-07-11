@@ -132,15 +132,19 @@ export default function PaceCalculatorPage() {
     });
 
     // Splits logic
-    const splitCount = Math.ceil(solvedDist);
-    const splits = [];
-    for (let i = 1; i <= splitCount; i++) {
-      const currentDist = i === splitCount ? solvedDist : i;
-      splits.push({
-        dist: `${currentDist} ${solvedUnit === 'km' ? 'K' : solvedUnit === 'miles' ? 'Mile' : solvedUnit === 'yards' ? 'Yards' : 'Unit'}`,
-        time: formatTime(currentDist * solvedPaceSec)
-      });
-    }
+    const getSplitsForUnit = (unitInKm: number, unitLabel: string) => {
+      const splitCount = Math.ceil(distInKm / unitInKm);
+      const res = [];
+      for (let i = 1; i <= splitCount; i++) {
+        const currentDistKm = i === splitCount ? distInKm : i * unitInKm;
+        const currentDistInTarget = currentDistKm / unitInKm;
+        res.push({
+          dist: `${currentDistInTarget.toFixed(1).replace(/\.0$/, '')}${unitLabel}`,
+          time: formatTime(currentDistKm * pacePerKmSec)
+        });
+      }
+      return res;
+    };
 
     return { 
       m: Math.floor(solvedPaceSec / 60), 
@@ -152,7 +156,8 @@ export default function PaceCalculatorPage() {
       unit: solvedUnit,
       diffUnits,
       raceTimes,
-      splits
+      kmSplits: getSplitsForUnit(1, 'K'),
+      mileSplits: getSplitsForUnit(1.60934, ' Mile')
     };
   }, [mode, time, dist, distUnit, pace, paceUnit]);
 
@@ -421,21 +426,41 @@ export default function PaceCalculatorPage() {
                 </CardContent>
               </Card>
 
-              <Card className="md:col-span-2 border-none bg-accent/5">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-bold uppercase tracking-wider text-accent">Cumulative Splits</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
-                    {standardResult.splits.map((s, idx) => (
-                      <div key={idx} className="bg-white p-3 rounded-lg border border-accent/10 shadow-sm text-center">
-                        <p className="text-[10px] uppercase font-black text-muted-foreground mb-1">{s.dist}</p>
-                        <p className="text-sm font-mono font-bold text-accent">{s.time}</p>
+              <div className="md:col-span-2 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Card className="border-none bg-accent/5">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-bold uppercase tracking-wider text-accent">Kilometer Splits</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {standardResult.kmSplits.map((s, idx) => (
+                          <div key={idx} className="bg-white p-2 rounded-lg border border-accent/10 shadow-sm text-center">
+                            <p className="text-[10px] uppercase font-black text-muted-foreground mb-0.5">{s.dist}</p>
+                            <p className="text-xs font-mono font-bold text-accent">{s.time}</p>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="border-none bg-primary/5">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Mile Splits</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {standardResult.mileSplits.map((s, idx) => (
+                          <div key={idx} className="bg-white p-2 rounded-lg border border-primary/10 shadow-sm text-center">
+                            <p className="text-[10px] uppercase font-black text-muted-foreground mb-0.5">{s.dist}</p>
+                            <p className="text-xs font-mono font-bold text-primary">{s.time}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
           )}
         </section>
@@ -755,7 +780,7 @@ export default function PaceCalculatorPage() {
                 <Card className="border-none bg-amber-50">
                   <CardContent className="pt-6">
                     <p className="font-bold text-amber-900 mb-1">Planning</p>
-                    <p className="text-xs text-amber-700">Use the <strong>Finish Predictor</strong> to set realistic expectations for your next race based on current fitness levels.</p>
+                    <p className="text-xs text-blue-700">Use the <strong>Finish Predictor</strong> to set realistic expectations for your next race based on current fitness levels.</p>
                   </CardContent>
                 </Card>
               </div>
