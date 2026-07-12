@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useMemo } from 'react';
@@ -70,7 +69,6 @@ export default function PaceCalculatorPage() {
   const [dist, setDist] = useState(5);
   const [distUnit, setDistUnit] = useState('km');
   
-  // Single input for Pace (e.g. 4:00 or 15)
   const [paceInputValue, setPaceInputValue] = useState('00:04:00');
   const [paceUnit, setPaceUnit] = useState('per kilometer');
 
@@ -259,12 +257,12 @@ export default function PaceCalculatorPage() {
   return (
     <CalculatorWrapper
       title="Pace Calculator"
-      description="Advanced performance analysis for runners and cyclists. Calculate pace, time, distance, and predicted results."
+      description="Advanced performance analysis for athletes. Calculate pace, time, distance, and predicted race results."
       icon={Timer}
     >
       <div className="space-y-16">
         
-        {/* 1. Main Solver Section */}
+        {/* 1. Standard Solver Section */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">
             <div className="bg-primary/10 p-2 rounded-xl text-primary"><Zap size={24} /></div>
@@ -336,7 +334,7 @@ export default function PaceCalculatorPage() {
                         type="text" 
                         value={paceInputValue} 
                         onChange={e => setPaceInputValue(e.target.value)} 
-                        placeholder={isSpeedUnit(paceUnit) ? "e.g. 15" : "e.g. 00:04:00"}
+                        placeholder={isSpeedUnit(paceUnit) ? "e.g. 15" : "e.g. 04:00"}
                       />
                       <Select value={paceUnit} onValueChange={setPaceUnit}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
@@ -387,10 +385,10 @@ export default function PaceCalculatorPage() {
                           </div>
                           <Separator className="bg-white/20" />
                           <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm font-medium opacity-90 text-left">
-                            {distUnit !== 'km' && <div>{standardResult.allDistances.km} km</div>}
-                            {distUnit !== 'miles' && <div>{standardResult.allDistances.miles} miles</div>}
-                            {distUnit !== 'meters' && <div>{standardResult.allDistances.meters} meters</div>}
-                            {distUnit !== 'yards' && <div>{standardResult.allDistances.yards} yards</div>}
+                            <div>{standardResult.allDistances.km} km</div>
+                            <div>{standardResult.allDistances.miles} miles</div>
+                            <div>{standardResult.allDistances.meters} meters</div>
+                            <div>{standardResult.allDistances.yards} yards</div>
                           </div>
                         </div>
                       )}
@@ -422,7 +420,7 @@ export default function PaceCalculatorPage() {
               )}
 
               <Card>
-                <CardHeader><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Race Predictions</CardTitle></CardHeader>
+                <CardHeader><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Popular Race Distances</CardTitle></CardHeader>
                 <CardContent className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                   {standardResult.predictions.map(p => (
                     <div key={p.label} className="p-3 border rounded-xl hover:border-primary transition-colors">
@@ -437,25 +435,23 @@ export default function PaceCalculatorPage() {
                 <Card className="border-none bg-accent/5">
                   <CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-accent">Kilometer Splits</CardTitle></CardHeader>
                   <CardContent className="grid grid-cols-2 gap-2">
-                    {standardResult.kmSplits.slice(0, 20).map((s, i) => (
+                    {standardResult.kmSplits.map((s, i) => (
                       <div key={i} className="bg-white p-2 rounded-lg border text-center">
                         <p className="text-[10px] font-black text-muted-foreground">{s.dist}</p>
                         <p className="text-xs font-mono font-bold text-accent">{s.time}</p>
                       </div>
                     ))}
-                    {standardResult.kmSplits.length > 20 && <p className="col-span-2 text-center text-[10px] italic py-2">Showing first 20 splits...</p>}
                   </CardContent>
                 </Card>
                 <Card className="border-none bg-primary/5">
                   <CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Mile Splits</CardTitle></CardHeader>
                   <CardContent className="grid grid-cols-2 gap-2">
-                    {standardResult.mileSplits.slice(0, 20).map((s, i) => (
+                    {standardResult.mileSplits.map((s, i) => (
                       <div key={i} className="bg-white p-2 rounded-lg border text-center">
                         <p className="text-[10px] font-black text-muted-foreground">{s.dist}</p>
                         <p className="text-xs font-mono font-bold text-primary">{s.time}</p>
                       </div>
                     ))}
-                    {standardResult.mileSplits.length > 20 && <p className="col-span-2 text-center text-[10px] italic py-2">Showing first 20 splits...</p>}
                   </CardContent>
                 </Card>
               </div>
@@ -537,8 +533,8 @@ export default function PaceCalculatorPage() {
           <div className="flex items-center gap-3">
             <div className="bg-primary/10 p-2 rounded-xl text-primary"><RefreshCw size={24} /></div>
             <div>
-              <h3 className="text-2xl font-bold text-primary">Standalone Pace Converter</h3>
-              <p className="text-sm text-muted-foreground">Convert between pace and speed standards.</p>
+              <h3 className="text-2xl font-bold text-primary">Pace Converter</h3>
+              <p className="text-sm text-muted-foreground">Convert between pace and speed standards instantly.</p>
             </div>
           </div>
           <Card>
@@ -614,4 +610,3 @@ export default function PaceCalculatorPage() {
     </CalculatorWrapper>
   );
 }
-
