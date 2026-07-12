@@ -35,7 +35,8 @@ import {
   Scale,
   LucideIcon,
   Sparkles,
-  Timer as PaceIcon
+  Timer as PaceIcon,
+  Binary
 } from 'lucide-react';
 
 export interface CalculatorInfo {
@@ -48,6 +49,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'scientific',
+    name: 'Scientific Calculator',
+    description: 'Perform advanced mathematical operations including trigonometry, logarithms, and power functions.',
+    icon: Binary,
+    path: '/calculators/scientific',
+    category: 'tools',
+  },
   {
     id: 'pace',
     name: 'Pace Calculator',
