@@ -13,7 +13,9 @@ import {
   Activity,
   ChevronRight,
   RefreshCw,
-  Trophy
+  Trophy,
+  TrendingUp,
+  LineChart as LineChartIcon
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,9 +27,20 @@ import {
   Table, 
   TableBody, 
   TableCell, 
+  TableHead, 
+  TableHeader, 
   TableRow 
 } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
+import { 
+  LineChart, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip as ChartTooltip, 
+  ResponsiveContainer 
+} from 'recharts';
 
 const raceEvents = [
   { label: '400 meters', value: 400, unit: 'meters' },
@@ -88,7 +101,7 @@ export default function PaceCalculatorPage() {
     let h = Math.floor(total / 3600);
     total %= 3600;
     let m = Math.floor(total / 60);
-    let s = Math.round((total % 60) * 100) / 100;
+    let s = Math.round(total % 60);
 
     if (s >= 60) {
       s -= 60;
@@ -99,19 +112,37 @@ export default function PaceCalculatorPage() {
       h += 1;
     }
     
-    const sStr = s.toFixed(2).replace(/\.00$/, '');
     const parts = [];
     if (h > 0) parts.push(`${h} hour${h !== 1 ? 's' : ''}`);
     if (m > 0) parts.push(`${m} minute${m !== 1 ? 's' : ''}`);
-    if (sStr !== '0' || parts.length === 0) {
-      const isOne = parseFloat(sStr) === 1;
-      parts.push(`${sStr} second${isOne ? '' : 's'}`);
+    if (s > 0 || parts.length === 0) {
+      parts.push(`${s} second${s !== 1 ? 's' : ''}`);
     }
     
-    if (parts.length === 0) return "0 seconds";
     if (parts.length === 1) return parts[0];
     const last = parts.pop();
     return parts.join(', ') + ' and ' + last;
+  };
+
+  // Utility to convert distance/time to preferred unit string
+  const calculatePaceInUnit = (distKm: number, timeSec: number, unit: string) => {
+    if (distKm <= 0 || timeSec <= 0) return "0";
+    
+    if (isSpeedUnit(unit)) {
+      let speed = 0;
+      if (unit === 'miles per hour') speed = (distKm / MILE_TO_KM) / (timeSec / 3600);
+      else if (unit === 'kilometers per hour') speed = distKm / (timeSec / 3600);
+      else if (unit === 'meters per minute') speed = (distKm * 1000) / (timeSec / 60);
+      else if (unit === 'meters per second') speed = (distKm * 1000) / timeSec;
+      else if (unit === 'yards per minute') speed = (distKm / YARD_TO_KM) / (timeSec / 60);
+      else if (unit === 'yards per second') speed = (distKm / YARD_TO_KM) / timeSec;
+      return speed.toFixed(2);
+    } else {
+      let paceSec = 0;
+      if (unit === 'per kilometer') paceSec = timeSec / distKm;
+      else if (unit === 'per mile') paceSec = timeSec / (distKm / MILE_TO_KM);
+      return formatTime(paceSec);
+    }
   };
 
   // 1. Solver States
@@ -171,17 +202,21 @@ export default function PaceCalculatorPage() {
         res.push({ dist: `${i}${unitLabel}`, time: formatTime(i * unitInKm * pacePerKmSec) });
         i++;
       }
-      const finalLabel = `${(targetDistKm / unitInKm).toFixed(2).replace(/\.00$/, '')}${unitLabel}`;
-      const lastUnitLabel = `${Math.round(targetDistKm / unitInKm)}${unitLabel}`;
-      if (res.length === 0 || res[res.length - 1].dist !== lastUnitLabel) {
-         res.push({ dist: finalLabel, time: formatTime(targetDistKm * pacePerKmSec) });
+      
+      const roundedFinish = (targetDistKm / unitInKm).toFixed(2).replace(/\.00$/, '');
+      const lastLabel = `${roundedFinish}${unitLabel}`;
+      const prevLabel = res.length > 0 ? res[res.length - 1].dist : '';
+      
+      if (lastLabel !== prevLabel) {
+        res.push({ dist: lastLabel, time: formatTime(targetDistKm * pacePerKmSec) });
       }
+      
       return res;
     };
 
     return { 
-      ph: Math.floor(pacePerKmSec / 3600), pm: Math.floor((pacePerKmSec % 3600) / 60), ps: Math.floor(pacePerKmSec % 60),
-      h: Math.floor(solvedTimeSec / 3600), tm: Math.floor((solvedTimeSec % 3600) / 60), ts: Math.floor(solvedTimeSec % 60),
+      ph: Math.floor(pacePerKmSec / 3600), pm: Math.floor((pacePerKmSec % 3600) / 60), ps: Math.round(pacePerKmSec % 60),
+      h: Math.floor(solvedTimeSec / 3600), tm: Math.floor((solvedTimeSec % 3600) / 60), ts: Math.round(solvedTimeSec % 60),
       dist: solvedDistInKm,
       allDistances: {
         km: solvedDistInKm.toFixed(2),
@@ -212,25 +247,58 @@ export default function PaceCalculatorPage() {
 
   // 2. Multipoint States
   const [multiUnit, setMultiUnit] = useState('km');
+  const [preferredResultUnit, setPreferredResultUnit] = useState('miles per hour');
   const [multiSplits, setMultiSplits] = useState<MultiSplit[]>([
-    { id: '1', dist: 1, time: { h: 0, m: 4, s: 0 } },
-    { id: '2', dist: 1, time: { h: 0, m: 4, s: 10 } },
+    { id: '1', dist: 1, time: { h: 0, m: 3, s: 25 } },
+    { id: '2', dist: 2, time: { h: 0, m: 6, s: 55 } },
+    { id: '3', dist: 3, time: { h: 0, m: 10, s: 25 } },
+    { id: '4', dist: 4, time: { h: 0, m: 14, s: 1 } },
   ]);
 
   const multipointResult = useMemo(() => {
-    let totalD = 0, totalS = 0;
-    multiSplits.forEach(s => {
-      totalD += s.dist;
-      totalS += s.time.h * 3600 + s.time.m * 60 + s.time.s;
-    });
-    if (totalD === 0) return null;
-    const avgPaceSec = totalS / totalD;
-    return {
-      m: Math.floor(avgPaceSec / 60), s: Math.floor(avgPaceSec % 60),
-      totalDist: totalD.toFixed(2),
-      totalTime: formatTime(totalS)
+    if (multiSplits.length === 0) return null;
+    
+    const toKm = (val: number) => {
+      if (multiUnit === 'miles') return val * MILE_TO_KM;
+      if (multiUnit === 'meters') return val / 1000;
+      if (multiUnit === 'yards') return val * YARD_TO_KM;
+      return val;
     };
-  }, [multiSplits]);
+
+    const tableData = [];
+    let prevDistKm = 0;
+    let prevTimeSec = 0;
+
+    for (let i = 0; i < multiSplits.length; i++) {
+      const current = multiSplits[i];
+      const currentDistKm = toKm(current.dist);
+      const currentTimeSec = current.time.h * 3600 + current.time.m * 60 + current.time.s;
+
+      const sectionDistKm = Math.max(0, currentDistKm - prevDistKm);
+      const sectionTimeSec = Math.max(0, currentTimeSec - prevTimeSec);
+
+      const sectionPace = calculatePaceInUnit(sectionDistKm, sectionTimeSec, preferredResultUnit);
+      const accumulatedPace = calculatePaceInUnit(currentDistKm, currentTimeSec, preferredResultUnit);
+
+      tableData.push({
+        marker: i + 1,
+        sectionDist: sectionDistKm,
+        sectionTime: formatTime(sectionTimeSec),
+        sectionPace,
+        accumulatedPace,
+        chartVal: parseFloat(sectionPace) || 0
+      });
+
+      prevDistKm = currentDistKm;
+      prevTimeSec = currentTimeSec;
+    }
+
+    const lastRow = tableData[tableData.length - 1];
+    return {
+      tableData,
+      averagePace: lastRow.accumulatedPace
+    };
+  }, [multiSplits, multiUnit, preferredResultUnit]);
 
   // 3. Converter States
   const [convPace, setConvPace] = useState<TimeValue>({ h: 0, m: 5, s: 0 });
@@ -503,51 +571,167 @@ export default function PaceCalculatorPage() {
         <section className="space-y-6">
           <div className="flex items-center gap-3">
             <div className="bg-accent/10 p-2 rounded-xl text-accent"><Activity size={24} /></div>
-            <div className="flex-1 flex items-center justify-between">
-              <div><h3 className="text-2xl font-bold text-primary">Multipoint Pace Calculator</h3><p className="text-sm text-muted-foreground">Average pace across varying split distances.</p></div>
-              <Select value={multiUnit} onValueChange={setMultiUnit}><SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="km">km</SelectItem><SelectItem value="miles">miles</SelectItem><SelectItem value="meters">meters</SelectItem><SelectItem value="yards">yards</SelectItem>
-                </SelectContent>
-              </Select>
+            <div>
+              <h3 className="text-2xl font-bold text-primary">Multipoint Pace Calculator</h3>
+              <p className="text-sm text-muted-foreground">Calculate incremental splits and pace trends from cumulative markers.</p>
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <Card className="lg:col-span-8">
-              <CardHeader className="flex justify-between flex-row"><CardTitle className="text-sm uppercase font-black text-muted-foreground">Splits Log</CardTitle>
-                <Button variant="outline" size="sm" onClick={() => setMultiSplits([...multiSplits, { id: Math.random().toString(), dist: 1, time: { h: 0, m: 4, s: 0 } }])}>
-                  <Plus size={14} className="mr-2" /> Add Split
-                </Button>
+              <CardHeader className="flex justify-between flex-row items-center border-b bg-muted/10">
+                <CardTitle className="text-sm uppercase font-black text-muted-foreground">Markers Log</CardTitle>
+                <div className="flex gap-2">
+                  <Select value={multiUnit} onValueChange={setMultiUnit}>
+                    <SelectTrigger className="w-28 h-8 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="km">Kilometers</SelectItem>
+                      <SelectItem value="miles">Miles</SelectItem>
+                      <SelectItem value="meters">Meters</SelectItem>
+                      <SelectItem value="yards">Yards</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button variant="outline" size="sm" onClick={() => setMultiSplits([...multiSplits, { id: Math.random().toString(), dist: (multiSplits.length > 0 ? multiSplits[multiSplits.length - 1].dist + 1 : 1), time: { h: 0, m: 0, s: 0 } }])}>
+                    <Plus size={14} className="mr-1" /> Add Marker
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent className="p-0">
-                <Table><TableBody>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-12">#</TableHead>
+                      <TableHead>Marker Distance ({multiUnit})</TableHead>
+                      <TableHead>Cumulative Time (hh:mm:ss)</TableHead>
+                      <TableHead className="w-12"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {multiSplits.map((s, i) => (
                       <TableRow key={s.id}>
-                        <TableCell className="font-bold">#{i+1}</TableCell>
-                        <TableCell><Input type="number" className="w-20" value={s.dist} onChange={e => setMultiSplits(multiSplits.map(x => x.id === s.id ? {...x, dist: Number(e.target.value)} : x))} /></TableCell>
-                        <TableCell><div className="flex gap-1">
-                            <Input className="w-12 p-1 text-center" value={s.time.h} onChange={e => setMultiSplits(multiSplits.map(x => x.id === s.id ? {...x, time: {...x.time, h: Number(e.target.value)}} : x))} />
-                            <Input className="w-12 p-1 text-center" value={s.time.m} onChange={e => setMultiSplits(multiSplits.map(x => x.id === s.id ? {...x, time: {...x.time, m: Number(e.target.value)}} : x))} />
-                            <Input className="w-12 p-1 text-center" value={s.time.s} onChange={e => setMultiSplits(multiSplits.map(x => x.id === s.id ? {...x, time: {...x.time, s: Number(e.target.value)}} : x))} />
-                        </div></TableCell>
-                        <TableCell><Button variant="ghost" size="icon" onClick={() => setMultiSplits(multiSplits.filter(x => x.id !== s.id))}><Trash2 size={14} /></Button></TableCell>
+                        <TableCell className="font-bold text-muted-foreground">{i + 1}</TableCell>
+                        <TableCell>
+                          <Input type="number" className="h-9" value={s.dist} onChange={e => setMultiSplits(multiSplits.map(x => x.id === s.id ? {...x, dist: Number(e.target.value)} : x))} />
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-1">
+                            <Input className="h-9 w-full text-center" placeholder="H" value={s.time.h} onChange={e => setMultiSplits(multiSplits.map(x => x.id === s.id ? {...x, time: {...x.time, h: Number(e.target.value)}} : x))} />
+                            <Input className="h-9 w-full text-center" placeholder="M" value={s.time.m} onChange={e => setMultiSplits(multiSplits.map(x => x.id === s.id ? {...x, time: {...x.time, m: Number(e.target.value)}} : x))} />
+                            <Input className="h-9 w-full text-center" placeholder="S" value={s.time.s} onChange={e => setMultiSplits(multiSplits.map(x => x.id === s.id ? {...x, time: {...x.time, s: Number(e.target.value)}} : x))} />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive" onClick={() => setMultiSplits(multiSplits.filter(x => x.id !== s.id))}>
+                            <Trash2 size={14} />
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))}
-                </TableBody></Table>
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
-            <div className="lg:col-span-4 space-y-4">
-              <Card className="bg-accent text-white border-none shadow-lg text-center p-6">
-                <p className="text-[10px] uppercase font-bold opacity-70 mb-2">Average Pace</p>
-                <div className="text-5xl font-black font-headline">{multipointResult?.m}:{String(multipointResult?.s).padStart(2, '0')}</div>
-                <p className="text-xs opacity-60">min/{multiUnit}</p>
+
+            <div className="lg:col-span-4 space-y-6">
+              <Card>
+                <CardHeader className="pb-2">
+                  <Label className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Preferred Pace Unit</Label>
+                  <Select value={preferredResultUnit} onValueChange={setPreferredResultUnit}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="per kilometer">per kilometer</SelectItem>
+                      <SelectItem value="per mile">per mile</SelectItem>
+                      <SelectItem value="miles per hour">miles per hour</SelectItem>
+                      <SelectItem value="kilometers per hour">kilometers per hour</SelectItem>
+                      <SelectItem value="meters per minute">meters per minute</SelectItem>
+                      <SelectItem value="meters per second">meters per second</SelectItem>
+                      <SelectItem value="yards per minute">yards per minute</SelectItem>
+                      <SelectItem value="yards per second">yards per second</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </CardHeader>
+                <CardContent className="pt-4">
+                   <div className="bg-primary text-white p-6 rounded-2xl text-center space-y-1 shadow-lg">
+                      <p className="text-[10px] uppercase font-bold opacity-70">Average Pace</p>
+                      <div className="text-3xl font-black font-headline">{multipointResult?.averagePace}</div>
+                      <p className="text-[10px] opacity-70">{preferredResultUnit}</p>
+                   </div>
+                </CardContent>
               </Card>
-              <Card><CardContent className="pt-6 space-y-3 text-sm">
-                <div className="flex justify-between border-b pb-2"><span>Total Distance</span><span className="font-bold">{multipointResult?.totalDist} {multiUnit}</span></div>
-                <div className="flex justify-between"><span>Total Time</span><span className="font-bold">{multipointResult?.totalTime}</span></div>
-              </CardContent></Card>
+
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 flex gap-4">
+                <Info className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                <p className="text-[10px] text-blue-700 leading-relaxed">
+                  Enter cumulative markers (e.g., Mile 1 time, Mile 2 time). We automatically calculate the speed for each specific interval.
+                </p>
+              </div>
             </div>
           </div>
+
+          {multipointResult && (
+            <div className="space-y-8 pt-4">
+              <Card className="border-none shadow-md overflow-hidden">
+                <CardHeader className="bg-muted/10 border-b">
+                  <CardTitle className="text-sm font-bold text-primary uppercase">Performance Breakdown</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <Table>
+                    <TableHeader className="bg-muted/30">
+                      <TableRow>
+                        <TableHead>Marker</TableHead>
+                        <TableHead>Distance ({multiUnit})</TableHead>
+                        <TableHead>Section Time</TableHead>
+                        <TableHead>Section Pace ({preferredResultUnit})</TableHead>
+                        <TableHead className="text-right">Accumulated Pace</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {multipointResult.tableData.map((row) => (
+                        <TableRow key={row.marker}>
+                          <TableCell className="font-bold">{row.marker}.</TableCell>
+                          <TableCell>{row.sectionDist.toFixed(2)}</TableCell>
+                          <TableCell className="font-mono">{row.sectionTime}</TableCell>
+                          <TableCell className="font-bold text-accent">{row.sectionPace}</TableCell>
+                          <TableCell className="text-right font-bold text-primary">{row.accumulatedPace}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+
+              <Card className="p-6">
+                <div className="flex items-center gap-2 mb-6">
+                  <LineChartIcon className="text-primary w-5 h-5" />
+                  <CardTitle className="text-sm font-bold uppercase tracking-wider">Pace Trends for Sections</CardTitle>
+                </div>
+                <div className="h-[300px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={multipointResult.tableData}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.3} />
+                      <XAxis dataKey="marker" label={{ value: 'Section #', position: 'insideBottomRight', offset: -5 }} fontSize={12} />
+                      <YAxis label={{ value: preferredResultUnit, angle: -90, position: 'insideLeft' }} fontSize={12} />
+                      <ChartTooltip 
+                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                        formatter={(val: number) => [val, 'Section Pace']}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="chartVal" 
+                        stroke="hsl(var(--primary))" 
+                        strokeWidth={4} 
+                        dot={{ r: 6, fill: 'hsl(var(--primary))', strokeWidth: 2, stroke: '#fff' }}
+                        activeDot={{ r: 8 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </Card>
+            </div>
+          )}
         </section>
 
         <Separator />
@@ -559,8 +743,9 @@ export default function PaceCalculatorPage() {
             <div><h3 className="text-2xl font-bold text-primary">Pace Converter</h3><p className="text-sm text-muted-foreground">Convert between pace and speed standards instantly.</p></div>
           </div>
           <Card><CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4"><Label className="text-xs font-black uppercase">Input Pace / Speed</Label>
+              <div className="space-y-6">
                 <div className="space-y-4">
+                  <Label className="text-xs font-black uppercase text-muted-foreground">Input Pace / Speed</Label>
                   {(!isSpeedUnit(convUnit)) ? (
                     <div className="grid grid-cols-3 gap-2">
                       <Input type="number" placeholder="H" value={convPace.h} onChange={e => setConvPace({...convPace, h: Number(e.target.value)})} />
@@ -568,16 +753,32 @@ export default function PaceCalculatorPage() {
                       <Input type="number" placeholder="S" value={convPace.s} onChange={e => setConvPace({...convPace, s: Number(e.target.value)})} />
                     </div>
                   ) : (<Input type="number" value={convSpeed} onChange={e => setConvSpeed(e.target.value)} />)}
-                  <Select value={convUnit} onValueChange={setConvUnit}><SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-black uppercase text-muted-foreground">Standard</Label>
+                  <Select value={convUnit} onValueChange={setConvUnit}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="per kilometer">per kilometer</SelectItem><SelectItem value="per mile">per mile</SelectItem><SelectItem value="miles per hour">miles per hour</SelectItem><SelectItem value="kilometers per hour">kilometers per hour</SelectItem><SelectItem value="meters per minute">meters per minute</SelectItem><SelectItem value="meters per second">meters per second</SelectItem><SelectItem value="yards per minute">yards per minute</SelectItem><SelectItem value="yards per second">yards per second</SelectItem>
+                      <SelectItem value="per kilometer">per kilometer</SelectItem>
+                      <SelectItem value="per mile">per mile</SelectItem>
+                      <SelectItem value="miles per hour">miles per hour</SelectItem>
+                      <SelectItem value="kilometers per hour">kilometers per hour</SelectItem>
+                      <SelectItem value="meters per minute">meters per minute</SelectItem>
+                      <SelectItem value="meters per second">meters per second</SelectItem>
+                      <SelectItem value="yards per minute">yards per minute</SelectItem>
+                      <SelectItem value="yards per second">yards per second</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {convResults?.map(r => (
-                  <div key={r.label} className="bg-muted/30 p-3 rounded-lg text-center"><p className="text-[10px] uppercase font-bold text-muted-foreground">{r.label}</p><p className="text-xl font-bold text-primary">{r.value}</p></div>
+                  <div key={r.label} className="bg-muted/30 p-3 rounded-lg text-center flex flex-col justify-center">
+                    <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">{r.label}</p>
+                    <p className="text-sm font-bold text-primary leading-tight">{r.value}</p>
+                  </div>
                 ))}
               </div>
           </CardContent></Card>
