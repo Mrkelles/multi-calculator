@@ -63,16 +63,8 @@ interface MultiSplit {
 }
 
 export default function PaceCalculatorPage() {
-  // 1. Standard Pace/Time/Distance Solver
-  const [mode, setMode] = useState<PaceMode>('pace');
-  const [time, setTime] = useState<TimeValue>({ h: 0, m: 20, s: 0 });
-  const [dist, setDist] = useState(5);
-  const [distUnit, setDistUnit] = useState('km');
-  
-  // Pace inputs for Time/Distance modes
-  const [paceTime, setPaceTime] = useState<TimeValue>({ h: 0, m: 4, s: 0 });
-  const [speedInputValue, setSpeedInputValue] = useState('15');
-  const [paceUnit, setPaceUnit] = useState('per kilometer');
+  const MILE_TO_KM = 1.609344;
+  const YARD_TO_KM = 0.0009144;
 
   const isSpeedUnit = (unit: string) => [
     'miles per hour', 
@@ -92,10 +84,24 @@ export default function PaceCalculatorPage() {
     return `${m}:${String(s).padStart(2, '0')}`;
   };
 
+  const formatPaceLong = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = (seconds % 60).toFixed(2);
+    if (m > 0) return `${m} minutes and ${s} seconds`;
+    return `${s} seconds`;
+  };
+
+  // 1. Standard Pace/Time/Distance Solver
+  const [mode, setMode] = useState<PaceMode>('pace');
+  const [time, setTime] = useState<TimeValue>({ h: 0, m: 20, s: 0 });
+  const [dist, setDist] = useState(5);
+  const [distUnit, setDistUnit] = useState('km');
+  const [paceTime, setPaceTime] = useState<TimeValue>({ h: 0, m: 4, s: 0 });
+  const [speedInputValue, setSpeedInputValue] = useState('15');
+  const [paceUnit, setPaceUnit] = useState('per kilometer');
+
   const standardResult = useMemo(() => {
     const totalTimeSec = time.h * 3600 + time.m * 60 + time.s;
-    const MILE_TO_KM = 1.609344;
-    const YARD_TO_KM = 0.0009144;
 
     let inputDistInKm = dist;
     if (distUnit === 'miles') inputDistInKm = dist * MILE_TO_KM;
@@ -137,13 +143,6 @@ export default function PaceCalculatorPage() {
 
     const pacePerMileSec = pacePerKmSec * MILE_TO_KM;
 
-    const formatPaceLong = (seconds: number) => {
-      const m = Math.floor(seconds / 60);
-      const s = (seconds % 60).toFixed(2);
-      if (m > 0) return `${m} minutes and ${s} seconds`;
-      return `${s} seconds`;
-    };
-
     const diffUnits = [
       { label: 'per mile', value: formatPaceLong(pacePerMileSec) },
       { label: 'per kilometer', value: formatPaceLong(pacePerKmSec) },
@@ -151,6 +150,8 @@ export default function PaceCalculatorPage() {
       { label: 'kilometers/hour', value: (3600 / pacePerKmSec).toFixed(2) },
       { label: 'meters/minute', value: (1000 / (pacePerKmSec / 60)).toFixed(0) },
       { label: 'meters/second', value: (1000 / pacePerKmSec).toFixed(2) },
+      { label: 'yards/minute', value: (1 / (pacePerKmSec * YARD_TO_KM / 60)).toFixed(0) },
+      { label: 'yards/second', value: (1 / (pacePerKmSec * YARD_TO_KM)).toFixed(2) },
     ];
 
     const getPredictions = () => {
@@ -217,26 +218,48 @@ export default function PaceCalculatorPage() {
 
   // 3. Pace Converter States
   const [convPace, setConvPace] = useState<TimeValue>({ h: 0, m: 5, s: 0 });
+  const [convSpeed, setConvSpeed] = useState('12');
   const [convUnit, setConvUnit] = useState('per mile');
+
   const convResults = useMemo(() => {
-    const MILE_TO_KM = 1.609344;
-    const totalS = convPace.h * 3600 + convPace.m * 60 + convPace.s;
-    if (totalS === 0) return null;
-    const pk = convUnit === 'per kilometer' ? totalS : totalS / MILE_TO_KM;
-    const pm = pk * MILE_TO_KM;
+    let pacePerKmSec = 0;
+
+    if (isSpeedUnit(convUnit)) {
+      const speedVal = parseFloat(convSpeed);
+      if (isNaN(speedVal) || speedVal <= 0) return null;
+      let speedKps = 0; 
+      if (convUnit === 'miles per hour') speedKps = (speedVal * MILE_TO_KM) / 3600;
+      else if (convUnit === 'kilometers per hour') speedKps = speedVal / 3600;
+      else if (convUnit === 'meters per minute') speedKps = (speedVal / 1000) / 60;
+      else if (convUnit === 'meters per second') speedKps = speedVal / 1000;
+      else if (convUnit === 'yards per minute') speedKps = (speedVal * YARD_TO_KM) / 60;
+      else if (convUnit === 'yards per second') speedKps = speedVal * YARD_TO_KM;
+      pacePerKmSec = 1 / speedKps;
+    } else {
+      const totalS = convPace.h * 3600 + convPace.m * 60 + convPace.s;
+      if (totalS <= 0) return null;
+      if (convUnit === 'per kilometer') pacePerKmSec = totalS;
+      else if (convUnit === 'per mile') pacePerKmSec = totalS / MILE_TO_KM;
+    }
+
+    const pacePerMileSec = pacePerKmSec * MILE_TO_KM;
+
     return [
-      { label: 'per mile', value: formatTime(pm) },
-      { label: 'per kilometer', value: formatTime(pk) },
-      { label: 'mph', value: (3600 / pm).toFixed(2) },
-      { label: 'kph', value: (3600 / pk).toFixed(2) },
+      { label: 'per mile', value: formatPaceLong(pacePerMileSec) },
+      { label: 'per kilometer', value: formatPaceLong(pacePerKmSec) },
+      { label: 'miles/hour', value: (3600 / pacePerMileSec).toFixed(2) },
+      { label: 'kilometers/hour', value: (3600 / pacePerKmSec).toFixed(2) },
+      { label: 'meters/minute', value: (1000 / (pacePerKmSec / 60)).toFixed(0) },
+      { label: 'meters/second', value: (1000 / pacePerKmSec).toFixed(2) },
+      { label: 'yards/minute', value: (1 / (pacePerKmSec * YARD_TO_KM / 60)).toFixed(0) },
+      { label: 'yards/second', value: (1 / (pacePerKmSec * YARD_TO_KM)).toFixed(2) },
     ];
-  }, [convPace, convUnit]);
+  }, [convPace, convSpeed, convUnit]);
 
   // 4. Finish Predictor States
   const [finishPace, setFinishPace] = useState<TimeValue>({ h: 0, m: 4, s: 30 });
   const [finishUnit, setFinishUnit] = useState('per kilometer');
   const finishResults = useMemo(() => {
-    const MILE_TO_KM = 1.609344;
     const totalS = finishPace.h * 3600 + finishPace.m * 60 + finishPace.s;
     if (totalS === 0) return null;
     const pk = finishUnit === 'per kilometer' ? totalS : totalS / MILE_TO_KM;
@@ -323,27 +346,15 @@ export default function PaceCalculatorPage() {
                 {mode !== 'pace' && (
                   <div className="space-y-3">
                     <Label className="text-xs font-black uppercase text-muted-foreground">Pace / Speed</Label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Conditional Input based on Unit Selection */}
+                    <div className="space-y-3">
                       {!isSpeedUnit(paceUnit) ? (
-                        <div className="grid grid-cols-3 gap-2">
-                          <div className="space-y-1">
-                            <Input type="number" placeholder="H" value={paceTime.h} onChange={e => setPaceTime({...paceTime, h: Number(e.target.value)})} />
-                          </div>
-                          <div className="space-y-1">
-                            <Input type="number" placeholder="M" value={paceTime.m} onChange={e => setPaceTime({...paceTime, m: Number(e.target.value)})} />
-                          </div>
-                          <div className="space-y-1">
-                            <Input type="number" placeholder="S" value={paceTime.s} onChange={e => setPaceTime({...paceTime, s: Number(e.target.value)})} />
-                          </div>
+                        <div className="grid grid-cols-3 gap-3">
+                          <Input type="number" placeholder="Hr" value={paceTime.h} onChange={e => setPaceTime({...paceTime, h: Number(e.target.value)})} />
+                          <Input type="number" placeholder="Min" value={paceTime.m} onChange={e => setPaceTime({...paceTime, m: Number(e.target.value)})} />
+                          <Input type="number" placeholder="Sec" value={paceTime.s} onChange={e => setPaceTime({...paceTime, s: Number(e.target.value)})} />
                         </div>
                       ) : (
-                        <Input 
-                          type="number" 
-                          value={speedInputValue} 
-                          onChange={e => setSpeedInputValue(e.target.value)} 
-                          placeholder="e.g. 15"
-                        />
+                        <Input type="number" value={speedInputValue} onChange={e => setSpeedInputValue(e.target.value)} />
                       )}
                       
                       <Select value={paceUnit} onValueChange={setPaceUnit}>
@@ -359,8 +370,8 @@ export default function PaceCalculatorPage() {
                           <SelectItem value="yards per second">yards per second</SelectItem>
                         </SelectContent>
                       </Select>
+                      {!isSpeedUnit(paceUnit) && <p className="text-[10px] text-muted-foreground italic">hh:mm:ss</p>}
                     </div>
-                    {!isSpeedUnit(paceUnit) && <p className="text-[10px] text-muted-foreground italic">hh:mm:ss</p>}
                   </div>
                 )}
               </CardContent>
@@ -422,25 +433,23 @@ export default function PaceCalculatorPage() {
             </div>
           </div>
 
-          {standardResult && (
+          {standardResult && mode !== 'distance' && (
             <div className="space-y-8 pt-4">
-              {mode !== 'distance' && (
-                <Card className="border-none bg-muted/20">
-                  <CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Pace in Different Units</CardTitle></CardHeader>
-                  <CardContent className="p-0">
-                    <Table>
-                      <TableBody>
-                        {standardResult.diffUnits.map(u => (
-                          <TableRow key={u.label}>
-                            <TableCell className="text-xs font-mono font-bold">{u.value}</TableCell>
-                            <TableCell className="text-xs text-muted-foreground">{u.label}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </CardContent>
-                </Card>
-              )}
+              <Card className="border-none bg-muted/20">
+                <CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Pace in Different Units</CardTitle></CardHeader>
+                <CardContent className="p-0">
+                  <Table>
+                    <TableBody>
+                      {standardResult.diffUnits.map(u => (
+                        <TableRow key={u.label}>
+                          <TableCell className="text-xs font-mono font-bold">{u.value}</TableCell>
+                          <TableCell className="text-xs text-muted-foreground">{u.label}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
 
               <Card>
                 <CardHeader><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Popular Race Distances</CardTitle></CardHeader>
@@ -563,16 +572,29 @@ export default function PaceCalculatorPage() {
           <Card>
             <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
-                <Label className="text-xs font-black uppercase">Input Pace (hh:mm:ss)</Label>
-                <div className="flex gap-2">
-                  <Input type="number" placeholder="H" value={convPace.h} onChange={e => setConvPace({...convPace, h: Number(e.target.value)})} />
-                  <Input type="number" placeholder="M" value={convPace.m} onChange={e => setConvPace({...convPace, m: Number(e.target.value)})} />
-                  <Input type="number" placeholder="S" value={convPace.s} onChange={e => setConvPace({...convPace, s: Number(e.target.value)})} />
+                <Label className="text-xs font-black uppercase">Input Pace / Speed</Label>
+                <div className="space-y-4">
+                  {!isSpeedUnit(convUnit) ? (
+                    <div className="grid grid-cols-3 gap-2">
+                      <Input type="number" placeholder="H" value={convPace.h} onChange={e => setConvPace({...convPace, h: Number(e.target.value)})} />
+                      <Input type="number" placeholder="M" value={convPace.m} onChange={e => setConvPace({...convPace, m: Number(e.target.value)})} />
+                      <Input type="number" placeholder="S" value={convPace.s} onChange={e => setConvPace({...convPace, s: Number(e.target.value)})} />
+                    </div>
+                  ) : (
+                    <Input type="number" value={convSpeed} onChange={e => setConvSpeed(e.target.value)} />
+                  )}
+                  
                   <Select value={convUnit} onValueChange={setConvUnit}>
-                    <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+                    <SelectTrigger className="w-full"><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="per mile">per mile</SelectItem>
                       <SelectItem value="per kilometer">per kilometer</SelectItem>
+                      <SelectItem value="per mile">per mile</SelectItem>
+                      <SelectItem value="miles per hour">miles per hour</SelectItem>
+                      <SelectItem value="kilometers per hour">kilometers per hour</SelectItem>
+                      <SelectItem value="meters per minute">meters per minute</SelectItem>
+                      <SelectItem value="meters per second">meters per second</SelectItem>
+                      <SelectItem value="yards per minute">yards per minute</SelectItem>
+                      <SelectItem value="yards per second">yards per second</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
