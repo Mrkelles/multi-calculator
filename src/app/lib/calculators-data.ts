@@ -36,7 +36,8 @@ import {
   LucideIcon,
   Sparkles,
   Timer as PaceIcon,
-  Binary
+  Binary,
+  Divide
 } from 'lucide-react';
 
 export interface CalculatorInfo {
@@ -55,6 +56,14 @@ export const calculators: CalculatorInfo[] = [
     description: 'Perform advanced mathematical operations including trigonometry, logarithms, and power functions.',
     icon: Binary,
     path: '/calculators/scientific',
+    category: 'tools',
+  },
+  {
+    id: 'fraction',
+    name: 'Fraction Calculator',
+    description: 'Calculate addition, subtraction, multiplication, and division of fractions, mixed numbers, and big integers.',
+    icon: Divide,
+    path: '/calculators/fraction',
     category: 'tools',
   },
   {
