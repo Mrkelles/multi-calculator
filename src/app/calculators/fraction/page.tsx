@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
 import { Divide, RefreshCw, Hash, Binary, Percent, Info, History, Calculator } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -78,7 +79,7 @@ export default function FractionCalculatorsPage() {
 
     return { 
       improper: simple, 
-      decimal: (resN / resD).toFixed(4),
+      decimal: (resN / (resD || 1)).toFixed(4),
       mixed: { w: mixedW, n: mixedN, d: simple.d }
     };
   }, [f1, f2, fOp]);
@@ -109,7 +110,7 @@ export default function FractionCalculatorsPage() {
 
     return { 
       improper: simple, 
-      decimal: (resN / resD).toFixed(4),
+      decimal: (resN / (resD || 1)).toFixed(4),
       mixed: { w: mixedW, n: mixedN, d: simple.d }
     };
   }, [m1, m2, mOp]);
@@ -144,7 +145,7 @@ export default function FractionCalculatorsPage() {
 
   // 5. Fraction to Decimal
   const [fToD, setFToD] = useState({ n: 2, d: 7 });
-  const fToDResult = useMemo(() => (fToD.n / fToD.d).toString(), [fToD]);
+  const fToDResult = useMemo(() => (fToD.n / (fToD.d || 1)).toString(), [fToD]);
 
   // 6. Big Number Fraction
   const [b1, setB1] = useState({ n: '1234', d: '748892928829' });
