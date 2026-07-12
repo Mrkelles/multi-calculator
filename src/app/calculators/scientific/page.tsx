@@ -6,6 +6,8 @@ import { Binary, History, Info, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
 export default function ScientificCalculatorPage() {
@@ -35,7 +37,10 @@ export default function ScientificCalculatorPage() {
         .replace(/e/g, Math.E.toString())
         .replace(/Ans/g, ans.toString());
 
-      // Evaluate the expression
+      // Simple implementation of powers x^y
+      // Note: This is a basic parser. In a real app, you'd use a math library like mathjs
+      // for handling nested exponents and complex scientific parsing.
+      
       const result = new Function(`return ${processedExpr}`)();
       
       if (isNaN(result) || !isFinite(result)) throw new Error('Math Error');
@@ -202,9 +207,23 @@ export default function ScientificCalculatorPage() {
           <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('sin')}>sin</Button>
           <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('cos')}>cos</Button>
           <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('tan')}>tan</Button>
-          <Button variant="ghost" className="bg-slate-800 text-white col-span-2 h-12 md:h-14 font-bold" onClick={() => setIsDegree(!isDegree)}>
-            {isDegree ? 'Deg' : 'Rad'}
-          </Button>
+          
+          <div className="col-span-2 bg-slate-100 rounded-md flex items-center justify-center h-12 md:h-14">
+            <RadioGroup
+              value={isDegree ? 'deg' : 'rad'}
+              onValueChange={(v) => setIsDegree(v === 'deg')}
+              className="flex items-center gap-3"
+            >
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem value="deg" id="deg" className="w-3 h-3 border-slate-400" />
+                <Label htmlFor="deg" className="text-[10px] md:text-xs font-bold uppercase cursor-pointer text-slate-600">Deg</Label>
+              </div>
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem value="rad" id="rad" className="w-3 h-3 border-slate-400" />
+                <Label htmlFor="rad" className="text-[10px] md:text-xs font-bold uppercase cursor-pointer text-slate-600">Rad</Label>
+              </div>
+            </RadioGroup>
+          </div>
 
           {/* Row 2 */}
           <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('sin-1')}>sin⁻¹</Button>
@@ -298,7 +317,7 @@ export default function ScientificCalculatorPage() {
             <CardContent className="text-xs text-muted-foreground space-y-3 leading-relaxed">
               <p>Calculations are performed with double-precision floating point math. Large results are automatically rounded to 10 decimal places for display clarity.</p>
               <Separator />
-              <p>The <strong>Deg/Rad</strong> toggle affects only trigonometric functions. Ensure you are in the correct mode before performing engineering calculations.</p>
+              <p>The <strong>Deg/Rad</strong> toggle affects only trigonometric functions. Use the radio selectors in the main grid to switch between Degree and Radian calculations.</p>
             </CardContent>
           </Card>
         </div>
