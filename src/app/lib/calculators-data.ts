@@ -37,7 +37,8 @@ import {
   Sparkles,
   Timer as PaceIcon,
   Binary,
-  Divide
+  Divide,
+  Shuffle
 } from 'lucide-react';
 
 export interface CalculatorInfo {
@@ -64,6 +65,14 @@ export const calculators: CalculatorInfo[] = [
     description: 'Calculate addition, subtraction, multiplication, and division of fractions, mixed numbers, and big integers.',
     icon: Divide,
     path: '/calculators/fraction',
+    category: 'tools',
+  },
+  {
+    id: 'random-number',
+    name: 'Random Number Generator',
+    description: 'Generate random integers within a range or pick random items from a custom list.',
+    icon: Shuffle,
+    path: '/calculators/random-number',
     category: 'tools',
   },
   {
