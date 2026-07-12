@@ -2,9 +2,10 @@
 
 import { useState, useCallback } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Binary, History, Info, RotateCcw, Delete } from 'lucide-react';
+import { Binary, History, Info, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 
 export default function ScientificCalculatorPage() {
@@ -26,19 +27,15 @@ export default function ScientificCalculatorPage() {
 
   const calculate = useCallback((expr: string) => {
     try {
-      // Basic parser logic for complex functions
-      // In a real app we might use a library like mathjs, 
-      // but for MVP we will map common keys to Math object.
       let processedExpr = expr
         .replace(/×/g, '*')
         .replace(/÷/g, '/')
+        .replace(/–/g, '-')
         .replace(/π/g, Math.PI.toString())
         .replace(/e/g, Math.E.toString())
         .replace(/Ans/g, ans.toString());
 
       // Evaluate the expression
-      // WARNING: Using Function constructor for dynamic math evaluation
-      // In production, use a safe math parser.
       const result = new Function(`return ${processedExpr}`)();
       
       if (isNaN(result) || !isFinite(result)) throw new Error('Math Error');
@@ -55,7 +52,7 @@ export default function ScientificCalculatorPage() {
 
   const handleInput = (val: string) => {
     if (shouldReset) {
-      if (['+', '-', '×', '÷'].includes(val)) {
+      if (['+', '–', '×', '÷'].includes(val)) {
         setExpression(display + ' ' + val + ' ');
       } else {
         setDisplay(val);
@@ -65,7 +62,7 @@ export default function ScientificCalculatorPage() {
       return;
     }
 
-    if (display === '0' && !['.', '+', '-', '×', '÷'].includes(val)) {
+    if (display === '0' && !['.', '+', '–', '×', '÷'].includes(val)) {
       setDisplay(val);
       setExpression(val);
     } else {
@@ -171,74 +168,6 @@ export default function ScientificCalculatorPage() {
     }
   };
 
-  const buttons = [
-    // Row 1: Scientific
-    { label: 'sin', action: () => handleFunction('sin'), type: 'sci' },
-    { label: 'cos', action: () => handleFunction('cos'), type: 'sci' },
-    { label: 'tan', action: () => handleFunction('tan'), type: 'sci' },
-    { label: isDegree ? 'Deg' : 'Rad', action: () => setIsDegree(!isDegree), type: 'toggle' },
-    { label: 'π', action: () => handleInput('π'), type: 'sci' },
-
-    // Row 2
-    { label: 'sin⁻¹', action: () => handleFunction('sin-1'), type: 'sci' },
-    { label: 'cos⁻¹', action: () => handleFunction('cos-1'), type: 'sci' },
-    { label: 'tan⁻¹', action: () => handleFunction('tan-1'), type: 'sci' },
-    { label: 'e', action: () => handleInput('e'), type: 'sci' },
-    { label: 'Ans', action: () => handleInput('Ans'), type: 'util' },
-
-    // Row 3
-    { label: 'xʸ', action: () => handleInput('**'), type: 'sci' },
-    { label: 'x³', action: () => handleFunction('x3'), type: 'sci' },
-    { label: 'x²', action: () => handleFunction('x2'), type: 'sci' },
-    { label: 'eˣ', action: () => handleFunction('ex'), type: 'sci' },
-    { label: '10ˣ', action: () => handleFunction('10x'), type: 'sci' },
-
-    // Row 4
-    { label: 'ʸ√x', action: () => handleInput('**(1/'), type: 'sci' },
-    { label: '³√x', action: () => handleFunction('3sqrt'), type: 'sci' },
-    { label: '√x', action: () => handleFunction('sqrt'), type: 'sci' },
-    { label: 'ln', action: () => handleFunction('ln'), type: 'sci' },
-    { label: 'log', action: () => handleFunction('log'), type: 'sci' },
-
-    // Row 5
-    { label: '(', action: () => handleInput('('), type: 'sci' },
-    { label: ')', action: () => handleInput(')'), type: 'sci' },
-    { label: '1/x', action: () => handleFunction('1/x'), type: 'sci' },
-    { label: '%', action: () => handleInput('/100'), type: 'sci' },
-    { label: 'n!', action: () => handleFunction('n!'), type: 'sci' },
-
-    // Standard Numpad Starts
-    { label: '7', action: () => handleInput('7'), type: 'num' },
-    { label: '8', action: () => handleInput('8'), type: 'num' },
-    { label: '9', action: () => handleInput('9'), type: 'num' },
-    { label: '+', action: () => handleInput('+'), type: 'op' },
-    { label: 'Back', action: backspace, type: 'util' },
-
-    { label: '4', action: () => handleInput('4'), type: 'num' },
-    { label: '5', action: () => handleInput('5'), type: 'num' },
-    { label: '6', action: () => handleInput('6'), type: 'num' },
-    { label: '–', action: () => handleInput('-'), type: 'op' },
-    { label: 'M+', action: () => handleMemory('M+'), type: 'util' },
-
-    { label: '1', action: () => handleInput('1'), type: 'num' },
-    { label: '2', action: () => handleInput('2'), type: 'num' },
-    { label: '3', action: () => handleInput('3'), type: 'num' },
-    { label: '×', action: () => handleInput('*'), type: 'op' },
-    { label: 'M-', action: () => handleMemory('M-'), type: 'util' },
-
-    { label: '0', action: () => handleInput('0'), type: 'num' },
-    { label: '.', action: () => handleInput('.'), type: 'num' },
-    { label: 'EXP', action: () => handleInput('*10**'), type: 'num' },
-    { label: '÷', action: () => handleInput('/'), type: 'op' },
-    { label: 'MR', action: () => handleMemory('MR'), type: 'util' },
-
-    { label: '±', action: () => handleFunction('±'), type: 'num' },
-    { label: 'RND', action: () => handleFunction('RND'), type: 'num' },
-    { label: 'AC', action: clearAll, type: 'clear' },
-    { label: '=', action: () => calculate(expression), type: 'equal' },
-    { label: '(', action: () => handleInput('('), type: 'num' }, // Placeholder or filler
-  ];
-
   return (
     <CalculatorWrapper
       title="Scientific Calculator"
@@ -267,26 +196,78 @@ export default function ScientificCalculatorPage() {
           </div>
         </Card>
 
+        {/* Button Grid matching reference */}
         <div className="grid grid-cols-5 gap-2 md:gap-3">
-          {buttons.slice(0, 50).map((btn, idx) => (
-            <Button
-              key={idx}
-              variant={btn.type === 'num' ? 'outline' : btn.type === 'op' ? 'secondary' : btn.type === 'equal' ? 'default' : 'ghost'}
-              className={cn(
-                "h-12 md:h-14 text-xs md:text-sm font-bold rounded-xl transition-all active:scale-95 shadow-sm",
-                btn.type === 'sci' && "bg-slate-100 hover:bg-slate-200 text-slate-700",
-                btn.type === 'num' && "bg-white hover:bg-slate-50 text-slate-900 border-slate-200",
-                btn.type === 'op' && "bg-primary/10 hover:bg-primary/20 text-primary border-none",
-                btn.type === 'clear' && "bg-destructive/10 hover:bg-destructive/20 text-destructive border-none",
-                btn.type === 'util' && "bg-accent/10 hover:bg-accent/20 text-accent border-none",
-                btn.type === 'equal' && "bg-primary text-white hover:bg-primary/90",
-                btn.type === 'toggle' && "bg-slate-800 text-white hover:bg-slate-700"
-              )}
-              onClick={btn.action}
-            >
-              {btn.label}
-            </Button>
-          ))}
+          {/* Row 1 */}
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('sin')}>sin</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('cos')}>cos</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('tan')}>tan</Button>
+          <Button variant="ghost" className="bg-slate-800 text-white col-span-2 h-12 md:h-14 font-bold" onClick={() => setIsDegree(!isDegree)}>
+            {isDegree ? 'Deg' : 'Rad'}
+          </Button>
+
+          {/* Row 2 */}
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('sin-1')}>sin⁻¹</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('cos-1')}>cos⁻¹</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('tan-1')}>tan⁻¹</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleInput('π')}>π</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleInput('e')}>e</Button>
+
+          {/* Row 3 */}
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleInput('**')}>xʸ</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('x3')}>x³</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('x2')}>x²</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('ex')}>eˣ</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('10x')}>10ˣ</Button>
+
+          {/* Row 4 */}
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleInput('**(1/')}>ʸ√x</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('3sqrt')}>∛x</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('sqrt')}>√x</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('ln')}>ln</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('log')}>log</Button>
+
+          {/* Row 5 */}
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleInput('(')}>(</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleInput(')')}>)</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('1/x')}>1/x</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleInput('/100')}>%</Button>
+          <Button variant="ghost" className="bg-slate-100 h-12 md:h-14 font-bold" onClick={() => handleFunction('n!')}>n!</Button>
+
+          {/* Row 6 */}
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('7')}>7</Button>
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('8')}>8</Button>
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('9')}>9</Button>
+          <Button variant="secondary" className="h-12 md:h-14 font-bold text-primary" onClick={() => handleInput('+')}>+</Button>
+          <Button variant="ghost" className="h-12 md:h-14 font-bold bg-accent/10 text-accent" onClick={backspace}>Back</Button>
+
+          {/* Row 7 */}
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('4')}>4</Button>
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('5')}>5</Button>
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('6')}>6</Button>
+          <Button variant="secondary" className="h-12 md:h-14 font-bold text-primary" onClick={() => handleInput('–')}>–</Button>
+          <Button variant="ghost" className="h-12 md:h-14 font-bold bg-accent/10 text-accent" onClick={() => handleInput('Ans')}>Ans</Button>
+
+          {/* Row 8 */}
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('1')}>1</Button>
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('2')}>2</Button>
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('3')}>3</Button>
+          <Button variant="secondary" className="h-12 md:h-14 font-bold text-primary" onClick={() => handleInput('×')}>×</Button>
+          <Button variant="ghost" className="h-12 md:h-14 font-bold bg-accent/10 text-accent" onClick={() => handleMemory('M+')}>M+</Button>
+
+          {/* Row 9 */}
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('0')}>0</Button>
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('.')}>.</Button>
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleInput('*10**')}>EXP</Button>
+          <Button variant="secondary" className="h-12 md:h-14 font-bold text-primary" onClick={() => handleInput('÷')}>÷</Button>
+          <Button variant="ghost" className="h-12 md:h-14 font-bold bg-accent/10 text-accent" onClick={() => handleMemory('M-')}>M-</Button>
+
+          {/* Row 10 */}
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleFunction('±')}>±</Button>
+          <Button variant="outline" className="h-12 md:h-14 font-bold bg-white" onClick={() => handleFunction('RND')}>RND</Button>
+          <Button variant="ghost" className="h-12 md:h-14 font-bold bg-destructive/10 text-destructive" onClick={clearAll}>AC</Button>
+          <Button variant="default" className="h-12 md:h-14 font-bold text-lg" onClick={() => calculate(expression)}>=</Button>
+          <Button variant="ghost" className="h-12 md:h-14 font-bold bg-accent/10 text-accent" onClick={() => handleMemory('MR')}>MR</Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8">
