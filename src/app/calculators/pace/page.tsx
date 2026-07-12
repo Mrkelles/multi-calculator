@@ -69,7 +69,9 @@ export default function PaceCalculatorPage() {
   const [dist, setDist] = useState(5);
   const [distUnit, setDistUnit] = useState('km');
   
-  const [paceInputValue, setPaceInputValue] = useState('4');
+  // Pace inputs for Time/Distance modes
+  const [paceTime, setPaceTime] = useState<TimeValue>({ h: 0, m: 4, s: 0 });
+  const [speedInputValue, setSpeedInputValue] = useState('15');
   const [paceUnit, setPaceUnit] = useState('per kilometer');
 
   const isSpeedUnit = (unit: string) => [
@@ -80,12 +82,6 @@ export default function PaceCalculatorPage() {
     'yards per minute', 
     'yards per second'
   ].includes(unit);
-
-  const parsePaceToSeconds = (input: string) => {
-    if (!input) return 0;
-    const val = parseFloat(input);
-    return isNaN(val) ? 0 : val;
-  };
 
   const formatTime = (totalSeconds: number) => {
     const roundedSeconds = Math.round(totalSeconds);
@@ -112,21 +108,22 @@ export default function PaceCalculatorPage() {
       if (inputDistInKm === 0) return null;
       pacePerKmSec = totalTimeSec / inputDistInKm;
     } else {
-      const paceInputVal = parsePaceToSeconds(paceInputValue);
-      if (paceInputVal <= 0) return null;
-
       if (isSpeedUnit(paceUnit)) {
+        const speedVal = parseFloat(speedInputValue);
+        if (isNaN(speedVal) || speedVal <= 0) return null;
         let speedKps = 0; 
-        if (paceUnit === 'miles per hour') speedKps = (paceInputVal * MILE_TO_KM) / 3600;
-        else if (paceUnit === 'kilometers per hour') speedKps = paceInputVal / 3600;
-        else if (paceUnit === 'meters per minute') speedKps = (paceInputVal / 1000) / 60;
-        else if (paceUnit === 'meters per second') speedKps = paceInputVal / 1000;
-        else if (paceUnit === 'yards per minute') speedKps = (paceInputVal * YARD_TO_KM) / 60;
-        else if (paceUnit === 'yards per second') speedKps = paceInputVal * YARD_TO_KM;
+        if (paceUnit === 'miles per hour') speedKps = (speedVal * MILE_TO_KM) / 3600;
+        else if (paceUnit === 'kilometers per hour') speedKps = speedVal / 3600;
+        else if (paceUnit === 'meters per minute') speedKps = (speedVal / 1000) / 60;
+        else if (paceUnit === 'meters per second') speedKps = speedVal / 1000;
+        else if (paceUnit === 'yards per minute') speedKps = (speedVal * YARD_TO_KM) / 60;
+        else if (paceUnit === 'yards per second') speedKps = speedVal * YARD_TO_KM;
         pacePerKmSec = 1 / speedKps;
       } else {
-        if (paceUnit === 'per kilometer') pacePerKmSec = paceInputVal;
-        else if (paceUnit === 'per mile') pacePerKmSec = paceInputVal / MILE_TO_KM;
+        const totalPaceInputSec = paceTime.h * 3600 + paceTime.m * 60 + paceTime.s;
+        if (totalPaceInputSec <= 0) return null;
+        if (paceUnit === 'per kilometer') pacePerKmSec = totalPaceInputSec;
+        else if (paceUnit === 'per mile') pacePerKmSec = totalPaceInputSec / MILE_TO_KM;
       }
     }
 
@@ -172,7 +169,6 @@ export default function PaceCalculatorPage() {
         res.push({ dist: `${i}${unitLabel}`, time: formatTime(i * unitInKm * pacePerKmSec) });
         i++;
       }
-      // Add the final distance split if it wasn't added in the loop
       res.push({ 
         dist: `${(targetDistKm / unitInKm).toFixed(2).replace(/\.00$/, '').replace(/\.0$/, '')}${unitLabel}`, 
         time: formatTime(targetDistKm * pacePerKmSec) 
@@ -182,7 +178,6 @@ export default function PaceCalculatorPage() {
 
     return { 
       ph: Math.floor(pacePerKmSec / 3600), pm: Math.floor((pacePerKmSec % 3600) / 60), ps: Math.floor(pacePerKmSec % 60),
-      pm_mi: Math.floor(pacePerMileSec / 3600), pmm_mi: Math.floor((pacePerMileSec % 3600) / 60), pms_mi: Math.floor(pacePerMileSec % 60),
       h: Math.floor(solvedTimeSec / 3600), tm: Math.floor((solvedTimeSec % 3600) / 60), ts: Math.floor(solvedTimeSec % 60),
       dist: solvedDistInKm,
       allDistances: {
@@ -196,7 +191,7 @@ export default function PaceCalculatorPage() {
       kmSplits: getSplitsForUnit(1, 'K', solvedDistInKm),
       mileSplits: getSplitsForUnit(MILE_TO_KM, ' Mile', solvedDistInKm)
     };
-  }, [mode, time, dist, distUnit, paceInputValue, paceUnit]);
+  }, [mode, time, dist, distUnit, paceTime, speedInputValue, paceUnit]);
 
   // 2. Multipoint Pace States
   const [multiUnit, setMultiUnit] = useState('km');
@@ -329,12 +324,28 @@ export default function PaceCalculatorPage() {
                   <div className="space-y-3">
                     <Label className="text-xs font-black uppercase text-muted-foreground">Pace / Speed</Label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Input 
-                        type="number" 
-                        value={paceInputValue} 
-                        onChange={e => setPaceInputValue(e.target.value)} 
-                        placeholder="e.g. 4"
-                      />
+                      {/* Conditional Input based on Unit Selection */}
+                      {!isSpeedUnit(paceUnit) ? (
+                        <div className="grid grid-cols-3 gap-2">
+                          <div className="space-y-1">
+                            <Input type="number" placeholder="H" value={paceTime.h} onChange={e => setPaceTime({...paceTime, h: Number(e.target.value)})} />
+                          </div>
+                          <div className="space-y-1">
+                            <Input type="number" placeholder="M" value={paceTime.m} onChange={e => setPaceTime({...paceTime, m: Number(e.target.value)})} />
+                          </div>
+                          <div className="space-y-1">
+                            <Input type="number" placeholder="S" value={paceTime.s} onChange={e => setPaceTime({...paceTime, s: Number(e.target.value)})} />
+                          </div>
+                        </div>
+                      ) : (
+                        <Input 
+                          type="number" 
+                          value={speedInputValue} 
+                          onChange={e => setSpeedInputValue(e.target.value)} 
+                          placeholder="e.g. 15"
+                        />
+                      )}
+                      
                       <Select value={paceUnit} onValueChange={setPaceUnit}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
                         <SelectContent>
@@ -349,6 +360,7 @@ export default function PaceCalculatorPage() {
                         </SelectContent>
                       </Select>
                     </div>
+                    {!isSpeedUnit(paceUnit) && <p className="text-[10px] text-muted-foreground italic">hh:mm:ss</p>}
                   </div>
                 )}
               </CardContent>
@@ -377,17 +389,29 @@ export default function PaceCalculatorPage() {
                         </div>
                       )}
                       {mode === 'distance' && (
-                        <div className="space-y-4">
-                          <div className="text-5xl md:text-6xl font-black font-headline">
-                            {standardResult.allDistances[distUnit as keyof typeof standardResult.allDistances] || standardResult.dist}
-                            <span className="text-2xl ml-2 opacity-70">{distUnit}</span>
+                        <div className="space-y-4 text-left">
+                          <div className="text-center mb-4">
+                            <div className="text-5xl font-black font-headline mb-1">{standardResult.dist.toFixed(2)}</div>
+                            <p className="text-xs opacity-70 uppercase font-bold tracking-widest">Kilometers Calculated</p>
                           </div>
                           <Separator className="bg-white/20" />
-                          <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm font-medium opacity-90 text-left">
-                            <div>{standardResult.allDistances.km} km</div>
-                            <div>{standardResult.allDistances.miles} miles</div>
-                            <div>{standardResult.allDistances.meters} meters</div>
-                            <div>{standardResult.allDistances.yards} yards</div>
+                          <div className="grid grid-cols-2 gap-y-3 pt-2">
+                            <div>
+                              <p className="text-[10px] opacity-60 uppercase font-bold">Miles</p>
+                              <p className="text-lg font-bold">{standardResult.allDistances.miles}</p>
+                            </div>
+                            <div>
+                              <p className="text-[10px] opacity-60 uppercase font-bold">Kilometers</p>
+                              <p className="text-lg font-bold">{standardResult.allDistances.km}</p>
+                            </div>
+                            <div>
+                              <p className="text-[10px] opacity-60 uppercase font-bold">Meters</p>
+                              <p className="text-lg font-bold">{standardResult.allDistances.meters}</p>
+                            </div>
+                            <div>
+                              <p className="text-[10px] opacity-60 uppercase font-bold">Yards</p>
+                              <p className="text-lg font-bold">{standardResult.allDistances.yards}</p>
+                            </div>
                           </div>
                         </div>
                       )}
