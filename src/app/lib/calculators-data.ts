@@ -60,6 +60,14 @@ export const calculators: CalculatorInfo[] = [
     category: 'tools',
   },
   {
+    id: 'percentage',
+    name: 'Percentage Calculator',
+    description: 'Calculate percentages, percentage change, and percentage difference with step-by-step solutions.',
+    icon: Percent,
+    path: '/calculators/percentage',
+    category: 'finance',
+  },
+  {
     id: 'fraction',
     name: 'Fraction Calculator',
     description: 'Calculate addition, subtraction, multiplication, and division of fractions, mixed numbers, and big integers.',
