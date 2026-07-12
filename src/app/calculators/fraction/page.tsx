@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Divide, RefreshCw, Hash, Binary, Percent, Info, Calculator, ChevronDown, ChevronUp } from 'lucide-react';
+import { Divide, RefreshCw, Hash, Binary, Percent, Info, Calculator, ChevronDown, ChevronUp, History } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -24,7 +24,7 @@ const gcd = (a: number, b: number): number => {
 };
 
 const simplifyFraction = (n: number, d: number) => {
-  if (d === 0) return { n: NaN, d: NaN };
+  if (d === 0) return { n: NaN, d: NaN, gcd: 1 };
   const common = gcd(n, d);
   let resN = n / common;
   let resD = d / common;
@@ -48,7 +48,7 @@ const gcdBig = (a: bigint, b: bigint): bigint => {
 };
 
 const simplifyBig = (n: bigint, d: bigint) => {
-  if (d === 0n) return { n: 0n, d: 0n };
+  if (d === 0n) return { n: 0n, d: 0n, gcd: 1n };
   const common = gcdBig(n, d);
   let resN = n / common;
   let resD = d / common;
@@ -118,7 +118,7 @@ export default function FractionCalculatorsPage() {
   const [mOp, setMOp] = useState('+');
 
   const mixedResult = useMemo(() => {
-    const steps = [];
+    const steps: string[] = [];
     const toImproper = (m: any, label: string) => {
       const sign = m.w < 0 ? -1 : 1;
       const valN = sign * (Math.abs(m.w) * m.d + m.n);
