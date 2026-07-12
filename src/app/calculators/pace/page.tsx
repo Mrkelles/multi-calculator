@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useMemo } from 'react';
@@ -71,7 +70,7 @@ export default function PaceCalculatorPage() {
   const [dist, setDist] = useState(5);
   const [distUnit, setDistUnit] = useState('km');
   const [pace, setPace] = useState<TimeValue>({ h: 0, m: 4, s: 0 });
-  const [paceSpeed, setPaceSpeed] = useState(15); // for km/h etc
+  const [paceSpeed, setPaceSpeed] = useState(15); 
   const [paceUnit, setPaceUnit] = useState('per kilometer');
 
   const isSpeedUnit = (unit: string) => [
@@ -158,6 +157,8 @@ export default function PaceCalculatorPage() {
       { label: 'kilometers/hour', value: (3600 / pacePerKmSec).toFixed(2) },
       { label: 'meters/minute', value: (1000 / (pacePerKmSec / 60)).toFixed(0) },
       { label: 'meters/second', value: (1000 / pacePerKmSec).toFixed(2) },
+      { label: 'yards/minute', value: (1 / (pacePerKmSec * YARD_TO_KM / 60)).toFixed(0) },
+      { label: 'yards/second', value: (1 / (pacePerKmSec * YARD_TO_KM)).toFixed(2) },
     ];
 
     const raceTimes = raceEvents.map(event => {
@@ -173,6 +174,7 @@ export default function PaceCalculatorPage() {
     const getSplitsForUnit = (unitInKm: number, unitLabel: string, targetDistKm: number) => {
       const res = [];
       let i = 1;
+      // Loop through each whole unit
       while (i * unitInKm < targetDistKm - 0.0001) {
         res.push({
           dist: `${i}${unitLabel}`,
@@ -180,20 +182,23 @@ export default function PaceCalculatorPage() {
         });
         i++;
       }
-      // Add final distance
+      // Add the final distance
       const finalLabel = `${(targetDistKm / unitInKm).toFixed(2).replace(/\.00$/, '').replace(/\.0$/, '')}${unitLabel}`;
-      res.push({
-        dist: finalLabel,
-        time: formatTime(targetDistKm * pacePerKmSec)
-      });
+      // Only push if it's not a duplicate of the last entry
+      if (res.length === 0 || res[res.length-1].dist !== finalLabel) {
+        res.push({
+          dist: finalLabel,
+          time: formatTime(targetDistKm * pacePerKmSec)
+        });
+      }
       return res;
     };
 
-    // Result object based on current unit settings for the primary display
+    // Result object
     let primaryPaceM = 0;
     let primaryPaceS = 0;
     let primaryPaceH = 0;
-    if (paceUnit === 'per kilometer' || mode === 'pace' && distUnit === 'km') {
+    if (paceUnit === 'per kilometer' || (mode === 'pace' && distUnit === 'km')) {
       primaryPaceH = Math.floor(pacePerKmSec / 3600);
       primaryPaceM = Math.floor((pacePerKmSec % 3600) / 60);
       primaryPaceS = Math.floor(pacePerKmSec % 60);
@@ -203,11 +208,10 @@ export default function PaceCalculatorPage() {
       primaryPaceS = Math.floor(pacePerMileSec % 60);
     }
 
-    // Convert solved distance back to original unit
-    let finalDist = solvedDistInKm;
-    if (distUnit === 'miles') finalDist = solvedDistInKm / MILE_TO_KM;
-    else if (distUnit === 'meters') finalDist = solvedDistInKm * 1000;
-    else if (distUnit === 'yards') finalDist = solvedDistInKm / YARD_TO_KM;
+    let finalDistVal = solvedDistInKm;
+    if (distUnit === 'miles') finalDistVal = solvedDistInKm / MILE_TO_KM;
+    else if (distUnit === 'meters') finalDistVal = solvedDistInKm * 1000;
+    else if (distUnit === 'yards') finalDistVal = solvedDistInKm / YARD_TO_KM;
 
     return { 
       pm: primaryPaceM, 
@@ -216,7 +220,7 @@ export default function PaceCalculatorPage() {
       h: Math.floor(solvedTimeSec / 3600),
       tm: Math.floor((solvedTimeSec % 3600) / 60),
       ts: Math.floor(solvedTimeSec % 60),
-      dist: finalDist.toFixed(2),
+      dist: finalDistVal.toFixed(2),
       unit: distUnit,
       paceUnitLabel: paceUnit.replace('per ', ''),
       diffUnits,
@@ -422,7 +426,7 @@ export default function PaceCalculatorPage() {
                             {standardResult.tm}m {standardResult.ts}s
                           </div>
                           <p className="text-sm opacity-80">Total Duration</p>
-                        </>
+                        </div>
                       )}
                       {mode === 'distance' && (
                         <div className="space-y-1">
@@ -652,4 +656,3 @@ export default function PaceCalculatorPage() {
     </CalculatorWrapper>
   );
 }
-
