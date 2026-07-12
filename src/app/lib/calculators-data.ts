@@ -38,7 +38,8 @@ import {
   Timer as PaceIcon,
   Binary,
   Divide,
-  Shuffle
+  Shuffle,
+  Sigma
 } from 'lucide-react';
 
 export interface CalculatorInfo {
@@ -66,6 +67,14 @@ export const calculators: CalculatorInfo[] = [
     icon: Percent,
     path: '/calculators/percentage',
     category: 'finance',
+  },
+  {
+    id: 'standard-deviation',
+    name: 'Standard Deviation',
+    description: 'Calculate standard deviation, variance, mean, and margin of error for sample or population datasets.',
+    icon: Sigma,
+    path: '/calculators/standard-deviation',
+    category: 'tools',
   },
   {
     id: 'fraction',
