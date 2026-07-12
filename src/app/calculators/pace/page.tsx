@@ -64,15 +64,14 @@ interface MultiSplit {
 }
 
 export default function PaceCalculatorPage() {
-  // 1. Standard Pace/Time/Distance
+  // 1. Standard Pace/Time/Distance Solver
   const [mode, setMode] = useState<PaceMode>('pace');
   const [time, setTime] = useState<TimeValue>({ h: 0, m: 20, s: 0 });
   const [dist, setDist] = useState(5);
   const [distUnit, setDistUnit] = useState('km');
   
-  // Single string pace for 'per mile' / 'per km'
-  const [paceString, setPaceString] = useState('00:04:00');
-  const [paceSpeed, setPaceSpeed] = useState(15); 
+  // Single input for Pace (e.g. 4:00 or 15)
+  const [paceInputValue, setPaceInputValue] = useState('00:04:00');
   const [paceUnit, setPaceUnit] = useState('per kilometer');
 
   const isSpeedUnit = (unit: string) => [
@@ -84,17 +83,12 @@ export default function PaceCalculatorPage() {
     'yards per second'
   ].includes(unit);
 
-  const parsePaceString = (str: string) => {
-    const parts = str.split(':').map(p => Number(p.trim()));
-    let h = 0, m = 0, s = 0;
-    if (parts.length === 3) {
-      [h, m, s] = parts;
-    } else if (parts.length === 2) {
-      [m, s] = parts;
-    } else if (parts.length === 1) {
-      [s] = parts;
-    }
-    return (h || 0) * 3600 + (m || 0) * 60 + (s || 0);
+  const parsePaceToSeconds = (input: string) => {
+    const parts = input.split(':').map(p => Number(p.trim()));
+    if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    if (parts.length === 2) return parts[0] * 60 + parts[1];
+    if (parts.length === 1) return parts[0];
+    return 0;
   };
 
   const formatTime = (totalSeconds: number) => {
@@ -123,17 +117,19 @@ export default function PaceCalculatorPage() {
       pacePerKmSec = totalTimeSec / inputDistInKm;
     } else {
       if (isSpeedUnit(paceUnit)) {
-        if (paceSpeed <= 0) return null;
+        const speedVal = parseFloat(paceInputValue);
+        if (speedVal <= 0 || isNaN(speedVal)) return null;
         let speedKps = 0; 
-        if (paceUnit === 'miles per hour') speedKps = (paceSpeed * MILE_TO_KM) / 3600;
-        else if (paceUnit === 'kilometers per hour') speedKps = paceSpeed / 3600;
-        else if (paceUnit === 'meters per minute') speedKps = (paceSpeed / 1000) / 60;
-        else if (paceUnit === 'meters per second') speedKps = paceSpeed / 1000;
-        else if (paceUnit === 'yards per minute') speedKps = (paceSpeed * YARD_TO_KM) / 60;
-        else if (paceUnit === 'yards per second') speedKps = paceSpeed * YARD_TO_KM;
+        if (paceUnit === 'miles per hour') speedKps = (speedVal * MILE_TO_KM) / 3600;
+        else if (paceUnit === 'kilometers per hour') speedKps = speedVal / 3600;
+        else if (paceUnit === 'meters per minute') speedKps = (speedVal / 1000) / 60;
+        else if (paceUnit === 'meters per second') speedKps = speedVal / 1000;
+        else if (paceUnit === 'yards per minute') speedKps = (speedVal * YARD_TO_KM) / 60;
+        else if (paceUnit === 'yards per second') speedKps = speedVal * YARD_TO_KM;
         pacePerKmSec = 1 / speedKps;
       } else {
-        const paceInputSec = parsePaceString(paceString);
+        const paceInputSec = parsePaceToSeconds(paceInputValue);
+        if (paceInputSec <= 0) return null;
         if (paceUnit === 'per kilometer') pacePerKmSec = paceInputSec;
         else if (paceUnit === 'per mile') pacePerKmSec = paceInputSec / MILE_TO_KM;
       }
@@ -164,17 +160,26 @@ export default function PaceCalculatorPage() {
       { label: 'meters/second', value: (1000 / pacePerKmSec).toFixed(2) },
     ];
 
+    const getPredictions = () => {
+      return raceEvents.map(e => {
+        let dKm = e.value;
+        if (e.unit === 'miles') dKm *= MILE_TO_KM;
+        else if (e.unit === 'meters') dKm /= 1000;
+        return { label: e.label, time: formatTime(dKm * pacePerKmSec) };
+      });
+    };
+
     const getSplitsForUnit = (unitInKm: number, unitLabel: string, targetDistKm: number) => {
       const res = [];
       let i = 1;
-      // We go up to the target distance. If the target is exactly a whole unit, don't duplicate.
       while (i * unitInKm < targetDistKm - 0.001) {
         res.push({ dist: `${i}${unitLabel}`, time: formatTime(i * unitInKm * pacePerKmSec) });
         i++;
       }
-      // Add the final split for the exact distance
-      const finalValLabel = (targetDistKm / unitInKm).toFixed(2).replace(/\.00$/, '').replace(/\.0$/, '');
-      res.push({ dist: `${finalValLabel}${unitLabel}`, time: formatTime(targetDistKm * pacePerKmSec) });
+      res.push({ 
+        dist: `${(targetDistKm / unitInKm).toFixed(2).replace(/\.00$/, '').replace(/\.0$/, '')}${unitLabel}`, 
+        time: formatTime(targetDistKm * pacePerKmSec) 
+      });
       return res;
     };
 
@@ -190,12 +195,13 @@ export default function PaceCalculatorPage() {
         yards: (solvedDistInKm / YARD_TO_KM).toFixed(0)
       },
       diffUnits,
+      predictions: getPredictions(),
       kmSplits: getSplitsForUnit(1, 'K', solvedDistInKm),
       mileSplits: getSplitsForUnit(MILE_TO_KM, ' Mile', solvedDistInKm)
     };
-  }, [mode, time, dist, distUnit, paceString, paceSpeed, paceUnit]);
+  }, [mode, time, dist, distUnit, paceInputValue, paceUnit]);
 
-  // 2. Multipoint Pace
+  // 2. Multipoint Pace States
   const [multiUnit, setMultiUnit] = useState('km');
   const [multiSplits, setMultiSplits] = useState<MultiSplit[]>([
     { id: '1', dist: 1, time: { h: 0, m: 4, s: 0 } },
@@ -217,7 +223,7 @@ export default function PaceCalculatorPage() {
     };
   }, [multiSplits]);
 
-  // 3. Standalone Pace Converter
+  // 3. Standalone Converter States
   const [convPace, setConvPace] = useState<TimeValue>({ h: 0, m: 5, s: 0 });
   const [convUnit, setConvUnit] = useState('per mile');
   const convResults = useMemo(() => {
@@ -234,7 +240,7 @@ export default function PaceCalculatorPage() {
     ];
   }, [convPace, convUnit]);
 
-  // 4. Standalone Finish Time Predictor
+  // 4. Finish Predictor States
   const [finishPace, setFinishPace] = useState<TimeValue>({ h: 0, m: 4, s: 30 });
   const [finishUnit, setFinishUnit] = useState('per kilometer');
   const finishResults = useMemo(() => {
@@ -253,18 +259,18 @@ export default function PaceCalculatorPage() {
   return (
     <CalculatorWrapper
       title="Pace Calculator"
-      description="Advanced toolkit for runners and cyclists to solve pace, analyze splits, convert units, and predict finish times."
+      description="Advanced performance analysis for runners and cyclists. Calculate pace, time, distance, and predicted results."
       icon={Timer}
     >
       <div className="space-y-16">
         
-        {/* 1. Main Solver */}
+        {/* 1. Main Solver Section */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">
             <div className="bg-primary/10 p-2 rounded-xl text-primary"><Zap size={24} /></div>
             <div>
               <h3 className="text-2xl font-bold text-primary">Pace, Time & Distance Solver</h3>
-              <p className="text-sm text-muted-foreground">Find any value based on the other two.</p>
+              <p className="text-sm text-muted-foreground">Solve any parameter by entering the other two.</p>
             </div>
           </div>
 
@@ -326,22 +332,12 @@ export default function PaceCalculatorPage() {
                   <div className="space-y-3">
                     <Label className="text-xs font-black uppercase text-muted-foreground">Pace / Speed</Label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {isSpeedUnit(paceUnit) ? (
-                        <Input 
-                          type="number" 
-                          step="0.1" 
-                          value={paceSpeed} 
-                          onChange={e => setPaceSpeed(Number(e.target.value))} 
-                          placeholder="Speed value"
-                        />
-                      ) : (
-                        <Input 
-                          type="text" 
-                          value={paceString} 
-                          onChange={e => setPaceString(e.target.value)} 
-                          placeholder="hh:mm:ss"
-                        />
-                      )}
+                      <Input 
+                        type="text" 
+                        value={paceInputValue} 
+                        onChange={e => setPaceInputValue(e.target.value)} 
+                        placeholder={isSpeedUnit(paceUnit) ? "e.g. 15" : "e.g. 00:04:00"}
+                      />
                       <Select value={paceUnit} onValueChange={setPaceUnit}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
                         <SelectContent>
@@ -406,7 +402,7 @@ export default function PaceCalculatorPage() {
           </div>
 
           {standardResult && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+            <div className="space-y-8 pt-4">
               {mode !== 'distance' && (
                 <Card className="border-none bg-muted/20">
                   <CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Pace in Different Units</CardTitle></CardHeader>
@@ -425,31 +421,43 @@ export default function PaceCalculatorPage() {
                 </Card>
               )}
 
-              <div className={mode === 'distance' ? 'md:col-span-2' : ''}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Card className="border-none bg-accent/5">
-                    <CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-accent">Kilometer Splits</CardTitle></CardHeader>
-                    <CardContent className="grid grid-cols-2 gap-2">
-                      {standardResult.kmSplits.slice(0, 16).map((s, i) => (
-                        <div key={i} className="bg-white p-2 rounded-lg border text-center">
-                          <p className="text-[10px] font-black text-muted-foreground">{s.dist}</p>
-                          <p className="text-xs font-mono font-bold text-accent">{s.time}</p>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-                  <Card className="border-none bg-primary/5">
-                    <CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Mile Splits</CardTitle></CardHeader>
-                    <CardContent className="grid grid-cols-2 gap-2">
-                      {standardResult.mileSplits.slice(0, 16).map((s, i) => (
-                        <div key={i} className="bg-white p-2 rounded-lg border text-center">
-                          <p className="text-[10px] font-black text-muted-foreground">{s.dist}</p>
-                          <p className="text-xs font-mono font-bold text-primary">{s.time}</p>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-                </div>
+              <Card>
+                <CardHeader><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Race Predictions</CardTitle></CardHeader>
+                <CardContent className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {standardResult.predictions.map(p => (
+                    <div key={p.label} className="p-3 border rounded-xl hover:border-primary transition-colors">
+                      <p className="text-[10px] font-black uppercase text-muted-foreground mb-1">{p.label}</p>
+                      <p className="text-lg font-bold text-primary font-mono">{p.time}</p>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <Card className="border-none bg-accent/5">
+                  <CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-accent">Kilometer Splits</CardTitle></CardHeader>
+                  <CardContent className="grid grid-cols-2 gap-2">
+                    {standardResult.kmSplits.slice(0, 20).map((s, i) => (
+                      <div key={i} className="bg-white p-2 rounded-lg border text-center">
+                        <p className="text-[10px] font-black text-muted-foreground">{s.dist}</p>
+                        <p className="text-xs font-mono font-bold text-accent">{s.time}</p>
+                      </div>
+                    ))}
+                    {standardResult.kmSplits.length > 20 && <p className="col-span-2 text-center text-[10px] italic py-2">Showing first 20 splits...</p>}
+                  </CardContent>
+                </Card>
+                <Card className="border-none bg-primary/5">
+                  <CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Mile Splits</CardTitle></CardHeader>
+                  <CardContent className="grid grid-cols-2 gap-2">
+                    {standardResult.mileSplits.slice(0, 20).map((s, i) => (
+                      <div key={i} className="bg-white p-2 rounded-lg border text-center">
+                        <p className="text-[10px] font-black text-muted-foreground">{s.dist}</p>
+                        <p className="text-xs font-mono font-bold text-primary">{s.time}</p>
+                      </div>
+                    ))}
+                    {standardResult.mileSplits.length > 20 && <p className="col-span-2 text-center text-[10px] italic py-2">Showing first 20 splits...</p>}
+                  </CardContent>
+                </Card>
               </div>
             </div>
           )}
@@ -457,14 +465,14 @@ export default function PaceCalculatorPage() {
 
         <Separator />
 
-        {/* 2. Multipoint Pace */}
+        {/* 2. Multipoint Pace Calculator */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">
             <div className="bg-accent/10 p-2 rounded-xl text-accent"><Activity size={24} /></div>
             <div className="flex-1 flex items-center justify-between">
               <div>
                 <h3 className="text-2xl font-bold text-primary">Multipoint Pace Calculator</h3>
-                <p className="text-sm text-muted-foreground">Average pace across varying splits.</p>
+                <p className="text-sm text-muted-foreground">Calculate average pace across varying split distances.</p>
               </div>
               <Select value={multiUnit} onValueChange={setMultiUnit}>
                 <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
@@ -524,12 +532,12 @@ export default function PaceCalculatorPage() {
 
         <Separator />
 
-        {/* 3. Pace Converter */}
+        {/* 3. Pace Converter Section */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">
             <div className="bg-primary/10 p-2 rounded-xl text-primary"><RefreshCw size={24} /></div>
             <div>
-              <h3 className="text-2xl font-bold text-primary">Pace Converter</h3>
+              <h3 className="text-2xl font-bold text-primary">Standalone Pace Converter</h3>
               <p className="text-sm text-muted-foreground">Convert between pace and speed standards.</p>
             </div>
           </div>
@@ -564,19 +572,19 @@ export default function PaceCalculatorPage() {
 
         <Separator />
 
-        {/* 4. Finish Time Predictor */}
+        {/* 4. Finish Time Predictor Section */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">
             <div className="bg-accent/10 p-2 rounded-xl text-accent"><Trophy size={24} /></div>
             <div>
               <h3 className="text-2xl font-bold text-primary">Finish Time Predictor</h3>
-              <p className="text-sm text-muted-foreground">Estimated times for major race distances.</p>
+              <p className="text-sm text-muted-foreground">Estimate finish times for standard distances.</p>
             </div>
           </div>
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-col md:flex-row items-center gap-4 mb-8 max-w-xl">
-                <Label className="text-sm font-bold whitespace-nowrap">Your Pace:</Label>
+                <Label className="text-sm font-bold whitespace-nowrap">Target Pace:</Label>
                 <div className="flex gap-2 w-full">
                   <Input type="number" placeholder="H" value={finishPace.h} onChange={e => setFinishPace({...finishPace, h: Number(e.target.value)})} />
                   <Input type="number" placeholder="M" value={finishPace.m} onChange={e => setFinishPace({...finishPace, m: Number(e.target.value)})} />
@@ -594,7 +602,7 @@ export default function PaceCalculatorPage() {
                 {finishResults?.map(fr => (
                   <div key={fr.label} className="border p-3 rounded-xl hover:border-primary transition-colors">
                     <p className="text-[10px] font-black uppercase text-muted-foreground mb-1">{fr.label}</p>
-                    <p className="text-lg font-bold text-primary">{fr.time}</p>
+                    <p className="text-lg font-bold text-primary font-mono">{fr.time}</p>
                   </div>
                 ))}
               </div>
@@ -606,3 +614,4 @@ export default function PaceCalculatorPage() {
     </CalculatorWrapper>
   );
 }
+
