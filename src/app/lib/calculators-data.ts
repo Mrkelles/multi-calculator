@@ -39,7 +39,8 @@ import {
   Binary,
   Divide,
   Shuffle,
-  Sigma
+  Sigma,
+  Triangle
 } from 'lucide-react';
 
 export interface CalculatorInfo {
@@ -58,6 +59,14 @@ export const calculators: CalculatorInfo[] = [
     description: 'Perform advanced mathematical operations including trigonometry, logarithms, and power functions.',
     icon: Binary,
     path: '/calculators/scientific',
+    category: 'tools',
+  },
+  {
+    id: 'triangle',
+    name: 'Triangle Calculator',
+    description: 'Solve for sides, angles, area, and more. Supports SSS, SAS, and other standard triangle properties.',
+    icon: Triangle,
+    path: '/calculators/triangle',
     category: 'tools',
   },
   {
