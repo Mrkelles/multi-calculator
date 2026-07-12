@@ -85,10 +85,19 @@ export default function PaceCalculatorPage() {
   };
 
   const formatPaceLong = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = (seconds % 60).toFixed(2);
-    if (m > 0) return `${m} minutes and ${s} seconds`;
-    return `${s} seconds`;
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = (seconds % 60).toFixed(2).replace(/\.00$/, '');
+    
+    const parts = [];
+    if (h > 0) parts.push(`${h} hour${h > 1 ? 's' : ''}`);
+    if (m > 0) parts.push(`${m} minute${m !== 1 ? 's' : ''}`);
+    if (s !== '0' || parts.length === 0) parts.push(`${s} seconds`);
+    
+    if (parts.length === 0) return "0 seconds";
+    if (parts.length === 1) return parts[0];
+    const last = parts.pop();
+    return parts.join(', ') + ' and ' + last;
   };
 
   // 1. Standard Pace/Time/Distance Solver
@@ -257,19 +266,46 @@ export default function PaceCalculatorPage() {
   }, [convPace, convSpeed, convUnit]);
 
   // 4. Finish Predictor States
-  const [finishPace, setFinishPace] = useState<TimeValue>({ h: 0, m: 4, s: 30 });
-  const [finishUnit, setFinishUnit] = useState('per kilometer');
+  const [predCurrentDist, setPredCurrentDist] = useState(1);
+  const [predCurrentUnit, setPredCurrentUnit] = useState('miles');
+  const [predElapsedTime, setPredElapsedTime] = useState<TimeValue>({ h: 0, m: 6, s: 15 });
+  const [predFullDist, setPredFullDist] = useState(5);
+  const [predFullUnit, setPredFullUnit] = useState('miles');
+
   const finishResults = useMemo(() => {
-    const totalS = finishPace.h * 3600 + finishPace.m * 60 + finishPace.s;
-    if (totalS === 0) return null;
-    const pk = finishUnit === 'per kilometer' ? totalS : totalS / MILE_TO_KM;
-    return raceEvents.map(e => {
-      let dKm = e.value;
-      if (e.unit === 'miles') dKm *= MILE_TO_KM;
-      else if (e.unit === 'meters') dKm /= 1000;
-      return { label: e.label, time: formatTime(dKm * pk) };
-    });
-  }, [finishPace, finishUnit]);
+    const totalElapsedSec = predElapsedTime.h * 3600 + predElapsedTime.m * 60 + predElapsedTime.s;
+    if (totalElapsedSec <= 0 || predCurrentDist <= 0 || predFullDist <= 0) return null;
+
+    const toKm = (val: number, unit: string) => {
+      if (unit === 'miles') return val * MILE_TO_KM;
+      if (unit === 'meters') return val / 1000;
+      if (unit === 'yards') return val * YARD_TO_KM;
+      return val;
+    };
+
+    const currentKm = toKm(predCurrentDist, predCurrentUnit);
+    const fullKm = toKm(predFullDist, predFullUnit);
+    
+    const pacePerKmSec = totalElapsedSec / currentKm;
+    const totalFinishTimeSec = pacePerKmSec * fullKm;
+    const pacePerMileSec = pacePerKmSec * MILE_TO_KM;
+
+    const units = [
+      { label: 'Per Mile', value: formatPaceLong(pacePerMileSec) },
+      { label: 'Per Kilometer', value: formatPaceLong(pacePerKmSec) },
+      { label: 'Miles Per Hour', value: (3600 / pacePerMileSec).toFixed(1) },
+      { label: 'Kilometers Per Hour', value: (3600 / pacePerKmSec).toFixed(2) },
+      { label: 'Meters Per Minute', value: (1000 / (pacePerKmSec / 60)).toFixed(1) },
+      { label: 'Meters Per Second', value: (1000 / pacePerKmSec).toFixed(2) },
+      { label: 'Yards Per Minute', value: (1 / (pacePerKmSec * YARD_TO_KM / 60)).toFixed(1) },
+      { label: 'Yards Per Second', value: (1 / (pacePerKmSec * YARD_TO_KM)).toFixed(2) },
+    ];
+
+    return {
+      finishTime: formatPaceLong(totalFinishTimeSec),
+      units
+    };
+  }, [predCurrentDist, predCurrentUnit, predElapsedTime, predFullDist, predFullUnit]);
 
   return (
     <CalculatorWrapper
@@ -347,7 +383,7 @@ export default function PaceCalculatorPage() {
                   <div className="space-y-3">
                     <Label className="text-xs font-black uppercase text-muted-foreground">Pace / Speed</Label>
                     <div className="space-y-3">
-                      {!isSpeedUnit(paceUnit) ? (
+                      {(!isSpeedUnit(paceUnit)) ? (
                         <div className="grid grid-cols-3 gap-3">
                           <Input type="number" placeholder="Hr" value={paceTime.h} onChange={e => setPaceTime({...paceTime, h: Number(e.target.value)})} />
                           <Input type="number" placeholder="Min" value={paceTime.m} onChange={e => setPaceTime({...paceTime, m: Number(e.target.value)})} />
@@ -370,7 +406,6 @@ export default function PaceCalculatorPage() {
                           <SelectItem value="yards per second">yards per second</SelectItem>
                         </SelectContent>
                       </Select>
-                      {!isSpeedUnit(paceUnit) && <p className="text-[10px] text-muted-foreground italic">hh:mm:ss</p>}
                     </div>
                   </div>
                 )}
@@ -574,7 +609,7 @@ export default function PaceCalculatorPage() {
               <div className="space-y-4">
                 <Label className="text-xs font-black uppercase">Input Pace / Speed</Label>
                 <div className="space-y-4">
-                  {!isSpeedUnit(convUnit) ? (
+                  {(!isSpeedUnit(convUnit)) ? (
                     <div className="grid grid-cols-3 gap-2">
                       <Input type="number" placeholder="H" value={convPace.h} onChange={e => setConvPace({...convPace, h: Number(e.target.value)})} />
                       <Input type="number" placeholder="M" value={convPace.m} onChange={e => setConvPace({...convPace, m: Number(e.target.value)})} />
@@ -619,36 +654,91 @@ export default function PaceCalculatorPage() {
             <div className="bg-accent/10 p-2 rounded-xl text-accent"><Trophy size={24} /></div>
             <div>
               <h3 className="text-2xl font-bold text-primary">Finish Time Predictor</h3>
-              <p className="text-sm text-muted-foreground">Estimate finish times for standard distances.</p>
+              <p className="text-sm text-muted-foreground">Project your race results based on current split performance.</p>
             </div>
           </div>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex flex-col md:flex-row items-center gap-4 mb-8 max-w-xl">
-                <Label className="text-sm font-bold whitespace-nowrap">Target Pace:</Label>
-                <div className="flex gap-2 w-full">
-                  <Input type="number" placeholder="H" value={finishPace.h} onChange={e => setFinishPace({...finishPace, h: Number(e.target.value)})} />
-                  <Input type="number" placeholder="M" value={finishPace.m} onChange={e => setFinishPace({...finishPace, m: Number(e.target.value)})} />
-                  <Input type="number" placeholder="S" value={finishPace.s} onChange={e => setFinishPace({...finishPace, s: Number(e.target.value)})} />
-                  <Select value={finishUnit} onValueChange={setFinishUnit}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="per kilometer">per kilometer</SelectItem>
-                      <SelectItem value="per mile">per mile</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                {finishResults?.map(fr => (
-                  <div key={fr.label} className="border p-3 rounded-xl hover:border-primary transition-colors">
-                    <p className="text-[10px] font-black uppercase text-muted-foreground mb-1">{fr.label}</p>
-                    <p className="text-lg font-bold text-primary font-mono">{fr.time}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <Card>
+              <CardContent className="pt-6 space-y-6">
+                <div className="space-y-3">
+                  <Label className="text-xs font-black uppercase text-muted-foreground">Current Distance Traveled</Label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Input type="number" value={predCurrentDist} onChange={e => setPredCurrentDist(Number(e.target.value))} />
+                    <Select value={predCurrentUnit} onValueChange={setPredCurrentUnit}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="km">Kilometers</SelectItem>
+                        <SelectItem value="miles">Miles</SelectItem>
+                        <SelectItem value="meters">Meters</SelectItem>
+                        <SelectItem value="yards">Yards</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-xs font-black uppercase text-muted-foreground">Elapsed Time (hh:mm:ss)</Label>
+                  <div className="grid grid-cols-3 gap-3">
+                    <Input type="number" placeholder="Hr" value={predElapsedTime.h} onChange={e => setPredElapsedTime({...predElapsedTime, h: Number(e.target.value)})} />
+                    <Input type="number" placeholder="Min" value={predElapsedTime.m} onChange={e => setPredElapsedTime({...predElapsedTime, m: Number(e.target.value)})} />
+                    <Input type="number" placeholder="Sec" value={predElapsedTime.s} onChange={e => setPredElapsedTime({...predElapsedTime, s: Number(e.target.value)})} />
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-xs font-black uppercase text-muted-foreground">Full Distance</Label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Input type="number" value={predFullDist} onChange={e => setPredFullDist(Number(e.target.value))} />
+                    <Select value={predFullUnit} onValueChange={setPredFullUnit}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="km">Kilometers</SelectItem>
+                        <SelectItem value="miles">Miles</SelectItem>
+                        <SelectItem value="meters">Meters</SelectItem>
+                        <SelectItem value="yards">Yards</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="space-y-6">
+              <Card className="bg-primary text-white border-none shadow-xl">
+                <CardContent className="pt-8 pb-10 text-center space-y-4">
+                  <p className="text-xs uppercase tracking-widest opacity-80 font-bold">Prediction Result</p>
+                  {!finishResults ? (
+                    <p className="italic opacity-60">Enter valid performance data to see your projection.</p>
+                  ) : (
+                    <div className="space-y-4">
+                      <p className="text-xl font-medium leading-relaxed">
+                        At current pace, it will take <span className="font-black text-white">{finishResults.finishTime}</span> to finish {predFullDist} {predFullUnit.charAt(0).toUpperCase() + predFullUnit.slice(1)}
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {finishResults && (
+                <Card className="border-none bg-muted/20">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Your pace so far are:</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0 px-6 pb-6">
+                    <ul className="space-y-2 text-sm">
+                      {finishResults.units.map((u, i) => (
+                        <li key={u.label} className="flex gap-2">
+                          <span className="text-muted-foreground">{i === 0 ? '' : 'or'}</span>
+                          <span className="font-bold text-foreground">{u.value}</span>
+                          <span className="text-primary font-medium">{u.label}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
         </section>
 
       </div>
