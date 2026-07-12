@@ -69,7 +69,7 @@ export default function PaceCalculatorPage() {
   const [dist, setDist] = useState(5);
   const [distUnit, setDistUnit] = useState('km');
   
-  const [paceInputValue, setPaceInputValue] = useState('00:04:00');
+  const [paceInputValue, setPaceInputValue] = useState('4');
   const [paceUnit, setPaceUnit] = useState('per kilometer');
 
   const isSpeedUnit = (unit: string) => [
@@ -82,11 +82,9 @@ export default function PaceCalculatorPage() {
   ].includes(unit);
 
   const parsePaceToSeconds = (input: string) => {
-    const parts = input.split(':').map(p => Number(p.trim()));
-    if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
-    if (parts.length === 2) return parts[0] * 60 + parts[1];
-    if (parts.length === 1) return parts[0];
-    return 0;
+    if (!input) return 0;
+    const val = parseFloat(input);
+    return isNaN(val) ? 0 : val;
   };
 
   const formatTime = (totalSeconds: number) => {
@@ -114,22 +112,21 @@ export default function PaceCalculatorPage() {
       if (inputDistInKm === 0) return null;
       pacePerKmSec = totalTimeSec / inputDistInKm;
     } else {
+      const paceInputVal = parsePaceToSeconds(paceInputValue);
+      if (paceInputVal <= 0) return null;
+
       if (isSpeedUnit(paceUnit)) {
-        const speedVal = parseFloat(paceInputValue);
-        if (speedVal <= 0 || isNaN(speedVal)) return null;
         let speedKps = 0; 
-        if (paceUnit === 'miles per hour') speedKps = (speedVal * MILE_TO_KM) / 3600;
-        else if (paceUnit === 'kilometers per hour') speedKps = speedVal / 3600;
-        else if (paceUnit === 'meters per minute') speedKps = (speedVal / 1000) / 60;
-        else if (paceUnit === 'meters per second') speedKps = speedVal / 1000;
-        else if (paceUnit === 'yards per minute') speedKps = (speedVal * YARD_TO_KM) / 60;
-        else if (paceUnit === 'yards per second') speedKps = speedVal * YARD_TO_KM;
+        if (paceUnit === 'miles per hour') speedKps = (paceInputVal * MILE_TO_KM) / 3600;
+        else if (paceUnit === 'kilometers per hour') speedKps = paceInputVal / 3600;
+        else if (paceUnit === 'meters per minute') speedKps = (paceInputVal / 1000) / 60;
+        else if (paceUnit === 'meters per second') speedKps = paceInputVal / 1000;
+        else if (paceUnit === 'yards per minute') speedKps = (paceInputVal * YARD_TO_KM) / 60;
+        else if (paceUnit === 'yards per second') speedKps = paceInputVal * YARD_TO_KM;
         pacePerKmSec = 1 / speedKps;
       } else {
-        const paceInputSec = parsePaceToSeconds(paceInputValue);
-        if (paceInputSec <= 0) return null;
-        if (paceUnit === 'per kilometer') pacePerKmSec = paceInputSec;
-        else if (paceUnit === 'per mile') pacePerKmSec = paceInputSec / MILE_TO_KM;
+        if (paceUnit === 'per kilometer') pacePerKmSec = paceInputVal;
+        else if (paceUnit === 'per mile') pacePerKmSec = paceInputVal / MILE_TO_KM;
       }
     }
 
@@ -146,7 +143,8 @@ export default function PaceCalculatorPage() {
     const formatPaceLong = (seconds: number) => {
       const m = Math.floor(seconds / 60);
       const s = (seconds % 60).toFixed(2);
-      return `${m} minutes and ${s} seconds`;
+      if (m > 0) return `${m} minutes and ${s} seconds`;
+      return `${s} seconds`;
     };
 
     const diffUnits = [
@@ -174,6 +172,7 @@ export default function PaceCalculatorPage() {
         res.push({ dist: `${i}${unitLabel}`, time: formatTime(i * unitInKm * pacePerKmSec) });
         i++;
       }
+      // Add the final distance split if it wasn't added in the loop
       res.push({ 
         dist: `${(targetDistKm / unitInKm).toFixed(2).replace(/\.00$/, '').replace(/\.0$/, '')}${unitLabel}`, 
         time: formatTime(targetDistKm * pacePerKmSec) 
@@ -221,7 +220,7 @@ export default function PaceCalculatorPage() {
     };
   }, [multiSplits]);
 
-  // 3. Standalone Converter States
+  // 3. Pace Converter States
   const [convPace, setConvPace] = useState<TimeValue>({ h: 0, m: 5, s: 0 });
   const [convUnit, setConvUnit] = useState('per mile');
   const convResults = useMemo(() => {
@@ -331,10 +330,10 @@ export default function PaceCalculatorPage() {
                     <Label className="text-xs font-black uppercase text-muted-foreground">Pace / Speed</Label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <Input 
-                        type="text" 
+                        type="number" 
                         value={paceInputValue} 
                         onChange={e => setPaceInputValue(e.target.value)} 
-                        placeholder={isSpeedUnit(paceUnit) ? "e.g. 15" : "e.g. 04:00"}
+                        placeholder="e.g. 4"
                       />
                       <Select value={paceUnit} onValueChange={setPaceUnit}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
