@@ -10,6 +10,7 @@ import {
   Info, 
   ChevronDown, 
   ChevronUp,
+  ChevronRight,
   Zap,
   TrendingUp,
   ArrowUpRight,
