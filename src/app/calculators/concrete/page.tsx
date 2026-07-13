@@ -112,7 +112,7 @@ export default function ConcreteCalculatorPage() {
               <TabsTrigger value="slab" className="text-[10px] md:text-xs py-2">Slab/Wall</TabsTrigger>
               <TabsTrigger value="hole" className="text-[10px] md:text-xs py-2">Hole/Col</TabsTrigger>
               <TabsTrigger value="circular" className="text-[10px] md:text-xs py-2">Circ/Tube</TabsTrigger>
-              <TabsTrigger value="curb" className="text-[10px] md:text-xs py-2">Curb</TabsTrigger>
+              <TabsTrigger value="curb" className="text-[10px] md:text-xs py-2">Curb/Gutter</TabsTrigger>
               <TabsTrigger value="stairs" className="text-[10px] md:text-xs py-2">Stairs</TabsTrigger>
             </TabsList>
 

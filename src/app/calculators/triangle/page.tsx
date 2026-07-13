@@ -224,7 +224,7 @@ export default function TriangleCalculatorPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="degree">Degree °</SelectItem>
-                    <SelectItem value="radian">Radian rad</SelectItem>
+                    <SelectItem value="radian">Radian</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
