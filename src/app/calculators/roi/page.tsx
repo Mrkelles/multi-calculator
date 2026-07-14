@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { BarChart, TrendingUp, Info, Clock } from 'lucide-react';
+import { BarChart, TrendingUp, Info, Clock, ArrowRightLeft, History, Calculator } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +15,7 @@ import {
   ChartTooltipContent, 
 } from '@/components/ui/chart';
 import { Bar, BarChart as RechartsBarChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { Separator } from '@/components/ui/separator';
 
 export default function ROIPage() {
   const [startingAmount, setStartingAmount] = useState(20000);
@@ -215,11 +216,11 @@ export default function ROIPage() {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="beginning" id="beginning" />
-                      <Label htmlFor="beginning" className="font-normal">Beginning</Label>
+                      <Label htmlFor="beginning" className="font-normal cursor-pointer">Beginning</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="end" id="end" />
-                      <Label htmlFor="end" className="font-normal">End</Label>
+                      <Label htmlFor="end" className="font-normal cursor-pointer">End</Label>
                     </div>
                   </RadioGroup>
                   <p className="text-[10px] text-muted-foreground italic">
@@ -323,6 +324,78 @@ export default function ROIPage() {
             <p className="text-xs text-blue-700 leading-relaxed">
               <strong>Calculation Logic:</strong> Contributions are simulated monthly. Choosing <strong>Beginning</strong> means deposits earn interest for the full period they are added in, whereas <strong>End</strong> means they only begin earning interest in the subsequent period.
             </p>
+          </div>
+        </div>
+
+        {/* Informational Text Section */}
+        <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+            <section className="space-y-4">
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+                <TrendingUp className="w-6 h-6" />
+                Master Your Portfolios with MyApexCalc
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Whether you are tracking a stock portfolio, calculating a real estate deal, or evaluating a new business project, knowing your exact performance metrics is crucial. Our free online roi calculator provides an instantaneous breakdown of your financial efficiency. Built with clean, responsive logic, it acts as a comprehensive investment return calculator designed to strip the complexity out of asset analysis.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                Understanding the Return on Investment (ROI) Formula
+              </h3>
+              <div className="space-y-4">
+                <p className="text-muted-foreground leading-relaxed">
+                  To understand your financial gains, it helps to understand how the underlying numbers are evaluated. The math relies on the classic, globally standard roi formula:
+                </p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                  ROI = ( (Current Value of Investment - Cost of Investment) / Cost of Investment ) × 100
+                </div>
+                <p className="text-muted-foreground leading-relaxed">
+                  This straightforward percentage reveals exactly how much profit or loss you have earned relative to the money you initially risked. For example, if you invest $10,000 and your final position matures to a value of $15,000, your net profit is $5,000. Dividing this profit by your initial $10,000 cost yields 0.50, resulting in a clean 50% return on your capital.
+                </p>
+              </div>
+            </section>
+
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Why Use Our Investment Return Calculator?
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                While the fundamental formula is relatively simple, real-world assets often involve layered parameters, ongoing contributions, and varying timelines. MyApexCalc simplifies this by offering:
+              </p>
+              <ul className="space-y-6 pt-2">
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <History className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Instant Analysis</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Eliminate manual arithmetic and human error. Simply enter your initial values and get results down to the decimal.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <ArrowRightLeft className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Versatility</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Compare distinct asset classes side-by-side. Use the tool to compare how your real estate investments stack up against stock index funds.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <BarChart className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Visual Clarity</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Get a clean, actionable view of your net profits, capital growth, and investment performance metrics in seconds.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
