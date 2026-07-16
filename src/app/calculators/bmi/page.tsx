@@ -2,11 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { User } from 'lucide-react';
+import { User, History, Calculator, Info, TrendingUp, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '@/components/ui/table';
 
 export default function BMIPage() {
   const [weight, setWeight] = useState(70);
@@ -119,6 +128,106 @@ export default function BMIPage() {
               </div>
             </CardContent>
           </Card>
+        </div>
+      </div>
+
+      {/* Informational Text Section */}
+      <div className="py-10 space-y-12">
+        <Separator />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+          <section className="space-y-4">
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+              <TrendingUp className="w-6 h-6" />
+              Prioritize Your Wellness Journey with MyApexCalc
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              Understanding your personal body metrics is a crucial starting point for any health, fitness, or weight management goal. Our accurate online bmi calculator provides a fast, reliable evaluation of your current body composition based on global health standards. Often referred to as a body weight index calculator, this tool acts as an easy-to-use screening dashboard to help you assess whether your weight falls into a healthy proportion relative to your height.
+            </p>
+            
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+              <Calculator className="w-6 h-6" />
+              The Math Behind the Metrics: The BMI Formula
+            </h3>
+            <div className="space-y-4">
+              <p className="text-muted-foreground leading-relaxed">
+                Your Body Mass Index is evaluated using a universal mathematical equation that measures your overall body mass ratio. Depending on whether you prefer imperial values (pounds and inches) or metric units (kilograms and meters), the tool executes the official standard bmi formula:
+              </p>
+              <div className="space-y-4">
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                  <p className="font-bold text-xs uppercase text-muted-foreground mb-2">Metric System</p>
+                  BMI = Weight (kg) / Height (m)²
+                </div>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                  <p className="font-bold text-xs uppercase text-muted-foreground mb-2">Imperial System</p>
+                  BMI = (Weight (lbs) / Height (in)²) × 703
+                </div>
+              </div>
+              <p className="text-muted-foreground leading-relaxed">
+                By dividing your physical mass by the square of your height, the calculation yields a baseline score that health professionals use to identify potential weight-related risk factors without requiring costly clinical body fat scans.
+              </p>
+            </div>
+          </section>
+
+          <div className="space-y-8">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Reading the Official BMI Index Chart
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Once our system processes your metrics, your final numerical score corresponds to specific zones outlined by the World Health Organization (WHO) and the Centers for Disease Control (CDC). You can cross-reference your results directly against the standard bmi index chart thresholds below:
+              </p>
+              <div className="rounded-xl border overflow-hidden">
+                <Table>
+                  <TableHeader className="bg-muted/50">
+                    <TableRow>
+                      <TableHead className="font-bold">BMI Score Range</TableHead>
+                      <TableHead className="text-right font-bold">Classification Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="text-xs">Below 18.5</TableCell>
+                      <TableCell className="text-right text-xs font-bold text-blue-500">Underweight</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="text-xs">18.5 – 24.9</TableCell>
+                      <TableCell className="text-right text-xs font-bold text-green-600">Normal / Healthy Weight</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="text-xs">25.0 – 29.9</TableCell>
+                      <TableCell className="text-right text-xs font-bold text-yellow-600">Overweight</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="text-xs">30.0 and Above</TableCell>
+                      <TableCell className="text-right text-xs font-bold text-red-500">Obese</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-4">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <History className="w-5 h-5 text-primary" />
+                Why Track Your BMI with MyApexCalc?
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                While your specific bmi score does not directly isolate lean muscle tissue from body fat mass, it remains an excellent, universally accepted indicator for tracking macro fitness progress. Using our responsive dashboard helps you stay informed, analyze physical adjustments over time, and establish practical benchmarks for your diet, gym performance, and lifestyle routines.
+              </p>
+              <ul className="space-y-3 pt-2">
+                <li className="flex gap-3 text-xs text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span>Analyze physical adjustments over time</span>
+                </li>
+                <li className="flex gap-3 text-xs text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span>Establish practical benchmarks for diet and exercise</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </CalculatorWrapper>

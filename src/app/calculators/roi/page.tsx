@@ -16,6 +16,52 @@ import {
 } from '@/components/ui/chart';
 import { Bar, BarChart as RechartsBarChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { Separator } from '@/components/ui/separator';
+import { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Accurate ROI Calculator | Investment Return Calculator',
+  description: 'Calculate the lifetime profitability of your investments with our free ROI calculator. Input your initial capital and final value to instantly run the standard ROI formula.',
+  keywords: [
+    'roi calculator',
+    'roi formula',
+    'investment return calculator',
+    'return on investment',
+    'MyApexCalc',
+    'calculate investment gains',
+    'financial calculator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Return on Investment (ROI) Calculator | MyApexCalc',
+    description: 'Measure the exact profitability and net gains of your assets. Input your parameters to compute your returns using the standard ROI formula.',
+    url: 'https://www.myapexcalc.com/calculators/roi',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/S4Tv263W/roi-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc ROI Calculator Interface Layout',
+      },
+    ],
+  },
+
+  // Twitter visual layout specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Investment Return Calculator | MyApexCalc',
+    description: 'Easily measure the financial performance of any investment using our live online ROI calculator.',
+    images: ['https://i.ibb.co/S4Tv263W/roi-calculator.png'],
+  },
+
+  // Standardize search signals to prevent duplicate index penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/roi',
+  },
+};
 
 export default function ROIPage() {
   const [startingAmount, setStartingAmount] = useState(20000);
