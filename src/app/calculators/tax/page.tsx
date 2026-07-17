@@ -3,7 +3,17 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Wallet, Info, Landmark, ShieldCheck, PieChart as PieChartIcon } from 'lucide-react';
+import { 
+  Wallet, 
+  Info, 
+  Landmark, 
+  ShieldCheck, 
+  PieChart as PieChartIcon, 
+  TrendingUp, 
+  Calculator, 
+  History, 
+  ChevronRight 
+} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -11,6 +21,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Separator } from '@/components/ui/separator';
 
 // 2024 Tax Year Data (Official IRS Brackets)
 const TAX_DATA = {
@@ -412,6 +423,96 @@ export default function TaxPage() {
                 <div className="text-[11px] text-blue-700">
                   <span className="font-bold">Monthly Tax:</span> ${(results.totalTax / 12).toLocaleString(undefined, { maximumFractionDigits: 0 })}
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Informational Text Section */}
+        <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+            <section className="space-y-4">
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+                <TrendingUp className="w-6 h-6" />
+                Take Control of Your Finances with MyApexCalc
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Navigating the complexities of marginal tax brackets, deductions, and payroll withholdings can make managing your personal finances feel overwhelming. Our comprehensive income tax calculator is designed to demystify your tax obligations. Whether you want to project your annual return or accurately calculate salary deductions, this free online calculator for tax offers the precise estimates you need to make informed financial decisions.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                How Your Income Tax is Calculated
+              </h3>
+              <div className="space-y-4">
+                <p className="text-muted-foreground leading-relaxed">
+                  Most federal and state systems utilize a progressive tax model, meaning your income is taxed in layers (or "brackets") at progressively higher rates. To find your true tax liability, the tool processes your financial metrics using two core formulas:
+                </p>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-foreground">1. Determine Taxable Income</p>
+                  <p className="text-sm text-muted-foreground">First, we determine your total taxable income by subtracting your standard or itemized deductions from your gross earnings:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Taxable Income = Gross Income - Deductions
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-foreground">2. Calculate Net Take-Home Pay</p>
+                  <p className="text-sm text-muted-foreground">Next, we calculate your net take-home pay by factoring in your progressive tax bracket liability, state taxes, and FICA withholdings (Social Security and Medicare):</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Net Income = Gross Income - (Federal Tax + State Tax + FICA + Local Tax)
+                  </div>
+                </div>
+                <p className="text-muted-foreground leading-relaxed">
+                  By automating these formulas, our platform eliminates manual math errors and accounts for progressive marginal rate changes instantly.
+                </p>
+              </div>
+            </section>
+
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Why Plan Your Taxes with MyApexCalc?
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Using an updated financial tool allows you to proactively structure your savings and avoid surprise bills during tax season. Our calculator provides:
+              </p>
+              <ul className="space-y-6 pt-2">
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <History className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">True Take-Home Salary Insights</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Know exactly how a raise, a new job offer, or a bonus will impact your actual take-home pay after federal, state, and local withholdings.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <Landmark className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Filing Status Customization</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Compare the tax implications of filing as single, married filing jointly, married filing separately, or head of household.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <ShieldCheck className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Instant, Responsive Results</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Adjust your income or deduction sliders and see your financial breakdown update in real-time.</p>
+                  </div>
+                </li>
+              </ul>
+              <Separator />
+              <div className="bg-primary/5 p-4 rounded-xl">
+                <p className="text-[10px] text-primary font-bold uppercase tracking-widest mb-1">Disclaimer</p>
+                <p className="text-[10px] text-muted-foreground leading-tight italic">
+                  Calculations are based on 2024 IRS tax brackets and standard FICA rates. This tool is for educational purposes and does not constitute professional tax advice.
+                </p>
               </div>
             </div>
           </div>
