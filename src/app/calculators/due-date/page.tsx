@@ -9,7 +9,11 @@ import {
   History, 
   HeartPulse, 
   Clock,
-  ChevronRight
+  ChevronRight,
+  TrendingUp,
+  Calculator,
+  Search,
+  CheckCircle2
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -33,6 +37,56 @@ import {
   startOfDay,
   intervalToDuration
 } from 'date-fns';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component to ensure it is picked up by SEO crawlers.
+const metadata: Metadata = {
+  title: 'Accurate Due Date Calculator | Pregnancy Birth Date Tracker',
+  description: 'Calculate your estimated due date instantly with our free pregnancy due date calculator. Input your last period or conception date to track your baby milestones.',
+  keywords: [
+    'Due Date Calculator',
+    'pregnancy due date calculator',
+    'estimated due date calculator',
+    'pregnancy chart due date',
+    'pregnancy birth date calculator',
+    'MyApexCalc',
+    'baby due date estimator',
+    'conception date calculator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Pregnancy Due Date Calculator & Milestone Tracker | MyApexCalc',
+    description: 'Track your pregnancy timeline. Estimate your child\'s birth date and visualize your progress month-by-month with our interactive calculator.',
+    url: 'https://www.myapexcalc.com/calculators/due-date',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/KjppCkBz/due-date-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Pregnancy Due Date Calculator and Weekly Progress Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Pregnancy Due Date & Birth Calculator | MyApexCalc',
+    description: 'Find your estimated due date and explore your complete pregnancy timeline instantly.',
+    images: ['https://i.ibb.co/KjppCkBz/due-date-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/due-date',
+  },
+};
 
 type DueDateMode = 'last-period' | 'ultrasound' | 'conception' | 'ivf';
 
@@ -383,51 +437,77 @@ export default function DueDateCalculatorPage() {
           </div>
         )}
 
-        {/* Term Definitions Section */}
+        {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <History className="w-6 h-6" />
-                Term Definitions
+                <TrendingUp className="w-6 h-6" />
+                Map Your Pregnancy Journey with MyApexCalc
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Finding out you are expecting is one of life’s most profound moments, immediately sparking a wave of excitement and curiosity. Almost instantly, the first big question arises: When will we meet our baby? While only a small fraction of babies are born exactly on their projected date, finding a reliable baseline is essential for scheduling prenatal visits, planning your nursery, and sharing the news with loved ones. Our free online Due Date Calculator removes the complexity, serving as a trusted, simple-to-use pregnancy due date calculator that maps your road to parenthood in seconds.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Science Behind the Countdown: Calculating Your Date
               </h3>
               <div className="space-y-6">
-                <div className="space-y-2">
-                  <h4 className="font-bold text-foreground">Gestational Age</h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    This is the standard medical measure of how far along a pregnancy is. It is measured in weeks from the first day of the last menstrual period (LMP). Even though conception usually happens two weeks later, the LMP is used because it's a fixed date patients usually remember.
-                  </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  A standard human pregnancy lasts approximately 40 weeks (280 days) from the first day of your last menstrual period (LMP). To establish a highly accurate estimate, our estimated due date calculator processes your timelines utilizing the standard medical calculation system known as Naegele’s Rule:
+                </p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                  Estimated Due Date = LMP + 7 days − 3 months + 1 year
                 </div>
-                <div className="space-y-2">
-                  <h4 className="font-bold text-foreground">Trimesters</h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Pregnancy is divided into three segments. The first trimester (weeks 1-12) involves rapid cellular development. The second (weeks 13-27) is characterized by growth and movement. The third (weeks 28-40) is the final maturation phase.
-                  </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  This formula assumes a standard 28-day menstrual cycle, with ovulation occurring on day 14. If your cycle is shorter or longer, our advanced tool easily adjusts for your unique rhythm, modifying the math to ensure your pregnancy birth date calculator matches your personal biological timeline.
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  If you happen to know the exact date of your conception (or the date of your IVF embryo transfer), our calculator can bypass menstrual cycle estimations entirely to compute your date directly:
+                </p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                  Estimated Due Date = Conception Date + 266 days
                 </div>
               </div>
             </section>
 
             <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Calculation Insights</h4>
-              <ul className="space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Why Track Your Timeline with MyApexCalc?
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Instead of trying to count calendar weeks on your fingers or dealing with generic apps that require intrusive personal accounts, MyApexCalc provides a clear, seamless, and private dashboard:
+              </p>
+              <ul className="space-y-6 pt-2">
                 <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <ChevronRight className="w-4 h-4 text-accent" />
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <CheckCircle2 className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Naegele's Rule</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The traditional method of adding 7 days to the LMP, subtracting 3 months, and adding 1 year. Our calculator uses a more precise 280-day model.</p>
+                    <p className="font-bold text-sm">Interactive Weekly Milestones</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">See exactly how many weeks and days pregnant you are right now, along with your current trimester standing.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <Search className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Comprehensive Pregnancy Chart</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Explore your custom pregnancy chart due date parameters, including estimated windows for heartbeat detection and anatomical scans.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <ChevronRight className="w-4 h-4 text-primary" />
+                    <History className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">IVF Adjustments</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">For IVF, the due date is extremely precise. It is calculated by adding 266 days to the ovulation date (which is Transfer Date minus Embryo Age).</p>
+                    <p className="font-bold text-sm">Flexible Calculation Inputs</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Calculate your timeline using your last menstrual period, your exact conception date, or even your target IVF transfer date.</p>
                   </div>
                 </li>
               </ul>
