@@ -16,6 +16,57 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component to ensure it is picked up by SEO crawlers.
+const metadata: Metadata = {
+  title: 'Free BMI Calculator | Live Body Weight Index Calculator',
+  description: 'Calculate your body mass index instantly with our free online BMI calculator. Check your health metrics using the official BMI index chart and standard weight-to-height formula.',
+  keywords: [
+    'bmi calculator',
+    'bmi',
+    'body weight index calculator',
+    'body mass ratio',
+    'bmi index chart',
+    'bmi formula',
+    'MyApexCalc',
+    'health calculator',
+    'ideal body weight'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Accurate BMI Calculator & Chart | MyApexCalc',
+    description: 'Track your body metrics quickly. Input your height and weight to calculate your BMI and evaluate your health score via the standard BMI index chart.',
+    url: 'https://www.myapexcalc.com/calculators/bmi',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/V0rdhfTT/bmi-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc BMI Calculator Dashboard and Category Layout',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Online Body Weight Index Calculator | MyApexCalc',
+    description: 'Instantly measure your body mass ratio using the standard scientific BMI formula.',
+    images: ['https://i.ibb.co/V0rdhfTT/bmi-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index dilution
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/bmi',
+  },
+};
 
 export default function BMIPage() {
   const [weight, setWeight] = useState(70);
