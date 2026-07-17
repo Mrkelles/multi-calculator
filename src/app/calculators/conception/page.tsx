@@ -12,14 +12,68 @@ import {
   Clock,
   Search,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  TrendingUp,
+  Calculator
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { addDays, subDays, format, startOfDay, differenceInDays } from 'date-fns';
+import { addDays, subDays, format, startOfDay } from 'date-fns';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component to ensure it is picked up by SEO crawlers.
+const metadata: Metadata = {
+  title: 'Accurate Conception Calculator | Estimate Conception Date',
+  description: 'Find your estimated date of conception instantly. Input your due date or last period to figure out your conception date with our free online calculator.',
+  keywords: [
+    'ovulation date calculator',
+    'conception calculator',
+    'conception estimator',
+    'conception date calculator',
+    'figure out conception date',
+    'conception date',
+    'conception to birth calculator',
+    'estimated date of conception',
+    'MyApexCalc',
+    'pregnancy conception tracker'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Pregnancy Conception Calculator & Estimator | MyApexCalc',
+    description: 'Pinpoint your exact moment of beginning. Run a quick conception calculation using your due date or cycle milestones with our custom tracker.',
+    url: 'https://www.myapexcalc.com/calculators/conception',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/9mJYJCKw/conception-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Conception Calculator and Milestone Estimator Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Conception Date Estimator | MyApexCalc',
+    description: 'Discover your estimated date of conception and explore your timeline from conception to birth.',
+    images: ['https://i.ibb.co/9mJYJCKw/conception-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/conception',
+  },
+};
 
 type ConceptionMode = 'last-period' | 'ultrasound' | 'due-date';
 
@@ -304,39 +358,62 @@ export default function ConceptionCalculatorPage() {
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <History className="w-6 h-6" />
-                Understanding Conception
+                <TrendingUp className="w-6 h-6" />
+                Trace the Beginning of Your Journey with MyApexCalc
               </h3>
-              <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
-                <p>
-                  **Conception** is the moment when a sperm fertilizes an egg. While many people think of this as a specific "day," it actually occurs during a biological window. Sperm can survive inside the female reproductive tract for up to five days, while an egg is viable for only about 12 to 24 hours after ovulation.
+              <p className="text-muted-foreground leading-relaxed">
+                For many expecting parents, knowing when their baby is due is only one piece of the puzzle. There is an incredible curiosity surrounding the exact moment your story truly began. Understanding your timeline helps you trace back key memories, calculate accurate fetal development, and establish a clear timeline for your doctor's visits. Our free online conception calculator is built to give you those answers, serving as a highly precise conception estimator to help you trace back your milestones.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Science of Conception: How We Track the Date
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  Because the physical joining of egg and sperm happens quietly inside the body, pinpointing the exact moment of fertilization is rarely possible without medical assistance. However, using standard gynecological math, we can narrow down your estimated date of conception to a highly accurate 3-to-5-day window. Depending on the information you have available, our conception date calculator uses two primary math methods to work backward:
                 </p>
-                <p>
-                  This means that sexual intercourse occurring several days before ovulation can still lead to conception. Most conception calculators, including this one, use a statistical midpoint based on standard gestation periods.
-                </p>
-                <h4 className="font-bold text-foreground pt-4">Fertile Window & Ovulation</h4>
-                <p>
-                  For a standard 28-day cycle, ovulation usually occurs around Day 14. Your most fertile days are the three days leading up to and including the day of ovulation. Knowing your conception date can help clarify your pregnancy timeline and is often one of the first questions parents-to-be have.
-                </p>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">Method 1: Calculating Backwards From Your Due Date</p>
+                  <p className="text-sm text-muted-foreground">If you have already visited an obstetrician or used a due date estimator, your due date is the most reliable anchor point. Because a full-term pregnancy typically lasts exactly 266 days from the actual day of fertilizing, the calculator subtracts this fixed interval:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Estimated Conception Date = Estimated Due Date - 266 days
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">Method 2: Calculating From Your Last Menstrual Period (LMP)</p>
+                  <p className="text-sm text-muted-foreground">If you are early in your journey and only know your cycles, our ovulation date calculator determines the window based on when your egg was released. Conception typically occurs within 12 to 24 hours of ovulation:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Estimated Ovulation Day = First Day of LMP + (Average Cycle Length - 14)
+                  </div>
+                  <p className="text-xs text-muted-foreground pt-1 italic">
+                    Because sperm can live inside the reproductive tract for up to five days, your active conception window actually spans the 5 days before ovulation plus the day of ovulation itself.
+                  </p>
+                </div>
               </div>
             </section>
 
-            <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
               <h4 className="text-xl font-bold text-primary flex items-center gap-2">
-                <Search className="w-5 h-5 text-accent" />
-                Term Definitions
+                <Info className="w-5 h-5 text-accent" />
+                Why Use MyApexCalc to Figure Out Conception Date?
               </h4>
-              <ul className="space-y-6">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Instead of scratching your head trying to calculate backward on a standard calendar, MyApexCalc provides a seamless, stress-free layout that offers:
+              </p>
+              <ul className="space-y-6 pt-2">
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <ChevronRight className="w-4 h-4 text-primary" />
+                    <CheckCircle2 className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Gestational Age</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The age of the pregnancy measured from the first day of the last period. This is the age used by doctors.</p>
+                    <p className="font-bold text-sm">Dynamic Timeline</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">View a continuous timeline showing your estimated fertilization window, your current progress week-by-week, and your final due date.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
@@ -344,67 +421,22 @@ export default function ConceptionCalculatorPage() {
                     <ChevronRight className="w-4 h-4 text-accent" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Fetal Age (Conceptional Age)</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The actual age of the developing baby from the moment of conception. It is typically 2 weeks less than the gestational age.</p>
+                    <p className="font-bold text-sm">Flexible Cycle Modeling</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Adjust your average cycle length (from 22 to 45 days) to ensure the timeline matches your personal biology.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <CalendarIcon className="w-4 h-4 text-primary" />
+                    <Search className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Due Date (EDD)</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The estimated date of delivery, calculated as 280 days (40 weeks) from the LMP or 266 days from conception.</p>
+                    <p className="font-bold text-sm">Clear Trimester Milestones</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Instantly see where your conception date places you on your trimester calendar, along with dates for key developmental milestones.</p>
                   </div>
                 </li>
               </ul>
             </div>
           </div>
-
-          <Separator />
-          
-          <div className="space-y-8 pb-12">
-            <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary">How accurate is this estimate?</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                While this calculator provides a highly reliable estimate based on medical standards, it is important to understand that every body is unique. 
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-                <Card className="border-none bg-blue-50">
-                  <CardContent className="pt-6">
-                    <p className="font-bold text-blue-900 mb-1">Cycle Variation</p>
-                    <p className="text-xs text-blue-700">If your cycles are irregular, calculating based on LMP may be less accurate. In these cases, an early ultrasound is the most reliable dating method.</p>
-                  </CardContent>
-                </Card>
-                <Card className="border-none bg-green-50">
-                  <CardContent className="pt-6">
-                    <p className="font-bold text-green-900 mb-1">Conception Timing</p>
-                    <p className="text-xs text-green-700">Conception doesn't always happen on the day of intercourse. Sperm can survive up to 5 days, waiting for the egg to be released.</p>
-                  </CardContent>
-                </Card>
-                <Card className="border-none bg-amber-50">
-                  <CardContent className="pt-6">
-                    <p className="font-bold text-amber-900 mb-1">Medical Follow-up</p>
-                    <p className="text-xs text-amber-700">Always confirm your dating with your OB-GYN or midwife, as they will use clinical measurements to monitor growth.</p>
-                  </CardContent>
-                </Card>
-              </div>
-            </section>
-          </div>
-          
-          <Separator />
-
-          <section className="space-y-6 pb-12">
-            <h3 className="text-2xl font-bold text-primary">Pregnancy Term & Due Date</h3>
-            <div className="prose prose-slate max-w-none text-muted-foreground space-y-4 text-sm leading-relaxed">
-              <p>
-                Pregnancy is a term used to describe a woman's state over a time period (~9 months) during which one or more offspring develops inside of a woman. Childbirth usually occurs approximately 38 weeks after conception, or about 40 weeks after the last menstrual period. The World Health Organization defines a normal pregnancy term to last between 37 and 42 weeks. During a person's first OB-GYN visit, the doctor will usually provide an estimated date (based on a sonogram) at which the child will be born, or due date. Alternatively, the due date can also be estimated based on a person's last menstrual period.
-              </p>
-              <p>
-                While the due date can be estimated, the actual length of pregnancy depends on various factors, including age, length of previous pregnancies, and weight of the mother at birth.<sup>1</sup> However, there are still more factors affecting natural variation in pregnancy terms that are not well understood. Studies have shown that fewer than 4% of births occur on the exact due date, 60% occur within a week of the due date, and almost 90% occur within two weeks of the due date.<sup>2</sup> As such, while it is possible to be fairly confident that a person's child will be born within about two weeks of the due date, it is currently not possible to predict the exact day of birth with certainty.
-              </p>
-            </div>
-          </section>
         </div>
       </div>
     </CalculatorWrapper>
