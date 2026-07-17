@@ -22,6 +22,56 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Percentage Calculator | Free Online Percentage Finder',
+  description: 'Calculate percentages, percentage change, and percentage difference with our free online percentage finder. Easily find the percentage of a percentage and solve complex relative change formulas.',
+  keywords: [
+    'percentage calculator',
+    'percentage finder',
+    'percentage difference calculator',
+    'percentage of a percentage',
+    'change in percentage formula',
+    'MyApexCalc',
+    'calculate percentage change',
+    'percentage increase calculator'
+  ],
+  
+  // Open Graph for social sharing platforms
+  openGraph: {
+    title: 'Percentage Calculator & Difference Finder | MyApexCalc',
+    description: 'Solve any percentage problem instantly. Calculate percentage change, differences, and relative growth with our interactive dashboard.',
+    url: 'https://www.myapexcalc.com/calculators/percentage',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/Xrb3CST4/percentage-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Percentage Calculator and Change Formula Interface',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Percentage & Change Calculator | MyApexCalc',
+    description: 'Calculate percentages, differences, and relative growth formulas instantly with our online tool.',
+    images: ['https://i.ibb.co/Xrb3CST4/percentage-calculator.png'],
+  },
+
+  // Standardize search signals to avoid indexing issues
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/percentage',
+  },
+};
 
 export default function PercentageCalculatorPage() {
   // Visibility Toggles
