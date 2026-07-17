@@ -11,7 +11,8 @@ import {
   CheckCircle2, 
   History, 
   ChevronRight,
-  TrendingUp
+  TrendingUp,
+  Calculator
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -35,6 +36,56 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component to ensure it is picked up by SEO crawlers.
+const metadata: Metadata = {
+  title: 'Accurate Pregnancy Calculator | Conception to Birth Tracker',
+  description: 'Track your pregnancy timeline week-by-week. Use our free pregnancy calculator to estimate your conception date, current term, and baby milestones.',
+  keywords: [
+    'ovulation predictor kits',
+    'pregnancy calculator',
+    'ovulation cycle calculator',
+    'pregnancy estimator',
+    'pregnancy term calculator',
+    'conception to birth calculator',
+    'MyApexCalc',
+    'pregnancy timeline'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Pregnancy Calculator & Term Estimator | MyApexCalc',
+    description: 'Monitor your development milestones. Estimate your term progress and ovulation timelines instantly with our interactive pregnancy estimator.',
+    url: 'https://www.myapexcalc.com/calculators/pregnancy',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/GvDqL4Yx/pregnancy-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Pregnancy Calculator Week-by-Week Dashboard Tracker',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Interactive Pregnancy Term & Timeline Calculator | MyApexCalc',
+    description: 'Track your journey from conception to birth with our highly accurate online calendar.',
+    images: ['https://i.ibb.co/GvDqL4Yx/pregnancy-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/pregnancy',
+  },
+};
 
 type PregnancyMode = 'due-date' | 'last-period' | 'ultrasound' | 'conception' | 'ivf';
 
@@ -115,7 +166,6 @@ export default function PregnancyCalculatorPage() {
         effectiveLmpDate = lmpDate;
       } else if (mode === 'ultrasound') {
         const totalDaysAtUltrasound = (ultrasoundWeeks * 7) + ultrasoundDays;
-        // Effective LMP = Ultrasound Date - days pregnant at that time
         effectiveLmpDate = subDays(inputDate, totalDaysAtUltrasound);
         dueDate = addDays(effectiveLmpDate, 280);
         lmpDate = effectiveLmpDate;
@@ -402,54 +452,85 @@ export default function PregnancyCalculatorPage() {
 
         <div className="lg:col-span-12 space-y-12">
           <Separator />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <History className="w-6 h-6" />
-                Understanding the Math
+                <TrendingUp className="w-6 h-6" />
+                Track Your Journey with MyApexCalc
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                A standard pregnancy lasts about 280 days (40 weeks) from the first day of your last menstrual period (LMP). Because exact conception dates are rarely known, the LMP serves as the universal baseline for medical professionals to track growth and development.
+                Embarking on the road to parenthood is a remarkable, life-changing experience. From the early days of family planning to the moment you welcome your little one, keeping close track of your physical milestones helps you feel connected, prepared, and confident. Whether you are trying to understand your body's natural rhythms or already looking forward to your estimated delivery date, our free online pregnancy calculator is designed to act as your complete companion from conception to birth calculator tracking.
               </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Science of Conception: Mapping Your Timeline
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  A typical pregnancy is measured from the first day of your last menstrual period (LMP) because the exact moment of conception is rarely known. To bridge this gap, our multi-function pregnancy estimator relies on your cycle details to trace your journey backward and forward:
+                </p>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">The Ovulation and Conception Window:</p>
+                  <p className="text-sm text-muted-foreground">For those currently trying to conceive, tracking your ovulation window is key. Most women ovulate roughly midway through their menstrual cycle. Using an ovulation cycle calculator alongside physical tracking tools like ovulation predictor kits can help pinpoint your most fertile days.</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Estimated Ovulation Day = First Day of LMP + (Cycle Length - 14)
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">The Pregnancy Term and Progression:</p>
+                  <p className="text-sm text-muted-foreground">Once pregnancy is confirmed, our pregnancy term calculator converts your cycle dates into active development weeks. Medical practice divides these 40 weeks into three key trimesters, tracking your progress using gestational age:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Gestational Age (in Days) = Current Date - First Day of LMP
+                  </div>
+                  <p className="text-xs text-muted-foreground pt-1 italic">
+                    This gestational age calculation is translated into completed weeks and days, giving you an immediate view of your current term and the structural development taking place inside your body.
+                  </p>
+                </div>
+              </div>
             </section>
 
-            <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Definition of Terms</h4>
-              <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <CalendarIcon className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Gestational Age</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The age of the pregnancy measured from the first day of the last menstrual period, used to standardize prenatal care.</p>
-                  </div>
-                </li>
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Why Choose the MyApexCalc Pregnancy Tracker?
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Instead of sorting through cluttered online forums or dealing with invasive apps, MyApexCalc delivers a secure, streamlined experience:
+              </p>
+              <ul className="space-y-6 pt-2">
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
                     <CheckCircle2 className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Full Term Status</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Considered reached at 38 weeks. By this point, fetal development is typically complete and safe for birth.</p>
+                    <p className="font-bold text-sm">Interactive Development Milestones</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Instantly see your baby's estimated weight, height, and current development phase based on your exact week of pregnancy.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <ChevronRight className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Custom Cycle Adjustments</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Tailor your results by adjusting your average cycle length, ensuring the calculations match your personal biology.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <History className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Comprehensive Pregnancy Roadmap</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Review a simple annual timeline showcasing major milestones, including key testing windows, fetal growth stages, and your countdown to delivery.</p>
                   </div>
                 </li>
               </ul>
             </div>
-          </div>
-
-          <Separator />
-          
-          <div className="space-y-8 pb-12">
-            <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary">Pregnancy Term & Due Date</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Pregnancy is a term used to describe a woman's state over a time period (~9 months) during which one or more offspring develops inside of a woman. Childbirth usually occurs approximately 38 weeks after conception, or about 40 weeks after the last menstrual period. The World Health Organization defines a normal pregnancy term to last between 37 and 42 weeks. During a person's first OB-GYN visit, the doctor will usually provide an estimated date (based on a sonogram) at which the child will be born, or due date. Alternatively, the due date can also be estimated based on a person's last menstrual period.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                While the due date can be estimated, the actual length of pregnancy depends on various factors, including age, length of previous pregnancies, and weight of the mother at birth.<sup>1</sup> However, there are still more factors affecting natural variation in pregnancy terms that are not well understood. Studies have shown that fewer than 4% of births occur on the exact due date, 60% occur within a week of the due date, and almost 90% occur within two weeks of the due date.<sup>2</sup> As such, while it is possible to be fairly confident that a person's child will be born within about two weeks of the due date, it is currently not possible to predict the exact day of birth with certainty.
-              </p>
-            </section>
           </div>
         </div>
       </div>
