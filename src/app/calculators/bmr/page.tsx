@@ -11,7 +11,8 @@ import {
   ChevronRight,
   TrendingUp,
   Zap,
-  Dumbbell
+  Dumbbell,
+  Calculator
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,6 +28,52 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Accurate BMR Calculator | Free Basal Metabolic Rate Tracker',
+  description: 'Calculate your Basal Metabolic Rate instantly with our free online BMR calculator. Discover your baseline daily calorie burn based on your age, sex, height, and weight.',
+  keywords: [
+    'bmr calculator',
+    'basal metabolic rate calculator',
+    'metabolic rate calculator',
+    'calculator for metabolic rate',
+    'MyApexCalc',
+    'daily calorie burn estimator',
+    'Harris-Benedict formula'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Basal Metabolic Rate Calculator | MyApexCalc',
+    description: 'Find your baseline energy requirements. Calculate your BMR instantly and build a smarter nutrition or weight management plan with our interactive tool.',
+    url: 'https://www.myapexcalc.com/calculators/bmr',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/PGGDjy1g/bmr-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Basal Metabolic Rate Calculator and Daily Calorie Breakdown Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Basal Metabolic Rate Calculator | MyApexCalc',
+    description: 'Calculate your exact baseline daily energy expenditure in seconds with our free online fitness tool.',
+    images: ['https://i.ibb.co/PGGDjy1g/bmr-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/bmr',
+  },
+};
 
 type Gender = 'male' | 'female';
 type UnitMode = 'us' | 'metric';
@@ -259,100 +306,89 @@ export default function BMRCalculatorPage() {
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <History className="w-6 h-6" />
-                Understanding BMR
+                <TrendingUp className="w-6 h-6" />
+                Master Your Metabolism with MyApexCalc
               </h3>
-              <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
-                <p>
-                  The **Basal Metabolic Rate (BMR)** is the amount of energy (calories) expended while at rest in a neutrally temperate environment, in the post-absorptive state (meaning that the digestive system is inactive, which requires about 12 hours of fasting).
+              <p className="text-muted-foreground leading-relaxed">
+                Whether you are aiming to lose weight, build lean muscle, or simply maintain your current physique, understanding your body’s daily energy requirements is the ultimate starting point. Every day, your body burns a significant number of calories simply keeping your organs functioning, circulating blood, and maintaining body temperature—even if you stay in bed all day. Our free online bmr calculator removes the guesswork by establishing your baseline energy needs in seconds.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Science of Metabolism: How Your BMR is Calculated
+              </h3>
+              <div className="space-y-4">
+                <p className="text-muted-foreground leading-relaxed">
+                  Your Basal Metabolic Rate (BMR) represents the absolute minimum number of calories your body needs to survive at rest. Our basal metabolic rate calculator utilizes the most accurate, medically recognized formulas to determine this baseline.
                 </p>
-                <p>
-                  This energy is used only to maintain vital organs, such as the heart, lungs, kidneys, the nervous system, intestines, liver, lungs, sex organs, muscles, and skin. BMR decreases with age and increases with muscle mass.
+                <p className="text-muted-foreground leading-relaxed">
+                  Our metabolic rate calculator supports both the <strong>Mifflin-St Jeor Equation</strong> (widely considered the most accurate for modern lifestyles) and the classic Harris-Benedict Equation.
                 </p>
-                <h4 className="font-bold text-foreground pt-4">Factors Influencing BMR</h4>
-                <ul className="space-y-3">
-                  <li className="flex gap-3">
-                    <div className="h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <ChevronRight className="w-3 h-3 text-accent" />
-                    </div>
-                    <span><strong>Muscle Mass:</strong> Muscle tissue burns 3-5 times more calories than fat tissue.</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <div className="h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <ChevronRight className="w-3 h-3 text-accent" />
-                    </div>
-                    <span><strong>Age:</strong> BMR typically declines as you age due to a decrease in muscle tissue and changes in hormonal processes.</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <div className="h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <ChevronRight className="w-3 h-3 text-accent" />
-                    </div>
-                    <span><strong>Genetics:</strong> Some people have a naturally faster or slower metabolism inherited from parents.</span>
-                  </li>
-                </ul>
+                
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm space-y-4 border">
+                  <p className="font-bold text-xs uppercase text-muted-foreground mb-2">The Mifflin-St Jeor Equation</p>
+                  <div className="space-y-2">
+                    <p className="text-primary font-bold">For Men:</p>
+                    <p className="text-foreground">BMR = (10 × W) + (6.25 × H) - (5 × A) + 5</p>
+                  </div>
+                  <Separator />
+                  <div className="space-y-2">
+                    <p className="text-primary font-bold">For Women:</p>
+                    <p className="text-foreground">BMR = (10 × W) + (6.25 × H) - (5 × A) - 161</p>
+                  </div>
+                </div>
+                
+                <p className="text-muted-foreground leading-relaxed pt-2 text-xs italic">
+                  * W = weight in kilograms, H = height in centimeters, A = age in years.
+                </p>
+                
+                <p className="text-muted-foreground leading-relaxed">
+                  Once this baseline is established, you can multiply your BMR by an activity factor to determine your Total Daily Energy Expenditure (TDEE). This tells you exactly how many calories you need to consume to hit your target fitness goals.
+                </p>
               </div>
             </section>
 
-            <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
               <h4 className="text-xl font-bold text-primary flex items-center gap-2">
-                <TrendingUp className="w-5 h-5" />
-                The Math Behind the Result
+                <Info className="w-5 h-5 text-accent" />
+                Why Use the MyApexCalc Calculator for Metabolic Rate?
               </h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                This calculator uses the **Mifflin-St Jeor Equation**, which was introduced in 1990 as a more reliable alternative to the older Harris-Benedict formula.
-              </p>
-              <div className="bg-muted/30 p-5 rounded-2xl font-mono text-[10px] space-y-4">
-                <div className="space-y-1">
-                  <p className="font-bold text-primary">For Men:</p>
-                  <p className="text-foreground">BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) + 5</p>
-                </div>
-                <Separator />
-                <div className="space-y-1">
-                  <p className="font-bold text-primary">For Women:</p>
-                  <p className="text-foreground">BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) - 161</p>
-                </div>
-              </div>
-              <p className="text-[10px] text-muted-foreground italic">
-                * Weight and Height are automatically converted to KG and CM internally for the calculation.
-              </p>
-            </div>
-          </div>
-
-          <Separator />
-          
-          <div className="space-y-8 pb-12">
-            <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <Dumbbell className="w-6 h-6" />
-                BMR vs. TDEE
-              </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                While BMR is your "survival" calorie count, your **Total Daily Energy Expenditure (TDEE)** accounts for your physical activity. To lose weight, you typically aim for a calorie intake between your BMR and your TDEE. To gain muscle, you aim for a slight surplus above your TDEE.
+                Instead of guessing your calorie needs or relying on complex manual formulas, MyApexCalc provides a seamless, secure, and instant health dashboard:
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-                <Card className="border-none bg-blue-50">
-                  <CardContent className="pt-6">
-                    <p className="font-bold text-blue-900 mb-1">Weight Loss</p>
-                    <p className="text-xs text-blue-700">A deficit of 500 calories per day from your TDEE results in approximately 1 lb of fat loss per week.</p>
-                  </CardContent>
-                </Card>
-                <Card className="border-none bg-green-50">
-                  <CardContent className="pt-6">
-                    <p className="font-bold text-green-900 mb-1">Maintenance</p>
-                    <p className="text-xs text-green-700">Eating your exact TDEE calories allows your body weight to remain stable while supporting activity.</p>
-                  </CardContent>
-                </Card>
-                <Card className="border-none bg-amber-50">
-                  <CardContent className="pt-6">
-                    <p className="font-bold text-amber-900 mb-1">Weight Gain</p>
-                    <p className="text-xs text-amber-700">Adding 250-500 calories to your TDEE supports the synthesis of new muscle tissue when combined with resistance training.</p>
-                  </CardContent>
-                </Card>
-              </div>
-            </section>
+              <ul className="space-y-6 pt-2">
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <Dumbbell className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Dual Formula Support</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Toggle between the modern Mifflin-St Jeor and revised Harris-Benedict formulas to compare baseline estimates across different clinical standards.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <History className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Metric and Imperial Inputs</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Easily enter your stats in pounds and feet/inches or kilograms and centimeters without needing external conversion tools.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <Zap className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Instant TDEE Projections</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">View a clear breakdown showing how your baseline calorie burn scales up based on your daily physical activity levels.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
