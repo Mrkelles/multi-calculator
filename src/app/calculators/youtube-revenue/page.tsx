@@ -2,13 +2,74 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Youtube, Eye, DollarSign, TrendingUp, Calendar, Info } from 'lucide-react';
+import { 
+  Youtube, 
+  Eye, 
+  DollarSign, 
+  TrendingUp, 
+  Calendar, 
+  Info, 
+  Zap, 
+  History, 
+  ChevronRight,
+  Calculator 
+} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component to ensure it is picked up by SEO crawlers.
+const metadata: Metadata = {
+  title: 'YouTube Revenue Calculator | Estimate Your Channel Earnings',
+  description: 'Estimate your video earnings instantly with our free YouTube revenue calculator. Input your daily views and CPM bounds to project your monthly and yearly creator payout.',
+  keywords: [
+    'youtube money views calculator',
+    'youtube revenue calculator',
+    'youtube earnings calculator',
+    'estimated youtube earnings',
+    'MyApexCalc',
+    'creator earnings estimator',
+    'CPM calculator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive YouTube Money & Revenue Calculator | MyApexCalc',
+    description: 'Track your potential channel payout. Analyze your estimated youtube earnings based on custom view metrics and CPM variables.',
+    url: 'https://www.myapexcalc.com/calculators/youtube-revenue',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/b5cf2xS0/youtube-revenue-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc YouTube Money Calculator and Milestone Projection Board',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Estimated YouTube Earnings Calculator | MyApexCalc',
+    description: 'Quickly calculate your potential ad revenue utilizing daily views and customizable CPM bounds.',
+    images: ['https://i.ibb.co/b5cf2xS0/youtube-revenue-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/youtube-revenue',
+  },
+};
 
 export default function YouTubeRevenuePage() {
   const [dailyViews, setDailyViews] = useState(5000);
@@ -235,6 +296,96 @@ export default function YouTubeRevenuePage() {
             <p className="text-xs text-amber-800 leading-relaxed">
               <strong>About the Estimate:</strong> This cash projections model calculates earnings possibilities before YouTube split fees, country taxes, or production overheads. Standard CPM rates oscillate heavily depending on view retention metrics, audience geography, age brackets, and content vertical premium levels.
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Informational Text Section */}
+      <div className="py-10 space-y-12">
+        <Separator />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+          <section className="space-y-4">
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+              <TrendingUp className="w-6 h-6" />
+              Maximize Your Creator Earnings with MyApexCalc
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              With the creator economy expanding rapidly, understanding how views translate into revenue is essential for channels of all sizes. Whether you are a micro-creator looking to go full-time or an established influencer projecting your next quarter's payout, estimating your platform earnings can feel like a guessing game. Our free online youtube revenue calculator removes the mystery from creator finances, giving you an immediate, highly accurate breakdown of your potential ad income.
+            </p>
+            
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+              <Calculator className="w-6 h-6" />
+              How Ad Revenue is Calculated: The CPM Model
+            </h3>
+            <div className="space-y-4">
+              <p className="text-muted-foreground leading-relaxed">
+                YouTube distributes ad payouts based on a metric called CPM (Cost Per Mille), which represents the price advertisers pay for every 1,000 views on a video. However, because not all views serve ads and YouTube takes a platform revenue split (typically 45%), calculating your real income requires checking your estimated youtube earnings across low-end and high-end CPM ranges. Our responsive youtube money views calculator processes your parameters utilizing a precise chronological formula to map out daily, monthly, and yearly ranges:
+              </p>
+              
+              <div className="space-y-4">
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                  <p className="font-bold text-xs uppercase text-muted-foreground mb-2">Daily Revenue Formula</p>
+                  Daily Income = (Daily Video Views / 1,000) × CPM Rate
+                </div>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                  <p className="font-bold text-xs uppercase text-muted-foreground mb-2">Yearly Revenue Formula</p>
+                  Yearly Income = Daily Income × 365
+                </div>
+              </div>
+
+              <p className="text-muted-foreground leading-relaxed">
+                For example, if your channel averages 50,000 views a day with an ad-yield rate fluctuating between a conservative $0.25 CPM and a moderate $4.00 CPM, your daily earnings will range between $12.50 and $200.00. Over a full calendar year, this compiles into an estimated annual payout of $4,562.50 to $73,000.00.
+              </p>
+            </div>
+          </section>
+
+          <div className="space-y-8">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Why Use the MyApexCalc YouTube Earnings Calculator?
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Unlike legacy platforms that rely on outdated mathematical scales or flat monthly multiplier approximations, our advanced calculator is designed to provide clean, pinpoint estimates. Our dashboard features:
+              </p>
+              <ul className="space-y-6 pt-2">
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <ChevronRight className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Customizable CPM Boundaries</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Take complete control over your earnings projections by sliding the minimum and maximum CPM thresholds to match your specific content niche, target audience, and geographic location.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <History className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Instant Dynamic Milestone Tables</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Scroll through our pre-calculated milestone guides to see how your monthly and yearly revenue scales as your channel grows from 1,000 daily views to viral sensation status.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <Zap className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Ad-Free, Real-Time Computations</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Adjust your daily view targets and watch your dashboard update instantly without being interrupted by complex formulas or distracting page refreshes.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+              <Youtube className="w-10 h-10 text-primary opacity-40 shrink-0" />
+              <p className="text-[10px] text-muted-foreground leading-tight italic">
+                "In the creator economy, data is the foundation of growth. Understanding your revenue metrics allows you to scale your content business with confidence."
+              </p>
+            </div>
           </div>
         </div>
       </div>
