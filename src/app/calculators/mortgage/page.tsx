@@ -1,9 +1,20 @@
-
 "use client"
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Home, PieChart as PieChartIcon, Info, DollarSign, Percent } from 'lucide-react';
+import { 
+  Home, 
+  PieChart as PieChartIcon, 
+  Info, 
+  DollarSign, 
+  Percent, 
+  TrendingUp, 
+  Calculator, 
+  History, 
+  ChevronRight,
+  ShieldCheck,
+  Landmark
+} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +26,53 @@ import {
   ChartTooltipContent, 
 } from '@/components/ui/chart';
 import { Pie, PieChart, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Accurate Mortgage Calculator | Free Home Payment Estimator',
+  description: 'Estimate your monthly home payments instantly with our free mortgage calculator. Figure out mortgage payments including principal, interest, property taxes, and home insurance.',
+  keywords: [
+    'mortgage calculator',
+    'bankrate mortgage calculator',
+    'figure out mortgage payment',
+    'MyApexCalc',
+    'home loan calculator',
+    'p&i calculator',
+    'monthly housing costs'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Advanced Mortgage Payment Calculator | MyApexCalc',
+    description: 'Break down your home loan costs in seconds. Figure out mortgage payments, interest structures, and taxes with our interactive calculation tool.',
+    url: 'https://www.myapexcalc.com/calculators/mortgage',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/WLfWtgm/mortgage-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Advanced Mortgage Calculator and Monthly Breakdown Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Home Loan & Mortgage Estimator | MyApexCalc',
+    description: 'Accurately figure out your total monthly mortgage obligations, including taxes, interest, and insurance.',
+    images: ['https://i.ibb.co/WLfWtgm/mortgage-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/mortgage',
+  },
+};
 
 export default function MortgagePage() {
   // Inputs
@@ -327,10 +385,99 @@ export default function MortgagePage() {
           </div>
 
           <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 flex gap-3">
-            <Info className="w-5 h-5 text-blue-500 shrink-0" />
+            <Info className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
             <p className="text-xs text-blue-700 leading-relaxed">
               <strong>Pro Tip:</strong> Most lenders require <strong>Private Mortgage Insurance (PMI)</strong> if your down payment is less than 20% of the home price. This is included in our calculation automatically when applicable.
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Informational Text Section */}
+      <div className="py-10 space-y-12">
+        <Separator />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+          <section className="space-y-4">
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+              <TrendingUp className="w-6 h-6" />
+              Take the Stress Out of Home Buying with MyApexCalc
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              Purchasing a home is one of the most significant financial decisions you will ever make. Before looking at listings or contacting a lender, it is critical to evaluate what you can comfortably afford each month. Our free, intuitive mortgage calculator is designed to simplify this process. Rather than guessing your long-term housing costs, our dashboard lets you project your true financial commitment in seconds.
+            </p>
+            
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+              <Calculator className="w-6 h-6" />
+              How to Figure Out Mortgage Payments
+            </h3>
+            <div className="space-y-4">
+              <p className="text-muted-foreground leading-relaxed">
+                A standard home payment consists of more than just paying down your loan's balance. Real-world housing costs typically bundle four key components—collectively known as PITI (Principal, Interest, Taxes, and Insurance).
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                To calculate your monthly Principal and Interest (M), our interactive tool runs the standard amortization formula:
+              </p>
+              <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                M = P [ r(1+r)^n ] / [ (1+r)^n - 1 ]
+              </div>
+              <div className="space-y-2 pt-2">
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">P</span> represents your total loan principal (purchase price minus down payment).</p>
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">r</span> represents your monthly interest rate (annual rate divided by 12 months).</p>
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">n</span> represents the total number of monthly payments (e.g., 360 for a 30-year term).</p>
+              </div>
+              <p className="text-muted-foreground leading-relaxed pt-2">
+                Once the base payment is determined, our system dynamically layers in your property taxes, home insurance premiums, and any relevant HOA fees to give you a complete and realistic monthly budget.
+              </p>
+            </div>
+          </section>
+
+          <div className="space-y-8">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Why Use MyApexCalc Over Generic Tools?
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                While resources like the standard bankrate mortgage calculator offer excellent high-level projections, MyApexCalc is built for customization and speed:
+              </p>
+              <ul className="space-y-6 pt-2">
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <ChevronRight className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Customize Every Metric</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Adjust property tax rates, insurance costs, and HOA variables in real-time to match your target neighborhood.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <ShieldCheck className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Down Payment Thresholds</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">See instant updates when your down payment hits 20%, which automatically waives costly PMI fees.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <History className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Lifetime Cost Analysis</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">View a comprehensive breakdown of the total interest paid, helping you compare 15-year vs. 30-year terms.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+              <Landmark className="w-10 h-10 text-primary opacity-40 shrink-0" />
+              <p className="text-[10px] text-muted-foreground leading-tight italic">
+                "Knowing your real monthly payment before you visit a bank puts you in the driver's seat of your home-buying journey."
+              </p>
+            </div>
           </div>
         </div>
       </div>
