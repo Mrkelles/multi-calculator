@@ -24,37 +24,35 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
 const metadata: Metadata = {
-  title: 'Percentage Calculator | Free Online Percentage Finder',
-  description: 'Calculate percentages, percentage change, and percentage difference with our free online percentage finder. Easily find the percentage of a percentage and solve complex relative change formulas.',
+  title: 'Accurate Percentage Calculator | Free Math & Discount Tool',
+  description: 'Calculate percentages, increases, decreases, and differences instantly. Use our free online percentage calculator to solve any math problem or figure out a percentage.',
   keywords: [
     'percentage calculator',
+    'percentage formula',
+    'Find percentage online',
+    'figure out a percentage',
+    'MyApexCalc',
     'percentage finder',
     'percentage difference calculator',
     'percentage of a percentage',
-    'change in percentage formula',
-    'MyApexCalc',
-    'calculate percentage change',
-    'percentage increase calculator'
+    'change in percentage formula'
   ],
   
-  // Open Graph for social sharing platforms
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
   openGraph: {
-    title: 'Percentage Calculator & Difference Finder | MyApexCalc',
-    description: 'Solve any percentage problem instantly. Calculate percentage change, differences, and relative growth with our interactive dashboard.',
+    title: 'Precision Percentage Calculator & Math Tool | MyApexCalc',
+    description: 'Solve percentage problems in seconds. Calculate percentage increases, find percentage values, and figure out proportions easily.',
     url: 'https://www.myapexcalc.com/calculators/percentage',
     siteName: 'MyApexCalc',
     locale: 'en_US',
     type: 'website',
     images: [
       {
-        url: 'https://i.ibb.co/Xrb3CST4/percentage-calculator.png',
+        url: 'https://i.ibb.co/p6tXgDrR/percentage-calculator.png',
         width: 1200,
         height: 630,
-        alt: 'MyApexCalc Percentage Calculator and Change Formula Interface',
+        alt: 'MyApexCalc Percentage Calculator and Multi-Function Math Interface',
       },
     ],
   },
@@ -62,12 +60,12 @@ const metadata: Metadata = {
   // Twitter visual preview specs
   twitter: {
     card: 'summary_large_image',
-    title: 'Instant Percentage & Change Calculator | MyApexCalc',
-    description: 'Calculate percentages, differences, and relative growth formulas instantly with our online tool.',
-    images: ['https://i.ibb.co/Xrb3CST4/percentage-calculator.png'],
+    title: 'Instant Online Percentage Solver | MyApexCalc',
+    description: 'Quickly calculate percent differences, retail discounts, and financial margins using our intuitive web calculator.',
+    images: ['https://i.ibb.co/p6tXgDrR/percentage-calculator.png'],
   },
 
-  // Standardize search signals to avoid indexing issues
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
   alternates: {
     canonical: 'https://www.myapexcalc.com/calculators/percentage',
   },
@@ -403,62 +401,93 @@ export default function PercentageCalculatorPage() {
           </div>
         </section>
 
-        {/* Reference Section */}
+        {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <History className="w-6 h-6" />
-                Understanding Percentages
+                <TrendingUp className="w-6 h-6" />
+                Simplify Your Everyday Math with MyApexCalc
               </h3>
-              <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
-                <p>
-                  A percentage is a number or ratio expressed as a fraction of 100. It is often denoted using the percent sign, "%". Percentages are used to describe parts of a whole, relative change, and comparison between different data sets.
+              <p className="text-muted-foreground leading-relaxed">
+                Whether you are trying to calculate the final price of a sale item at a store, figure out the tip for a restaurant bill, analyze financial growth trends in a business report, or help your kids with their math homework, percentages are everywhere. Yet, trying to mental-math these figures or remember old high school math rules can be frustrating. Our free online percentage calculator is built to solve any percentage equation instantly, serving as your ultimate tool to find percentage online without picking up a pencil.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                Understanding the Formulas: How to Figure Out a Percentage
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  A percentage is simply a ratio or a fraction expressed out of a whole of $100$. Depending on the specific question you are trying to answer, the mathematical percentage formula changes slightly. Our multi-function dashboard supports the three most common calculation modes:
                 </p>
-                <h4 className="font-bold text-foreground pt-4">Percentage Formula</h4>
-                <p>
-                  The basic formula for finding a percentage is: <code>P = (Value / Total) × 100</code>. To find a value from a percentage, the formula is: <code>Value = (Percentage / 100) × Total</code>.
-                </p>
-                <h4 className="font-bold text-foreground pt-4">Percentage Difference vs. Change</h4>
-                <p>
-                  <strong>Percentage Change</strong> is used when there is an old value and a new value (e.g., price increase). <strong>Percentage Difference</strong> is used when comparing two values of equal status where there is no clear "start" or "end" (e.g., comparing the size of two different cities).
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">1. Finding a Percent of a Value</p>
+                  <p className="text-sm text-muted-foreground">Use this when you want to calculate a specific slice of a number (such as finding a $15\%$ tip on a $\$60$ restaurant bill):</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Value = Total × ( Percentage / 100 )
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">2. Finding the Percentage of a Fraction</p>
+                  <p className="text-sm text-muted-foreground">Use this when you have two numbers and want to find what percentage one is of the other (for example, finding your score percentage if you got $45$ out of $50$ questions right on a test):</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Percentage = ( Part / Whole ) × 100
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">3. Calculating Percentage Increase or Decrease</p>
+                  <p className="text-sm text-muted-foreground">Use this when tracking growth, losses, or retail discounts (such as calculating the percentage drop when a stock price falls from $\$120$ to $\$90$):</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Percentage Change = ( (New Value - Original Value) / Original Value ) × 100
+                  </div>
+                </div>
+
+                <p className="text-muted-foreground leading-relaxed pt-2">
+                  Our platform automatically processes these mathematical steps behind the scenes, allowing you to plug in your raw numbers and receive a clean, immediate answer.
                 </p>
               </div>
             </section>
 
-            <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
               <h4 className="text-xl font-bold text-primary flex items-center gap-2">
                 <Info className="w-5 h-5 text-accent" />
-                Key Terms
+                Why Use the MyApexCalc Percentage Calculator?
               </h4>
-              <ul className="space-y-6">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Instead of scratching your head trying to figure out a percentage manually or wrestling with generic phone calculator apps, MyApexCalc provides:
+              </p>
+              <ul className="space-y-6 pt-2">
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
                     <ChevronRight className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Base Value</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The original amount or total that a percentage is calculated from.</p>
+                    <p className="font-bold text-sm">All-in-One Multi-Utility Tabs</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Easily switch between basic percent calculations, percentage changes, and value proportions depending on your specific question.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <ChevronRight className="w-4 h-4 text-accent" />
+                    <History className="w-4 h-4 text-accent" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Percentage Point</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The arithmetic difference between two percentages (e.g., moving from 10% to 15% is a 5 percentage point increase).</p>
+                    <p className="font-bold text-sm">Flawless Precision</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Our tool calculates figures down to the exact decimal, eliminating rounding errors for business bookkeeping, budgeting, or scientific analysis.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <ChevronRight className="w-4 h-4 text-primary" />
+                    <Zap className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Relative Change</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The ratio of the change in a value to its original magnitude.</p>
+                    <p className="font-bold text-sm">Responsive, Real-Time Calculations</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Simply type your values into the boxes to watch your answers update instantly as you type.</p>
                   </div>
                 </li>
               </ul>
