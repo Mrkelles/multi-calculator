@@ -11,7 +11,10 @@ import {
   History, 
   Clock, 
   Calendar, 
-  Briefcase 
+  Briefcase,
+  TrendingUp,
+  ShieldCheck,
+  ChevronRight
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,6 +29,57 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Accurate Time Card Calculator | Free Timesheet & Punch Clock Tracker',
+  description: 'Calculate employee shifts and weekly hours instantly. Use our free time card calculator to compute punch clock cards, deduct breaks, and export clean timesheets.',
+  keywords: [
+    'time card calculator',
+    'clock card calculator',
+    'time punch clock calculator',
+    'time card sheet calculator',
+    'timesheet calculator',
+    'work time clock calculator',
+    'MyApexCalc',
+    'payroll hours calculator',
+    'biweekly time card tool'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Time Card & Punch Clock Calculator | MyApexCalc',
+    description: 'Track weekly payroll effortlessly. Input daily clock-in and clock-out markers, subtract unpaid breaks, and sum hourly totals instantly.',
+    url: 'https://www.myapexcalc.com/calculators/time-card',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/WN51Xcrr/time-card-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Time Card Calculator and Employee Shift Log Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Employee Time Card Sheet Calculator | MyApexCalc',
+    description: 'Banish payroll errors. Compute daily work hours, manage lunch breaks, and tally up weekly timesheets instantly.',
+    images: ['https://i.ibb.co/WN51Xcrr/time-card-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/time-card',
+  },
+};
 
 interface TimeRow {
   id: string;
@@ -99,16 +153,6 @@ export default function TimeCardCalculatorPage() {
 
     return { processedRows, totalH, totalM, totalDecimal };
   }, [rows]);
-
-  const periodReference = [
-    { period: '1 Day', hours: 24, label: 'Full Rotation' },
-    { period: '1 Week', hours: 168, label: '7 Full Days' },
-    { period: '1 Fortnight', hours: 336, label: '14 Full Days' },
-    { period: 'Average Month', hours: 730.48, label: '30.44 Days (avg)' },
-    { period: 'Common Work Year', hours: 2080, label: '52 Weeks x 40h' },
-    { period: 'Calendar Year', hours: 8760, label: '365 Days x 24h' },
-    { period: 'Leap Year', hours: 8784, label: '366 Days x 24h' },
-  ];
 
   return (
     <CalculatorWrapper
@@ -216,25 +260,6 @@ export default function TimeCardCalculatorPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-bold flex items-center gap-2">
-                <Info className="w-4 h-4 text-primary" />
-                Quick Conversion
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-sm">
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-muted-foreground">Total Minutes</span>
-                <span className="font-bold">{(Number(results.totalDecimal) * 60).toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Total Seconds</span>
-                <span className="font-bold">{(Number(results.totalDecimal) * 3600).toLocaleString()}</span>
-              </div>
-            </CardContent>
-          </Card>
-
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 flex gap-4">
             <Clock className="w-6 h-6 text-blue-500 shrink-0 mt-0.5" />
             <div className="space-y-1">
@@ -245,95 +270,107 @@ export default function TimeCardCalculatorPage() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Hours in different time periods table */}
-        <div className="lg:col-span-12 py-10 space-y-8">
-          <Separator />
-          <div className="max-w-4xl mx-auto space-y-6">
-            <div className="flex items-center gap-3">
-              <Calendar className="w-6 h-6 text-primary" />
-              <h3 className="text-2xl font-bold text-primary">Hours in Different Time Periods</h3>
-            </div>
-            <p className="text-sm text-muted-foreground max-w-2xl">
-              Understanding time at a macro scale helps with long-term project planning and annual goal setting. Below are the standard hour counts for common calendar periods.
+      {/* Informational Text Section */}
+      <div className="py-10 space-y-12">
+        <Separator />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+          <section className="space-y-4">
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+              <TrendingUp className="w-6 h-6" />
+              Simplify Your Weekly Payroll and Hours Tracking with MyApexCalc
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              Managing employee hours or tracking your own freelance work week should not mean wrestling with messy spreadsheets and confusing mental math. Because standard clocks run on a 60-minute cycle rather than a base-100 decimal framework, adding up shift logs manually frequently introduces rounding errors that lead to costly payroll disputes. Our free online time card calculator serves as a robust, automated digital clock card calculator to help you record, balance, and review your complete work week effortlessly.
             </p>
-            <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
-              <Table>
-                <TableHeader className="bg-muted/50">
-                  <TableRow>
-                    <TableHead className="font-bold">Time Period</TableHead>
-                    <TableHead className="text-right font-bold">Total Hours</TableHead>
-                    <TableHead className="text-right font-bold hidden md:table-cell">Context</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {periodReference.map((p) => (
-                    <TableRow key={p.period} className="hover:bg-primary/5 transition-colors">
-                      <TableCell className="font-medium">{p.period}</TableCell>
-                      <TableCell className="text-right font-mono font-bold text-primary">
-                        {p.hours.toLocaleString(undefined, { maximumFractionDigits: 2 })}
-                      </TableCell>
-                      <TableCell className="text-right text-xs text-muted-foreground hidden md:table-cell">
-                        {p.label}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+            
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+              <Calculator className="w-6 h-6" />
+              The Math of Shift Tracking: Processing Your Punch Card
+            </h3>
+            <div className="space-y-6">
+              <p className="text-muted-foreground leading-relaxed">
+                To convert mixed clock hours, minutes, and AM/PM indicators into numbers that can be added together, our time punch clock calculator breaks every daily entry down to an absolute baseline of minutes relative to midnight (00:00):
+              </p>
+              <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                Total Daily Minutes = (H x 60) + M
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                For instance, an employee clocking in at 8:15 AM is recorded by our system at 495 minutes. When they punch out for the day at 5:00 PM (which translates to 17:00 on a 24-hour track), their departure is logged at 1,020 minutes. To isolate the actual hours worked, our work time clock calculator finds the exact length of the shift interval and subtracts any unpaid lunch breaks (Break<sub>min</sub>):
+              </p>
+              <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border space-y-2 overflow-x-auto">
+                <p>Net Shift Minutes = Punch Out - Punch In - Break<sub>min</sub></p>
+                <Separator />
+                <p>Net Shift Minutes = 1,020 - 495 - 30 (for a 30-min break) = 495 minutes</p>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                To change this raw data into an entry ready for an accounting invoice, the system divides the final sum by 60 to generate a decimal format:
+              </p>
+              <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                Decimal Hours = 495 minutes / 60 = 8.25 hours
+              </div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        {/* Informational Text Section */}
-        <div className="lg:col-span-12 space-y-12">
-          <Separator />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <Calculator className="w-6 h-6" />
-                How the Time Card Calculator Works
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Whether you are tracking your billable hours for a client or managing your team's weekly timesheet, calculating time accurately can be tricky due to the base-60 nature of clocks. The **My Apex Time Card Calculator** does the heavy lifting by converting minutes into decimals and handling overnight shift rollovers.
+          <div className="space-y-8">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Avoid Common Timesheet Reporting Errors
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Using a dedicated time card sheet calculator keeps your record keeping accurate and protects your budget from two common payroll traps:
               </p>
-              <h4 className="font-bold text-foreground">Why use Decimal Hours for Time Cards?</h4>
-              <p className="text-muted-foreground leading-relaxed">
-                Most payroll systems and billing software require time to be entered in a decimal format (e.g., 7.5 hours instead of 7 hours and 30 minutes). This allows for easy multiplication against an hourly wage or rate, ensuring your time card is accurate for accounting.
-              </p>
-            </section>
-
-            <div className="bg-white p-8 rounded-[2rem] border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Key Features</h4>
-              <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <Briefcase className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Break Deduction</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Automatically subtract lunch or rest breaks from your total shift length to get actual "on-the-clock" time on your card.</p>
-                  </div>
-                </li>
+              <ul className="space-y-6 pt-2">
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
                     <History className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Overnight Shifts</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Our math handles transitions across midnight. If you start at 10:00 PM and end at 6:00 AM, the time card correctly identifies that as an 8-hour shift.</p>
+                    <p className="font-bold text-sm">Misinterpreting Minute Fractions</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">A very common mistake is writing down a shift of 8 hours and 30 minutes as "8.30" hours on a timesheet. Because 30 minutes is exactly half an hour (30 / 60 = 0.5), it must be processed as 8.5 hours to ensure accurate wage distribution.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <Clock className="w-4 h-4 text-accent" />
+                    <ChevronRight className="w-4 h-4 text-accent" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Weekly Accumulation</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The calculator sums all daily totals into a single weekly figure, making Friday payroll preparation and time card submission a breeze.</p>
+                    <p className="font-bold text-sm">Tracking Overtime Correctly</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Keeping a daily timesheet calculator running lets you track exactly when you pass the standard 40-hour weekly ceiling, ensuring any extra time is flagged for overtime premium rates (1.5 x baseline wages).</p>
                   </div>
                 </li>
               </ul>
+            </div>
+
+            <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 space-y-6">
+              <h4 className="text-lg font-bold text-primary flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-primary" />
+                Why Log Your Shifts with MyApexCalc?
+              </h4>
+              <ul className="space-y-4">
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Complete 7-Day Grid Entry:</strong> Tally up hours for an entire week at once by entering simple daily clock markers into a clean, unified dashboard.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Dual Format Summary:</strong> View your final calculations rendered side-by-side in traditional hours-and-minutes readouts and clean decimals for easy typing into payroll programs.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Privacy-First Operations:</strong> Track your employee records or project hours privately. Our client-side script processes your data entirely on your device.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+              <Briefcase className="w-10 h-10 text-primary opacity-40 shrink-0" />
+              <p className="text-[10px] text-muted-foreground leading-tight italic">
+                "Precision in timekeeping is the foundation of a fair workplace. Count every minute with confidence."
+              </p>
             </div>
           </div>
         </div>
