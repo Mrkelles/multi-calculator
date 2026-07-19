@@ -12,7 +12,10 @@ import {
   History,
   Shield,
   Eye,
-  Key
+  Key,
+  TrendingUp,
+  Calculator,
+  ChevronRight
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,7 +24,65 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { Separator } from '@/components/ui/separator';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Strong Password Generator | Free Random Password Creator',
+  description: 'Generate secure, randomized passwords instantly with our free strong password generator. Customize length, symbols, and numbers to protect your digital accounts.',
+  keywords: [
+    'Password Generator',
+    'password password generator',
+    'make random password',
+    'random password creator/maker',
+    'strong password generator',
+    'MyApexCalc',
+    'secure password maker',
+    'client-side password generator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Instant Strong Password Generator & Randomizer | MyApexCalc',
+    description: 'Keep your online credentials secure. Create cryptographically strong, custom random passwords locally on your device with our zero-trust generator.',
+    url: 'https://www.myapexcalc.com/calculators/password-generator',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/sJmgs3p4/password-generator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Strong Password Generator and Custom Security Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Random Password Creator & Security Tool | MyApexCalc',
+    description: 'Instantly build uncrackable, randomized passwords with custom length and character specifications.',
+    images: ['https://i.ibb.co/sJmgs3p4/password-generator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/password-generator',
+  },
+};
 
 export default function PasswordGeneratorPage() {
   const { toast } = useToast();
@@ -72,10 +133,14 @@ export default function PasswordGeneratorPage() {
     }
 
     const newPasswords = [];
+    const array = new Uint32Array(length * quantity);
+    window.crypto.getRandomValues(array);
+
     for (let i = 0; i < quantity; i++) {
       let pwd = '';
       for (let j = 0; j < length; j++) {
-        pwd += charset.charAt(Math.floor(Math.random() * charset.length));
+        const randomIndex = array[i * length + j] % charset.length;
+        pwd += charset.charAt(randomIndex);
       }
       newPasswords.push(pwd);
     }
@@ -99,7 +164,7 @@ export default function PasswordGeneratorPage() {
 
   return (
     <CalculatorWrapper
-      title="Random Password Generator"
+      title="Strong Password Generator"
       description="Create ultra-secure, random passwords instantly to protect your online accounts and digital identity."
       icon={Lock}
     >
@@ -241,55 +306,143 @@ export default function PasswordGeneratorPage() {
             </CardContent>
           </Card>
         </div>
+      </div>
 
-        {/* Informational Text Section */}
-        <div className="lg:col-span-12 space-y-12 py-10">
-          <Separator />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <Key className="w-6 h-6" />
-                Why use a Random Generator?
-              </h3>
+      {/* Informational Text Section */}
+      <div className="py-10 space-y-12">
+        <Separator />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+          <section className="space-y-4">
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+              <TrendingUp className="w-6 h-6" />
+              Lock Down Your Digital Identity with MyApexCalc
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              In an era where data breaches, credential stuffing, and phishing attacks are increasingly common, relying on basic, easily guessable passwords is a major risk. Using your pet's name, sequential numbers, or standard phrases makes your digital accounts low-hanging fruit for automated brute-force scripts. To protect your finances, private communications, and online accounts, you need completely randomized, complex keys. Our free online Password Generator serves as a secure, local random password creator/maker designed to build uncrackable security keys in a single click.
+            </p>
+            
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+              <Calculator className="w-6 h-6" />
+              The Mathematics of Defense: Understanding Password Entropy
+            </h3>
+            <div className="space-y-4">
               <p className="text-muted-foreground leading-relaxed">
-                Human beings are notoriously bad at being random. We tend to use names, dates, or common keyboard patterns (like "qwerty") that are easily guessed by dictionary-based cracking software. A random generator removes human bias, ensuring every character is a roll of the digital dice.
+                A truly secure code doesn't just look random—it possesses high thermodynamic mathematical complexity, known in cybersecurity as information entropy. Entropy measures how difficult a password is to guess or brute-force, calculated in bits (E).
               </p>
-              <h4 className="font-bold text-foreground">Entropy and Security</h4>
               <p className="text-muted-foreground leading-relaxed">
-                Password entropy is a measure of how unpredictable a password is. By including uppercase, lowercase, numbers, and symbols across 16 or more characters, you create billions of trillions of possible combinations, making brute-force attacks practically impossible within a human lifetime.
+                To evaluate a key, our strong password generator maps your customized choices to the standard Shannon entropy equation:
               </p>
-            </section>
+              
+              <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                E = L × log₂ (R)
+              </div>
 
+              <div className="space-y-3 pt-2">
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">L</span> represents the physical length of your password (number of characters).</p>
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">R</span> represents the size of the character pool (the range of characters selected).</p>
+              </div>
+
+              <div className="rounded-xl border bg-white overflow-hidden shadow-sm mt-4">
+                <Table>
+                  <TableHeader className="bg-muted/50">
+                    <TableRow>
+                      <TableHead className="font-bold text-[10px] uppercase">Character Pool Options</TableHead>
+                      <TableHead className="font-bold text-[10px] uppercase">Pool Size (R)</TableHead>
+                      <TableHead className="text-right font-bold text-[10px] uppercase">Example Characters</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="text-xs font-medium">Lowercase Letters Only</TableCell>
+                      <TableCell className="text-xs">26</TableCell>
+                      <TableCell className="text-right text-xs">a, b, c...</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="text-xs font-medium">Mixed Case Letters</TableCell>
+                      <TableCell className="text-xs">52</TableCell>
+                      <TableCell className="text-right text-xs">a, B, c, D...</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="text-xs font-medium">Alphanumeric</TableCell>
+                      <TableCell className="text-xs">62</TableCell>
+                      <TableCell className="text-right text-xs">a, B, 1, 2, 3...</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="text-xs font-medium">Full Set (inc. Symbols)</TableCell>
+                      <TableCell className="text-xs">94</TableCell>
+                      <TableCell className="text-right text-xs">a, B, 1, !, @, #, $...</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
+
+              <p className="text-muted-foreground leading-relaxed pt-2">
+                When you make random password variations with a length (L) of 16 characters using our full 94-character pool, your password boasts approximately 105 bits of entropy. A computer attempting to brute-force this configuration would have to run through 94¹⁶ possibilities—a task that would take current supercomputers trillions of years to crack.
+              </p>
+            </div>
+          </section>
+
+          <div className="space-y-8">
             <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Advanced Features</h4>
-              <ul className="space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-accent" />
+                Key Principles of Safe Credential Management
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                When utilizing a password password generator, generating a great key is only half the battle. Implement these expert habits to ensure your digital footprint remains secure:
+              </p>
+              <ul className="space-y-6 pt-2">
                 <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <History className="w-4 h-4 text-accent" />
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <History className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Similar Character Exclusion</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Avoid characters that look alike (like '1' and 'l') to prevent transcription errors when you need to type the password manually.</p>
+                    <p className="font-bold text-sm">Never Reuse Passwords</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Each online account should have its own unique key. If a service you use is breached, hackers will test that leaked email-password combination across dozens of other popular platforms.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <Key className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Leverage a Password Manager</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Human brains aren't built to memorize dozens of random 16-character string combinations. Use a local or cloud-based password manager to encrypt and autofill your generated credentials.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <Eye className="w-4 h-4 text-primary" />
+                    <Shield className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Ambiguous Symbols</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Some systems or old apps have trouble with special characters like brackets or single quotes. Use the exclude option to ensure compatibility.</p>
+                    <p className="font-bold text-sm">Always Enable Two-Factor Authentication (2FA)</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Treat your password as your primary barrier and 2FA as your secondary safety lock. Even if an attacker uncovers your password, they won't be able to bypass physical authenticator codes.</p>
                   </div>
                 </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <Info className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Multi-Pass Generation</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Generate up to 20 passwords at once so you can quickly set up different keys for multiple new accounts or services.</p>
-                  </div>
+              </ul>
+            </div>
+
+            <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 space-y-6">
+              <h4 className="text-lg font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-primary" />
+                Why Generate Your Credentials with MyApexCalc?
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Generating secure keys online requires absolute trust. MyApexCalc is engineered with a strict security-first philosophy:
+              </p>
+              <ul className="space-y-4">
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>100% Client-Side Processing:</strong> Unlike other sites that process inputs on a remote server, our script runs exclusively in your local browser window. Your newly generated credentials never travel over the internet.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Cryptographically Secure Randomization:</strong> We don't rely on basic, predictable computer randomizers. Our tool hooks directly into your browser's native, high-entropy cryptographic API for pure, unpredictable randomization.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Instant Dynamic Settings:</strong> Effortlessly adjust length sliders and watch your security parameters adapt in real-time.</span>
                 </li>
               </ul>
             </div>
