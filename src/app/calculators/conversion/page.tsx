@@ -11,15 +11,70 @@ import {
   Weight as WeightIcon,
   Info,
   History,
-  Calculator
+  Calculator,
+  TrendingUp,
+  ChevronRight,
+  Zap
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component to ensure it is picked up by SEO crawlers.
+const metadata: Metadata = {
+  title: 'All-in-One Conversion Calculator | Free Unit & Metric Converter',
+  description: 'Convert units of length, weight, and temperature instantly. Try our free online conversion calculator to convert cms to feet, kg to lbs, celsius to fahrenheit, and more.',
+  keywords: [
+    'cms to feet',
+    'convert kg to lbs',
+    'conversion from kilograms to pounds',
+    'celsius to fahrenheit calculator',
+    'km converted to miles',
+    'centimetres to inches converter',
+    'conversion of temperature',
+    'millimeters to inches calculator',
+    'MyApexCalc',
+    'metric conversion tool'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Multi-Unit Conversion Calculator | MyApexCalc',
+    description: 'Quickly switch between metric and imperial systems. Convert length, mass, and temperature instantly with zero hassle.',
+    url: 'https://www.myapexcalc.com/calculators/conversion',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/conversion-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Multi-Unit Conversion Calculator Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Metric & Imperial Conversion Calculator | MyApexCalc',
+    description: 'Instantly convert kg to lbs, cms to feet, celsius to fahrenheit, and more with our responsive calculator.',
+    images: ['https://i.ibb.co/TqJgSVm5/conversion-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent duplicate index penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/conversion',
+  },
+};
 
 type ConversionMode = 'length' | 'temperature' | 'area' | 'volume' | 'weight';
 
@@ -273,55 +328,106 @@ export default function ConversionCalculatorPage() {
         </div>
 
         {/* Informational Text Section */}
-        <div className="lg:col-span-12 space-y-12 py-10">
+        <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <Calculator className="w-6 h-6" />
-                The Importance of Unit Conversion
+                <TrendingUp className="w-6 h-6" />
+                Bridge the Gap Between Metric and Imperial with MyApexCalc
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Unit conversion is a multi-step process that involves multiplication or division by a numerical factor, selection of the correct number of significant digits, and rounding. At <strong>My Apex Calc</strong>, we provide tools that handle both the <strong>International System of Units (SI)</strong> and the <strong>Imperial System</strong> used in the United States and UK.
+                Whether you are baking an international recipe, translating engineering schematics, prepping travel plans, or studying for a science exam, dealing with mixed measurement systems is a common headache. While most of the world relies on the Metric System, the Imperial System remains deeply integrated into everyday life in the United States and beyond. Switching between these systems manually can lead to costly calculations errors. Our free, all-in-one Conversion Calculator delivers instant accuracy, functioning as your go-to hub to translate length, weight, and temperature in real-time.
               </p>
-              <h4 className="font-bold text-foreground">Why Accuracy Matters</h4>
-              <p className="text-muted-foreground leading-relaxed">
-                Whether you are a chef converting milliliters to fluid ounces, an engineer measuring square meters for a site plan, or a traveler checking the local temperature in Celsius, precise conversions prevent errors that can lead to wasted materials, incorrect dosages, or simply the wrong clothes for the weather.
-              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                Understanding the Math: Core Conversion Formulas
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  To ensure absolute accuracy, our calculation engine is built on standard international scaling factors. Below is a breakdown of how the calculator handles your most common conversion requests.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <p className="font-bold text-sm text-foreground">1. Length Conversions</p>
+                    <p className="text-sm text-muted-foreground">Length transformations require multiplying or dividing by precise metric constants. For instance, when using our centimetres to inches converter or looking up cms to feet ratios, we utilize the following math:</p>
+                    <div className="bg-muted/50 p-4 rounded-xl font-mono text-sm space-y-2 border">
+                      <p>Inches = Centimeters × 0.393701</p>
+                      <Separator />
+                      <p>Miles = Kilometers × 0.621371</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="font-bold text-sm text-foreground">2. Weight (Mass) Conversions</p>
+                    <p className="text-sm text-muted-foreground">Whether you are tracking physical fitness goals or preparing shipping manifests, converting between kilograms (kg) and pounds (lbs) is a constant need. Our tool performs a precise conversion from kilograms to pounds using the international standard coefficient:</p>
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                      Pounds (lbs) = Kilograms × 2.2046226218
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="font-bold text-sm text-foreground">3. Temperature Conversions</p>
+                    <p className="text-sm text-muted-foreground">Unlike distance or weight, which rely on simple multiplication, a conversion of temperature requires adjusting for different freezing points (32°F vs 0°C) as well as scale increments. Our celsius to fahrenheit calculator uses the classic thermodynamic ratios:</p>
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border space-y-2">
+                      <p>Fahrenheit = (Celsius × 9/5) + 32</p>
+                      <Separator />
+                      <p>Celsius = (Fahrenheit - 32) × 5/9</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
 
-            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Calculation Modes</h4>
-              <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <Ruler className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Linear & Square Scaling</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The calculator handles both 1D distance (Length) and 2D coverage (Area) with specific adjustments for units like Acres and Hectares.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <Box className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">3D Volume & Liquid</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Converts between physical space (Cubic Meters) and liquid capacity (Gallons, Liters) seamlessly for laboratory or kitchen use.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <WeightIcon className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Mass & Weight</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Supports fine units like Milligrams for pharmaceuticals and heavy units like US and Imperial Tons for industrial shipping.</p>
-                  </div>
-                </li>
-              </ul>
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-accent" />
+                  Why Choose MyApexCalc for Your Unit Conversions?
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Searching for conversion factors one by one on search engines is slow and distracting. MyApexCalc unifies all your conversion needs on a single screen:
+                </p>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <Zap className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Real-Time Active Inputs</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Watch your metric values recalculate into imperial measurements instantly as you type, with zero lag.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <Maximize className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Granular Decimals</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Choose your desired level of rounding precision—from broad whole numbers up to 6 decimal places for high-precision scientific work.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Mobile Optimized</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Whether you are in the kitchen or on a job site, our responsive layout works perfectly on any device.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+                <History className="w-10 h-10 text-primary opacity-40 shrink-0" />
+                <p className="text-[10px] text-muted-foreground leading-tight italic">
+                  "Precision is the foundation of science and the bridge to global understanding. Convert with confidence every single time."
+                </p>
+              </div>
             </div>
           </div>
         </div>
