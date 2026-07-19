@@ -2,13 +2,75 @@
 
 import { useState, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Divide, RefreshCw, Hash, Binary, Percent, Info, Calculator, ChevronDown, ChevronUp, History } from 'lucide-react';
+import { 
+  Divide, 
+  RefreshCw, 
+  Hash, 
+  Binary, 
+  Percent, 
+  Info, 
+  Calculator, 
+  ChevronDown, 
+  ChevronUp, 
+  History,
+  TrendingUp,
+  ChevronRight
+} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+/**
+ * Metadata for SEO and Social Sharing
+ */
+const metadata: Metadata = {
+  title: 'Accurate Fraction Calculator | Free Fraction & Mixed Number Tool',
+  description: 'Add, subtract, multiply, and divide fractions easily with our free fraction calculator. Reduce fractions to their simplest form and convert them to decimals.',
+  keywords: [
+    'Fraction Calculator',
+    'calculate the fraction',
+    'simple fraction calculator',
+    'MyApexCalc',
+    'mixed fractions calculator',
+    'simplify fractions tool',
+    'fraction to decimal converter'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Fraction Calculator & Simplifier | MyApexCalc',
+    description: 'Simplify fraction math instantly. Solve additions, subtractions, multiplications, and divisions of fractions and mixed numbers in seconds.',
+    url: 'https://www.myapexcalc.com/calculators/fraction',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/6RY2s8Fw/fraction-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Fraction Calculator showing mixed numbers, steps, and simplified results',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Simple Fraction & Mixed Number Calculator | MyApexCalc',
+    description: 'Instantly calculate fractions and view step-by-step math, including common denominators and simplified forms.',
+    images: ['https://i.ibb.co/6RY2s8Fw/fraction-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/fraction',
+  },
+};
 
 /**
  * Utility functions for fraction math
@@ -597,46 +659,93 @@ export default function FractionCalculatorsPage() {
         </section>
 
         {/* Informational Text Section */}
-        <div className="lg:col-span-12 space-y-12 py-10">
+        <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <Info className="w-6 h-6" />
-                Understanding Fractions
+                <TrendingUp className="w-6 h-6" />
+                Master Fractional Math Effortlessly with MyApexCalc
               </h3>
-              <p className="text-muted-foreground leading-relaxed text-sm">
-                A fraction represents a part of a whole. The top number, the <strong>numerator</strong>, represents how many parts you have, while the bottom number, the <strong>denominator</strong>, represents how many parts make up the whole.
+              <p className="text-muted-foreground leading-relaxed">
+                Whether you are scaling up a cooking recipe, measuring timber for a carpentry build, helping your children with algebraic homework, or checking mechanical tolerances, dealing with fractions can be incredibly frustrating. Unlike decimal values, fractions require a specific set of rules for addition, subtraction, multiplication, and division. A small arithmetic slip when finding a common denominator can throw off your entire project. Our free online Fraction Calculator acts as a highly accurate and simple fraction calculator to help you solve, simplify, and convert complex quotients instantly.
               </p>
-              <h4 className="font-bold text-foreground">Proper vs. Improper Fractions</h4>
-              <p className="text-muted-foreground leading-relaxed text-sm">
-                A <strong>proper fraction</strong> has a numerator smaller than its denominator (e.g., 3/4). An <strong>improper fraction</strong> has a numerator equal to or larger than its denominator (e.g., 7/4), which can also be expressed as a <strong>mixed number</strong> (1 3/4).
-              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Math of Fractions: Resolving and Simplifying Values
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  To calculate the fraction values correctly, our engine runs calculations in three main phases: finding a common ground, executing the core operation, and reducing the result to its lowest terms.
+                </p>
+
+                <div className="space-y-3">
+                  <p className="font-bold text-sm text-foreground">1. Adding and Subtracting Fractions (Finding the LCD)</p>
+                  <p className="text-sm text-muted-foreground">To add or subtract fractions with unlike denominators, the math engine finds the Least Common Denominator (LCD). For example, to calculate the sum of two fractions (a/b and c/d):</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                    a/b + c/d = [(a × d) + (c × b)] / (b × d)
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <p className="font-bold text-sm text-foreground">2. Simplifying the Result (Greatest Common Divisor)</p>
+                  <p className="text-sm text-muted-foreground">Once an operation is complete, our calculator reduces the fraction using the Greatest Common Divisor (GCD). For instance, if your calculation results in 8/12, our tool calculates that the GCD is 4:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                    (8 ÷ 4) / (12 ÷ 4) = 2/3
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <p className="font-bold text-sm text-foreground">3. Handling Mixed Numbers</p>
+                  <p className="text-sm text-muted-foreground">A mixed number is converted into an improper fraction before any mathematical operation takes place:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                    Improper Fraction = [(Whole × Denominator) + Numerator] / Denominator
+                  </div>
+                </div>
+              </div>
             </section>
 
-            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Calculation Tips</h4>
-              <ul className="space-y-4">
-                <li className="flex gap-3">
-                  <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <div className="h-2 w-2 rounded-full bg-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Common Denominators</p>
-                    <p className="text-xs text-muted-foreground">To add or subtract fractions, you must first find a common denominator. Our calculator handles this automatically by multiplying the cross-products.</p>
-                  </div>
-                </li>
-                <li className="flex gap-3">
-                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <div className="h-2 w-2 rounded-full bg-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Simplify Often</p>
-                    <p className="text-xs text-muted-foreground">Always use the <strong>Greatest Common Divisor (GCD)</strong> to reduce your fraction to its simplest terms for cleaner reporting.</p>
-                  </div>
-                </li>
-              </ul>
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-accent" />
+                  Why Solve Fractions with MyApexCalc?
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  No more drawing out math grids or trying to turn fractions into messy decimals on a standard phone keypad. MyApexCalc delivers a seamless, optimized tool:
+                </p>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Step-by-Step Explanations</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Do not just get the answer—see the exact mathematical steps, including LCD matching and reduction, used to solve your equations.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Mixed and Improper Inputs</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Easily input whole numbers, mixed fractions, and standard proper or improper fractions simultaneously.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">One-Tap Decimal Conversion</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">View your simplified fractional result right alongside its precise decimal value for quick real-world application.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
