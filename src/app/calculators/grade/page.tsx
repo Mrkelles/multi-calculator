@@ -12,12 +12,13 @@ import {
   Calculator,
   History,
   TrendingUp,
-  Percent
+  Percent,
+  ChevronRight
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { 
   Table, 
@@ -28,6 +29,57 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Accurate Grade Calculator | Free Final Exam & Weighted Grade Solver',
+  description: 'Calculate your current course average, compute weighted assignments, and determine the exact score you need on your final exam with our free grade calculator.',
+  keywords: [
+    'grade calculator',
+    'final grade calculator',
+    'weighted grade calculator',
+    'test grade calculator',
+    'final exam grade calculator',
+    'how to calculate grades',
+    'MyApexCalc',
+    'college GPA projection tool',
+    'semester grade planner'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Grade & Final Exam Calculator | MyApexCalc',
+    description: 'Take control of your GPA. Balance your homework, quizzes, midterms, and map out exactly what you need on finals week with our free grading tool.',
+    url: 'https://www.myapexcalc.com/calculators/grade',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/2Y82vR0t/grade-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Grade Calculator displaying weighted categories and final exam target goals',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Weighted Course & Final Grade Tool | MyApexCalc',
+    description: 'Plan your semester grades in seconds. Input assignment weights and project your final exam scores effortlessly.',
+    images: ['https://i.ibb.co/2Y82vR0t/grade-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/grade',
+  },
+};
 
 interface Assignment {
   id: string;
@@ -314,16 +366,6 @@ export default function GradeCalculatorPage() {
               )}
             </CardContent>
           </Card>
-
-          <div className="bg-primary/5 border border-primary/10 rounded-2xl p-6 flex gap-4">
-            <Info className="w-6 h-6 text-primary shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <p className="text-sm text-primary font-bold">Input Flexibility</p>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                You can enter numbers (e.g., "85") or letter grades (e.g., "A-") in the grade column. Letters are automatically converted to their standard percentage midpoint according to the scale below.
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* Results Sidebar */}
@@ -389,7 +431,101 @@ export default function GradeCalculatorPage() {
           </Card>
         </div>
 
-        {/* Grade Table Reference */}
+        {/* Informational Text Section */}
+        <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+            <section className="space-y-4">
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+                <TrendingUp className="w-6 h-6" />
+                Take the Stress Out of Finals Week with MyApexCalc
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Whether you are a high school student managing multiple classes, a university student tracking credit hours, or a parent supporting your child&apos;s academic progress, tracking class performance can quickly become confusing. Because syllabi frequently divide grades into completely separate categories (such as homework, quizzes, midterms, and finals), running a basic average doesn&apos;t provide an accurate overview. Our free online grade calculator serves as an interactive final grade calculator and performance dashboard, helping you project your final scores and target metrics instantly.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                Deciphering the Math: Formulas for Academic Success
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  To accurately track your class standing, our system processes your entries using two distinct core algorithms:
+                </p>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">1. Calculating a Weighted Grade</p>
+                  <p className="text-sm text-muted-foreground">Most educational syllabi use a weighted system where different categories contribute distinct percentages toward your final 100% grade structure. The core weighted grade calculator formula multiplies your average score in each specific category (G) by its assigned decimal weight (W):</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Final Grade = Σ (G<sub>i</sub> × W<sub>i</sub>)
+                  </div>
+                  <p className="text-xs text-muted-foreground pt-1 italic">
+                    For example, if you have a 95% in homework (30% weight) and an 82% on your midterm (40% weight), the system calculates your current standing relative to the portion of the course completed.
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">2. Finding Your Required Final Exam Grade</p>
+                  <p className="text-sm text-muted-foreground">Our tool reverses the weighted calculation path to isolate the target exam score (F) based on your current standing (C), the weight of the final exam (W<sub>f</sub>), and your overall desired goal (T):</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    F = ( T - [C × (1 - W<sub>f</sub>)] ) / W<sub>f</sub>
+                  </div>
+                  <p className="text-xs text-muted-foreground pt-1 italic">
+                    If you currently have an 86% in the course and your final is worth 20%, to finish with a 90% (T), you would need to score a 106% on the final.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-accent" />
+                  Why Plan Your Grades with MyApexCalc?
+                </h4>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">&quot;What-If&quot; Analysis System</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Swap placeholder scores in out-of-view fields to instantly see how a future test or project score will impact your cumulative average.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <Calculator className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Support for Points & Percentages</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Input scores as raw totals (e.g., 45 out of 50 points) or direct percentages (90%) seamlessly within the same log.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <History className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Incomplete Weight Balancing</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">If your categories don&apos;t add up to 100% yet, our script automatically adjusts the baseline to show a real-time snapshot of your current grade.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+                <BookOpen className="w-10 h-10 text-primary opacity-40 shrink-0" />
+                <p className="text-[10px] text-muted-foreground leading-tight italic">
+                  &quot;Academic success is built on consistent tracking and clear goals. Knowing exactly what you need on finals week removes the guesswork.&quot;
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Grade Table Reference (Preserved) */}
         <div className="lg:col-span-12 py-10 space-y-8">
           <Separator />
           <div className="max-w-3xl mx-auto space-y-6">
@@ -419,60 +555,6 @@ export default function GradeCalculatorPage() {
                   ))}
                 </TableBody>
               </Table>
-            </div>
-          </div>
-        </div>
-
-        {/* Educational Text Section */}
-        <div className="lg:col-span-12 space-y-12">
-          <Separator />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <BookOpen className="w-6 h-6" />
-                Understanding Your Grades
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Calculating your current standing in a class is vital for academic success. Most modern courses use a <strong>weighted system</strong>, where different types of work (like exams, homework, and participation) contribute differently to your final mark.
-              </p>
-              <h4 className="font-bold text-foreground">How the Final Grade Calculator Works</h4>
-              <p className="text-muted-foreground leading-relaxed">
-                The final grade tool is designed for "end-of-semester" planning. It answers the question: <em>"What do I need on the final to get an A?"</em> It assumes your final exam is the only remaining piece of work and calculates the necessary score based on your current cumulative average.
-              </p>
-            </section>
-
-            <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Features & Accuracy</h4>
-              <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <Target className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Goal Setting</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Use the <strong>Final Grade Mode</strong> to reverse-engineer your required exam performance. This helps reduce test anxiety by providing a concrete target.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <TrendingUp className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Dynamic Categories</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Add as many assignment categories as you need. Whether your syllabus has 3 items or 20, our engine scales to fit your course structure.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <Percent className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Weight Validation</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Our calculator alerts you if your weights don't sum to 100%, ensuring you don't miscalculate due to a missing syllabus item.</p>
-                  </div>
-                </li>
-              </ul>
             </div>
           </div>
         </div>
