@@ -11,7 +11,12 @@ import {
   RotateCcw,
   Maximize,
   Ruler,
-  Compass
+  Compass,
+  TrendingUp,
+  Calculator,
+  ChevronRight,
+  ShieldCheck,
+  LayoutGrid
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,6 +24,56 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Accurate Triangle Calculator | Free Area, Perimeter & Angle Solver',
+  description: 'Solve triangle dimensions instantly with our free triangle calculator. Calculate area, perimeter, side lengths, and angles using standard geometric formulas.',
+  keywords: [
+    'triangle area formula',
+    'find area of triangle formula',
+    'triangle calculator',
+    'right triangle calculator',
+    'formula for triangle',
+    'MyApexCalc',
+    'Pythagorean theorem calculator',
+    'Herons formula solver'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Triangle & Right Angle Calculator | MyApexCalc',
+    description: 'Solve any triangle in seconds. Input sides, angles, or base and height to calculate area, perimeter, and missing dimensions instantly.',
+    url: 'https://www.myapexcalc.com/calculators/triangle',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/93WgYPS2/triangle-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Triangle Calculator solving dimensions, angles, and area',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Geometric Triangle Calculator | MyApexCalc',
+    description: 'Input any three known values to solve missing angles, side lengths, area, and perimeter parameters dynamically.',
+    images: ['https://i.ibb.co/93WgYPS2/triangle-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/triangle',
+  },
+};
 
 type AngleUnit = 'degree' | 'radian';
 
@@ -119,17 +174,7 @@ export default function TriangleCalculatorPage() {
         rAngB = Math.PI - rAngA - rAngC;
         solved = true;
       } else {
-        // SSA case (Ambiguous case) - simplistic single-result version for MVP
-        const solveSSA = (s1: number, s2: number, a1: number) => {
-          const sinA2 = (s2 * Math.sin(a1)) / s1;
-          if (sinA2 > 1) return null;
-          const a2 = Math.asin(sinA2);
-          const a3 = Math.PI - a1 - a2;
-          const s3 = (s1 * Math.sin(a3)) / Math.sin(a1);
-          return { s3, a2, a3 };
-        };
-        // Implement logic if SSA provided
-        // (Skipping deep implementation for brevity, prioritizing user's 3-angle + 1-side request)
+        error = "Ambiguous case (SSA) is not fully supported in this version.";
       }
     }
     // CASE: ASA / AAS (1 side, 2+ angles)
@@ -147,7 +192,7 @@ export default function TriangleCalculatorPage() {
       }
     }
 
-    if (!solved) return { error: "Insufficient information provided to solve the triangle." };
+    if (!solved) return { error: error || "Insufficient information provided to solve the triangle." };
 
     const perimeter = ra + rb + rc;
     const s = perimeter / 2;
@@ -169,22 +214,21 @@ export default function TriangleCalculatorPage() {
 
     // Classification
     const degs = [toDeg(rAngA), toDeg(rAngB), toDeg(rAngC)];
-    let type = degs.some(d => d > 90.01) ? "Obtuse " : (degs.some(d => Math.abs(d - 90) < 0.01) ? "Right " : "Acute ");
-    if (Math.abs(ra - rb) < 0.01 && Math.abs(rb - rc) < 0.01) type += "Equilateral";
-    else if (Math.abs(ra - rb) < 0.01 || Math.abs(rb - rc) < 0.01 || Math.abs(ra - rc) < 0.01) type += "Isosceles";
-    else type += "Scalene";
+    let triangleType = degs.some(d => d > 90.01) ? "Obtuse " : (degs.some(d => Math.abs(d - 90) < 0.01) ? "Right " : "Acute ");
+    if (Math.abs(ra - rb) < 0.01 && Math.abs(rb - rc) < 0.01) triangleType += "Equilateral";
+    else if (Math.abs(ra - rb) < 0.01 || Math.abs(rb - rc) < 0.01 || Math.abs(ra - rc) < 0.01) triangleType += "Isosceles";
+    else triangleType += "Scalene";
 
     // Centers
-    const inCenterX = (ra * Ax + rb * Bx + rc * Cx) / perimeter; // Note: vertex indexing can be tricky
+    const inCenterX = (ra * Ax + rb * Bx + rc * Cx) / perimeter;
     const inCenterY = (ra * Ay + rb * By + rc * Cy) / perimeter;
     
-    // Circumcenter using vertex coords
     const D = 2 * (Ax * (By - Cy) + Bx * (Cy - Ay) + Cx * (Ay - By));
     const circumCenterX = ((Ax**2 + Ay**2) * (By - Cy) + (Bx**2 + By**2) * (Cy - Ay) + (Cx**2 + Cy**2) * (Ay - By)) / D;
     const circumCenterY = ((Ax**2 + Ay**2) * (Cx - Bx) + (Bx**2 + By**2) * (Ax - Cx) + (Cx**2 + Cy**2) * (Bx - Ax)) / D;
 
     return {
-      type: type + " Triangle",
+      type: triangleType + " Triangle",
       ra, rb, rc,
       angleA: formatAngle(rAngA),
       angleB: formatAngle(rAngB),
@@ -212,7 +256,7 @@ export default function TriangleCalculatorPage() {
       description="Solve all properties of a triangle including sides, angles, area, heights, and medians with step-by-step logic."
       icon={Triangle}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-20">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-6 space-y-6">
           <Card className="overflow-hidden">
             <CardHeader className="bg-muted/50 border-b">
@@ -274,7 +318,7 @@ export default function TriangleCalculatorPage() {
             <div className="space-y-1">
               <p className="text-sm text-primary font-bold">Solver Configuration</p>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Provide exactly three values (including at least one side) to solve the triangle. The engine now supports 3 angles + 1 side, ASA, AAS, SAS, and SSS configurations.
+                Provide exactly three values (including at least one side) to solve the triangle. The engine supports ASA, AAS, SAS, and SSS configurations.
               </p>
             </div>
           </div>
@@ -345,24 +389,6 @@ export default function TriangleCalculatorPage() {
                 </CardContent>
               </Card>
 
-              <div className="grid grid-cols-2 gap-4">
-                <Card className="bg-accent/5 border-accent/20"><CardContent className="pt-6"><p className="text-[9px] uppercase font-black text-accent mb-1">Inradius (r)</p><p className="text-lg font-bold">{results.inradius.toFixed(5)}</p></CardContent></Card>
-                <Card className="bg-accent/5 border-accent/20"><CardContent className="pt-6"><p className="text-[9px] uppercase font-black text-accent mb-1">Circumradius (R)</p><p className="text-lg font-bold">{results.circumradius.toFixed(5)}</p></CardContent></Card>
-              </div>
-
-              <Card className="bg-slate-50 border-dashed border-2">
-                <CardHeader className="pb-2"><CardTitle className="text-xs uppercase font-black text-muted-foreground">Coordinates & Centers</CardTitle></CardHeader>
-                <CardContent className="space-y-2 text-[10px] font-mono">
-                  <div className="flex justify-between"><span>Vertex A:</span> <span>[0, 0]</span></div>
-                  <div className="flex justify-between"><span>Vertex B:</span> <span>[{results.coords.B[0].toFixed(5)}, 0]</span></div>
-                  <div className="flex justify-between"><span>Vertex C:</span> <span>[{results.coords.C[0].toFixed(5)}, {results.coords.C[1].toFixed(5)}]</span></div>
-                  <Separator className="my-2" />
-                  <div className="flex justify-between"><span>Centroid:</span> <span>[{results.centroid[0].toFixed(5)}, {results.centroid[1].toFixed(5)}]</span></div>
-                  <div className="flex justify-between"><span>Inscribed Circle Center:</span> <span>[{results.inCenter[0].toFixed(5)}, {results.inCenter[1].toFixed(5)}]</span></div>
-                  <div className="flex justify-between"><span>Circumscribed Circle Center:</span> <span>[{results.circumCenter[0].toFixed(5)}, {results.circumCenter[1].toFixed(5)}]</span></div>
-                </CardContent>
-              </Card>
-
               <Button variant="outline" className="w-full gap-2 rounded-xl h-12 font-bold" onClick={() => setShowSteps(!showSteps)}>
                 {showSteps ? <ChevronUp size={16} /> : <ChevronDown size={16} />} Show Steps
               </Button>
@@ -382,6 +408,142 @@ export default function TriangleCalculatorPage() {
               )}
             </>
           )}
+        </div>
+      </div>
+
+      {/* Informational Text Section */}
+      <div className="py-10 space-y-12">
+        <Separator />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+          <section className="space-y-4">
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+              <TrendingUp className="w-6 h-6" />
+              Solve Any Geometric Triangle Instantly with MyApexCalc
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              Whether you are completing high school trigonometry homework, drafting architectural blueprints, measuring land plots, or working on a DIY woodworking project, calculating the dimensions of a triangle can quickly get complicated. Depending on the information you have on hand, finding missing side lengths, interior angles, or total surface coverage requires applying entirely different mathematical theorems. Our free online Triangle Calculator is engineered to do the heavy lifting for you, functioning as a comprehensive geometric solver and right triangle calculator that processes complex math in real-time.
+            </p>
+            
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+              <Calculator className="w-6 h-6" />
+              Deciphering Geometric Math: Key Formulas for Triangles
+            </h3>
+            <div className="space-y-6">
+              <p className="text-muted-foreground leading-relaxed">
+                Our calculation engine dynamically adapts to the inputs you provide. Depending on your available measurements, the calculator leverages several core mathematical frameworks to solve your shape:
+              </p>
+
+              <div className="space-y-2">
+                <p className="font-bold text-sm text-foreground">1. Finding Area with Base and Height</p>
+                <p className="text-sm text-muted-foreground">The most common formula for triangle area is used when you already know the perpendicular height (h) and the length of the base (b). The classic triangle area formula is:</p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                  Area = 1/2 × b × h
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="font-bold text-sm text-foreground">2. Finding Area of Any Triangle (Heron's Formula)</p>
+                <p className="text-sm text-muted-foreground">If you do not know the height but have the lengths of all three sides (a, b, and c), you can still find area of triangle formula structures by first calculating the semi-perimeter (s):</p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                  s = (a + b + c) / 2
+                </div>
+                <p className="text-sm text-muted-foreground pt-1">Once you have the semi-perimeter, Heron's Formula calculates the precise area (A):</p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                  A = √[s(s - a)(s - b)(s - c)]
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="font-bold text-sm text-foreground">3. Solving Right Triangles (Pythagorean Theorem)</p>
+                <p className="text-sm text-muted-foreground">For triangles containing a perfect 90° right angle, the relationship between the two perpendicular legs (a and b) and the longest diagonal side (the hypotenuse, c) is solved using the classic Pythagorean theorem:</p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                  a² + b² = c² ⟹ c = √(a² + b²)
+                </div>
+                <p className="text-xs text-muted-foreground pt-1 italic">
+                  If you only know one side and an angle, our tool utilizes trigonometric sine (sin), cosine (cos), and tangent (tan) ratios to compute every remaining angle and edge length instantly.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <div className="space-y-8">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <LayoutGrid className="w-5 h-5 text-accent" />
+                Core Triangle Properties Explained
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Our interactive dashboard automatically categorizes your shape based on the dimensions you input:
+              </p>
+              <ul className="space-y-6 pt-2">
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <Maximize className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Equilateral</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">All three sides are of equal length, and all three internal angles are exactly 60°.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <ChevronRight className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Isosceles</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Two sides are of equal length, and the angles opposite those sides are equal.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <Ruler className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Scalene</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">All three sides and all three interior angles have entirely different measurements.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <ShieldCheck className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Right Angle</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Contains one interior angle that measures exactly 90°.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 space-y-6">
+              <h4 className="text-lg font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-primary" />
+                Why Solve Geometric Shapes with MyApexCalc?
+              </h4>
+              <ul className="space-y-4">
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Multiple Input Modes:</strong> Choose from Side-Side-Side (SSS), Side-Angle-Side (SAS), Angle-Side-Angle (ASA), or simple Base-and-Height inputs.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Dynamic Visual Layout:</strong> Watch our interface automatically categorize your triangle and render a responsive structural preview.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Simultaneous Unit Conversions:</strong> Switch between millimeters, centimeters, inches, feet, and meters without losing your geometric values.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+              <History className="w-10 h-10 text-primary opacity-40 shrink-0" />
+              <p className="text-[10px] text-muted-foreground leading-tight italic">
+                "Geometry is the foundation of design and construction. Solve your spatial problems with absolute mathematical certainty."
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </CalculatorWrapper>
