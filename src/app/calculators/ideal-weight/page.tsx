@@ -10,7 +10,8 @@ import {
   ChevronRight,
   TrendingUp,
   LayoutGrid,
-  FileText
+  FileText,
+  Calculator
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,6 +27,56 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Accurate Ideal Weight Calculator | Healthy Body Mass Tracker',
+  description: 'Find your target weight range instantly. Use our free ideal weight calculator to compare formulas, check body mass index values, and discover your healthy range.',
+  keywords: [
+    'body mass chart male',
+    'body bmi calculator male',
+    'normal body weight index',
+    'ideal weight calculator',
+    'healthy body weight index',
+    'MyApexCalc',
+    'ideal body weight formula',
+    'Devine formula calculator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Ideal Weight Calculator & BMI Tracker | MyApexCalc',
+    description: 'Calculate your healthy target weight range based on height, gender, and frame size using recognized medical formulas.',
+    url: 'https://www.myapexcalc.com/calculators/ideal-weight',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/qY3cSmJQ/ideal-weight-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Ideal Weight Calculator and Healthy BMI Range Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Interactive Ideal Weight & BMI Estimator | MyApexCalc',
+    description: 'Quickly find your ideal body weight and explore healthy body mass index charts online.',
+    images: ['https://i.ibb.co/qY3cSmJQ/ideal-weight-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/ideal-weight',
+  },
+};
 
 type Gender = 'male' | 'female';
 type UnitMode = 'us' | 'metric';
@@ -237,72 +288,101 @@ export default function IdealWeightCalculatorPage() {
           )}
         </div>
 
-        {/* Reference Section */}
+        {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <History className="w-6 h-6" />
-                Formula Origins
+                <TrendingUp className="w-6 h-6" />
+                Find Your Healthy Balance with MyApexCalc
               </h3>
-              <div className="space-y-6 text-sm text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
+                Whether you are designing a new fitness regimen, recovering from an illness, training as an athlete, or simply aiming to improve your general well-being, understanding your target weight zone is a vital baseline. A healthy weight isn't a single, rigid number—it is a supportive range that aligns with your height, age, biological sex, and frame structure. Our free online ideal weight calculator is designed to demystify these physical standards, giving you a comprehensive, instant view of your healthy target zones.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Science of Weight Tracking: Recognized Formulas
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  To calculate an optimal weight range, our tool processes your height and sex using historically validated medical equations, while also mapping your results against standard body mass index standards.
+                </p>
+
                 <div className="space-y-2">
-                  <h4 className="font-bold text-foreground">The Devine Formula (1974)</h4>
-                  <p>Originally developed by Dr. B.J. Devine in 1974 for medical use in drug dosing. It has since become the most commonly used formula in the world for determining ideal body weight.</p>
+                  <p className="font-bold text-sm text-foreground">1. The Devine Formula (The Clinical Standard)</p>
+                  <p className="text-sm text-muted-foreground">Originally designed in 1974 to calculate medication dosages, the Devine formula remains the most widely used metric in medical settings to estimate base weight values. It calculates a baseline weight for a height of 5 feet (60 inches) and adds a set multiplier for every additional inch (h):</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm space-y-2 border">
+                    <p className="text-primary font-bold">For Men:</p>
+                    <p>Ideal Weight (kg) = 50.0 + 2.3 × (h - 60)</p>
+                    <Separator className="my-2" />
+                    <p className="text-primary font-bold">For Women:</p>
+                    <p>Ideal Weight (kg) = 45.5 + 2.3 × (h - 60)</p>
+                  </div>
                 </div>
+
                 <div className="space-y-2">
-                  <h4 className="font-bold text-foreground">The Robinson Formula (1983)</h4>
-                  <p>A modification of the Devine formula intended to be more accurate, particularly for males. It was introduced by Robinson et al. based on statistical analysis of health data.</p>
-                </div>
-                <div className="space-y-2">
-                  <h4 className="font-bold text-foreground">The Hamwi Formula (1964)</h4>
-                  <p>Introduced by G.J. Hamwi, this is often used for quick clinical estimates. It assumes a base weight for a person of 5 feet tall and adds a set amount for every inch thereafter.</p>
+                  <p className="font-bold text-sm text-foreground">2. The Body Mass Index (BMI) Range</p>
+                  <p className="text-sm text-muted-foreground">While formulas like Devine offer a specific starting estimate, global health organizations like the World Health Organization (WHO) prefer using the normal body weight index range. This establishes a healthy upper and lower weight boundary based on a target BMI of 18.5 to 24.9:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Healthy Weight (kg) = Target BMI × (Height in Meters)²
+                  </div>
+                  <p className="text-xs text-muted-foreground pt-1">
+                    By utilizing our integrated body bmi calculator male and female options, you can immediately identify where your physical measurements sit on the official scale, helping you stay within a safe and realistic zone.
+                  </p>
                 </div>
               </div>
             </section>
 
-            <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
-                <FileText className="w-5 h-5 text-accent" />
-                Term Definitions
-              </h4>
-              <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <User className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Ideal Body Weight (IBW)</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">A standard weight for a given height, typically associated with the lowest health risks and longest life expectancy in population studies.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <LayoutGrid className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Healthy BMI Range</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The Body Mass Index (BMI) range between 18.5 and 25.0 kg/m². This is the standard World Health Organization (WHO) benchmark for healthy weight classification.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-accent" />
+                  Why Check Your Goals with MyApexCalc?
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Evaluating your optimal body mass targets on static graphs or confusing tables can be tricky. MyApexCalc simplifies your health tracking by offering:
+                </p>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <LayoutGrid className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Multiple Metric Integrations</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">View your metrics plotted across four distinct clinical formulas (Devine, Robinson, Miller, and Hamwi) alongside a custom body mass chart layout.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Responsive Height Adjustments</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Seamlessly switch between feet/inches and centimeters to watch your target metrics recalculate instantly.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <Scale className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Framing Beyond the Scale</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Our tool places your calculation results in context, reminding you that factors like muscle mass and bone density are just as important as the number on the scale.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
 
-          <Separator />
-          
-          <div className="space-y-8 pb-12">
-            <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary">Is these results accurate?</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                While these formulas provide a mathematical baseline, it is important to remember that "ideal weight" is a complex concept. Factors such as bone density, muscle mass, and body fat percentage play a critical role in overall health. For example, a highly muscular athlete might be classified as "overweight" by these formulas despite having a very low body fat percentage and being in excellent physical condition.
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed pt-2">
-                We recommend using these tools as a starting point for discussion with your healthcare provider rather than a definitive goal for your fitness journey.
-              </p>
-            </section>
+              <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+                <History className="w-10 h-10 text-primary opacity-40 shrink-0" />
+                <p className="text-[10px] text-muted-foreground leading-tight italic">
+                  "A healthy weight is a tool for a more active life, not a destination in itself. Focus on sustainable habits that support your long-term vitality."
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
