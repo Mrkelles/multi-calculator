@@ -2,7 +2,21 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Percent, TrendingUp, Info, History, Landmark, Target, DollarSign, Clock, Calculator, ChevronRight, ShieldCheck, BarChart } from 'lucide-react';
+import { 
+  Percent, 
+  TrendingUp, 
+  Info, 
+  History, 
+  Landmark, 
+  Target, 
+  DollarSign, 
+  Clock, 
+  Calculator, 
+  ChevronRight, 
+  ShieldCheck, 
+  BarChart,
+  PieChart as PieChartIcon
+} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -366,7 +380,7 @@ export default function InterestRateCalculatorPage() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <p className="font-bold text-sm text-foreground">1. Tracking Investment Yields (Compound Interest)</p>
-                    <p className="text-sm text-muted-foreground">When saving or investing, compounding is your best friend. Your interest earnings are reinvested, meaning you earn interest on top of previous interest. The formula to calculate this future accumulated value (A) is:</p>
+                    <p className="text-sm text-muted-foreground">When saving or investing, compounding is your best friend. Your interest earnings are reinvested, meaning you earn interest on top of previous interest. The formula to calculate this future accumulated value ($A$) is:</p>
                     <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                       A = P (1 + r/n)<sup>nt</sup>
                     </div>
@@ -380,7 +394,7 @@ export default function InterestRateCalculatorPage() {
 
                   <div className="space-y-2">
                     <p className="font-bold text-sm text-foreground">2. Estimating Monthly Liabilities (Mortgage and Loans)</p>
-                    <p className="text-sm text-muted-foreground">For installment liabilities like mortgages, the monthly interest changes over time. While many look to standard mortgage calculator bankrate structures, our calculator for mortgage payments calculates your fixed monthly payment (PMT) utilizing standard mathematical amortization:</p>
+                    <p className="text-sm text-muted-foreground">For installment liabilities like mortgages, the monthly interest changes over time. While many look to the standard mortgage calculator bankrate structures, our calculator for mortgage payments calculates your fixed monthly payment ($PMT$) utilizing standard mathematical amortization:</p>
                     <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                       PMT = P × [ r(1+r)<sup>n</sup> ] / [ (1+r)<sup>n</sup> - 1 ]
                     </div>
