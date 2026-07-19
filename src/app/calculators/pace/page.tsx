@@ -15,7 +15,10 @@ import {
   RefreshCw,
   Trophy,
   TrendingUp,
-  LineChart as LineChartIcon
+  LineChart as LineChartIcon,
+  Calculator,
+  ShieldCheck,
+  History
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -41,6 +44,55 @@ import {
   Tooltip as ChartTooltip, 
   ResponsiveContainer 
 } from 'recharts';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference.
+const metadata: Metadata = {
+  title: 'Accurate Pace Calculator | Free Running & Race Pace Tracker',
+  description: 'Calculate your running pace, splits, and finish times instantly. Use our free online pace calculator to plan your next race, marathon, or daily run.',
+  keywords: [
+    'Pace Calculator',
+    'calculate mile',
+    'running pace calculator',
+    'determine running pace',
+    'calculate race pace',
+    'marathon pace calculator',
+    'MyApexCalc',
+    'running speed estimator',
+    'split times calculator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Running Pace & Race Calculator | MyApexCalc',
+    description: 'Set your running targets. Calculate miles, estimate target marathon paces, and map out your split times in seconds.',
+    url: 'https://www.myapexcalc.com/calculators/pace',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/pace-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Running Pace Calculator and Split Time Analyzer Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Running Pace & Marathon Calculator | MyApexCalc',
+    description: 'Quickly calculate time, distance, or pace parameters. Plan your race splits and track your running progress effortlessly.',
+    images: ['https://i.ibb.co/TqJgSVm5/pace-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/pace',
+  },
+};
 
 const raceEvents = [
   { label: '400 meters', value: 400, unit: 'meters' },
@@ -838,6 +890,133 @@ export default function PaceCalculatorPage() {
             </div>
           </div>
         </section>
+
+        {/* Informational Text Section */}
+        <div className="py-10 space-y-12">
+          <Separator />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+            <section className="space-y-4">
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+                <TrendingUp className="w-6 h-6" />
+                Master Your Running Goals with MyApexCalc
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Whether you are training for your very first 5K, stepping up to a half marathon, or looking to set a personal record at your next major marathon, pacing is the key to athletic success. Running too fast during the opening miles of a race can cause you to hit the wall early, while running too slowly can prevent you from hitting your target finish times. Our free online Pace Calculator takes the guesswork out of training, serving as an interactive running pace calculator to help you map your performance and run smarter.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Math of Running: How to Determine Running Pace
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  Pacing, speed, and distance are mathematically linked. To calculate any of these variables, our calculator uses the core relationship between time (T), distance (D), and pace (P).
+                </p>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">1. Calculating Your Pace</p>
+                  <p className="text-sm text-muted-foreground">Pace is expressed as the time it takes to cover a specific unit of distance (such as minutes per mile or minutes per kilometer). To determine running pace, the formula is:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Pace = Time / Distance
+                  </div>
+                  <p className="text-xs text-muted-foreground pt-1">
+                    For example, if you complete a 10K race (6.214 miles) in 50 minutes, your calculated average pace is approximately 8 minutes and 3 seconds per mile (8:03/mi).
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">2. Calculating Your Finish Time</p>
+                  <p className="text-sm text-muted-foreground">If you have a specific target pace and want to calculate race pace targets for an upcoming event, you can multiply your target pace by the event's total distance:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Time = Distance × Pace
+                  </div>
+                  <p className="text-xs text-muted-foreground pt-1">
+                    Using a marathon pace calculator is critical for the classic 26.219-mile distance. If your goal is to break the elusive 4-hour mark, our tool shows you that you must maintain a steady target pace of 9:09 per mile or faster to achieve your finish time.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Trophy className="w-5 h-5 text-accent" />
+                  Standard Race Distances
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Our calculator features built-in quick presets for the most popular track and road racing distances, making it easy to calculate mile splits or prepare for race day:
+                </p>
+                <ul className="space-y-4 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">5K Run</p>
+                      <p className="text-xs text-muted-foreground">3.11 miles (5,000 meters)</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">10K Run</p>
+                      <p className="text-xs text-muted-foreground">6.21 miles (10,000 meters)</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Half Marathon</p>
+                      <p className="text-xs text-muted-foreground">13.11 miles (21,097 meters)</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Marathon</p>
+                      <p className="text-xs text-muted-foreground">26.22 miles (42,195 meters)</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 space-y-6">
+                <h4 className="text-lg font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-primary" />
+                  Why Map Your Targets with MyApexCalc?
+                </h4>
+                <ul className="space-y-4">
+                  <li className="flex gap-3 text-sm text-muted-foreground">
+                    <ShieldCheck size={14} className="text-accent shrink-0 mt-0.5" />
+                    <span><strong>Three-Way Calculation Modes:</strong> Seamlessly calculate your pace, overall time, or target distance by entering any two known variables.</span>
+                  </li>
+                  <li className="flex gap-3 text-sm text-muted-foreground">
+                    <ShieldCheck size={14} className="text-accent shrink-0 mt-0.5" />
+                    <span><strong>Metric and Imperial Conversions:</strong> Toggle instantly between miles and kilometers to compare your paces across international race standards.</span>
+                  </li>
+                  <li className="flex gap-3 text-sm text-muted-foreground">
+                    <ShieldCheck size={14} className="text-accent shrink-0 mt-0.5" />
+                    <span><strong>Interactive Split Tables:</strong> View your exact mile-by-mile or kilometer-by-kilometer split times to help you master even pacing during training.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-accent/5 p-6 rounded-3xl border border-accent/10 flex items-center gap-4">
+                <History className="w-10 h-10 text-accent opacity-40 shrink-0" />
+                <p className="text-[10px] text-muted-foreground leading-tight italic">
+                  "Speed is a byproduct of consistent effort. Track your pace precisely to ensure every mile counts toward your next personal record."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </CalculatorWrapper>
   );
