@@ -2,13 +2,71 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { TrendingDown, Info, DollarSign, History, Calendar, Calculator, TrendingUp } from 'lucide-react';
+import { 
+  TrendingDown, 
+  Info, 
+  DollarSign, 
+  History, 
+  Calendar, 
+  Calculator, 
+  TrendingUp,
+  ChevronRight
+} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Accurate Inflation Calculator | Free CPI & Dollar Purchasing Power Tool',
+  description: 'Calculate the purchasing power of the US dollar over time with our free inflation calculator. Compare historical prices and track CPI changes from 1913 to today.',
+  keywords: [
+    'Inflation Calculator',
+    'inflation calendar',
+    'dollar inflation calculator',
+    'cpi calculator',
+    'MyApexCalc',
+    'purchasing power calculator',
+    'historical dollar value'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Historical Inflation & Dollar Value Calculator | MyApexCalc',
+    description: 'See how the buying power of a dollar has changed. Track historical buying power and calculate inflation rates instantly.',
+    url: 'https://www.myapexcalc.com/calculators/inflation',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/VpL9DTys/inflation-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Inflation Calculator and Purchasing Power Tracking Interface',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Dollar Inflation & CPI Calculator | MyApexCalc',
+    description: 'Calculate the changing value of money over time using official historical Consumer Price Index (CPI) datasets.',
+    images: ['https://i.ibb.co/VpL9DTys/inflation-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/inflation',
+  },
+};
 
 // U.S. Annual CPI Averages (1913-2024)
 // Source: Bureau of Labor Statistics (BLS)
@@ -24,7 +82,7 @@ const CPI_DATA: Record<number, number> = {
   1990: 130.7, 1991: 136.2, 1992: 140.3, 1993: 144.5, 1994: 148.2, 1995: 152.4, 1996: 156.9, 1997: 160.5, 1998: 163.0, 1999: 166.6,
   2000: 172.2, 2001: 177.1, 2002: 179.9, 2003: 184.0, 2004: 188.9, 2005: 195.3, 2006: 201.6, 2007: 207.342, 2008: 215.303, 2009: 214.537,
   2010: 218.056, 2011: 224.939, 2012: 229.594, 2013: 232.957, 2014: 236.736, 2015: 237.017, 2016: 240.007, 2017: 245.120, 2018: 251.107, 2019: 255.657,
-  2020: 258.811, 2021: 270.970, 2022: 292.655, 2023: 304.702, 2024: 313.200 // Estimated for 2024
+  2020: 258.811, 2021: 270.970, 2022: 292.655, 2023: 304.702, 2024: 313.200
 };
 
 export default function InflationCalculatorPage() {
@@ -57,14 +115,12 @@ export default function InflationCalculatorPage() {
       
       return { finalValue, totalInflation, label: `In ${endYear}, it has the same buying power as` };
     } else if (mode === 'forward') {
-      // Future Value = P * (1 + i)^n
       const rate = fRate / 100;
       const finalValue = fAmount * Math.pow(1 + rate, fYears);
       const totalIncrease = ((finalValue / fAmount) - 1) * 100;
       
       return { finalValue, totalInflation: totalIncrease, label: `After ${fYears} years, the value will be` };
     } else {
-      // Present Value = FV / (1 + i)^n
       const rate = bRate / 100;
       const finalValue = bAmount / Math.pow(1 + rate, bYears);
       const totalDecrease = (1 - (finalValue / bAmount)) * 100;
@@ -273,52 +329,87 @@ export default function InflationCalculatorPage() {
             <div className="space-y-1">
               <p className="text-sm text-blue-800 font-bold">Purchasing Power Note</p>
               <p className="text-xs text-blue-700 leading-relaxed">
-                Inflation reduces the **purchasing power** of each unit of currency. As prices rise, a single dollar buys fewer goods and services than it did in the past. This calculator helps you adjust for those changes to understand the "real" value of money across time.
+                Inflation reduces the **purchasing power** of each unit of currency. As prices rise, a single dollar buys fewer goods and services than it did in the past.
               </p>
             </div>
           </div>
         </div>
 
         {/* Informational Text Section */}
-        <div className="lg:col-span-12 space-y-12 py-10">
+        <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <Calculator className="w-6 h-6" />
-                How Inflation Works
+                <TrendingUp className="w-6 h-6" />
+                Understand the True Value of Your Money with MyApexCalc
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Inflation is the rate at which the general level of prices for goods and services is rising. As inflation grows, every dollar you own buys a smaller percentage of a good or service. At <strong>My Apex Calc</strong>, we use the Consumer Price Index (CPI) as the primary metric for our historical calculations.
+                Have you ever heard your parents or grandparents talk about buying a gallon of gas for a quarter or a brand-new car for a few thousand dollars? It sounds unbelievable today, but those prices were completely normal for their time. This shift is due to inflation—the gradual decline in the purchasing power of a currency over time. Knowing how the value of money shifts across decades is crucial for long-term retirement planning, analyzing historical salaries, and evaluating long-term investment returns. Our free, interactive Inflation Calculator is engineered to act as a highly accurate dollar inflation calculator, letting you compare the purchasing power of money between any two years.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
-                The <strong>Consumer Price Index (CPI)</strong> measures the average change over time in the prices paid by urban consumers for a market basket of consumer goods and services. When the CPI increases, it indicates that the cost of living is rising.
-              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Science of Purchasing Power: How the CPI Works
+              </h3>
+              <div className="space-y-4">
+                <p className="text-muted-foreground leading-relaxed">
+                  To calculate how much a dollar was worth in the past compared to today, economists rely on the Consumer Price Index (CPI). Issued monthly by the U.S. Bureau of Labor Statistics, the CPI acts as a dynamic inflation calendar, tracking the average change over time in the prices paid by urban consumers for a market basket of consumer goods and services (including food, energy, housing, and medical care).
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  When you use our cpi calculator, the system compares the historical index values ($CPI$) of your starting year and your target year to compute the adjusted value of your money:
+                </p>
+                
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                  Adjusted Value = Original Value × ( CPI<sub>Target Year</sub> / CPI<sub>Starting Year</sub> )
+                </div>
+
+                <p className="text-muted-foreground leading-relaxed pt-2">
+                  For example, if you want to find out how much $100 in 1980 is worth in today's money, the calculator divides the current CPI by the average CPI of 1980, then multiplies the result by 100. This math clearly highlights how much more cash you need today to purchase the exact same basket of goods and services.
+                </p>
+              </div>
             </section>
 
-            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Calculation Methods</h4>
-              <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <History className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Historical (CPI) Mode</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Calculates value based on actual U.S. government data from 1913 to today. It is the most accurate way to see what $100 in 1950 is worth today.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <TrendingUp className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Forward/Backward Flat Rates</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Uses a fixed percentage to project future costs or discount future sums. This is ideal for long-term financial planning and retirement estimates.</p>
-                  </div>
-                </li>
-              </ul>
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-accent" />
+                  Why Analyze Currency Trends with MyApexCalc?
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Trying to hunt down raw historical tables to adjust prices manually is tedious and confusing. MyApexCalc provides a seamless, lightning-fast platform to track currency changes:
+                </p>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <History className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Comprehensive Historical Datasets</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Our system utilizes official, updated CPI datasets dating all the way back to 1913.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Dual-Direction Conversions</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Easily calculate how much a past amount of money is worth today, or find out how much a modern dollar amount would be worth in any historical year.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <TrendingUp className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Cumulative and Annual Rate Tracking</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">View your results alongside a breakdown showing the total cumulative inflation percentage and the average annual inflation rate across your selected timeframe.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -326,3 +417,4 @@ export default function InflationCalculatorPage() {
     </CalculatorWrapper>
   );
 }
+
