@@ -10,7 +10,9 @@ import {
   TrendingUp, 
   ChevronRight,
   ShieldCheck,
-  Target
+  Target,
+  Calculator,
+  BarChart
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,6 +29,52 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Accurate Body Fat Calculator | Free Body Composition Tracker',
+  description: 'Calculate your percentage of body fat instantly. Use our free online body fat calculator to estimate body composition using standard measurements.',
+  keywords: [
+    'calculator bmi female',
+    'body fat index',
+    'percentage of body fat',
+    'body fat calculator',
+    'MyApexCalc',
+    'body composition estimator',
+    'US Navy body fat method'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Body Fat Calculator & Composition Tracker | MyApexCalc',
+    description: 'Track your fitness progress beyond the scale. Estimate your body fat index and lean mass percentages in seconds.',
+    url: 'https://www.myapexcalc.com/calculators/body-fat',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/body-fat-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Body Fat Calculator and Body Composition Visualizer',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Body Fat & Lean Mass Estimator | MyApexCalc',
+    description: 'Understand your body composition. Calculate body fat percentages instantly using simple measurements.',
+    images: ['https://i.ibb.co/TqJgSVm5/body-fat-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/body-fat',
+  },
+};
 
 type Gender = 'male' | 'female';
 type UnitMode = 'us' | 'metric';
@@ -390,115 +438,145 @@ export default function BodyFatCalculatorPage() {
           )}
         </div>
 
-        {/* Reference Tables */}
+        {/* Informational Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <section className="space-y-6">
-              <div className="flex items-center gap-3">
-                <History className="w-6 h-6 text-primary" />
-                <h3 className="text-2xl font-bold text-primary">Body Fat Classification</h3>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                The American Council on Exercise (ACE) provides standard categories for body fat percentages based on gender and fitness goals.
-              </p>
-              <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
-                <Table>
-                  <TableHeader className="bg-muted/50">
-                    <TableRow>
-                      <TableHead className="font-bold">Description</TableHead>
-                      <TableHead className="font-bold text-right">Women</TableHead>
-                      <TableHead className="font-bold text-right">Men</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="font-medium">Essential fat</TableCell>
-                      <TableCell className="text-right">10-13%</TableCell>
-                      <TableCell className="text-right">2-5%</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Athletes</TableCell>
-                      <TableCell className="text-right">14-20%</TableCell>
-                      <TableCell className="text-right">6-13%</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium text-emerald-600">Fitness</TableCell>
-                      <TableCell className="text-right">21-24%</TableCell>
-                      <TableCell className="text-right">14-17%</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Average</TableCell>
-                      <TableCell className="text-right">25-31%</TableCell>
-                      <TableCell className="text-right">18-24%</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium text-red-500">Obese</TableCell>
-                      <TableCell className="text-right">32%+</TableCell>
-                      <TableCell className="text-right">25%+</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </div>
-            </section>
-
-            <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Jackson & Pollock Method</h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                A popular age-based benchmark for understanding body fat composition targets.
-              </p>
-              <div className="rounded-xl border overflow-hidden">
-                <Table>
-                  <TableHeader className="bg-muted/30">
-                    <TableRow>
-                      <TableHead className="text-[10px] font-bold">Age</TableHead>
-                      <TableHead className="text-[10px] font-bold text-right">Women</TableHead>
-                      <TableHead className="text-[10px] font-bold text-right">Men</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="text-[11px]">
-                    {jacksonPollockData.map((row) => (
-                      <TableRow key={row.age}>
-                        <TableCell>{row.age}</TableCell>
-                        <TableCell className="text-right">{row.women}%</TableCell>
-                        <TableCell className="text-right">{row.men}%</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
-          </div>
-
-          <Separator />
-          
-          <div className="space-y-8 pb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary">Understanding Body Fat Percentage</h3>
-              <div className="space-y-6 text-sm text-muted-foreground leading-relaxed">
-                <p>
-                  The scientific definition of body fat percentage is the total mass of fat divided by total body mass, multiplied by 100. Body fat includes essential body fat and storage body fat. Essential body fat is necessary to maintain life and reproductive functions. The percentage of essential fat is 2–5% in men, and 10–13% in women.
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+                <TrendingUp className="w-6 h-6" />
+                Understand Your Body Composition with MyApexCalc
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                When embarking on a health, fitness, or weight management journey, relying solely on a standard bathroom scale can often be misleading. Muscle tissue is denser than fat tissue; as you burn fat and build lean muscle, your weight might stay exactly the same even though your physical shape is transforming. To get a true picture of your physical fitness, you need to track your percentage of body fat. Our free online body fat calculator is designed to provide an instant, accessible estimate of your overall body composition without requiring expensive clinical scans.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Science of Body Composition: Tracking Your Index
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  Our calculator utilizes two widely accepted scientific methods to evaluate your body fat index: the U.S. Navy Body Fat Method (which uses tape measurements) and the BMI-to-Body-Fat Conversion Method.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+
+                <div className="space-y-4">
                   <div className="space-y-2">
-                    <h4 className="font-bold text-foreground flex items-center gap-2">
-                      <ChevronRight className="w-4 h-4 text-accent" /> Essential Body Fat
-                    </h4>
-                    <p className="text-xs">Essential fat is the level below which physical and physiological health would be negatively affected. It is necessary for the proper functioning of the hormonal, reproductive, and immune systems.</p>
+                    <p className="font-bold text-sm text-foreground">1. The U.S. Navy Circumference Method</p>
+                    <p className="text-sm text-muted-foreground">Considered the gold standard for home estimation, this formula requires simple neck, waist, and hip circumference measurements along with your height. Because men and women store fat differently, the equations utilize distinct physical calculations:</p>
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm space-y-4 border overflow-x-auto">
+                      <div className="space-y-1">
+                        <p className="text-[10px] uppercase font-bold text-primary">For Men (Measurements in Centimeters):</p>
+                        <p>BFP = 86.010 × log₁₀(Waist - Neck) - 70.041 × log₁₀(Height) + 36.76</p>
+                      </div>
+                      <Separator />
+                      <div className="space-y-1">
+                        <p className="text-[10px] uppercase font-bold text-primary">For Women (Measurements in Centimeters):</p>
+                        <p>BFP = 163.205 × log₁₀(Waist + Hips - Neck) - 97.684 × log₁₀(Height) - 78.387</p>
+                      </div>
+                    </div>
                   </div>
+
                   <div className="space-y-2">
-                    <h4 className="font-bold text-foreground flex items-center gap-2">
-                      <ChevronRight className="w-4 h-4 text-accent" /> Storage Body Fat
-                    </h4>
-                    <p className="text-xs">Storage body fat consists of fat accumulation in adipose tissue, part of which protects internal organs in the chest and abdomen. This is the fat that typically fluctuates based on diet and exercise.</p>
+                    <p className="font-bold text-sm text-foreground">2. The BMI-Based Estimation Method</p>
+                    <p className="text-sm text-muted-foreground">For a quick estimate that doesn't require a measuring tape, you can run a calculation using your Body Mass Index (BMI). While a standard calculator bmi female or male tool only evaluates height against weight, this equation translates that baseline into a broad body fat approximation:</p>
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                      Body Fat % (Adult) = (1.20 × BMI) + (0.23 × Age) - (10.8 × Gender) - 5.4
+                    </div>
+                    <p className="text-[10px] text-muted-foreground mt-2 italic">
+                      * (Note: In this formula, Gender is assigned a value of 1 for biological males and 0 for biological females.)
+                    </p>
                   </div>
                 </div>
-                <p className="pt-4">
-                  The **U.S. Navy method** implemented in this calculator provides a reliable estimate for the general population. While DEXA scans or hydrostatic weighing are more accurate "gold standards," the Navy method is highly accessible and requires only a measuring tape.
-                </p>
               </div>
             </section>
+
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <BarChart className="w-5 h-5 text-accent" />
+                  Body Fat Categories: Where Do You Stand?
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Once our tool estimates your percentage, it aligns your results with standard fitness classifications to help you set realistic, healthy goals:
+                </p>
+                <div className="rounded-xl border overflow-hidden">
+                  <Table>
+                    <TableHeader className="bg-muted/50">
+                      <TableRow>
+                        <TableHead className="font-bold">Classification</TableHead>
+                        <TableHead className="font-bold">Women's Range</TableHead>
+                        <TableHead className="text-right font-bold">Men's Range</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell className="text-xs">Essential Fat</TableCell>
+                        <TableCell className="text-xs">10% - 13%</TableCell>
+                        <TableCell className="text-right text-xs">2% - 5%</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-xs">Athletes</TableCell>
+                        <TableCell className="text-xs">14% - 20%</TableCell>
+                        <TableCell className="text-right text-xs">6% - 13%</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-xs font-bold text-emerald-600">Fitness</TableCell>
+                        <TableCell className="text-xs">21% - 24%</TableCell>
+                        <TableCell className="text-right text-xs">14% - 17%</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-xs">Acceptable</TableCell>
+                        <TableCell className="text-xs">25% - 31%</TableCell>
+                        <TableCell className="text-right text-xs">18% - 24%</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-xs font-bold text-red-500">Obesity</TableCell>
+                        <TableCell className="text-xs">32%+</TableCell>
+                        <TableCell className="text-right text-xs">25%+</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-accent" />
+                  Why Measure Body Fat with MyApexCalc?
+                </h4>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Dual-Method Calculations</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Choose between tape measurements for higher precision or rapid BMI-based estimates depending on your goals.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <History className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Metric and Imperial Support</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Input measurements seamlessly in inches or centimeters, and weight in pounds or kilograms without conversion friction.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ShieldCheck className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Privacy-First Tracking</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Calculate and evaluate your personal health details privately, with zero mandatory user profiles or data tracking.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
