@@ -414,25 +414,31 @@ export default function TimeCalculatorPage() {
 
               <div className="space-y-2">
                 <p className="font-bold text-sm text-foreground">1. Converting Clock Time to Minutes</p>
-                <p className="text-sm text-muted-foreground">First, the calculator converts your clock hours ($H$) and minutes ($M$) relative to a 24-hour baseline into total cumulative minutes:</p>
+                <p className="text-sm text-muted-foreground">First, the calculator converts your clock hours (H) and minutes (M) relative to a 24-hour baseline into total cumulative minutes:</p>
                 <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                   Total Minutes = (H × 60) + M
                 </div>
                 <p className="text-xs text-muted-foreground pt-1 italic">
-                  For example, a start time of 8:30 AM is processed as $510$ minutes, and a clock-out time of 5:15 PM (17:15) translates to $1,035$ minutes.
+                  For example, a start time of 8:30 AM is processed as 510 minutes, and a clock-out time of 5:15 PM (17:15) translates to 1,035 minutes.
                 </p>
               </div>
 
               <div className="space-y-2">
                 <p className="font-bold text-sm text-foreground">2. Calculating Total Net Elapsed Time</p>
-                <p className="text-sm text-muted-foreground">To determine your true working time, the calculator finds the difference between your clock-out time ($\text{Min}_{\text{Out}}$) and clock-in time ($\text{Min}_{\text{In}}$), and then subtracts any unpaid lunch breaks ($\text{Min}_{\text{Break}}$):</p>
+                <p className="text-sm text-muted-foreground">To determine your true working time, the calculator finds the difference between your clock-out time (Min_Out) and clock-in time (Min_In), and then subtracts any unpaid lunch breaks (Min_Break):</p>
                 <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border space-y-2 overflow-x-auto">
                   <p>Net Work Minutes = Min<sub>Out</sub> - Min<sub>In</sub> - Min<sub>Break</sub></p>
                   <Separator />
                   <p>Net Work Hours = Net Work Minutes / 60</p>
                 </div>
                 <p className="text-xs text-muted-foreground pt-1">
-                  Using our previous timeline with a standard 45-minute unpaid lunch break, the formula calculates: 1035 - 510 - 45 = 480 minutes, which yields exactly 8.0 net working hours.
+                  Using our previous timeline with a standard 45-minute unpaid lunch break, the formula calculates:
+                </p>
+                <div className="bg-muted/50 p-4 rounded-xl font-mono text-sm text-center border">
+                   Net Work Minutes = 1035 - 510 - 45 = 480 minutes
+                </div>
+                <p className="text-xs text-muted-foreground pt-1">
+                  This yields exactly 8.0 net working hours.
                 </p>
               </div>
             </div>
@@ -490,7 +496,7 @@ export default function TimeCalculatorPage() {
                 </li>
                 <li className="flex gap-3 text-sm text-muted-foreground">
                   <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
-                  <span><strong>Dual Format Outputs:</strong> View your results in both clean digital clock formats (e.g., 7h 45m) and clean decimal format values (e.g., 7.75h) for direct entry.</span>
+                  <span><strong>Dual Format Outputs:</strong> View your results in both clean digital clock formats (e.g., 7 hours 45 minutes) and clean decimal format values (e.g., 7.75 hours) for direct payroll entry.</span>
                 </li>
                 <li className="flex gap-3 text-sm text-muted-foreground">
                   <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
