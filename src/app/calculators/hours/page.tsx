@@ -9,7 +9,12 @@ import {
   ArrowRight, 
   History, 
   Calculator,
-  Calendar
+  Calendar,
+  TrendingUp,
+  ChevronRight,
+  ShieldCheck,
+  Zap,
+  Briefcase
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,6 +29,56 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Accurate Hours Calculator | Free Hour to Hour Time Tracker',
+  description: 'Calculate hours between times instantly. Use our free hours calculator to count your work hours, track elapsed time, and compute weekly timesheets.',
+  keywords: [
+    'time to time calculator',
+    'Hours Calculator',
+    'hour to hour calculator',
+    'count my work hours',
+    'calculate your work hours',
+    'MyApexCalc',
+    'elapsed hours tracker',
+    'shift duration calculator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Hour to Hour & Work Hours Calculator | MyApexCalc',
+    description: 'Calculate time to time spans instantly. Easily track elapsed working hours, subtract breaks, and log your shifts with our free tool.',
+    url: 'https://www.myapexcalc.com/calculators/hours',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/hours-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Hours Calculator and Work Shift Tracker Interface',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Work Hours & Hour-to-Hour Calculator | MyApexCalc',
+    description: 'Quickly count your work hours and calculate accurate elapsed time spans between any two clock markers.',
+    images: ['https://i.ibb.co/TqJgSVm5/hours-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/hours',
+  },
+};
 
 export default function HoursCalculatorPage() {
   const [mode, setMode] = useState<'times' | 'dates'>('times');
@@ -133,15 +188,17 @@ export default function HoursCalculatorPage() {
             </CardContent>
           </Card>
 
-          <div className="bg-primary/5 border border-primary/10 rounded-xl p-5 flex gap-4">
-            <Info className="w-6 h-6 text-primary shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <p className="text-sm text-primary font-bold">Pro Tip</p>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Use the **Between Times** mode for daily shift calculations and the **Between Dates** mode for long-term project duration tracking.
-              </p>
-            </div>
-          </div>
+          <Card className="bg-primary/5 border-primary/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
+                <Info className="w-4 h-4 text-primary" />
+                Quick Tip
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs text-muted-foreground leading-relaxed">
+              Use <strong>Between Times</strong> for daily shift calculations and <strong>Between Dates</strong> for long-term project duration tracking.
+            </CardContent>
+          </Card>
         </div>
 
         {/* Results Section */}
@@ -206,48 +263,117 @@ export default function HoursCalculatorPage() {
             </CardContent>
           </Card>
         </div>
+      </div>
 
-        {/* Informational Text Section */}
-        <div className="lg:col-span-12 space-y-12 py-10">
-          <Separator />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <Calculator className="w-6 h-6" />
-                How the Hours Calculator Works
-              </h3>
+      {/* Informational Text Section */}
+      <div className="py-10 space-y-12">
+        <Separator />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+          <section className="space-y-4">
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+              <TrendingUp className="w-6 h-6" />
+              Tally Your Time Effortlessly with MyApexCalc
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              Whether you are trying to count my work hours for a freelance gig, track study sessions, or keep tabs on your team's weekly shifts, manual time calculations are notoriously tricky. Because our clock systems operate on base-60 increments rather than a base-100 decimal system, simple arithmetic like adding "8:45" to "9:30" can quickly lead to payroll disputes and stressful math mistakes. Our free online Hours Calculator acts as an intuitive, direct hour to hour calculator that does all the heavy lifting for you, giving you an exact breakdown of your elapsed time in seconds.
+            </p>
+            
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+              <Calculator className="w-6 h-6" />
+              The Mathematics of Elapsed Time
+            </h3>
+            <div className="space-y-6">
               <p className="text-muted-foreground leading-relaxed">
-                Measuring time spans accurately can be complex due to the varying number of days in months and the transition between AM/PM. The **My Apex Hours Calculator** simplifies this process by allowing you to choose between specific daily shifts or long-term date ranges.
+                Calculating a clean interval using a time to time calculator requires converting clock hours and minutes into standard minutes, executing the math across the 12-hour AM/PM divide, and translating the results.
               </p>
-              <h4 className="font-bold text-foreground">Hours Between Two Times</h4>
-              <p className="text-muted-foreground leading-relaxed">
-                This mode is ideal for daily labor tracking. You can input your start and end times, subtract a lunch break, and instantly get the total billable hours. Our engine handles midnight rollovers automatically—so a shift from 10 PM to 6 AM is correctly calculated as 8 hours.
-              </p>
-            </section>
 
+              <div className="space-y-2">
+                <p className="font-bold text-sm text-foreground">Step 1: Converting to Cumulative Minutes</p>
+                <p className="text-sm text-muted-foreground">First, we convert both your starting and ending clock coordinates into absolute minutes relative to midnight (00:00):</p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                  Total Minutes = (Hours x 60) + Minutes
+                </div>
+                <p className="text-xs text-muted-foreground pt-1 italic">
+                  For instance, 8:45 AM is processed as (8 x 60) + 45 = 525 minutes. 5:15 PM (17:15) is (17 x 60) + 15 = 1,035 minutes.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <p className="font-bold text-sm text-foreground">Step 2: Running the Interval Calculation</p>
+                <p className="text-sm text-muted-foreground">To calculate your work hours while factoring in unpaid breaks, we find the difference between your markers:</p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                  Net Minutes = End Minutes - Start Minutes - Break Minutes
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="font-bold text-sm text-foreground">Step 3: Translating to Decimal Hours</p>
+                <p className="text-sm text-muted-foreground">To bill clients accurately, divide your net working minutes by 60 to yield a decimal format:</p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                  Decimal Hours = Net Work Minutes / 60
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div className="space-y-8">
             <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Features & Accuracy</h4>
-              <ul className="space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                The Pitfalls of Manual Time Tracking
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Using an automated calculator prevents common billing errors that can cost you money:
+              </p>
+              <ul className="space-y-6 pt-2">
                 <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <CalendarDays className="w-4 h-4 text-accent" />
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <Zap className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Precise Date Ranges</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Calculate exact durations over weeks or months, accounting for every minute. Perfect for long-distance travel planning or project milestone tracking.</p>
+                    <p className="font-bold text-sm">The "Decimal" Time Trap</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Many people write 7 hours and 45 minutes as "7.45" hours on invoices. In reality, 45 minutes is 75% of an hour (45/60=0.75), meaning you should bill for 7.75 hours to be paid correctly.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <History className="w-4 h-4 text-primary" />
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <History className="w-4 h-4 text-accent" />
                   </div>
                   <div>
-                    <p className="font-bold text-sm">Decimal Output</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Easily convert durations into decimal format (e.g., 8h 30m = 8.50) to simplify invoice generation or payroll processing.</p>
+                    <p className="font-bold text-sm">Tracking Night Shifts</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Calculating spans that cross over midnight (e.g., 10:00 PM to 6:00 AM) can be confusing. Our engine handles these rollovers automatically.</p>
                   </div>
                 </li>
               </ul>
+            </div>
+
+            <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 space-y-6">
+              <h4 className="text-lg font-bold text-primary flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-primary" />
+                Why Choose MyApexCalc?
+              </h4>
+              <ul className="space-y-4">
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Instant Shift Logging:</strong> Daily totals compile as you type.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Dual-Format Outputs:</strong> View standard clock time or clean decimal fractions.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>No Sign-Up Required:</strong> Calculate your wages privately with zero data walls.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+              <Briefcase className="w-10 h-10 text-primary opacity-40 shrink-0" />
+              <p className="text-[10px] text-muted-foreground leading-tight italic">
+                "Time is your most limited resource. Measuring it with precision is the key to both professional success and personal balance."
+              </p>
             </div>
           </div>
         </div>
