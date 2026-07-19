@@ -2,12 +2,74 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Car, Info, DollarSign, Percent, TrendingUp, ReceiptText } from 'lucide-react';
+import { 
+  Car, 
+  Info, 
+  DollarSign, 
+  Percent, 
+  TrendingUp, 
+  ReceiptText,
+  Calculator,
+  History,
+  ShieldCheck,
+  ChevronRight,
+  Landmark,
+  Clock
+} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Accurate Auto Loan Calculator | Estimate Vehicle Payments',
+  description: 'Calculate your monthly car payment instantly with our free auto loan calculator. Input vehicle price, down payment, interest rates, and loan terms to plan your budget.',
+  keywords: [
+    'auto loan calculator',
+    'automobile loan calculator',
+    'estimate vehicle payment',
+    'MyApexCalc',
+    'car payment estimator',
+    'vehicle interest calculator',
+    'car loan amortization'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Auto Loan & Car Payment Calculator | MyApexCalc',
+    description: 'Avoid dealership surprises. Figure out your true monthly cost, calculate interest fees, and estimate vehicle payment options in seconds.',
+    url: 'https://www.myapexcalc.com/calculators/auto-loan',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/GQstbRww/autoloan-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Auto Loan Calculator and Monthly Payment Estimator Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Automobile Loan Calculator | MyApexCalc',
+    description: 'Instantly calculate car payments, compare loan lengths, and see your total interest costs over time.',
+    images: ['https://i.ibb.co/GQstbRww/autoloan-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent duplicate indexing issues
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/auto-loan',
+  },
+};
 
 export default function AutoLoanPage() {
   // Inputs
@@ -304,6 +366,96 @@ export default function AutoLoanPage() {
               </p>
               <p className="text-[11px] text-blue-700">
                 Most states calculate sales tax based on the <strong>Sale Price minus Trade-in Value</strong>. Our calculator applies this rule. If your state taxes the full price, please adjust your input accordingly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Informational Text Section */}
+      <div className="py-10 space-y-12">
+        <Separator />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+          <section className="space-y-4">
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+              <TrendingUp className="w-6 h-6" />
+              Take Control of Your Car Buying Budget with MyApexCalc
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              Shopping for a new or used vehicle is an exciting milestone, but navigating dealership financing can quickly become overwhelming. Sales representatives often focus solely on the monthly payment, masking the overall long-term cost of the vehicle through extended loan terms and high interest rates. To negotiate confidently and protect your wallet, you need to know exactly how your loan parameters interact. Our free, interactive auto loan calculator acts as your personal financial advisor, allowing you to run numbers, bypass dealer pressure, and establish a clear budget before you ever step onto the showroom floor.
+            </p>
+            
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+              <Calculator className="w-6 h-6" />
+              The Amortization Math: How to Estimate Vehicle Payments
+            </h3>
+            <div className="space-y-4">
+              <p className="text-muted-foreground leading-relaxed">
+                When you secure a car loan, you agree to pay back the borrowed principal amount plus interest over a fixed number of months. To estimate vehicle payment parameters, our mathematical engine processes your input data using the standard fixed-rate amortization formula:
+              </p>
+              
+              <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                PMT = P × [ r(1+r)<sup>n</sup> ] / [ (1+r)<sup>n</sup> - 1 ]
+              </div>
+
+              <div className="space-y-3 pt-2">
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">PMT</span> represents your expected monthly car payment.</p>
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">P</span> represents the total loan principal (the purchase price of the vehicle minus any down payments, trade-in values, or rebates, plus taxes and fees).</p>
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">r</span> represents your monthly interest rate (your annual interest rate divided by 12 months).</p>
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">n</span> represents the total number of monthly payments over the life of the loan (e.g., 60 months for a five-year loan).</p>
+              </div>
+
+              <p className="text-muted-foreground leading-relaxed">
+                By using this formula, our automobile loan calculator breaks down your exact payment, isolating how much of your hard-earned money goes toward reducing your actual principal balance versus how much is lost to bank interest.
+              </p>
+            </div>
+          </section>
+
+          <div className="space-y-8">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Smart Financing: What to Look Out For
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                When running simulations on our dashboard, keep these key financial rules of thumb in mind:
+              </p>
+              <ul className="space-y-6 pt-2">
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <Clock className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">The Impact of the Loan Term</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Opting for a 72-month or 84-month loan will lower your monthly payment, but it drastically increases the total interest you pay over the life of the loan, often leaving you "underwater" (owing more than the car is worth).</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <ChevronRight className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">The Power of the Down Payment</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Putting down at least 20% of the vehicle's price upfront protects you from immediate depreciation and lowers your overall monthly debt burden.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <ShieldCheck className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Total Cost of Ownership</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Remember that your monthly payment is only part of your vehicle expense. Always leave room in your budget for auto insurance, fuel, registration, and routine maintenance.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+              <Landmark className="w-10 h-10 text-primary opacity-40 shrink-0" />
+              <p className="text-[10px] text-muted-foreground leading-tight italic">
+                "Knowing your real monthly payment before you visit a dealer puts you in the driver's seat of the negotiation."
               </p>
             </div>
           </div>
