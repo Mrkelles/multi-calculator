@@ -14,7 +14,11 @@ import {
   Info,
   History,
   Zap,
-  Binary
+  Binary,
+  TrendingUp,
+  Calculator,
+  ChevronRight,
+  ShieldCheck
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,6 +31,55 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Free Random Number Generator | Instant Secure Randomizer',
+  description: 'Generate single or multiple random numbers instantly with our free random number generator. Customize your range, set limits, and choose to allow or prevent duplicates.',
+  keywords: [
+    'Random Number Generator',
+    'get a random number',
+    'random number maker',
+    'MyApexCalc',
+    'random number picker',
+    'integer generator',
+    'secure randomizer online'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Instant Random Number Generator & Picker | MyApexCalc',
+    description: 'Need to pick a winner, roll a die, or make an unbiased choice? Generate truly randomized numbers in any custom range instantly.',
+    url: 'https://www.myapexcalc.com/calculators/random-number',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/9HQtZjPr/random-number-generator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Random Number Generator and Custom Number Range Picker UI',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Random Number Maker & Picker | MyApexCalc',
+    description: 'Set your minimum and maximum parameters and get a random number instantly. Features custom list sorting and duplicate prevention.',
+    images: ['https://i.ibb.co/9HQtZjPr/random-number-generator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/random-number',
+  },
+};
 
 /**
  * Utility to generate a random BigInt within a range [min, max]
@@ -482,35 +535,109 @@ export default function RandomNumberGeneratorPage() {
         </TabsContent>
       </Tabs>
 
-      <div className="lg:col-span-12 py-10 space-y-12">
+      <div className="py-10 space-y-12">
         <Separator />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
           <section className="space-y-4">
-            <h3 className="text-2xl font-bold text-primary flex items-center gap-2"><History className="w-6 h-6" /> Understanding Randomness</h3>
-            <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
-              <p>A **Random Number Generator (RNG)** is an algorithm used to generate a sequence of numbers that lack any pattern. This tool provides a truly random selection based on high-entropy mathematical selection.</p>
-              <h4 className="font-bold text-foreground">With vs. Without Replacement</h4>
-              <p>In statistics, picking "without duplicates" is known as sampling without replacement. Once a number is picked, it is removed from the pool. Choosing "allow duplicates" means every pick is independent.</p>
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+              <TrendingUp className="w-6 h-6" />
+              Make Completely Unbiased Decisions with MyApexCalc
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              Whether you are hosting a promotional sweepstakes giveaway, assigning random groups for a project, rolling dice for a tabletop game, conducting statistical sampling, or just trying to settle a friendly debate, you need a result that is completely unbiased. Human brains are notoriously bad at producing true randomness; when asked to pick a number from 1 to 10, a disproportionate number of people will choose 7. Our free online Random Number Generator acts as a fair, digital random number maker, allowing you to generate any custom set of integers instantly.
+            </p>
+
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+              <Calculator className="w-6 h-6" />
+              How It Works: The Math Behind the Randomizer
+            </h3>
+            <div className="space-y-4">
+              <p className="text-muted-foreground leading-relaxed">
+                To get a random number that is statistically unbiased, a computer must run an algorithm that distributes selection probabilities perfectly across your specified range. Our application runs a classic scaling formula to map random decimal values generated by your browser into a clean, targeted integer range defined by a Minimum (Min) and Maximum (Max) parameter:
+              </p>
+              
+              <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                Random Integer = ⌊ R × (Max - Min + 1) ⌋ + Min
+              </div>
+
+              <div className="space-y-3 pt-2">
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">R</span> represents a cryptographically secure pseudo-random decimal value between 0 (inclusive) and 1 (exclusive).</p>
+                <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">⌊ ... ⌋</span> represents the floor mathematical function, which rounds the value down to the nearest whole integer.</p>
+              </div>
+
+              <p className="text-muted-foreground leading-relaxed pt-2">
+                For example, if you set your range from a Min of 1 to a Max of 100, and the system generates a random decimal R = 0.572, the calculation processes as:
+              </p>
+              <div className="bg-muted/50 p-4 rounded-xl font-mono text-sm text-center border">
+                Random Integer = ⌊ 0.572 × (100 - 1 + 1) ⌋ + 1 = ⌊ 57.2 ⌋ + 1 = 57 + 1 = 58
+              </div>
+              <p className="text-muted-foreground leading-relaxed pt-2">
+                Every single integer within your specified boundaries has an identical, mathematically equal chance of being selected on every click.
+              </p>
             </div>
           </section>
-          <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
-            <h4 className="text-xl font-bold text-primary flex items-center gap-2"><RefreshCw className="w-5 h-5 text-accent" /> Advanced Features</h4>
-            <ul className="space-y-6">
-              <li className="flex gap-4">
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1"><Hash className="w-4 h-4 text-primary" /></div>
-                <div>
-                  <p className="font-bold text-sm">Extreme Precision</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">The comprehensive mode supports integers or decimals with up to 999 digits, handled via the BigInt engine for absolute accuracy.</p>
-                </div>
-              </li>
-              <li className="flex gap-4">
-                <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1"><List className="w-4 h-4 text-accent" /></div>
-                <div>
-                  <p className="font-bold text-sm">List Picking</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">Perfect for sweepstakes or group sorting. Simply paste your names and let the high-entropy picker decide the winners.</p>
-                </div>
-              </li>
-            </ul>
+
+          <div className="space-y-8">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Versatile Features to Meet Your Needs
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Our multi-functional generator is built to support a wide array of activities beyond basic number generation:
+              </p>
+              <ul className="space-y-6 pt-2">
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <ChevronRight className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Custom Range Control</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Set your minimum and maximum values to anything you need—whether it is 1 to 6 for a virtual die roll, or 1 to 10,000 for a large raffle.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <List className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Generate Lists of Numbers</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Generate multiple random numbers at the same time, perfect for bulk distributions, class assignments, or sweepstakes draws.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <ShieldCheck className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Duplicate Prevention</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Toggle our "Unique Only" switch on. If enabled, the generator guarantees that every number in your generated list is entirely unique.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 space-y-6">
+              <h4 className="text-lg font-bold text-primary flex items-center gap-2">
+                <History className="w-5 h-5 text-primary" />
+                Why Generate Your Numbers with MyApexCalc?
+              </h4>
+              <ul className="space-y-4">
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>High-Entropy Cryptographic Security:</strong> We do not rely on simple, predictable mathematical clocks. Our tool utilizes your browser's native cryptographic API for secure entropy.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Instant, Client-Side Action:</strong> Everything runs instantly inside your device's browser, meaning there are no page refreshes, lag, or server delays.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>100% Privacy Protection:</strong> We do not track, log, or store the numbers you generate. Your drawings are entirely private and visible only on your screen.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
