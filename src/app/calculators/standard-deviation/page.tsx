@@ -11,7 +11,11 @@ import {
   ChevronUp,
   BarChart,
   LayoutGrid,
-  FileText
+  FileText,
+  TrendingUp,
+  Zap,
+  ShieldCheck,
+  ChevronRight
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -27,6 +31,56 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component to ensure it is picked up by SEO crawlers.
+const metadata: Metadata = {
+  title: 'Accurate Standard Deviation Calculator | Free Statistics Tool',
+  description: 'Calculate standard deviation, variance, mean, and margin of error instantly. Try our free online standard deviation calculator for both sample and population datasets.',
+  keywords: [
+    'Standard Deviation formula',
+    'equation for standard deviation',
+    'Standard Deviation Calculator',
+    'find the standard deviation',
+    'determining standard deviation',
+    'MyApexCalc',
+    'variance calculator',
+    'population standard deviation solver'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Standard Deviation & Variance Calculator | MyApexCalc',
+    description: 'Analyze your datasets with confidence. Compute standard deviation, variance, mean, and range instantly with our free statistical calculator.',
+    url: 'https://www.myapexcalc.com/calculators/standard-deviation',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/2DNnXpV/standard-deviation-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Standard Deviation Calculator displaying step-by-step statistical formulas and dataset analysis',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Statistical Standard Deviation Tool | MyApexCalc',
+    description: 'Instantly calculate sample or population standard deviation, mean, and variance. Features step-by-step mathematical breakdown.',
+    images: ['https://i.ibb.co/2DNnXpV/standard-deviation-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/standard-deviation',
+  },
+};
 
 export default function StandardDeviationPage() {
   const [dataInput, setDataInput] = useState('10, 12, 23, 23, 16, 23, 21, 16');
@@ -293,69 +347,124 @@ export default function StandardDeviationPage() {
           )}
         </div>
 
-        {/* Reference & Info Section */}
+        {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <Calculator className="w-6 h-6" />
-                Understanding Standard Deviation
+                <TrendingUp className="w-6 h-6" />
+                Master Statistical Data Analysis with MyApexCalc
               </h3>
-              <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
-                <p>
-                  Standard deviation is a measure of the amount of variation or dispersion of a set of values. A low standard deviation indicates that the values tend to be close to the mean, while a high standard deviation indicates that the values are spread out over a wider range.
-                </p>
-                <h4 className="font-bold text-foreground pt-2">Population vs. Sample</h4>
-                <p>
-                  The main difference between the two is the denominator in the variance formula. For a <strong>population</strong>, you divide by <em>N</em>. For a <strong>sample</strong>, you divide by <em>N - 1</em>. This adjustment (Bessel's correction) is made to provide an unbiased estimate of the population variance from a sample.
-                </p>
-              </div>
-            </section>
-
-            <div className="bg-white p-8 rounded-[2.5rem] border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
-                <FileText className="w-5 h-5 text-accent" />
-                Key Terms
-              </h4>
-              <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    < Sigma className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Variance</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The average of the squared differences from the Mean. It measures how far each number in the set is from the mean.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <BarChart className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Margin of Error</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">The range of values below and above the sample statistic in a confidence interval, representing the degree of sampling error.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <Separator />
-          
-          <div className="space-y-8 pb-12">
-            <section className="space-y-4 text-center max-w-2xl mx-auto">
-              <h3 className="text-2xl font-bold text-primary">Normal Distribution Rule</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                In a normal distribution, approximately <strong>68%</strong> of data points fall within one standard deviation of the mean, <strong>95%</strong> fall within two, and <strong>99.7%</strong> fall within three.
+              <p className="text-muted-foreground leading-relaxed">
+                Whether you are analyzing test scores in a classroom, assessing risk in a financial portfolio, evaluating quality control metrics in manufacturing, or processing scientific research observations, understanding how data spreads out is critical. While the average (mean) gives you a central starting point, it doesn't tell you if your numbers are closely grouped or wildly scattered. Our free online Standard Deviation Calculator takes the pain out of statistics, serving as an instant tool for determining standard deviation, variance, and mean with a single click.
               </p>
-              <div className="pt-6">
-                <a href="/calculators/scientific" className="inline-flex items-center gap-2 text-primary font-bold hover:underline">
-                  Need more math tools? Try our Scientific Calculator <Sigma size={16} />
-                </a>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                Understanding the Mathematics: How to Find the Standard Deviation
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  Standard deviation measures the average distance of each data point in a set from the mean of that set. To find the standard deviation of your data, the calculation engine runs through several steps.
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  First, we calculate the arithmetic mean (&mu; or x&#772;) of the dataset. Next, we find the squared difference of each individual data point (x<sub>i</sub>) from that mean. Finally, we sum those squared differences and calculate the average. The exact equation for standard deviation depends entirely on whether your data represents an entire population or just a sample size:
+                </p>
+
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <p className="font-bold text-sm text-foreground">1. Sample Standard Deviation (s)</p>
+                    <p className="text-sm text-muted-foreground">Use this Standard Deviation formula if your dataset is a representative subset of a larger group. It utilizes Bessel's correction (n - 1) in the denominator to correct for bias:</p>
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                      s = &radic;[ &Sigma;(x<sub>i</sub> - x&#772;)&sup2; / (n - 1) ]
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="font-bold text-sm text-foreground">2. Population Standard Deviation (&sigma;)</p>
+                    <p className="text-sm text-muted-foreground">Use this calculation if your dataset represents every single member of the group you are evaluating (such as every student in a single school class):</p>
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                      &sigma; = &radic;[ &Sigma;(x<sub>i</sub> - &mu;)&sup2; / n ]
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 text-[10px] text-muted-foreground bg-muted/20 p-4 rounded-xl">
+                  <p><strong>x<sub>i</sub></strong>: individual value</p>
+                  <p><strong>x&#772; / &mu;</strong>: arithmetic mean</p>
+                  <p><strong>n</strong>: total data points</p>
+                  <p><strong>&Sigma;</strong>: summation symbol</p>
+                </div>
               </div>
             </section>
+
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-accent" />
+                  Step-by-Step Practical Example
+                </h4>
+                <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
+                  <p>Let's analyze a simple sample dataset of five numbers: <strong>2, 4, 4, 4, 5.5</strong>.</p>
+                  
+                  <div className="space-y-3">
+                    <div className="p-3 bg-muted/30 rounded-lg">
+                      <p className="font-bold text-foreground">Step 1: Find the Mean</p>
+                      <p>Mean (x&#772;) = (2 + 4 + 4 + 4 + 5.5) / 5 = 19.5 / 5 = <strong>3.9</strong></p>
+                    </div>
+                    
+                    <div className="p-3 bg-muted/30 rounded-lg">
+                      <p className="font-bold text-foreground">Step 2: Subtract Mean and Square Result</p>
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li>(2 - 3.9)&sup2; = 3.61</li>
+                        <li>(4 - 3.9)&sup2; = 0.01 (x3)</li>
+                        <li>(5.5 - 3.9)&sup2; = 2.56</li>
+                      </ul>
+                    </div>
+
+                    <div className="p-3 bg-muted/30 rounded-lg">
+                      <p className="font-bold text-foreground">Step 3: Sum the Squares</p>
+                      <p>&Sigma; = 3.61 + 0.01 + 0.01 + 0.01 + 2.56 = <strong>6.2</strong></p>
+                    </div>
+
+                    <div className="p-3 bg-primary/5 border border-primary/10 rounded-lg">
+                      <p className="font-bold text-primary">Step 4: Final Result</p>
+                      <p>Variance (s&sup2;) = 6.2 / (5 - 1) = <strong>1.55</strong></p>
+                      <p>Standard Deviation (s) = &radic;1.55 &approx; <strong>1.245</strong></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-accent" />
+                  Why Choose MyApexCalc?
+                </h4>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Side-by-Side Results</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">View both Sample and Population calculations instantly so you never have to worry about selecting the wrong option beforehand.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <LayoutGrid className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Flexible Input Formats</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Simply paste your raw numbers separated by commas, spaces, or line breaks to process your data immediately.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
