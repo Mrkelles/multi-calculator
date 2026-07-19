@@ -11,7 +11,10 @@ import {
   Calendar,
   History,
   Zap,
-  Target
+  Target,
+  Calculator,
+  ChevronRight,
+  ShieldCheck
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,6 +24,55 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference. In a production Next.js environment, 
+// this would typically be exported from a Server Component (page.tsx) that wraps 
+// this Client Component.
+const metadata: Metadata = {
+  title: 'Accurate Investment Calculator | Free Investment Growth Calculator',
+  description: 'Project your portfolio growth with our free investment calculator. Model compound interest, recurring contributions, and estimate investment growth over time.',
+  keywords: [
+    'Investment Calculator',
+    'Investment Estimator',
+    'Investment Growth Calculator',
+    'MyApexCalc',
+    'compound interest calculator',
+    'portfolio growth estimator',
+    'financial projection tool'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Investment Calculator & Growth Estimator | MyApexCalc',
+    description: 'Visualize your path to financial freedom. Calculate future portfolio values, compare return rates, and track compound growth in real-time.',
+    url: 'https://www.myapexcalc.com/calculators/investment',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/9H0bRpTQ/investment-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Investment Calculator Compound Growth Chart and Inputs',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Investment Growth Calculator & Estimator | MyApexCalc',
+    description: 'Map your long-term wealth goals. Adjust annual returns, initial principal, and regular contributions to see your portfolio grow.',
+    images: ['https://i.ibb.co/9H0bRpTQ/investment-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent duplicate index penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/investment',
+  },
+};
 
 type CalcMode = 'end-amount' | 'contribution' | 'return-rate' | 'starting-amount' | 'length';
 
@@ -85,10 +137,6 @@ export default function InvestmentCalculatorPage() {
       const sim = simulate(P, t, r, contribution);
       solvedValue = sim.balance;
     } else if (mode === 'starting-amount') {
-      // Algebraic solve for P
-      // FV = P(1+r/n)^nt + PMT * [((1+r/n)^nt - 1) / (r/n)] * (1 + r/n if beginning)
-      // This is complex with various frequencies, so we use a simplified simulation or solve
-      // Let's use a simulation-based binary search for robustness if P is not simple
       let low = 0, high = G * 2;
       for (let i = 0; i < 40; i++) {
         let mid = (low + high) / 2;
@@ -276,18 +324,6 @@ export default function InvestmentCalculatorPage() {
               </div>
             </CardContent>
           </Card>
-
-          <Card className="bg-muted/30 border-dashed">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xs font-bold flex items-center gap-2">
-                <Info className="w-4 h-4 text-primary" /> Term Glossary
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-[10px] text-muted-foreground space-y-2 leading-relaxed">
-              <p><strong>Compounding:</strong> The process where value is calculated on both the original principal and accumulated interest.</p>
-              <p><strong>Contribution Timing:</strong> <em>Beginning</em> assumes money is added before interest is calculated for that period, maximizing growth.</p>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Right Column: Results */}
@@ -400,45 +436,105 @@ export default function InvestmentCalculatorPage() {
         </div>
 
         {/* Informational Text Section */}
-        <div className="lg:col-span-12 space-y-12 py-10">
+        <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <History className="w-6 h-6" />
-                Planning Your Investment
+                <TrendingUp className="w-6 h-6" />
+                Map Your Path to Wealth and Financial Freedom with MyApexCalc
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                The <strong>My Apex Investment Calculator</strong> is more than just a multiplier. It is a reverse-engineering tool for your financial goals. By allowing you to solve for five different variables, we give you the flexibility to adapt to your current life stage.
+                Building long-term wealth is rarely about finding a single, overnight windfall. Instead, the most reliable path to financial independence relies on a proven mathematical force: consistency and compound growth over time. Whether you are building a retirement nest egg, saving for a major milestone, or investing in a diversified index fund, understanding how your money multiplies is essential. Our free, interactive Investment Calculator is engineered to serve as your personal Investment Estimator, showing you exactly how small, regular contributions build life-changing momentum.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Whether you are trying to find out how many years it will take to reach $1 million, or how much more you need to save per month to retire early, our simulation-based modeling provides the accuracy you need.
-              </p>
+              
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Power of Compounding: How Your Wealth Multiplies
+              </h3>
+              <div className="space-y-4">
+                <p className="text-muted-foreground leading-relaxed">
+                  Compound interest is often described as a snowball rolling down a hill; as it moves, it gathers more snow, growing larger at an accelerating pace. When you invest, your principal earns returns, and those returns are reinvested to earn even more.
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  To model this, our Investment Growth Calculator processes your timeline by calculating the future value of your initial principal combined with your recurring monthly contributions:
+                </p>
+                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                  Future Value = P(1 + r)ⁿ + PMT × [ ((1 + r)ⁿ - 1) / r ]
+                </div>
+                <div className="space-y-2 pt-2">
+                  <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">P</span> represents your starting investment (initial principal).</p>
+                  <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">PMT</span> represents your recurring monthly contribution amount.</p>
+                  <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">r</span> represents your expected periodic rate of return.</p>
+                  <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">n</span> represents the total number of compounding periods over your investment horizon.</p>
+                </div>
+                <p className="text-muted-foreground leading-relaxed pt-2">
+                  Over short horizons, your total balance is heavily dictated by the physical cash you deposit (PMT). However, over a 10, 20, or 30-year window, the compounding growth curve takes over, turning your earned returns into the primary driver of your portfolio's value.
+                </p>
+              </div>
             </section>
 
-            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Calculation Modes Explained</h4>
-              <ul className="space-y-4">
-                <li className="flex gap-3">
-                  <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <Target className="w-3 h-3 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Target Solving</p>
-                    <p className="text-xs text-muted-foreground">Select <strong>Contrib</strong> or <strong>Years</strong> to work backwards from a specific goal amount, helping you build a concrete savings roadmap.</p>
-                  </div>
-                </li>
-                <li className="flex gap-3">
-                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <Zap className="w-3 h-3 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Compound Frequency</p>
-                    <p className="text-xs text-muted-foreground">The more often interest is compounded (e.g., daily), the faster your money grows. Most high-yield savings accounts compound daily or monthly.</p>
-                  </div>
-                </li>
-              </ul>
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-accent" />
+                  Key Factors to Maximize Your Portfolio Growth
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  When adjusting the parameters on our interactive dashboard, keep these essential investment principles in mind:
+                </p>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <Clock className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">The Advantage of Starting Early</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Thanks to compounding, a person who starts investing a modest amount in their twenties can end up with a significantly larger portfolio than someone who contributes double starting in their late thirties.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Consistency Beats Timing</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Setting up automated, recurring monthly contributions (known as dollar-cost averaging) helps you build wealth steadily in all market conditions.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ShieldCheck className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Accounting for Inflation</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Inflation gradually erodes purchasing power. Use a conservative real return rate (e.g., 7% instead of 10%) to see your future wealth in today's dollars.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 space-y-6">
+                <h4 className="text-lg font-bold text-primary flex items-center gap-2">
+                  <History className="w-5 h-5 text-primary" />
+                  Why Project Your Wealth with MyApexCalc?
+                </h4>
+                <ul className="space-y-4">
+                  <li className="flex gap-3 text-sm text-muted-foreground">
+                    <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                    <span><strong>Dynamic Real-Time Projections:</strong> Instantly slide your initial principal and monthly contributions to watch your trajectory recalculate as you type.</span>
+                  </li>
+                  <li className="flex gap-3 text-sm text-muted-foreground">
+                    <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                    <span><strong>Detailed Breakdown Tables:</strong> Access a yearly breakdown highlighting your cumulative contributions, total interest, and ending balances.</span>
+                  </li>
+                  <li className="flex gap-3 text-sm text-muted-foreground">
+                    <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                    <span><strong>Multi-Variable Solving:</strong> Solve for any variable—end amount, required contributions, return rate, or length of time.</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
