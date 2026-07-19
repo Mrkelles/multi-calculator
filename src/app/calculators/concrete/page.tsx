@@ -6,20 +6,68 @@ import {
   Construction, 
   Info, 
   Layers, 
-  Square, 
-  Circle, 
   History, 
   Calculator,
   LayoutGrid,
   Hash,
-  Pipette
+  Pipette,
+  TrendingUp,
+  ShieldCheck,
+  ChevronRight
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
+import type { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Accurate Concrete Calculator | Free Slab & Yardage Estimator',
+  description: 'Calculate concrete volume instantly with our free concrete calculator. Estimate concrete slabs, footings, columns, and find out how many yards or bags you need.',
+  keywords: [
+    'Concrete Calculator',
+    'Concrete Estimator',
+    'concrete measurement calculator',
+    'calculate cement',
+    'concrete slab calculator',
+    'MyApexCalc',
+    'concrete yardage calculator',
+    'bagged concrete estimator'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Concrete & Slab Yardage Calculator | MyApexCalc',
+    description: 'Banish project guesswork. Estimate concrete volume for slabs, footings, or stairs and calculate total bags or cubic yards instantly.',
+    url: 'https://www.myapexcalc.com/calculators/concrete',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/concrete-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Concrete and Construction Material Volume Calculator',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Concrete Slab & Yardage Estimator | MyApexCalc',
+    description: 'Calculate how much concrete you need in cubic yards, cubic feet, or pre-mixed bags for your next DIY or commercial project.',
+    images: ['https://i.ibb.co/TqJgSVm5/concrete-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/concrete',
+  },
+};
 
 type ConcreteMode = 'slab' | 'hole' | 'circular' | 'curb' | 'stairs';
 
@@ -373,52 +421,102 @@ export default function ConcreteCalculatorPage() {
         <div className="lg:col-span-12 space-y-12 py-10">
           <Separator />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <Calculator className="w-6 h-6" />
-                Understanding Concrete Math
+                <TrendingUp className="w-6 h-6" />
+                Take the Guesswork Out of Your Build with MyApexCalc
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Calculating the right amount of concrete is essential for any construction project, whether you're pouring a small garden walkway or a professional structural wall. Overestimating leads to waste and extra costs, while underestimating can halt your project mid-pour, compromising structural integrity.
+                Whether you are pouring a backyard patio, setting posts for a new fence, building a structural retaining wall, or laying down a driveway, accuracy is everything. Ordering too little concrete leads to cold joints and expensive, delayed secondary deliveries. On the other hand, over-ordering wastes money and leaves you with raw, curing material you have to discard. Our free online Concrete Calculator serves as a highly precise Concrete Estimator, converting your project's physical measurements into exact material quantities in seconds.
               </p>
-              <h4 className="font-bold text-foreground">Why Weight and Bags Matter</h4>
-              <p className="text-muted-foreground leading-relaxed">
-                Most DIY and small professional projects use pre-mixed concrete bags. Our calculator uses the standard density of <strong>133 lbs/ft³</strong> to estimate exactly how many 60-lb or 80-lb bags you need to purchase from your local supplier.
-              </p>
+
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                The Math of Volume: How to Calculate Cement and Concrete Slabs
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  Because construction supplies are sold in distinct units—typically cubic yards for bulk ready-mix deliveries or bags for smaller home improvement tasks—you must first calculate the three-dimensional volume of your project.
+                </p>
+
+                <div className="space-y-3">
+                  <p className="font-bold text-sm text-foreground">1. The Standard Slab Formula (Rectangular Prisms)</p>
+                  <p className="text-sm text-muted-foreground">To estimate the volume of a standard rectangular slab using our concrete slab calculator, you must multiply its length (L), width (W), and thickness or depth (D):</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                    Volume (Cubic Feet) = L × W × D
+                  </div>
+                  <p className="text-sm text-muted-foreground pt-2">Because dimensions on a job site are usually mixed (such as measuring length and width in feet, but slab thickness in inches), you must first convert your thickness to feet before multiplying:</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                      Thickness (ft) = Thickness (inches) / 12
+                    </div>
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                      Volume (Cubic Yards) = Volume (Cubic Feet) / 27
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">2. Converting to Bags of Concrete</p>
+                  <p className="text-sm text-muted-foreground">If you plan to calculate cement or pre-mix bags for a DIY job, the calculator converts your total cubic yards into standard bags. Typical pre-mixed bags yield the following volumes:</p>
+                  <ul className="space-y-2 text-xs text-muted-foreground list-disc pl-5">
+                    <li><strong>80 lb Bag:</strong> Yields approximately 0.60 cubic feet of mixed concrete.</li>
+                    <li><strong>60 lb Bag:</strong> Yields approximately 0.45 cubic feet of mixed concrete.</li>
+                  </ul>
+                </div>
+              </div>
             </section>
 
-            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Calculation Features</h4>
-              <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <LayoutGrid className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Complex Shapes</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Choose from five specialized geometric modes including curbs and stairs to avoid manual multi-part volume calculations.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <Pipette className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Precision Unit Scaling</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Automatically handles the conversion between inches and feet, ensuring your thickness and length inputs align perfectly in the final volume.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <Layers className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Quantity Support</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Calculate concrete for multiple identical footings or columns simultaneously by adjusting the quantity field in each mode.</p>
-                  </div>
-                </li>
-              </ul>
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-accent" />
+                  The Golden Rule: Factor in Wastage
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  When finalizing your order using our material dashboard, we highly recommend adding a <strong>10% spillage and wastage margin</strong> to your final total.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  On-site factors such as uneven ground excavation, structural form bending, or simple spills during transport can easily reduce your active volume. Adding a safe margin ensures you finish your pour without running short.
+                </p>
+              </div>
+
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-accent" />
+                  Why Estimate Your Materials with MyApexCalc?
+                </h4>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <LayoutGrid className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Multiple Shape Configurations</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Easily calculate volume totals for rectangular slabs, round columns, circular footings, or staircases.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <Pipette className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Simultaneous Unit Conversions</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">View your calculations dynamically outputted in cubic yards, cubic feet, 80-pound bags, and 60-pound bags all at once.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <Hash className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Zero Registration Required</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Estimate construction materials directly on-site from your mobile browser without sign-wall delays.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
