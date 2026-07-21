@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useEffect, useMemo } from 'react';
@@ -15,7 +14,8 @@ import {
   ChevronRight,
   Calculator,
   Video,
-  Play
+  Play,
+  Target
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -203,7 +203,7 @@ export default function YouTubeRevenuePage() {
           <Card className="bg-primary/5 border-primary/10">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
-                <Info className="w-4 h-4" />
+                <Info className="w-4 h-4 text-primary" />
                 Revenue Model
               </CardTitle>
             </CardHeader>
