@@ -1,6 +1,7 @@
+
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
 import { 
   Youtube, 
@@ -12,7 +13,9 @@ import {
   Zap, 
   History, 
   ChevronRight,
-  Calculator 
+  Calculator,
+  Video,
+  Play
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,29 +23,28 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
+// Note: Metadata is defined here for reference.
 const metadata: Metadata = {
-  title: 'YouTube Revenue Calculator | Estimate Your Channel Earnings',
-  description: 'Estimate your video earnings instantly with our free YouTube revenue calculator. Input your daily views and CPM bounds to project your monthly and yearly creator payout.',
+  title: 'YouTube Revenue Calculator | Estimate Shorts & Video Earnings',
+  description: 'Estimate your video earnings instantly with our free YouTube revenue calculator. Compare Shorts and Long-form payouts using custom RPM and view metrics.',
   keywords: [
     'youtube money views calculator',
     'youtube revenue calculator',
     'youtube earnings calculator',
     'estimated youtube earnings',
+    'youtube shorts money calculator',
     'MyApexCalc',
     'creator earnings estimator',
     'CPM calculator'
   ],
   
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
   openGraph: {
     title: 'Interactive YouTube Money & Revenue Calculator | MyApexCalc',
-    description: 'Track your potential channel payout. Analyze your estimated youtube earnings based on custom view metrics and CPM variables.',
+    description: 'Track your potential channel payout. Analyze your estimated youtube earnings for both Shorts and long-form videos with custom RPM variables.',
     url: 'https://www.myapexcalc.com/calculators/youtube-revenue',
     siteName: 'MyApexCalc',
     locale: 'en_US',
@@ -57,77 +59,92 @@ const metadata: Metadata = {
     ],
   },
 
-  // Twitter visual preview specs
   twitter: {
     card: 'summary_large_image',
     title: 'Estimated YouTube Earnings Calculator | MyApexCalc',
-    description: 'Quickly calculate your potential ad revenue utilizing daily views and customizable CPM bounds.',
+    description: 'Quickly calculate your potential ad revenue utilizing daily views and customizable CPM bounds for all video formats.',
     images: ['https://i.ibb.co/b5cf2xS0/youtube-revenue-calculator.png'],
   },
 
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
   alternates: {
     canonical: 'https://www.myapexcalc.com/calculators/youtube-revenue',
   },
 };
 
+type ContentType = 'long-form' | 'shorts';
+
 export default function YouTubeRevenuePage() {
-  const [dailyViews, setDailyViews] = useState(5000);
-  const [minCpm, setMinCpm] = useState(0.25);
-  const [maxCpm, setMaxCpm] = useState(4.00);
+  const [mode, setMode] = useState<ContentType>('long-form');
+  const [dailyViews, setDailyViews] = useState(50000);
+  const [rpm, setRpm] = useState(4.50);
 
-  const [earnings, setEarnings] = useState({
-    dailyMin: 0,
-    dailyMax: 0,
-    monthlyMin: 0,
-    monthlyMax: 0,
-    yearlyMin: 0,
-    yearlyMax: 0,
-  });
-
+  // Defaults for mode switching
   useEffect(() => {
-    const dMin = (dailyViews / 1000) * minCpm;
-    const dMax = (dailyViews / 1000) * maxCpm;
+    if (mode === 'shorts') {
+      setDailyViews(500000);
+      setRpm(0.35);
+    } else {
+      setDailyViews(50000);
+      setRpm(4.50);
+    }
+  }, [mode]);
 
-    setEarnings({
-      dailyMin: dMin,
-      dailyMax: dMax,
-      monthlyMin: dMin * 30,
-      monthlyMax: dMax * 30,
-      yearlyMin: dMin * 365,
-      yearlyMax: dMax * 365,
-    });
-  }, [dailyViews, minCpm, maxCpm]);
+  const earnings = useMemo(() => {
+    // Formula from image: Revenue = (Views / 1000) * RPM
+    const daily = (dailyViews / 1000) * rpm;
+    return {
+      daily,
+      monthly: daily * 30,
+      yearly: daily * 365
+    };
+  }, [dailyViews, rpm]);
 
-  const milestoneViews = [
-    { label: 'Micro Creator', views: 1000 },
-    { label: 'Growing Channel', views: 10000 },
-    { label: 'Mid-Tier Partner', views: 50000 },
-    { label: 'Full-Time YouTuber', views: 100000 },
-    { label: 'Major Influencer', views: 500000 },
-    { label: 'Viral Sensation', views: 1000000 },
-  ];
+  const milestoneViews = useMemo(() => {
+    return mode === 'long-form' 
+      ? [
+          { label: 'Micro Creator', views: 1000 },
+          { label: 'Growing Channel', views: 10000 },
+          { label: 'Mid-Tier Partner', views: 50000 },
+          { label: 'Full-Time YouTuber', views: 100000 },
+          { label: 'Major Influencer', views: 500000 },
+          { label: 'Viral Sensation', views: 1000000 },
+        ]
+      : [
+          { label: 'Shorts Newcomer', views: 10000 },
+          { label: 'Daily Poster', views: 100000 },
+          { label: 'Trending Creator', views: 500000 },
+          { label: 'Viral Shorts Star', views: 2000000 },
+          { label: 'Top Tier Channel', views: 5000000 },
+          { label: 'Global Sensation', views: 10000000 },
+        ];
+  }, [mode]);
 
   return (
     <CalculatorWrapper
       title="YouTube Money Calculator"
-      description="Estimate your companion channel earnings or projected revenue based on daily view count benchmarks modeled after Social Blade."
+      description="Estimate potential channel earnings for both Long-form videos and YouTube Shorts based on daily view counts and format-specific RPM."
       icon={Youtube}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Left Column: Inputs */}
         <div className="lg:col-span-5 space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2 text-primary">
-                <Eye className="w-5 h-5" />
-                View Count Metrics
-              </CardTitle>
-              <CardDescription>Drag the slider or insert your estimated daily video views.</CardDescription>
+            <CardHeader className="pb-4">
+              <Tabs value={mode} onValueChange={(v: any) => setMode(v)} className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="long-form" className="gap-2">
+                    <Video size={14} /> Long-form
+                  </TabsTrigger>
+                  <TabsTrigger value="shorts" className="gap-2">
+                    <Play size={14} className="fill-current" /> Shorts
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <Label htmlFor="dailyViews" className="font-semibold">Estimated Daily Views</Label>
+                  <Label htmlFor="dailyViews" className="font-semibold">Daily Video Views</Label>
                   <Badge variant="secondary" className="text-sm px-3 font-mono">
                     {dailyViews.toLocaleString()}
                   </Badge>
@@ -135,117 +152,100 @@ export default function YouTubeRevenuePage() {
                 <Slider
                   value={[dailyViews]}
                   min={100}
-                  max={2000000}
-                  step={500}
+                  max={mode === 'shorts' ? 10000000 : 2000000}
+                  step={mode === 'shorts' ? 10000 : 1000}
                   onValueChange={(val) => setDailyViews(val[0])}
                 />
-                <Input
-                  id="dailyViews"
-                  type="number"
-                  value={dailyViews}
-                  onChange={(e) => setDailyViews(Math.max(0, Number(e.target.value)))}
-                  className="font-mono"
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2 text-primary">
-                <DollarSign className="w-5 h-5" />
-                CPM Bounds (Earnings per 1K Views)
-              </CardTitle>
-              <CardDescription>Social Blade standard bounds range from $0.25 to $4.00 default.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <Label htmlFor="minCpm">Minimum Estimated CPM</Label>
-                  <span className="font-mono font-bold text-sm text-muted-foreground">${minCpm.toFixed(2)}</span>
+                <div className="relative">
+                  <Eye className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  <Input
+                    id="dailyViews"
+                    type="number"
+                    value={dailyViews}
+                    onChange={(e) => setDailyViews(Math.max(0, Number(e.target.value)))}
+                    className="pl-9 font-mono"
+                  />
                 </div>
-                <Slider
-                  value={[minCpm]}
-                  min={0.10}
-                  max={5.00}
-                  step={0.05}
-                  onValueChange={(val) => setMinCpm(val[0])}
-                />
-                <Input
-                  id="minCpm"
-                  type="number"
-                  step="0.01"
-                  value={minCpm}
-                  onChange={(e) => setMinCpm(Math.max(0, Number(e.target.value)))}
-                  className="font-mono"
-                />
               </div>
 
               <div className="space-y-4 pt-2">
                 <div className="flex justify-between items-center">
-                  <Label htmlFor="maxCpm">Maximum Estimated CPM</Label>
-                  <span className="font-mono font-bold text-sm text-primary">${maxCpm.toFixed(2)}</span>
+                  <Label htmlFor="rpm" className="font-semibold">Estimated RPM ($ per 1k views)</Label>
+                  <Badge className="bg-accent">${rpm.toFixed(2)}</Badge>
                 </div>
                 <Slider
-                  value={[maxCpm]}
-                  min={1.00}
-                  max={25.00}
-                  step={0.25}
-                  onValueChange={(val) => setMaxCpm(val[0])}
+                  value={[rpm]}
+                  min={0.01}
+                  max={mode === 'shorts' ? 2.00 : 20.00}
+                  step={0.05}
+                  onValueChange={(val) => setRpm(val[0])}
                 />
-                <Input
-                  id="maxCpm"
-                  type="number"
-                  step="0.01"
-                  value={maxCpm}
-                  onChange={(e) => setMaxCpm(Math.max(0, Number(e.target.value)))}
-                  className="font-mono"
-                />
+                <div className="relative">
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  <Input
+                    id="rpm"
+                    type="number"
+                    step="0.01"
+                    value={rpm}
+                    onChange={(e) => setRpm(Math.max(0, Number(e.target.value)))}
+                    className="pl-9 font-mono"
+                  />
+                </div>
+                <p className="text-[10px] text-muted-foreground italic leading-relaxed">
+                  {mode === 'long-form' 
+                    ? "Standard long-form RPM typically ranges from $1.00 to $10.00+, depending on niche and audience."
+                    : "Shorts RPM is usually lower, typically between $0.05 and $0.50 per 1,000 engaged views."}
+                </p>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-primary/5 border-primary/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
+                <Info className="w-4 h-4" />
+                Revenue Model
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-[10px] text-muted-foreground leading-relaxed">
+              Revenue is calculated using the standard creator formula: <strong>(Total Views / 1,000) × RPM</strong>. 
+              Actual payouts may vary based on ad-skipping, premium views, and geographic location.
             </CardContent>
           </Card>
         </div>
 
+        {/* Right Column: Results */}
         <div className="lg:col-span-7 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card className="bg-white border-l-4 border-l-amber-500 shadow-sm">
               <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-wider text-muted-foreground font-bold">Estimated Daily</span>
-                  <TrendingUp className="w-4 h-4 text-amber-500" />
-                </div>
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">Daily Estimate</span>
               </CardHeader>
               <CardContent>
-                <div className="text-xl font-bold font-headline text-foreground font-mono">
-                  ${earnings.dailyMin.toFixed(2)} - ${earnings.dailyMax.toFixed(2)}
+                <div className="text-2xl font-bold font-headline text-foreground font-mono">
+                  ${earnings.daily.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
               </CardContent>
             </Card>
 
             <Card className="bg-white border-l-4 border-l-emerald-500 shadow-sm">
               <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-wider text-muted-foreground font-bold">Estimated Monthly</span>
-                  <Calendar className="w-4 h-4 text-emerald-500" />
-                </div>
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">Monthly Estimate</span>
               </CardHeader>
               <CardContent>
-                <div className="text-xl font-bold font-headline text-foreground font-mono">
-                  ${Math.round(earnings.monthlyMin).toLocaleString()} - ${Math.round(earnings.monthlyMax).toLocaleString()}
+                <div className="text-2xl font-bold font-headline text-foreground font-mono">
+                  ${Math.round(earnings.monthly).toLocaleString()}
                 </div>
               </CardContent>
             </Card>
 
             <Card className="bg-primary text-white border-none shadow-md">
               <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-wider text-primary-foreground/80 font-bold">Estimated Yearly</span>
-                  <Youtube className="w-4 h-4 text-white" />
-                </div>
+                <span className="text-[10px] uppercase tracking-wider text-primary-foreground/80 font-bold">Yearly Estimate</span>
               </CardHeader>
               <CardContent>
-                <div className="text-xl font-bold font-headline font-mono">
-                  ${Math.round(earnings.yearlyMin).toLocaleString()} - ${Math.round(earnings.yearlyMax).toLocaleString()}
+                <div className="text-2xl font-bold font-headline font-mono">
+                  ${Math.round(earnings.yearly).toLocaleString()}
                 </div>
               </CardContent>
             </Card>
@@ -253,12 +253,17 @@ export default function YouTubeRevenuePage() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base font-bold">Milestone Projection Table</CardTitle>
-              <CardDescription>Estimated revenue generation scales for various levels of creator views based on your current CPM configuration.</CardDescription>
+              <CardTitle className="text-base font-bold flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-primary" />
+                {mode === 'long-form' ? 'Video Milestone Projections' : 'Shorts Milestone Projections'}
+              </CardTitle>
+              <CardDescription>
+                Estimated revenue generation for various view tiers based on your current <strong>${rpm.toFixed(2)} RPM</strong>.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
-                <TableHeader>
+                <TableHeader className="bg-muted/50">
                   <TableRow>
                     <TableHead>Tier Status</TableHead>
                     <TableHead>Daily Views</TableHead>
@@ -268,20 +273,18 @@ export default function YouTubeRevenuePage() {
                 </TableHeader>
                 <TableBody>
                   {milestoneViews.map((milestone) => {
-                    const mMin = (milestone.views / 1000) * minCpm * 30;
-                    const mMax = (milestone.views / 1000) * maxCpm * 30;
-                    const yMin = (milestone.views / 1000) * minCpm * 365;
-                    const yMax = (milestone.views / 1000) * maxCpm * 365;
+                    const mVal = (milestone.views / 1000) * rpm * 30;
+                    const yVal = (milestone.views / 1000) * rpm * 365;
 
                     return (
-                      <TableRow key={milestone.label}>
-                        <TableCell className="font-medium text-primary">{milestone.label}</TableCell>
-                        <TableCell className="font-mono text-xs">{milestone.views.toLocaleString()}</TableCell>
-                        <TableCell className="text-right font-mono text-xs">
-                          ${Math.round(mMin).toLocaleString()} - ${Math.round(mMax).toLocaleString()}
+                      <TableRow key={milestone.label} className="hover:bg-primary/5 transition-colors">
+                        <TableCell className="font-medium text-primary text-xs">{milestone.label}</TableCell>
+                        <TableCell className="font-mono text-[10px]">{milestone.views.toLocaleString()}</TableCell>
+                        <TableCell className="text-right font-mono text-xs font-bold">
+                          ${Math.round(mVal).toLocaleString()}
                         </TableCell>
-                        <TableCell className="text-right font-mono text-xs text-accent font-semibold">
-                          ${Math.round(yMin).toLocaleString()} - ${Math.round(yMax).toLocaleString()}
+                        <TableCell className="text-right font-mono text-xs text-accent font-black">
+                          ${Math.round(yVal).toLocaleString()}
                         </TableCell>
                       </TableRow>
                     );
@@ -290,101 +293,107 @@ export default function YouTubeRevenuePage() {
               </Table>
             </CardContent>
           </Card>
-
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex gap-3">
-            <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-            <p className="text-xs text-amber-800 leading-relaxed">
-              <strong>About the Estimate:</strong> This cash projections model calculates earnings possibilities before YouTube split fees, country taxes, or production overheads. Standard CPM rates oscillate heavily depending on view retention metrics, audience geography, age brackets, and content vertical premium levels.
-            </p>
-          </div>
         </div>
-      </div>
 
-      {/* Informational Text Section */}
-      <div className="py-10 space-y-12">
-        <Separator />
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
-          <section className="space-y-4">
-            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-              <TrendingUp className="w-6 h-6" />
-              Maximize Your Creator Earnings with MyApexCalc
-            </h3>
-            <p className="text-muted-foreground leading-relaxed">
-              With the creator economy expanding rapidly, understanding how views translate into revenue is essential for channels of all sizes. Whether you are a micro-creator looking to go full-time or an established influencer projecting your next quarter's payout, estimating your platform earnings can feel like a guessing game. Our free online youtube revenue calculator removes the mystery from creator finances, giving you an immediate, highly accurate breakdown of your potential ad income.
-            </p>
-            
-            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
-              <Calculator className="w-6 h-6" />
-              How Ad Revenue is Calculated: The CPM Model
-            </h3>
-            <div className="space-y-4">
+        {/* Informational Text Section */}
+        <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+            <section className="space-y-4">
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+                <TrendingUp className="w-6 h-6" />
+                Maximize Your Creator Strategy with MyApexCalc
+              </h3>
               <p className="text-muted-foreground leading-relaxed">
-                YouTube distributes ad payouts based on a metric called CPM (Cost Per Mille), which represents the price advertisers pay for every 1,000 views on a video. However, because not all views serve ads and YouTube takes a platform revenue split (typically 45%), calculating your real income requires checking your estimated youtube earnings across low-end and high-end CPM ranges. Our responsive youtube money views calculator processes your parameters utilizing a precise chronological formula to map out daily, monthly, and yearly ranges:
+                Whether you are producing high-energy Shorts or deep-dive long-form content, understanding how views translate into revenue is essential. Monetization varies wildly between these formats due to how ads are served and how the revenue pool is shared. Our free online YouTube revenue calculator provides a precise comparison, helping you estimate your channel earnings across both content types instantly.
               </p>
               
-              <div className="space-y-4">
-                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
-                  <p className="font-bold text-xs uppercase text-muted-foreground mb-2">Daily Revenue Formula</p>
-                  Daily Income = (Daily Video Views / 1,000) × CPM Rate
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+                <Calculator className="w-6 h-6" />
+                Deciphering the Math: Shorts vs. Long-form
+              </h3>
+              <div className="space-y-6">
+                <p className="text-muted-foreground leading-relaxed">
+                  The primary difference in earnings comes down to the RPM (Revenue Per Mille), which represents the amount you earn per 1,000 views. Shorts typically have a much lower RPM because they share a combined ad pool, whereas long-form videos serve traditional ads.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <p className="font-bold text-sm text-foreground">1. YouTube Shorts Calculation</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">For Shorts, revenue is calculated based on engaged views. Using the standard creator pool model shown in the reference data:</p>
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                      Revenue = (Engaged Views / 1,000) × RPM
+                    </div>
+                    <p className="text-xs text-muted-foreground pt-2 italic">
+                      Example: If you have 2,000,000 engaged views and an RPM of $0.35, your estimated payout is <strong>$700</strong>.
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="font-bold text-sm text-foreground">2. Long-form Video Calculation</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">Long-form videos rely on direct ad placements on your specific content, yielding significantly higher RPMs:</p>
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                      Revenue = (Views / 1,000) × RPM
+                    </div>
+                    <p className="text-xs text-muted-foreground pt-2 italic">
+                      Example: With 2,000,000 views and a $4.50 RPM, your total earnings would be <strong>$9,000</strong>.
+                    </p>
+                  </div>
                 </div>
-                <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
-                  <p className="font-bold text-xs uppercase text-muted-foreground mb-2">Yearly Revenue Formula</p>
-                  Yearly Income = Daily Income × 365
-                </div>
+
+                <p className="text-muted-foreground leading-relaxed pt-2">
+                  By comparing these results, you can see that while Shorts generate massive reach, long-form content remains the most efficient way to build high-yield revenue on the platform.
+                </p>
+              </div>
+            </section>
+
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-accent" />
+                  Why Plan Your Channel with MyApexCalc?
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Vanity metrics like total views are exciting, but net revenue is what builds a real creative business. Our advanced calculator delivers:
+                </p>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Dual Format Modeling</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Switch between Shorts and Long-form modes to compare how different content formats impact your bottom line.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <Zap className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Customizable RPM Bounds</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Adjust your RPM thresholds to match your specific niche. Finance and Tech often have much higher rates than Gaming or Lifestyle.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <Target className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Milestone Projections</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">View daily, monthly, and yearly estimates to set realistic growth targets for your creative career.</p>
+                    </div>
+                  </li>
+                </ul>
               </div>
 
-              <p className="text-muted-foreground leading-relaxed">
-                For example, if your channel averages 50,000 views a day with an ad-yield rate fluctuating between a conservative $0.25 CPM and a moderate $4.00 CPM, your daily earnings will range between $12.50 and $200.00. Over a full calendar year, this compiles into an estimated annual payout of $4,562.50 to $73,000.00.
-              </p>
-            </div>
-          </section>
-
-          <div className="space-y-8">
-            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
-                <Info className="w-5 h-5 text-accent" />
-                Why Use the MyApexCalc YouTube Earnings Calculator?
-              </h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Unlike legacy platforms that rely on outdated mathematical scales or flat monthly multiplier approximations, our advanced calculator is designed to provide clean, pinpoint estimates. Our dashboard features:
-              </p>
-              <ul className="space-y-6 pt-2">
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <ChevronRight className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Customizable CPM Boundaries</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Take complete control over your earnings projections by sliding the minimum and maximum CPM thresholds to match your specific content niche, target audience, and geographic location.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <History className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Instant Dynamic Milestone Tables</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Scroll through our pre-calculated milestone guides to see how your monthly and yearly revenue scales as your channel grows from 1,000 daily views to viral sensation status.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <Zap className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Ad-Free, Real-Time Computations</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Adjust your daily view targets and watch your dashboard update instantly without being interrupted by complex formulas or distracting page refreshes.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
-              <Youtube className="w-10 h-10 text-primary opacity-40 shrink-0" />
-              <p className="text-[10px] text-muted-foreground leading-tight italic">
-                "In the creator economy, data is the foundation of growth. Understanding your revenue metrics allows you to scale your content business with confidence."
-              </p>
+              <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+                <History className="w-10 h-10 text-primary opacity-40 shrink-0" />
+                <p className="text-[10px] text-muted-foreground leading-tight italic">
+                  "In the creator economy, data is the foundation of growth. Understanding your revenue potential allows you to scale your content business with confidence."
+                </p>
+              </div>
             </div>
           </div>
         </div>
