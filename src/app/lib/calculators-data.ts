@@ -40,7 +40,9 @@ import {
   Divide,
   Shuffle,
   Sigma,
-  Triangle
+  Triangle,
+  MousePointer2,
+  Globe
 } from 'lucide-react';
 
 export interface CalculatorInfo {
@@ -53,6 +55,14 @@ export interface CalculatorInfo {
 }
 
 export const calculators: CalculatorInfo[] = [
+  {
+    id: 'ad-revenue',
+    name: 'Ad Revenue Calculator',
+    description: 'Estimate your website earnings based on pageviews, RPM, ad units, and traffic quality tiers.',
+    icon: DollarSign,
+    path: '/calculators/ad-revenue',
+    category: 'content',
+  },
   {
     id: 'scientific',
     name: 'Scientific Calculator',
