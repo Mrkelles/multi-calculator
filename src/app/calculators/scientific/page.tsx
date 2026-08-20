@@ -1,6 +1,7 @@
+
 "use client"
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
 import { 
   Binary, 
@@ -20,52 +21,6 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'Free Scientific Calculator | Advanced Online Math & Science Tool',
-  description: 'Solve complex equations instantly with our free online scientific calculator. Perform trigonometric, logarithmic, and algebraic calculations with this advanced tool.',
-  keywords: [
-    'Scientific Calculator',
-    'advanced calculator',
-    'smart calculator',
-    'MyApexCalc',
-    'trigonometry calculator',
-    'logarithmic solver',
-    'engineering calculator online'
-  ],
-  
-  openGraph: {
-    title: 'Interactive Scientific & Advanced Calculator | MyApexCalc',
-    description: 'Solve equations, calculate trigonometry, and analyze functions. An advanced, responsive, and smart calculator designed for students and professionals.',
-    url: 'https://www.myapexcalc.com/calculators/scientific',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/F42rYBZY/scientific-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Scientific Calculator showing trigonometric, logarithmic, and memory function layout',
-      },
-    ],
-  },
-
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Advanced Scientific & Smart Calculator | MyApexCalc',
-    description: 'A powerful online scientific calculator featuring parenthetical grouping, trigonometry, exponentials, and physical constants.',
-    images: ['https://i.ibb.co/F42rYBZY/scientific-calculator.png'],
-  },
-
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/scientific',
-  },
-};
 
 export default function ScientificCalculatorPage() {
   const [display, setDisplay] = useState('0');
@@ -108,7 +63,7 @@ export default function ScientificCalculatorPage() {
     }
   }, [ans]);
 
-  const handleInput = (val: string) => {
+  const handleInput = useCallback((val: string) => {
     if (shouldReset) {
       if (['+', '–', '×', '÷'].includes(val)) {
         setExpression(display + ' ' + val + ' ');
@@ -127,9 +82,9 @@ export default function ScientificCalculatorPage() {
       setDisplay(prev => prev + val);
       setExpression(prev => prev + val);
     }
-  };
+  }, [display, shouldReset]);
 
-  const handleFunction = (func: string) => {
+  const handleFunction = useCallback((func: string) => {
     let currentVal = parseFloat(display);
     let res = 0;
 
@@ -196,9 +151,9 @@ export default function ScientificCalculatorPage() {
     setDisplay(formatted);
     setExpression(formatted);
     setShouldReset(true);
-  };
+  }, [display, isDegree]);
 
-  const handleMemory = (op: string) => {
+  const handleMemory = useCallback((op: string) => {
     const current = parseFloat(display);
     if (isNaN(current)) return;
 
@@ -208,23 +163,61 @@ export default function ScientificCalculatorPage() {
       case 'MR': setDisplay(memory.toString()); setExpression(memory.toString()); break;
     }
     setShouldReset(true);
-  };
+  }, [display, memory]);
 
-  const clearAll = () => {
+  const clearAll = useCallback(() => {
     setDisplay('0');
     setExpression('');
     setShouldReset(false);
-  };
+  }, []);
 
-  const backspace = () => {
-    if (display.length > 1) {
-      setDisplay(display.slice(0, -1));
-      setExpression(expression.slice(0, -1));
-    } else {
-      setDisplay('0');
-      setExpression('');
-    }
-  };
+  const backspace = useCallback(() => {
+    setDisplay(prev => {
+      if (prev.length > 1) return prev.slice(0, -1);
+      return '0';
+    });
+    setExpression(prev => {
+      if (prev.length > 1) return prev.slice(0, -1);
+      return '';
+    });
+  }, []);
+
+  // Keyboard Support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      const { key } = e;
+      if (/[0-9]/.test(key)) {
+        handleInput(key);
+      } else if (key === '.') {
+        handleInput('.');
+      } else if (key === '+') {
+        handleInput('+');
+      } else if (key === '-') {
+        handleInput('–');
+      } else if (key === '*') {
+        handleInput('×');
+      } else if (key === '/') {
+        e.preventDefault();
+        handleInput('÷');
+      } else if (key === '(' || key === ')') {
+        handleInput(key);
+      } else if (key === '^') {
+        handleInput('**');
+      } else if (key === 'Enter' || key === '=') {
+        e.preventDefault();
+        calculate(expression);
+      } else if (key === 'Backspace') {
+        backspace();
+      } else if (key === 'Escape' || key === 'Delete') {
+        clearAll();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleInput, calculate, backspace, clearAll, expression]);
 
   return (
     <CalculatorWrapper
@@ -450,3 +443,4 @@ export default function ScientificCalculatorPage() {
     </CalculatorWrapper>
   );
 }
+
