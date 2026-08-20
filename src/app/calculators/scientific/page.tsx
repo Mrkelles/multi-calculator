@@ -13,7 +13,8 @@ import {
   ChevronRight,
   Zap,
   ShieldCheck,
-  LayoutGrid
+  LayoutGrid,
+  Keyboard
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,6 +22,53 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
+
+// Note: Metadata is defined here for reference.
+const metadata: Metadata = {
+  title: 'Free Scientific Calculator | Advanced Online Math & Science Tool',
+  description: 'Solve complex equations instantly with our free online scientific calculator. Perform trigonometric, logarithmic, and algebraic calculations with this advanced tool.',
+  keywords: [
+    'Scientific Calculator',
+    'advanced calculator',
+    'smart calculator',
+    'MyApexCalc',
+    'trigonometry calculator',
+    'logarithmic solver',
+    'engineering calculator online'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Scientific & Advanced Calculator | MyApexCalc',
+    description: 'Solve equations, calculate trigonometry, and analyze functions. An advanced, responsive, and smart calculator designed for students and professionals.',
+    url: 'https://www.myapexcalc.com/calculators/scientific',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/F42rYBZY/scientific-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Scientific Calculator showing trigonometric, logarithmic, and memory function layout',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Advanced Scientific & Smart Calculator | MyApexCalc',
+    description: 'A powerful online scientific calculator featuring parenthetical grouping, trigonometry, exponentials, and physical constants.',
+    images: ['https://i.ibb.co/F42rYBZY/scientific-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/scientific',
+  },
+};
 
 export default function ScientificCalculatorPage() {
   const [display, setDisplay] = useState('0');
@@ -346,10 +394,7 @@ export default function ScientificCalculatorPage() {
             </h3>
             <div className="space-y-4">
               <p className="text-muted-foreground leading-relaxed">
-                A core feature of any high-quality scientific calculator is its strict adherence to the mathematical order of operations, commonly remembered as PEMDAS (Parentheses, Exponents, Multiplication and Division, Addition and Subtraction).
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                When you enter a multi-layered equation into our mathematical parser, the calculator processes your inputs step-by-step using standard algebraic hierarchies:
+                A core feature of any high-quality scientific calculator is its strict adherence to the mathematical order of operations, commonly remembered as PEMDAS (Parentheses, Exponents, Multiplication and Division, Addition and Subtraction). When you enter a multi-layered equation into our mathematical parser, the calculator processes your inputs step-by-step using standard algebraic hierarchies:
               </p>
               
               <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
@@ -357,7 +402,7 @@ export default function ScientificCalculatorPage() {
               </div>
 
               <div className="space-y-3 pt-2">
-                <p className="text-sm font-bold text-foreground">Resolution Steps:</p>
+                <p className="text-sm font-bold text-foreground">To solve this, our system resolves individual operations in order:</p>
                 <ul className="space-y-2 text-xs text-muted-foreground">
                   <li className="flex gap-2">
                     <span className="font-bold text-primary">1. Parentheses & Angles:</span>
@@ -391,12 +436,24 @@ export default function ScientificCalculatorPage() {
           <div className="space-y-8">
             <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
               <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Keyboard className="w-5 h-5 text-accent" />
+                Keyboard Controls Guide
+              </h4>
+              <ul className="space-y-3 pt-2 text-sm text-muted-foreground">
+                <li className="flex justify-between border-b pb-1.5"><span className="font-medium text-foreground">Numbers & Decimals</span> <span className="font-mono bg-muted px-1.5 rounded">0-9 and .</span></li>
+                <li className="flex justify-between border-b pb-1.5"><span className="font-medium text-foreground">Operations</span> <span className="font-mono bg-muted px-1.5 rounded">+, -, *, /</span></li>
+                <li className="flex justify-between border-b pb-1.5"><span className="font-medium text-foreground">Parentheses</span> <span className="font-mono bg-muted px-1.5 rounded">( and )</span></li>
+                <li className="flex justify-between border-b pb-1.5"><span className="font-medium text-foreground">Power (xʸ)</span> <span className="font-mono bg-muted px-1.5 rounded">^</span></li>
+                <li className="flex justify-between border-b pb-1.5"><span className="font-medium text-foreground">Calculate</span> <span className="font-mono bg-muted px-1.5 rounded">Enter or =</span></li>
+                <li className="flex justify-between"><span className="font-medium text-foreground">Delete / Clear</span> <span className="font-mono bg-muted px-1.5 rounded">Backspace / Esc</span></li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
                 <Zap className="w-5 h-5 text-accent" />
                 Key Advanced Features
               </h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Our advanced calculations suite includes specialized modules designed to streamline complex academic and professional tasks:
-              </p>
               <ul className="space-y-6 pt-2">
                 <li className="flex gap-4">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
@@ -443,4 +500,3 @@ export default function ScientificCalculatorPage() {
     </CalculatorWrapper>
   );
 }
-
