@@ -29,6 +29,53 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Accurate Standard Deviation Calculator | Free Statistics Tool',
+  description: 'Calculate standard deviation, variance, mean, and margin of error instantly. Try our free online standard deviation calculator for both sample and population datasets.',
+  keywords: [
+    'Standard Deviation formula',
+    'equation for standard deviation',
+    'Standard Deviation Calculator',
+    'find the standard deviation',
+    'determining standard deviation',
+    'MyApexCalc',
+    'variance calculator',
+    'population standard deviation solver'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Standard Deviation & Variance Calculator | MyApexCalc',
+    description: 'Analyze your datasets with confidence. Compute standard deviation, variance, mean, and range instantly with our free statistical calculator.',
+    url: 'https://www.myapexcalc.com/calculators/standard-deviation',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/2DNnXpV/standard-deviation-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Standard Deviation Calculator displaying step-by-step statistical formulas and dataset analysis',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Statistical Standard Deviation Tool | MyApexCalc',
+    description: 'Instantly calculate sample or population standard deviation, mean, and variance. Features step-by-step mathematical breakdown.',
+    images: ['https://i.ibb.co/2DNnXpV/standard-deviation-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/standard-deviation',
+  },
+};
 
 export default function StandardDeviationPage() {
   const [dataInput, setDataInput] = useState('10, 12, 23, 23, 16, 23, 21, 16');
@@ -295,11 +342,10 @@ export default function StandardDeviationPage() {
           )}
         </div>
 
-        {/* Informational Text Section */}
+        {/* Worked Examples Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
 
-          {/* Worked Examples Section */}
           <section className="space-y-6 text-left">
             <div className="flex items-center gap-3">
               <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
@@ -412,7 +458,7 @@ export default function StandardDeviationPage() {
               <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
                 <h4 className="text-xl font-bold text-primary flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-accent" />
-                  Why Choose MyApexCalc?
+                  Why Solve Statistics with MyApexCalc?
                 </h4>
                 <ul className="space-y-6 pt-2">
                   <li className="flex gap-4">
@@ -420,13 +466,22 @@ export default function StandardDeviationPage() {
                       <ChevronRight className="w-4 h-4 text-primary" />
                     </div>
                     <div>
-                      <p className="font-bold text-sm">Side-by-Side Results</p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">View both Sample and Population calculations instantly so you never have to worry about selecting the wrong option beforehand.</p>
+                      <p className="font-bold text-sm">Simultaneous Sample & Population Results</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">View both calculations side-by-side on your screen so you never have to worry about selecting the wrong option beforehand.</p>
                     </div>
                   </li>
                   <li className="flex gap-4">
                     <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
                       <LayoutGrid className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Complete Statistical Breakdown</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Get your dataset's mean, variance, count (n), sum, minimum, maximum, and range along with your standard deviation results.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <Zap className="w-4 h-4 text-primary" />
                     </div>
                     <div>
                       <p className="font-bold text-sm">Flexible Input Formats</p>

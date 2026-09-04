@@ -13,11 +13,12 @@ import {
   History,
   TrendingUp,
   Percent,
-  ChevronRight
+  ChevronRight,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { 
@@ -31,9 +32,6 @@ import {
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
 const metadata: Metadata = {
   title: 'Accurate Grade Calculator | Free Final Exam & Weighted Grade Solver',
   description: 'Calculate your current course average, compute weighted assignments, and determine the exact score you need on your final exam with our free grade calculator.',
@@ -213,8 +211,6 @@ export default function GradeCalculatorPage() {
     if (weight <= 0) return 0;
     
     const wRemaining = 100 - weight;
-    // Target = (Current * (wRemaining/100)) + (Final * (weight/100))
-    // Final = (Target - (Current * (wRemaining/100))) / (weight/100)
     const required = (tar - (cur * (wRemaining / 100))) / (weight / 100);
     return required;
   }, [currentGradeInput, targetGradeInput, finalWeightInput]);
@@ -434,6 +430,36 @@ export default function GradeCalculatorPage() {
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Standard Course Progress</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A student has <strong>95%</strong> on homework (worth 30%) and <strong>82%</strong> on their midterm (worth 40%). They want to know their current grade before the 30% final exam.</p>
+                  <p>The calculator weights their performance and reveals they have an <strong>87.5% (B+)</strong> average going into the final stretch.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Final Exam Target</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A student with an <strong>86%</strong> average wants to finish the class with a <strong>90% (A-)</strong>. Their final is worth <strong>20%</strong> of the grade.</p>
+                  <p>Using the "Final Grade Goal" mode, the tool calculates they need to score <strong>106%</strong> on the final exam, signaling they might need extra credit to hit that exact target.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
@@ -442,7 +468,7 @@ export default function GradeCalculatorPage() {
                 Take the Stress Out of Finals Week with MyApexCalc
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Whether you are a high school student managing multiple classes, a university student tracking credit hours, or a parent supporting your child&apos;s academic progress, tracking class performance can quickly become confusing. Because syllabi frequently divide grades into completely separate categories (such as homework, quizzes, midterms, and finals), running a basic average doesn&apos;t provide an accurate overview. Our free online grade calculator serves as an interactive final grade calculator and performance dashboard, helping you project your final scores and target metrics instantly.
+                Whether you are a high school student managing multiple classes, a university student tracking credit hours, or a parent supporting your child's academic progress, tracking class performance can quickly become confusing. Because syllabi frequently divide grades into completely separate categories (such as homework, quizzes, midterms, and finals), running a basic average doesn't provide an accurate overview. Our free online grade calculator serves as an interactive final grade calculator and performance dashboard, helping you project your final scores and target metrics instantly.
               </p>
               
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
@@ -456,24 +482,18 @@ export default function GradeCalculatorPage() {
 
                 <div className="space-y-2">
                   <p className="font-bold text-sm text-foreground">1. Calculating a Weighted Grade</p>
-                  <p className="text-sm text-muted-foreground">Most educational syllabi use a weighted system where different categories contribute distinct percentages toward your final 100% grade structure. The core weighted grade calculator formula multiplies your average score in each specific category (G) by its assigned decimal weight (W):</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">Most educational syllabi use a weighted system where different categories contribute distinct percentages toward your final 100% grade structure. The core weighted grade calculator formula multiplies your average score in each specific category (G) by its assigned decimal weight (W):</p>
                   <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                     Final Grade = Σ (G<sub>i</sub> × W<sub>i</sub>)
                   </div>
-                  <p className="text-xs text-muted-foreground pt-1 italic">
-                    For example, if you have a 95% in homework (30% weight) and an 82% on your midterm (40% weight), the system calculates your current standing relative to the portion of the course completed.
-                  </p>
                 </div>
 
                 <div className="space-y-2">
                   <p className="font-bold text-sm text-foreground">2. Finding Your Required Final Exam Grade</p>
-                  <p className="text-sm text-muted-foreground">Our tool reverses the weighted calculation path to isolate the target exam score (F) based on your current standing (C), the weight of the final exam (W<sub>f</sub>), and your overall desired goal (T):</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">The most common question students ask right before the semester concludes is: "What do I need to score on the final exam to keep my A or B?" Our tool reverses the weighted calculation path to isolate the target exam score (F) based on your current standing (C), the weight of the final exam (W<sub>f</sub>), and your overall desired goal (T):</p>
                   <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                     F = ( T - [C × (1 - W<sub>f</sub>)] ) / W<sub>f</sub>
                   </div>
-                  <p className="text-xs text-muted-foreground pt-1 italic">
-                    If you currently have an 86% in the course and your final is worth 20%, to finish with a 90% (T), you would need to score a 106% on the final.
-                  </p>
                 </div>
               </div>
             </section>
@@ -484,23 +504,26 @@ export default function GradeCalculatorPage() {
                   <Info className="w-5 h-5 text-accent" />
                   Why Plan Your Grades with MyApexCalc?
                 </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Stop guessing about your transcripts and trying to balance rows of numbers manually. MyApexCalc provides a clear, high-speed educational planner:
+                </p>
                 <ul className="space-y-6 pt-2">
                   <li className="flex gap-4">
                     <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
                       <ChevronRight className="w-4 h-4 text-primary" />
                     </div>
                     <div>
-                      <p className="font-bold text-sm">&quot;What-If&quot; Analysis System</p>
+                      <p className="font-bold text-sm">"What-If" Analysis System</p>
                       <p className="text-xs text-muted-foreground leading-relaxed">Swap placeholder scores in out-of-view fields to instantly see how a future test or project score will impact your cumulative average.</p>
                     </div>
                   </li>
                   <li className="flex gap-4">
                     <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                      <Calculator className="w-4 h-4 text-accent" />
+                      <ChevronRight className="w-4 h-4 text-accent" />
                     </div>
                     <div>
                       <p className="font-bold text-sm">Support for Points & Percentages</p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">Input scores as raw totals (e.g., 45 out of 50 points) or direct percentages (90%) seamlessly within the same log.</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Input scores as raw totals (e.g., 45 out of 50 points) or direct percentages (90%) seamlessly.</p>
                     </div>
                   </li>
                   <li className="flex gap-4">
@@ -509,7 +532,7 @@ export default function GradeCalculatorPage() {
                     </div>
                     <div>
                       <p className="font-bold text-sm">Incomplete Weight Balancing</p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">If your categories don&apos;t add up to 100% yet, our script automatically adjusts the baseline to show a real-time snapshot of your current grade.</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">If your categories don't add up to 100% yet, our script automatically adjusts the baseline to show a real-time snapshot of your current grade.</p>
                     </div>
                   </li>
                 </ul>
@@ -518,14 +541,14 @@ export default function GradeCalculatorPage() {
               <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
                 <BookOpen className="w-10 h-10 text-primary opacity-40 shrink-0" />
                 <p className="text-[10px] text-muted-foreground leading-tight italic">
-                  &quot;Academic success is built on consistent tracking and clear goals. Knowing exactly what you need on finals week removes the guesswork.&quot;
+                  "Academic success is built on consistent tracking and clear goals. Knowing exactly what you need on finals week removes the guesswork."
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Grade Table Reference (Preserved) */}
+        {/* Grade Table Reference */}
         <div className="lg:col-span-12 py-10 space-y-8">
           <Separator />
           <div className="max-w-3xl mx-auto space-y-6">
