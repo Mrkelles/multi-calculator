@@ -9,6 +9,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Calorie Calculator | Daily Energy Expenditure & Weight Goals',
+  description: 'Estimate your daily maintenance calories (TDEE) and create a weight loss or gain plan. Uses the Mifflin-St Jeor equation for scientific accuracy.',
+  keywords: ['calorie calculator', 'TDEE estimator', 'daily caloric needs', 'weight loss calculator', 'nutrition planner'],
+};
 
 export default function CaloriePage() {
   const [age, setAge] = useState(25);

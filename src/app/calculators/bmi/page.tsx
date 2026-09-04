@@ -16,6 +16,13 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'BMI Calculator | Accurate Body Mass Index & Health Status',
+  description: 'Quickly calculate your Body Mass Index (BMI) using metric or imperial units. Compare your results against official WHO health categories.',
+  keywords: ['bmi calculator', 'body mass index', 'weight status', 'health calculator', 'ideal weight estimator'],
+};
 
 export default function BMIPage() {
   const [weight, setWeight] = useState(70);
@@ -159,9 +166,8 @@ export default function BMIPage() {
                 <p>A person is <strong>165cm tall</strong> and weighs <strong>70kg</strong>. Their BMI is <strong>25.7</strong>, placing them slightly into the "Overweight" bracket.</p>
                 <p>By adjusting their diet and losing just <strong>5kg</strong> (down to 65kg), their BMI falls to <strong>23.9</strong>, reaching a statistically lower risk profile for weight-related health issues.</p>
               </CardContent>
-            </Card>
-          </div>
-        </section>
+            </div>
+          </section>
 
         <Separator />
         

@@ -23,6 +23,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { addDays, subDays, format, startOfDay } from 'date-fns';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Conception Calculator | Trace Back Your Pregnancy Start',
+  description: 'Estimate your likely conception date and fertile window based on your due date, last period, or ultrasound results. Professional pregnancy timeline tool.',
+  keywords: ['conception calculator', 'pregnancy start date', 'ovulation window', 'due date reverse calculator', 'fertility tracker'],
+};
 
 export default function ConceptionCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);

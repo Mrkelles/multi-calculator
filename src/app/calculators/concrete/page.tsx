@@ -12,7 +12,8 @@ import {
   TrendingUp,
   ShieldCheck,
   ChevronRight,
-  Lightbulb
+  Lightbulb,
+  LayoutGrid
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,6 +21,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Concrete Calculator | Construction Material Estimator',
+  description: 'Calculate concrete volume and bag counts for slabs, walls, footings, and columns. Estimate project costs and include wastage margins.',
+  keywords: ['concrete calculator', 'cement estimator', 'construction math', 'slab volume', 'material calculator'],
+};
 
 export default function ConcreteCalculatorPage() {
   const [mode, setMode] = useState<'slab' | 'hole' | 'circular' | 'curb' | 'stairs'>('slab');

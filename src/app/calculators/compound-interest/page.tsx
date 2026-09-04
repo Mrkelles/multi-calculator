@@ -8,6 +8,13 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Compound Interest Calculator | Exponential Wealth Growth',
+  description: 'Visualize the power of compounding. Calculate future investment value with monthly contributions and custom compounding frequencies.',
+  keywords: ['compound interest calculator', 'investment growth', 'future value estimator', 'wealth building tool', 'APY calculator'],
+};
 
 export default function CompoundInterestPage() {
   const [initial, setInitial] = useState(10000);

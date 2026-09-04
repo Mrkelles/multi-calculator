@@ -30,10 +30,17 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Body Fat Calculator | U.S. Navy Method & Composition Analysis',
+  description: 'Estimate your body fat percentage using the U.S. Navy circumference method. Track your lean body mass and health category with high precision.',
+  keywords: ['body fat calculator', 'body composition', 'navy body fat method', 'lean body mass', 'fitness tracker'],
+};
 
 const jacksonPollockData = [
   { age: 20, women: 17.7, men: 8.5 },
-  { age: 25, women: 18.4, metal: 10.5 },
+  { age: 25, women: 18.4, men: 10.5 },
   { age: 30, women: 19.3, men: 12.7 },
   { age: 35, women: 21.5, men: 13.7 },
   { age: 40, women: 22.2, men: 15.3 },
