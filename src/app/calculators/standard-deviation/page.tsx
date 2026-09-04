@@ -243,7 +243,7 @@ export default function StandardDeviationPage() {
                   className="w-full gap-2 font-bold"
                   onClick={() => setShowSteps(!showSteps)}
                 >
-                  {showSteps ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                  {showSteps ? <ChevronUp size(14) /> : <ChevronDown size(14) />}
                   Show Calculation Steps
                 </Button>
 
@@ -342,7 +342,7 @@ export default function StandardDeviationPage() {
           )}
         </div>
 
-        {/* Worked Examples Section */}
+        {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
 

@@ -5,14 +5,12 @@ import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
 import { 
   GraduationCap, 
   BookOpen, 
-  Target, 
   Plus, 
   Trash2, 
   Info, 
   Calculator,
   History,
   TrendingUp,
-  Percent,
   ChevronRight,
   Lightbulb
 } from 'lucide-react';
@@ -485,6 +483,16 @@ export default function GradeCalculatorPage() {
                   <p className="text-sm text-muted-foreground leading-relaxed">Most educational syllabi use a weighted system where different categories contribute distinct percentages toward your final 100% grade structure. The core weighted grade calculator formula multiplies your average score in each specific category (G) by its assigned decimal weight (W):</p>
                   <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                     Final Grade = Σ (G<sub>i</sub> × W<sub>i</sub>)
+                  </div>
+                  <p className="text-sm text-muted-foreground pt-2">For example, if your syllabus contains the following breakdown:</p>
+                  <ul className="text-xs text-muted-foreground list-disc pl-6 space-y-1">
+                    <li>Homework (30% weight): 95% average performance</li>
+                    <li>Midterm Exam (40% weight): 82% performance</li>
+                    <li>Attendance (10% weight): 100% performance</li>
+                  </ul>
+                  <p className="text-sm text-muted-foreground pt-2">Before the final exam, the system calculates the accumulated credit relative to the 80% evaluated portion:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    Current Average = [(95 × 0.30) + (82 × 0.40) + (100 × 0.10)] / 0.80 = 89.13%
                   </div>
                 </div>
 
