@@ -23,6 +23,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Investment Calculator | Multi-Variable Growth Modeling',
+  description: 'Solve for end balance, required contributions, return rate, or time needed to reach your investment goals.',
+  keywords: ['investment calculator', 'future value estimator', 'portfolio growth', 'wealth building tool', 'investment planner'],
+};
 
 type CalcMode = 'end-amount' | 'contribution' | 'return-rate' | 'starting-amount' | 'length';
 

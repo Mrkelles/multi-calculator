@@ -37,6 +37,13 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Pregnancy Calculator | Weekly Progress & Milestone Tracker',
+  description: 'Track your pregnancy week-by-week. Estimate your due date and view baby size milestones based on your cycle.',
+  keywords: ['pregnancy calculator', 'pregnancy tracker', 'due date estimator', 'baby size by week', 'pregnancy milestones'],
+};
 
 type PregnancyMode = 'due-date' | 'last-period' | 'ultrasound' | 'conception' | 'ivf';
 
@@ -354,9 +361,8 @@ export default function PregnancyCalculatorPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-            </>
-          )}
+              </>
+            )}
         </div>
 
         {results && (

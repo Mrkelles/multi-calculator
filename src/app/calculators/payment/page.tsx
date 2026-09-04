@@ -23,6 +23,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Payment Calculator | Loan & Credit Card Payoff Planner',
+  description: 'Calculate fixed monthly loan payments or determine how long it will take to pay off a debt with a set budget.',
+  keywords: ['payment calculator', 'loan payment estimator', 'debt payoff planner', 'monthly bill calculator', 'amortization tool'],
+};
 
 export default function PaymentCalculatorPage() {
   // Mode: Fixed Term (Calculate Payment) vs Fixed Payment (Calculate Term)
@@ -333,9 +340,8 @@ export default function PaymentCalculatorPage() {
                 <p>A car owner has <strong>$12,000</strong> left on an auto loan at <strong>6% interest</strong>. Their required payment is $250, but they can afford <strong>$400 per month</strong>.</p>
                 <p>Using the "Fixed Payment" mode, they discover they will be debt-free in just <strong>33 months</strong> instead of the original timeline, saving over $600 in remaining interest fees.</p>
               </CardContent>
-            </Card>
-          </div>
-        </section>
+            </div>
+          </section>
 
         <Separator />
         

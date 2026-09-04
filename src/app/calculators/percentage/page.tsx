@@ -23,6 +23,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Percentage Calculator | Percent Increase, Decrease & Difference',
+  description: 'Perform all types of percentage calculations with step-by-step math. Ideal for retail discounts and financial growth.',
+  keywords: ['percentage calculator', 'percent increase', 'percent decrease', 'percentage difference', 'math tool'],
+};
 
 export default function PercentageCalculatorPage() {
   // Visibility Toggles
@@ -191,9 +198,8 @@ export default function PercentageCalculatorPage() {
                 <p>An employee earning <strong>$55,000</strong> receives a raise to <strong>$58,300</strong>. They want to know the percentage increase.</p>
                 <p>By entering 55,000 as the start and 58,300 as the end in the "Percentage Change" tool, the calculator reveals a <strong>6.0% raise</strong>, helping them benchmark their growth.</p>
               </CardContent>
-            </Card>
-          </div>
-        </section>
+            </div>
+          </section>
 
         <Separator />
 
@@ -297,7 +303,7 @@ export default function PercentageCalculatorPage() {
                 <Button 
                   variant="secondary" 
                   size="sm" 
-                  className="w-full mt-6 bg-white/10 hover:bg-white/20 border-white/20"
+                  className="w-full mt-6 bg-white/10 hover:bg-white/20 border-white/10"
                   onClick={() => setShowChangeValueSteps(!showChangeValueSteps)}
                 >
                   {showChangeValueSteps ? <ChevronUp size={14} /> : <ChevronDown size={14} />}

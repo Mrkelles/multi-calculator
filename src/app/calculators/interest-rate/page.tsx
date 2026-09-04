@@ -25,6 +25,13 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { ChartContainer, ChartTooltip } from '@/components/ui/chart';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Interest Rate Calculator | Required Return for Financial Goals',
+  description: 'Calculate the interest rate required to reach a specific final savings amount over time with contributions.',
+  keywords: ['interest rate calculator', 'required return calculator', 'savings rate solver', 'financial planning', 'investment rate estimator'],
+};
 
 export default function InterestRateCalculatorPage() {
   const [startingAmount, setStartingAmount] = useState(10000);
@@ -333,9 +340,8 @@ export default function InterestRateCalculatorPage() {
                 <p>A couple needs <strong>$80,000</strong> for a house down payment in <strong>5 years</strong>. They already have <strong>$30,000</strong> saved and can add <strong>$600 per month</strong>.</p>
                 <p>The tool reveals they only need a <strong>3.95% return rate</strong>. This shows them that a high-yield savings account or short-term CDs might be sufficient and safer than volatile market investments.</p>
               </CardContent>
-            </Card>
-          </div>
-        </section>
+            </div>
+          </section>
 
         <Separator />
         

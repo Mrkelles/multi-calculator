@@ -31,6 +31,13 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Random Number Generator | Unbiased List Picker & Scaler',
+  description: 'Generate random integers or high-precision decimals. Pick random winners from custom lists with zero bias.',
+  keywords: ['random number generator', 'randomizer', 'list picker', 'raffle tool', 'random integer generator'],
+};
 
 /**
  * Utility to generate a random BigInt within a range [min, max]
@@ -513,9 +520,8 @@ export default function RandomNumberGeneratorPage() {
                 <p>A team of 6 coworkers can't decide where to go for lunch. They have 5 options: <strong>Pizza, Sushi, Burgers, Tacos, and Thai</strong>.</p>
                 <p>Using the "List Picker" tab, they paste the options into the text area and click generate. The tool randomly selects "Tacos," settling the debate with zero bias.</p>
               </CardContent>
-            </Card>
-          </div>
-        </section>
+            </div>
+          </section>
 
         <Separator />
         

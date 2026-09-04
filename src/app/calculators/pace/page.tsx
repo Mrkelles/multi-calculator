@@ -17,7 +17,8 @@ import {
   Calculator,
   History,
   ShieldCheck,
-  Lightbulb
+  Lightbulb,
+  Activity
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -43,6 +44,13 @@ import {
   Tooltip as ChartTooltip, 
   ResponsiveContainer 
 } from 'recharts';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Pace Calculator | Running, Cycling & Athletic Performance',
+  description: 'Calculate running pace, race finish times, and split markers. Predict marathon results based on performance.',
+  keywords: ['pace calculator', 'running pace', 'marathon predictor', 'split time calculator', 'cycling speed'],
+};
 
 const raceEvents = [
   { label: '400 meters', value: 400, unit: 'meters' },
@@ -540,9 +548,8 @@ export default function PaceCalculatorPage() {
                 <p>A treadmill shows a speed of <strong>7.5 miles per hour</strong>. The runner wants to know their equivalent per-mile pace.</p>
                 <p>Using the "Pace Converter" mode, entering 7.5 mph instantly shows a pace of <strong>8 minutes per mile</strong>, making it easier to track training intensity against outdoor runs.</p>
               </CardContent>
-            </Card>
-          </div>
-        </section>
+            </div>
+          </section>
 
         <Separator />
 

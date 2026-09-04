@@ -27,6 +27,13 @@ import {
 } from '@/components/ui/chart';
 import { Pie, PieChart, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Mortgage Calculator | Total Monthly Home Payment Estimator',
+  description: 'Calculate monthly mortgage payments including principal, interest, taxes, insurance (PITI), and HOA fees.',
+  keywords: ['mortgage calculator', 'monthly house payment', 'home loan estimator', 'PITI calculator', 'mortgage interest calculator'],
+};
 
 export default function MortgagePage() {
   // Inputs
@@ -375,9 +382,8 @@ export default function MortgagePage() {
                 <p>Purchasing a <strong>$350,000 condo</strong>. Case A is <strong>5% down ($17.5k)</strong>; Case B is <strong>20% down ($70k)</strong>.</p>
                 <p>With 5% down, the buyer pays for <strong>PMI (~$138/mo)</strong> and higher interest. Putting 20% down eliminates the PMI entirely and lowers the loan amount, saving over <strong>$450 every single month</strong> in total housing costs.</p>
               </CardContent>
-            </Card>
-          </div>
-        </section>
+            </div>
+          </section>
 
         <Separator />
         

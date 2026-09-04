@@ -33,6 +33,13 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Strong Password Generator | Secure Random Keys',
+  description: 'Generate ultra-secure, random passwords with custom entropy settings. Completely private client-side generation.',
+  keywords: ['password generator', 'random password', 'secure keys', 'password maker', 'security tool'],
+};
 
 export default function PasswordGeneratorPage() {
   const { toast } = useToast();
@@ -286,9 +293,8 @@ export default function PasswordGeneratorPage() {
                 <p>A developer needs to generate 10 unique, random strings to use as API secret keys. They require them to be <strong>32 characters</strong> long and alphanumeric only (no symbols) to avoid URL encoding issues.</p>
                 <p>By adjusting the slider to 32 and selecting only Upper, Lower, and Numbers, they generate 10 clean, high-entropy strings instantly.</p>
               </CardContent>
-            </Card>
-          </div>
-        </section>
+            </div>
+          </section>
 
         <Separator />
         
