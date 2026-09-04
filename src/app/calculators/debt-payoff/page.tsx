@@ -11,61 +11,13 @@ import {
   TrendingUp, 
   ShieldCheck, 
   ChevronRight,
-  Target
+  Target,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Debt Payoff Calculator | Free Debt Payoff Planner',
-  description: 'Eliminate your debt faster with our free debt payoff calculator. Plan your debt-free journey, estimate credit card payoff timelines, and compare snowball vs. avalanche payoff methods.',
-  keywords: [
-    'debt payoff calculator',
-    'estimate credit card payoff',
-    'debt payoff planner',
-    'MyApexCalc',
-    'get out of debt',
-    'snowball vs avalanche calculator',
-    'credit card payoff tracker'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Interactive Debt Payoff Calculator & Planner | MyApexCalc',
-    description: 'Take control of your liabilities. Calculate your exact debt-free date, model extra payments, and build a customized debt payoff planner.',
-    url: 'https://www.myapexcalc.com/calculators/debt-payoff',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/TxT1XQRL/debt-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Debt Payoff Calculator and Interactive Payment Amortization Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Credit Card & Loan Payoff Planner | MyApexCalc',
-    description: 'Estimate your credit card payoff dates and calculate how extra monthly payments can save you thousands in interest fees.',
-    images: ['https://i.ibb.co/TxT1XQRL/debt-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/debt-payoff',
-  },
-};
 
 export default function DebtPayoffPage() {
   const [balance, setBalance] = useState(10000);
@@ -183,6 +135,36 @@ export default function DebtPayoffPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Credit Card Minimums</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A user has a <strong>$5,000 balance</strong> on a card with <strong>24% APR</strong>. They are currently paying <strong>$150/month</strong>.</p>
+                <p>The calculator shows they will be in debt for <strong>56 months</strong> and pay <strong>$3,363 in interest</strong>. By increasing the payment to <strong>$300</strong>, they become debt-free in just 21 months and save <strong>$1,885</strong> in interest fees.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Personal Loan Consolidation</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>Consolidating <strong>$15,000</strong> of debt into a loan at <strong>8% APR</strong> with a target monthly payment of <strong>$500</strong>.</p>
+                <p>The tool calculates a <strong>34-month</strong> payoff timeline with <strong>$1,787</strong> in total interest. Comparing this to higher-interest credit cards (e.g., 20%) reveals over $5,000 in savings by switching to the lower-rate loan.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

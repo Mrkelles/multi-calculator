@@ -14,7 +14,8 @@ import {
   ChevronRight,
   ShieldCheck,
   Zap,
-  Briefcase
+  Briefcase,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -29,56 +30,6 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'Accurate Hours Calculator | Free Hour to Hour Time Tracker',
-  description: 'Calculate hours between times instantly. Use our free hours calculator to count your work hours, track elapsed time, and compute weekly timesheets.',
-  keywords: [
-    'time to time calculator',
-    'Hours Calculator',
-    'hour to hour calculator',
-    'count my work hours',
-    'calculate your work hours',
-    'MyApexCalc',
-    'elapsed hours tracker',
-    'shift duration calculator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Hour to Hour & Work Hours Calculator | MyApexCalc',
-    description: 'Calculate time to time spans instantly. Easily track elapsed working hours, subtract breaks, and log your shifts with our free tool.',
-    url: 'https://www.myapexcalc.com/calculators/hours',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/TqJgSVm5/hours-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Hours Calculator and Work Shift Tracker Interface',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Work Hours & Hour-to-Hour Calculator | MyApexCalc',
-    description: 'Quickly count your work hours and calculate accurate elapsed time spans between any two clock markers.',
-    images: ['https://i.ibb.co/TqJgSVm5/hours-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/hours',
-  },
-};
 
 export default function HoursCalculatorPage() {
   const [mode, setMode] = useState<'times' | 'dates'>('times');
@@ -267,6 +218,36 @@ export default function HoursCalculatorPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Daily Shift with Lunch</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>An employee clocks in at <strong>8:45 AM</strong> and clocks out at <strong>5:15 PM</strong>, with a <strong>45-minute</strong> unpaid lunch break.</p>
+                <p>The calculator determines the total elapsed time is 8 hours and 30 minutes. After subtracting the 45-minute break, the final billable total is <strong>7 hours and 45 minutes</strong> (or 7.75 decimal hours).</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Long-Term Project Tracking</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A server migration starts on <strong>Monday at 10:00 PM</strong> and concludes on <strong>Wednesday at 6:30 AM</strong>.</p>
+                <p>Using the "Between Dates" mode, the tool reveals the total downtime was exactly <strong>32 hours and 30 minutes</strong>, helping the IT team report accurate SLA metrics to their client.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

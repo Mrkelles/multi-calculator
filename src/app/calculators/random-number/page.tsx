@@ -1,13 +1,12 @@
 "use client"
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
 import { 
   Shuffle, 
   RefreshCw, 
   Copy, 
   Check, 
-  AlertCircle, 
   List, 
   Hash, 
   Trash2,
@@ -18,7 +17,8 @@ import {
   TrendingUp,
   Calculator,
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -31,55 +31,6 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'Free Random Number Generator | Instant Secure Randomizer',
-  description: 'Generate single or multiple random numbers instantly with our free random number generator. Customize your range, set limits, and choose to allow or prevent duplicates.',
-  keywords: [
-    'Random Number Generator',
-    'get a random number',
-    'random number maker',
-    'MyApexCalc',
-    'random number picker',
-    'integer generator',
-    'secure randomizer online'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Instant Random Number Generator & Picker | MyApexCalc',
-    description: 'Need to pick a winner, roll a die, or make an unbiased choice? Generate truly randomized numbers in any custom range instantly.',
-    url: 'https://www.myapexcalc.com/calculators/random-number',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/9HQtZjPr/random-number-generator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Random Number Generator and Custom Number Range Picker UI',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Random Number Maker & Picker | MyApexCalc',
-    description: 'Set your minimum and maximum parameters and get a random number instantly. Features custom list sorting and duplicate prevention.',
-    images: ['https://i.ibb.co/9HQtZjPr/random-number-generator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/random-number',
-  },
-};
 
 /**
  * Utility to generate a random BigInt within a range [min, max]
@@ -535,7 +486,37 @@ export default function RandomNumberGeneratorPage() {
         </TabsContent>
       </Tabs>
 
+      {/* Worked Examples Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+        
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Raffle Winner Selection</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>An event organizer has <strong>250 attendees</strong> and wants to pick <strong>3 unique winners</strong> for a door prize.</p>
+                <p>By setting the range from 1 to 250 and quantity to 3 with "Allow Duplicates" turned off, the generator provides three distinct numbers instantly, ensuring a fair and unbiased draw.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Team Lunch Decision</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A team of 6 coworkers can't decide where to go for lunch. They have 5 options: <strong>Pizza, Sushi, Burgers, Tacos, and Thai</strong>.</p>
+                <p>Using the "List Picker" tab, they paste the options into the text area and click generate. The tool randomly selects "Tacos," settling the debate with zero bias.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

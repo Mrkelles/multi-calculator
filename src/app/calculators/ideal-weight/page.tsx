@@ -11,7 +11,8 @@ import {
   TrendingUp,
   LayoutGrid,
   FileText,
-  Calculator
+  Calculator,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,64 +28,11 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'Accurate Ideal Weight Calculator | Healthy Body Mass Tracker',
-  description: 'Find your target weight range instantly. Use our free ideal weight calculator to compare formulas, check body mass index values, and discover your healthy range.',
-  keywords: [
-    'body mass chart male',
-    'body bmi calculator male',
-    'normal body weight index',
-    'ideal weight calculator',
-    'healthy body weight index',
-    'MyApexCalc',
-    'ideal body weight formula',
-    'Devine formula calculator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Ideal Weight Calculator & BMI Tracker | MyApexCalc',
-    description: 'Calculate your healthy target weight range based on height, gender, and frame size using recognized medical formulas.',
-    url: 'https://www.myapexcalc.com/calculators/ideal-weight',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/qY3cSmJQ/ideal-weight-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Ideal Weight Calculator and Healthy BMI Range Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Interactive Ideal Weight & BMI Estimator | MyApexCalc',
-    description: 'Quickly find your ideal body weight and explore healthy body mass index charts online.',
-    images: ['https://i.ibb.co/qY3cSmJQ/ideal-weight-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/ideal-weight',
-  },
-};
-
-type Gender = 'male' | 'female';
-type UnitMode = 'us' | 'metric';
 
 export default function IdealWeightCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);
-  const [mode, setMode] = useState<UnitMode>('us');
-  const [gender, setGender] = useState<Gender>('male');
+  const [mode, setMode] = useState<'us' | 'metric'>('us');
+  const [gender, setGender] = useState<'male' | 'female'>('male');
   const [age, setAge] = useState(25);
 
   // US Mode (Feet + Inches)
@@ -146,7 +94,7 @@ export default function IdealWeightCalculatorPage() {
     ];
   }, [isMounted, mode, gender, age, heightFt, heightIn, heightCm]);
 
-  const toggleMode = (newMode: UnitMode) => {
+  const toggleMode = (newMode: 'us' | 'metric') => {
     if (newMode === mode) return;
     if (newMode === 'metric') {
       setHeightCm(Number(((heightFt * 12 + heightIn) * 2.54).toFixed(1)));
@@ -290,6 +238,36 @@ export default function IdealWeightCalculatorPage() {
 
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Personal Weight Goal</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A <strong>5'10" male</strong> wants to set a target weight for a new fitness journey. Using the <strong>Devine Formula</strong>, he finds a clinical "ideal" of <strong>161.4 lbs</strong>.</p>
+                  <p>However, by looking at the <strong>Healthy BMI Range</strong>, he sees a broader acceptable zone between <strong>128 lbs and 174 lbs</strong>, giving him a more flexible and realistic target based on his specific body frame.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Gender-Based Comparison</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>Two people are both <strong>5'5" (165cm)</strong>. One is male and one is female. The calculator reveals the "ideal" weight for the male is approximately <strong>139 lbs</strong>, while for the female it is <strong>127 lbs</strong>.</p>
+                  <p>This highlights how clinical standards adjust for biological differences in bone density and body composition across genders for individuals of the same height.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

@@ -10,7 +10,8 @@ import {
   Calendar, 
   Calculator, 
   TrendingUp,
-  ChevronRight
+  ChevronRight,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,55 +19,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'Accurate Inflation Calculator | Free CPI & Dollar Purchasing Power Tool',
-  description: 'Calculate the purchasing power of the US dollar over time with our free inflation calculator. Compare historical prices and track CPI changes from 1913 to today.',
-  keywords: [
-    'Inflation Calculator',
-    'inflation calendar',
-    'dollar inflation calculator',
-    'cpi calculator',
-    'MyApexCalc',
-    'purchasing power calculator',
-    'historical dollar value'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Historical Inflation & Dollar Value Calculator | MyApexCalc',
-    description: 'See how the buying power of a dollar has changed. Track historical buying power and calculate inflation rates instantly.',
-    url: 'https://www.myapexcalc.com/calculators/inflation',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/VpL9DTys/inflation-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Inflation Calculator and Purchasing Power Tracking Interface',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Dollar Inflation & CPI Calculator | MyApexCalc',
-    description: 'Calculate the changing value of money over time using official historical Consumer Price Index (CPI) datasets.',
-    images: ['https://i.ibb.co/VpL9DTys/inflation-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/inflation',
-  },
-};
 
 // U.S. Annual CPI Averages (1913-2024)
 // Source: Bureau of Labor Statistics (BLS)
@@ -276,7 +228,7 @@ export default function InflationCalculatorPage() {
           <Card className="bg-primary/5 border-primary/10">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
-                <Info className="w-4 h-4" />
+                <Info className="w-4 h-4 text-primary" />
                 Mode Insights
               </CardTitle>
             </CardHeader>
@@ -337,6 +289,36 @@ export default function InflationCalculatorPage() {
 
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Historical Wage Comparison</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>In <strong>1970</strong>, a worker earned <strong>$10,000 per year</strong>. They want to know what that salary would be worth in <strong>2024</strong> dollars to compare with their current earnings.</p>
+                  <p>The calculator uses official CPI data to show that $10,000 in 1970 has the same buying power as approximately <strong>$80,721</strong> today, a total inflation of over 700%.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Future Retirement Costs</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A planner expects their monthly expenses to be <strong>$5,000</strong> today, but they won't retire for <strong>25 years</strong>. They assume a steady <strong>3% inflation rate</strong>.</p>
+                  <p>Using the "Forward" mode, the tool reveals that in 25 years, they will need <strong>$10,468 per month</strong> to maintain the exact same standard of living as $5,000 buys today.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
@@ -417,4 +399,3 @@ export default function InflationCalculatorPage() {
     </CalculatorWrapper>
   );
 }
-

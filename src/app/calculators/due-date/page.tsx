@@ -13,7 +13,8 @@ import {
   TrendingUp,
   Calculator,
   Search,
-  CheckCircle2
+  CheckCircle2,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -37,56 +38,6 @@ import {
   startOfDay,
   intervalToDuration
 } from 'date-fns';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Due Date Calculator | Pregnancy Birth Date Tracker',
-  description: 'Calculate your estimated due date instantly with our free pregnancy due date calculator. Input your last period or conception date to track your baby milestones.',
-  keywords: [
-    'Due Date Calculator',
-    'pregnancy due date calculator',
-    'estimated due date calculator',
-    'pregnancy chart due date',
-    'pregnancy birth date calculator',
-    'MyApexCalc',
-    'baby due date estimator',
-    'conception date calculator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Pregnancy Due Date Calculator & Milestone Tracker | MyApexCalc',
-    description: 'Track your pregnancy timeline. Estimate your child\'s birth date and visualize your progress month-by-month with our interactive calculator.',
-    url: 'https://www.myapexcalc.com/calculators/due-date',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/KjppCkBz/due-date-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Pregnancy Due Date Calculator and Weekly Progress Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Instant Pregnancy Due Date & Birth Calculator | MyApexCalc',
-    description: 'Find your estimated due date and explore your complete pregnancy timeline instantly.',
-    images: ['https://i.ibb.co/KjppCkBz/due-date-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/due-date',
-  },
-};
 
 type DueDateMode = 'last-period' | 'ultrasound' | 'conception' | 'ivf';
 
@@ -439,6 +390,36 @@ export default function DueDateCalculatorPage() {
 
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Standard LMP Calculation</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A mother-to-be remembers her last period started on <strong>January 1, 2026</strong> and she has a standard <strong>28-day cycle</strong>.</p>
+                  <p>The calculator estimates her due date as <strong>October 8, 2026</strong>. It also flags that she is currently 4 weeks pregnant and likely conceived around January 15.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: IVF Transfer Planning</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>An IVF patient has a <strong>Day 5 embryo transfer</strong> scheduled for <strong>February 10, 2026</strong>.</p>
+                  <p>By selecting the "IVF Transfer" mode and entering the transfer date and embryo age, the tool reveals a highly precise due date of <strong>October 29, 2026</strong>, helping her plan her medical leave and nursery preparations months in advance.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

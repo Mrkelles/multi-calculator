@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Calculator, Table as TableIcon, Info, TrendingUp, History, Clock } from 'lucide-react';
+import { Calculator, Table as TableIcon, Info, TrendingUp, History, Clock, Lightbulb } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,14 +30,12 @@ export default function InterestCalculatorPage() {
     const PMT = contribution;
     const pmtFreq = parseInt(contributionFrequency);
     
-    let totalInterest = 0;
-    let finalBalance = 0;
+    let totalIntAccumulated = 0;
     const yearlySchedule = [];
     const monthlySchedule = [];
 
     let currentBalance = P;
     let totalInvested = P;
-    let totalIntAccumulated = 0;
 
     // We use a monthly simulation for high precision across both simple and compound
     const totalMonths = t * 12;
@@ -51,15 +49,12 @@ export default function InterestCalculatorPage() {
         totalInvested += PMT;
       }
 
-      const startBalance = currentBalance;
       let monthInterest = 0;
 
       if (type === 'simple') {
         // Simple Interest: Each dollar in the account earns interest based on time remaining
         // We calculate interest on the CURRENT principal balance for 1 month
         monthInterest = (currentBalance * r) / 12;
-        // In simple interest, interest doesn't compound (is not added to the principal for next month's calculation)
-        // However, for the purpose of "Total Interest" and "Final Balance", we track it.
       } else {
         // Compound Interest: Compounding n times per year
         // Effective Monthly Rate = (1 + r/n)^(n/12) - 1
@@ -96,8 +91,8 @@ export default function InterestCalculatorPage() {
       }
     }
 
-    finalBalance = type === 'simple' ? totalInvested + totalIntAccumulated : currentBalance;
-    totalInterest = totalIntAccumulated;
+    const finalBalance = type === 'simple' ? totalInvested + totalIntAccumulated : currentBalance;
+    const totalInterest = totalIntAccumulated;
 
     return { totalInterest, finalBalance, totalInvested, yearlySchedule, monthlySchedule };
   }, [principal, years, rate, type, frequency, contribution, contributionFrequency, contributionTiming]);
@@ -219,7 +214,7 @@ export default function InterestCalculatorPage() {
 
           <Card className="bg-primary/5 border-primary/10">
             <CardHeader>
-              <CardTitle className="text-sm font-bold flex items-center gap-2">
+              <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
                 <Info className="w-4 h-4 text-primary" />
                 Definitions
               </CardTitle>
@@ -328,7 +323,37 @@ export default function InterestCalculatorPage() {
         </div>
 
         {/* Informational Text Section */}
-        <div className="lg:col-span-12 space-y-12 py-10">
+        <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Simple vs. Compound Growth</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A user invests <strong>$10,000 at 8%</strong> interest for 10 years. Under **Simple Interest**, they earn exactly <strong>$8,000</strong> in interest ($800 per year).</p>
+                  <p>Under **Compound Interest** (compounded annually), they earn <strong>$11,589</strong>. By allowing the interest to earn interest, they gain an extra <strong>$3,589</strong> with no extra effort.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: The Impact of Frequency</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>Comparing compounding frequencies on a <strong>$50,000 investment at 5%</strong> for 20 years. **Annual Compounding** results in a balance of <strong>$132,665</strong>.</p>
+                  <p>**Daily Compounding** results in <strong>$135,903</strong>. The difference in frequency alone yields an additional <strong>$3,238</strong> for the saver.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">

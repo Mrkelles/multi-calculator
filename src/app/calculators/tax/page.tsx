@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useEffect } from 'react';
@@ -8,11 +7,11 @@ import {
   Info, 
   Landmark, 
   ShieldCheck, 
-  PieChart as PieChartIcon, 
   TrendingUp, 
   Calculator, 
   History, 
-  ChevronRight 
+  ChevronRight,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,52 +21,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// these would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure they are picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Income Tax Calculator | MyApexCalc',
-  description: 'Estimate your federal, state, and local tax liabilities with our free income tax calculator. Easily calculate salary deductions and find your true take-home pay.',
-  keywords: [
-    'income tax calculator',
-    'calculate salary',
-    'calculator for tax',
-    'federal income tax',
-    'take home pay calculator',
-    'tax brackets 2026',
-    'MyApexCalc'
-  ],
-  
-  openGraph: {
-    title: 'Free Income Tax Calculator | MyApexCalc',
-    description: 'Stop guessing your tax bill. Calculate salary take-home pay, federal withholdings, and total deductions using our free calculator for tax planning.',
-    url: 'https://www.myapexcalc.com/calculators/tax',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/V0VC2RQK/income-tax-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Income Tax Calculator User Interface',
-      },
-    ],
-  },
-
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Federal & State Income Tax Calculator | MyApexCalc',
-    description: 'Instantly calculate your salary deductions and project your annual take-home income with ease.',
-    images: ['https://i.ibb.co/V0VC2RQK/income-tax-calculator.png'],
-  },
-
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/tax',
-  },
-};
 
 // 2024 Tax Year Data (Official IRS Brackets)
 const TAX_DATA = {
@@ -475,6 +428,36 @@ export default function TaxPage() {
 
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Filing Status Comparison</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A couple earns <strong>$120,000</strong> collectively. They want to compare filing as <strong>Single</strong> (on two $60k incomes) vs. <strong>Married Filing Jointly</strong>.</p>
+                  <p>The tool reveals that filing jointly leverages the wider tax brackets, potentially reducing their total federal bill by thousands and resulting in a higher combined take-home pay.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: The Impact of 401(k) Contributions</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A single filer earns <strong>$100,000</strong> and currently has <strong>$0</strong> in pre-tax deductions.</p>
+                  <p>By inputting a <strong>$10,000 401(k) contribution</strong>, they see their taxable income drop to $90,000. The calculator shows their federal tax bill drops by over $2,000—meaning the "cost" of saving $10,000 is significantly less due to tax savings.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

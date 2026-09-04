@@ -6,8 +6,6 @@ import {
   Triangle, 
   Info, 
   History, 
-  ChevronDown, 
-  ChevronUp, 
   RotateCcw,
   Maximize,
   Ruler,
@@ -16,7 +14,8 @@ import {
   Calculator,
   ChevronRight,
   ShieldCheck,
-  LayoutGrid
+  LayoutGrid,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,56 +23,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'Accurate Triangle Calculator | Free Area, Perimeter & Angle Solver',
-  description: 'Solve triangle dimensions instantly with our free triangle calculator. Calculate area, perimeter, side lengths, and angles using standard geometric formulas.',
-  keywords: [
-    'triangle area formula',
-    'find area of triangle formula',
-    'triangle calculator',
-    'right triangle calculator',
-    'formula for triangle',
-    'MyApexCalc',
-    'Pythagorean theorem calculator',
-    'Herons formula solver'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Triangle & Right Angle Calculator | MyApexCalc',
-    description: 'Solve any triangle in seconds. Input sides, angles, or base and height to calculate area, perimeter, and missing dimensions instantly.',
-    url: 'https://www.myapexcalc.com/calculators/triangle',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/93WgYPS2/triangle-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Triangle Calculator solving dimensions, angles, and area',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Geometric Triangle Calculator | MyApexCalc',
-    description: 'Input any three known values to solve missing angles, side lengths, area, and perimeter parameters dynamically.',
-    images: ['https://i.ibb.co/93WgYPS2/triangle-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/triangle',
-  },
-};
 
 type AngleUnit = 'degree' | 'radian';
 
@@ -206,27 +155,6 @@ export default function TriangleCalculatorPage() {
     const inradius = area / s;
     const circumradius = ra / (2 * Math.sin(rAngA));
 
-    // Coordinates (A at origin, B on x-axis)
-    const Ax = 0, Ay = 0;
-    const Bx = rc, By = 0;
-    const Cx = rb * Math.cos(rAngA);
-    const Cy = rb * Math.sin(rAngA);
-
-    // Classification
-    const degs = [toDeg(rAngA), toDeg(rAngB), toDeg(rAngC)];
-    let triangleType = degs.some(d => d > 90.01) ? "Obtuse " : (degs.some(d => Math.abs(d - 90) < 0.01) ? "Right " : "Acute ");
-    if (Math.abs(ra - rb) < 0.01 && Math.abs(rb - rc) < 0.01) triangleType += "Equilateral";
-    else if (Math.abs(ra - rb) < 0.01 || Math.abs(rb - rc) < 0.01 || Math.abs(ra - rc) < 0.01) triangleType += "Isosceles";
-    else triangleType += "Scalene";
-
-    // Centers
-    const inCenterX = (ra * Ax + rb * Bx + rc * Cx) / perimeter;
-    const inCenterY = (ra * Ay + rb * By + rc * Cy) / perimeter;
-    
-    const D = 2 * (Ax * (By - Cy) + Bx * (Cy - Ay) + Cx * (Ay - By));
-    const circumCenterX = ((Ax**2 + Ay**2) * (By - Cy) + (Bx**2 + By**2) * (Cy - Ay) + (Cx**2 + Cy**2) * (Ay - By)) / D;
-    const circumCenterY = ((Ax**2 + Ay**2) * (Cx - Bx) + (Bx**2 + By**2) * (Ax - Cx) + (Cx**2 + Cy**2) * (Bx - Ax)) / D;
-
     return {
       type: triangleType + " Triangle",
       ra, rb, rc,
@@ -237,10 +165,6 @@ export default function TriangleCalculatorPage() {
       ha, hb, hc,
       ma, mb, mc,
       inradius, circumradius,
-      coords: { A: [Ax, Ay], B: [rc, 0], C: [Cx, Cy] },
-      centroid: [(Ax + Bx + Cx) / 3, (Ay + By + Cy) / 3],
-      inCenter: [inCenterX, inCenterY],
-      circumCenter: [circumCenterX, circumCenterY],
       steps
     };
   }, [a, b, c, angleA, angleB, angleC, unit]);
@@ -413,6 +337,36 @@ export default function TriangleCalculatorPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: SSS Land Measurement</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A surveyor measures a triangular plot of land with side lengths of <strong>50m</strong>, <strong>60m</strong>, and <strong>70m</strong>.</p>
+                <p>By entering these three sides (SSS), the tool uses Heron's Formula to find the area is exactly <strong>1,469.69 square meters</strong>. It also provides all interior angles, confirming the plot is acute scalene.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Right Triangle Roofing</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A carpenter is building a roof with a <strong>5-meter horizontal run</strong> (base) and a <strong>30-degree pitch</strong> (angle).</p>
+                <p>By inputting the base (side c) and the pitch (angle A = 30°) and setting angle C to 90°, the calculator reveals the rafter length (hypotenuse) must be <strong>5.77 meters</strong>, ensuring precise material cuts.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

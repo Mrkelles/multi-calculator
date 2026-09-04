@@ -12,7 +12,8 @@ import {
   History, 
   Info, 
   ChevronRight,
-  Target
+  Target,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,56 +21,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'TikTok Revenue Calculator | Estimate Your Creator Earnings',
-  description: 'Estimate your potential creator payouts instantly with our free TikTok revenue calculator. Input your view counts, engagement metrics, and follower milestones to project your earnings.',
-  keywords: [
-    'tiktok money calculator',
-    'tik tok money calculation',
-    'tiktok calculator',
-    'tiktok earnings calculator',
-    'tiktok revenue calculator',
-    'MyApexCalc',
-    'creator fund estimator',
-    'tiktok sponsorship calculator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Interactive TikTok Money & Earnings Calculator | MyApexCalc',
-    description: 'Track your viral earning potential. Run a quick tik tok money calculation based on daily views and brand collaboration ranges with our custom dashboard.',
-    url: 'https://www.myapexcalc.com/calculators/tiktok-revenue',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/mCP1Tm9L/tiktok-revenue-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc TikTok Money Calculator and Creator Dashboard Layout',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Estimated TikTok Earnings & Revenue Calculator | MyApexCalc',
-    description: 'Easily calculate your potential earnings from the Creator Rewards Program and brand sponsorship campaigns.',
-    images: ['https://i.ibb.co/mCP1Tm9L/tiktok-revenue-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/tiktok-revenue',
-  },
-};
 
 export default function TikTokRevenuePage() {
   const [views, setViews] = useState(50000);
@@ -148,6 +99,36 @@ export default function TikTokRevenuePage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Creativity Program (Long Videos)</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A creator makes high-quality 3-minute storytelling videos. They average <strong>100,000 views per day</strong> and have an RPM of <strong>$0.85</strong>.</p>
+                <p>The calculator shows they earn <strong>$85 per day</strong>, which scales to <strong>$2,550 per month</strong> from native payouts alone, helping them decide to go full-time as a creator.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Viral Trend Scaling</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A user's account goes viral, hitting <strong>1,500,000 views in a single day</strong>. They are in the basic Creator Fund with an RPM of <strong>$0.03</strong>.</p>
+                <p>While the views are massive, the tool reveals a daily payout of <strong>$45</strong>. This highlights the importance of switching to higher-RPM programs or securing brand deals ($15k+ estimates) to maximize viral traffic.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

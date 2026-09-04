@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { BarChart, TrendingUp, Info, Clock, ArrowRightLeft, History, Calculator } from 'lucide-react';
+import { BarChart, TrendingUp, Info, Clock, ArrowRightLeft, History, Calculator, Lightbulb } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,52 +16,6 @@ import {
 } from '@/components/ui/chart';
 import { Bar, BarChart as RechartsBarChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { Separator } from '@/components/ui/separator';
-import { Metadata } from 'next';
-
-const metadata: Metadata = {
-  title: 'Accurate ROI Calculator | Investment Return Calculator',
-  description: 'Calculate the lifetime profitability of your investments with our free ROI calculator. Input your initial capital and final value to instantly run the standard ROI formula.',
-  keywords: [
-    'roi calculator',
-    'roi formula',
-    'investment return calculator',
-    'return on investment',
-    'MyApexCalc',
-    'calculate investment gains',
-    'financial calculator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Return on Investment (ROI) Calculator | MyApexCalc',
-    description: 'Measure the exact profitability and net gains of your assets. Input your parameters to compute your returns using the standard ROI formula.',
-    url: 'https://www.myapexcalc.com/calculators/roi',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/S4Tv263W/roi-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc ROI Calculator Interface Layout',
-      },
-    ],
-  },
-
-  // Twitter visual layout specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Instant Investment Return Calculator | MyApexCalc',
-    description: 'Easily measure the financial performance of any investment using our live online ROI calculator.',
-    images: ['https://i.ibb.co/S4Tv263W/roi-calculator.png'],
-  },
-
-  // Standardize search signals to prevent duplicate index penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/roi',
-  },
-};
 
 export default function ROIPage() {
   const [startingAmount, setStartingAmount] = useState(20000);
@@ -375,6 +329,36 @@ export default function ROIPage() {
 
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Small Business Expansion</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A business owner invests <strong>$50,000</strong> in new equipment that is expected to generate <strong>$15,000 in additional annual profit</strong> for 5 years.</p>
+                  <p>The ROI calculator determines that at the end of the term, the total gain is $75,000. Dividing the $25,000 net profit by the $50,000 cost yields a <strong>50% total ROI</strong>, confirming the equipment is a high-value asset.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Real Estate Rental Analysis</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>An investor puts <strong>$100,000 down</strong> on a rental property. After 10 years, the property has appreciated by <strong>$150,000</strong> and generated <strong>$60,000 in net rental income</strong>.</p>
+                  <p>The tool calculates the total value increase as $210,000. On a $100k initial cash investment, this represents a <strong>210% ROI</strong> over a decade, demonstrating the power of leveraged assets.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

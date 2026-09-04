@@ -12,63 +12,14 @@ import {
   History, 
   Calculator, 
   ChevronRight, 
-  BarChart 
+  BarChart,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'TikTok Engagement Rate Calculator | Free Analytics Tool',
-  description: 'Calculate your TikTok engagement rate instantly. Check your video metrics, likes, comments, and shares to measure your true audience interaction level.',
-  keywords: [
-    'tiktok engagement rate calculator',
-    'tiktok engagement calculator',
-    'tiktok engagement rate',
-    'calculate tiktok engagement rate',
-    'MyApexCalc',
-    'social media metrics',
-    'influencer analytics',
-    'profile audit tool'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'TikTok Engagement Rate Calculator | MyApexCalc',
-    description: 'Analyze your social performance in seconds. Discover how your profile stacks up by measuring your true tiktok engagement rate.',
-    url: 'https://www.myapexcalc.com/calculators/tiktok-engagement',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/F42Sytpz/tiktok-engagement-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc TikTok Engagement Rate Calculator Analytics Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free TikTok Engagement Calculator | MyApexCalc',
-    description: 'Track your content performance, audit creator accounts, and verify real audience interaction metrics instantly.',
-    images: ['https://i.ibb.co/F42Sytpz/tiktok-engagement-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/tiktok-engagement',
-  },
-};
 
 export default function TikTokEngagementPage() {
   const [followers, setFollowers] = useState(10000);
@@ -152,6 +103,36 @@ export default function TikTokEngagementPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Micro-Influencer Audit</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A creator with <strong>5,000 followers</strong> gets an average of <strong>400 likes, 40 comments, and 10 shares</strong> per post.</p>
+                <p>The calculator reveals an engagement rate of <strong>9.0%</strong>. Despite the small following, this "Excellent" rating makes them highly valuable to brands looking for authentic audience resonance.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Celebrity Profile Analysis</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A major account has <strong>1,000,000 followers</strong> but only averages <strong>5,000 likes and 100 comments</strong>.</p>
+                <p>The tool reveals a <strong>0.51% engagement rate</strong>. This "Low" health rating might suggest the account has many inactive followers or that the content is no longer reaching its primary audience.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

@@ -2,62 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { CalendarDays, ArrowRight, TrendingUp, Calculator, Info, History, ChevronRight } from 'lucide-react';
+import { CalendarDays, ArrowRight, TrendingUp, Calculator, Info, History, ChevronRight, Lightbulb } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { addDays, format, differenceInDays } from 'date-fns';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Date Calculator | Live Day Counter & Date Estimator',
-  description: 'Calculate the exact number of days between two dates or add/subtract days from any target date with our free online date calculator and day counter.',
-  keywords: [
-    'Date calculator',
-    'Date estimator',
-    'Day counter',
-    'days between dates',
-    'add days to date',
-    'calendar calculator',
-    'MyApexCalc'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Date Calculator & Day Counter | MyApexCalc',
-    description: 'Easily calculate calendar intervals. Count the days between dates or estimate target dates with our responsive calculation tool.',
-    url: 'https://www.myapexcalc.com/calculators/date',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/R4d9kg0f/date-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Date Calculator and Calendar Day Counter Interface',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Instant Date Estimator & Day Counter | MyApexCalc',
-    description: 'Find the exact distance between calendar dates or add days to any date instantly.',
-    images: ['https://i.ibb.co/R4d9kg0f/date-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/date',
-  },
-};
 
 export default function DateCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -164,6 +115,36 @@ export default function DateCalculatorPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Contract Deadlines</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A business signs a legal contract on <strong>July 1, 2026</strong>, which includes a <strong>90-day</strong> performance window. To ensure they don't miss the deadline, they need to know the exact target date.</p>
+                <p>Using the "Add Days" mode, the calculator reveals the deadline is <strong>September 29, 2026</strong>, allowing them to schedule their milestones accordingly.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Event Countdown</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A couple is getting married on <strong>June 20, 2026</strong>. On <strong>January 1, 2026</strong>, they want to know exactly how many days are left to finalize their preparations.</p>
+                <p>The "Duration Between Dates" mode shows there are exactly <strong>170 days</strong> remaining, which is approximately 24.3 weeks, providing a clear timeline for their wedding planner.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

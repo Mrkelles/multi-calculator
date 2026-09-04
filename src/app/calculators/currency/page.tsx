@@ -12,7 +12,8 @@ import {
   Check,
   History,
   TrendingUp,
-  Info 
+  Info,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,45 +25,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import { Metadata } from 'next';
-
-const metadata: Metadata = {
-  title: 'Real-Time Currency Converter | Live Exchange Rates',
-  description: 'Convert global currencies instantly with our free currency converter. Get real-time exchange rates, track the pound to dollar (GBP to USD) conversion, and check live euro to dollar (EUR to USD) charts.',
-  keywords: [
-    'currency converter',
-    'pound to dollar',
-    'euro to dollar',
-    'exchange rate',
-    'live forex rates',
-    'currency exchange calculator',
-    'GBP to USD',
-    'EUR to USD'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Twitter, Discord)
-  openGraph: {
-    title: 'Live Currency Converter - Accurate Exchange Rates',
-    description: 'Calculate live global currencies instantly. Check updated pound to dollar and euro to dollar values based on real-time market exchange rates.',
-    url: 'https://www.myapexcalc.com/calculators/currency', // Swap with your actual production route
-    siteName: 'My Apex Calculator',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/VpQ9gz2g/currency-converter.png', // Replace with your static image path (recommended: 1200x630px)
-        width: 1200,
-        height: 630,
-        alt: 'Myapexcalc Currency Converter Interface',
-      },
-    ],
-  },
-
-  alternates: {
-    canonical: 'https://i.ibb.co/VpQ9gz2g/currency-converter.png',
-  },
-
-}
 
 // Access the API key from environment variables. 
 // Note: NEXT_PUBLIC_ prefix is required for client-side access in Next.js.
@@ -349,6 +311,36 @@ export default function CurrencyPage() {
 
       {/* Informational Text Section */}
       <div className="lg:col-span-12 py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Business Trip Budgeting</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A consultant is traveling from London to New York for a client project. They have a budget of <strong>£5,000</strong> for expenses and need to know the current equivalent in <strong>USD</strong>.</p>
+                <p>Using the converter, they see that at the current mid-market rate, £5,000 translates to roughly <strong>$6,345 USD</strong>, allowing them to book hotels and transportation with a precise budget in mind.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: E-commerce Pricing</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>An online retailer based in Germany is listing a product for <strong>€120</strong>. They want to check how much a Japanese customer will see on their credit card statement in <strong>JPY</strong>.</p>
+                <p>The tool reveals the conversion is approximately <strong>¥19,540 JPY</strong>. This helps the retailer decide if they should offer localized fixed-pricing or stick to dynamic market rates.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

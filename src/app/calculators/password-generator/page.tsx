@@ -8,14 +8,14 @@ import {
   RefreshCw, 
   ShieldCheck, 
   Info, 
-  Check,
-  History,
-  Shield,
-  Eye,
-  Key,
-  TrendingUp,
-  Calculator,
-  ChevronRight
+  Check, 
+  History, 
+  Shield, 
+  Key, 
+  TrendingUp, 
+  Calculator, 
+  ChevronRight,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -33,56 +33,6 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'Strong Password Generator | Free Random Password Creator',
-  description: 'Generate secure, randomized passwords instantly with our free strong password generator. Customize length, symbols, and numbers to protect your digital accounts.',
-  keywords: [
-    'Password Generator',
-    'password password generator',
-    'make random password',
-    'random password creator/maker',
-    'strong password generator',
-    'MyApexCalc',
-    'secure password maker',
-    'client-side password generator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Instant Strong Password Generator & Randomizer | MyApexCalc',
-    description: 'Keep your online credentials secure. Create cryptographically strong, custom random passwords locally on your device with our zero-trust generator.',
-    url: 'https://www.myapexcalc.com/calculators/password-generator',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/sJmgs3p4/password-generator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Strong Password Generator and Custom Security Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Random Password Creator & Security Tool | MyApexCalc',
-    description: 'Instantly build uncrackable, randomized passwords with custom length and character specifications.',
-    images: ['https://i.ibb.co/sJmgs3p4/password-generator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/password-generator',
-  },
-};
 
 export default function PasswordGeneratorPage() {
   const { toast } = useToast();
@@ -311,6 +261,36 @@ export default function PasswordGeneratorPage() {
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
         <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: High-Security Financial Account</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A user needs a password for their online banking. They set the length to <strong>20 characters</strong> and enable **all sets** (Upper, Lower, Numbers, and Symbols).</p>
+                <p>The resulting password has over 130 bits of entropy. At current processing speeds, it would take an attacker trillions of years to guess, making it practically uncrackable.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Developer API Keys</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A developer needs to generate 10 unique, random strings to use as API secret keys. They require them to be <strong>32 characters</strong> long and alphanumeric only (no symbols) to avoid URL encoding issues.</p>
+                <p>By adjusting the slider to 32 and selecting only Upper, Lower, and Numbers, they generate 10 clean, high-entropy strings instantly.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
           <section className="space-y-4">
@@ -399,7 +379,7 @@ export default function PasswordGeneratorPage() {
                   </div>
                   <div>
                     <p className="font-bold text-sm">Never Reuse Passwords</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Each online account should have its own unique key. If a service you use is breached, hackers will test that leaked email-password combination across dozens of other popular platforms.</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Each online account should have its own unique key. If a service you use is breached, hackers will test that leaked email-password combination across dozens of other popular popular platforms.</p>
                   </div>
                 </li>
                 <li className="flex gap-4">

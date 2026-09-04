@@ -12,7 +12,8 @@ import {
   TrendingUp,
   Zap,
   Dumbbell,
-  Calculator
+  Calculator,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,55 +29,6 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import type { Metadata } from 'next';
-
-const metadata: Metadata = {
-  title: 'Accurate BMR Calculator | Free Basal Metabolic Rate Tracker',
-  description: 'Calculate your Basal Metabolic Rate instantly with our free online BMR calculator. Discover your baseline daily calorie burn based on your age, sex, height, and weight.',
-  keywords: [
-    'bmr calculator',
-    'basal metabolic rate calculator',
-    'metabolic rate calculator',
-    'calculator for metabolic rate',
-    'MyApexCalc',
-    'daily calorie burn estimator',
-    'Harris-Benedict formula'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Basal Metabolic Rate Calculator | MyApexCalc',
-    description: 'Find your baseline energy requirements. Calculate your BMR instantly and build a smarter nutrition or weight management plan with our interactive tool.',
-    url: 'https://www.myapexcalc.com/calculators/bmr',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/PGGDjy1g/bmr-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Basal Metabolic Rate Calculator and Daily Calorie Breakdown Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Instant Basal Metabolic Rate Calculator | MyApexCalc',
-    description: 'Calculate your exact baseline daily energy expenditure in seconds with our free online fitness tool.',
-    images: ['https://i.ibb.co/PGGDjy1g/bmr-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/bmr',
-  },
-};
-
-type Gender = 'male' | 'female';
-type UnitMode = 'us' | 'metric';
 
 const activityLevels = [
   { label: 'Sedentary: little or no exercise', multiplier: 1.2 },
@@ -89,8 +41,8 @@ const activityLevels = [
 
 export default function BMRCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);
-  const [mode, setMode] = useState<UnitMode>('us');
-  const [gender, setGender] = useState<Gender>('male');
+  const [mode, setMode] = useState<'us' | 'metric'>('us');
+  const [gender, setGender] = useState<'male' | 'female'>('male');
   const [age, setAge] = useState(33);
   
   // Weights (Lbs or KG)
@@ -140,7 +92,7 @@ export default function BMRCalculatorPage() {
     };
   }, [isMounted, mode, gender, age, weight, heightFt, heightIn, heightCm]);
 
-  const toggleMode = (newMode: UnitMode) => {
+  const toggleMode = (newMode: 'us' | 'metric') => {
     if (newMode === mode) return;
     if (newMode === 'metric') {
       setHeightCm(Number(((heightFt * 12 + heightIn) * 2.54).toFixed(1)));
@@ -304,6 +256,36 @@ export default function BMRCalculatorPage() {
 
         {/* Reference Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Office Worker vs. Athlete</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A <strong>30-year-old male</strong> weighing <strong>180 lbs</strong> at <strong>5'10"</strong> has a BMR of approximately <strong>1,822 kcal</strong>. If he works a sedentary desk job, his maintenance needs are <strong>2,186 kcal</strong>.</p>
+                  <p>However, if he trains for a triathlon (very intense exercise), his body requires <strong>3,462 kcal</strong> daily—over 1,200 additional calories simply to maintain his weight while supporting his activity level.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Impact of Weight Loss</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A <strong>45-year-old female</strong> weighing <strong>200 lbs</strong> at <strong>5'4"</strong> has a BMR of <strong>1,617 kcal</strong>. After losing 40 lbs (down to <strong>160 lbs</strong>), her BMR drops to <strong>1,435 kcal</strong>.</p>
+                  <p>This reveals why weight loss plateaus occur; as the body becomes smaller, it requires fewer calories to function at rest, meaning she must adjust her maintenance intake downward by 182 kcal to sustain her new weight.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

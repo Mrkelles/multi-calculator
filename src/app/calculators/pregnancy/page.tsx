@@ -12,7 +12,8 @@ import {
   History, 
   ChevronRight,
   TrendingUp,
-  Calculator
+  Calculator,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -36,56 +37,6 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Pregnancy Calculator | Conception to Birth Tracker',
-  description: 'Track your pregnancy timeline week-by-week. Use our free pregnancy calculator to estimate your conception date, current term, and baby milestones.',
-  keywords: [
-    'ovulation predictor kits',
-    'pregnancy calculator',
-    'ovulation cycle calculator',
-    'pregnancy estimator',
-    'pregnancy term calculator',
-    'conception to birth calculator',
-    'MyApexCalc',
-    'pregnancy timeline'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Pregnancy Calculator & Term Estimator | MyApexCalc',
-    description: 'Monitor your development milestones. Estimate your term progress and ovulation timelines instantly with our interactive pregnancy estimator.',
-    url: 'https://www.myapexcalc.com/calculators/pregnancy',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/GvDqL4Yx/pregnancy-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Pregnancy Calculator Week-by-Week Dashboard Tracker',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Interactive Pregnancy Term & Timeline Calculator | MyApexCalc',
-    description: 'Track your journey from conception to birth with our highly accurate online calendar.',
-    images: ['https://i.ibb.co/GvDqL4Yx/pregnancy-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/pregnancy',
-  },
-};
 
 type PregnancyMode = 'due-date' | 'last-period' | 'ultrasound' | 'conception' | 'ivf';
 
@@ -451,6 +402,36 @@ export default function PregnancyCalculatorPage() {
         )}
 
         <div className="lg:col-span-12 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Tracking Fetal Growth</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>An expecting parent is at <strong>Week 20</strong>. By entering their due date, the calculator shows they are 50% through the pregnancy.</p>
+                  <p>The "Baby Size" section informs them the baby is roughly the size of a banana (~10 inches) and weighs about 10.6 oz, providing a tangible way to visualize development.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Identifying Critical Milestones</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A user is currently in their <strong>First Trimester (Week 10)</strong>. They want to know when they can expect to hear a heartbeat or see noticeable movements.</p>
+                  <p>The Milestone Schedule reveals that the heartbeat is detectable by ultrasound around <strong>Week 6</strong>, and significant movements often begin around <strong>Week 18</strong>, helping the user prepare for their next OBGYN appointments.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

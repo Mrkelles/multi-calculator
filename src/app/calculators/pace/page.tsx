@@ -8,17 +8,16 @@ import {
   Trash2, 
   ArrowRightLeft, 
   Info,
-  Clock,
-  Zap,
-  Activity,
   ChevronRight,
   RefreshCw,
   Trophy,
   TrendingUp,
   LineChart as LineChartIcon,
+  Zap,
   Calculator,
+  History,
   ShieldCheck,
-  History
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -44,55 +43,6 @@ import {
   Tooltip as ChartTooltip, 
   ResponsiveContainer 
 } from 'recharts';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference.
-const metadata: Metadata = {
-  title: 'Accurate Pace Calculator | Free Running & Race Pace Tracker',
-  description: 'Calculate your running pace, splits, and finish times instantly. Use our free online pace calculator to plan your next race, marathon, or daily run.',
-  keywords: [
-    'Pace Calculator',
-    'calculate mile',
-    'running pace calculator',
-    'determine running pace',
-    'calculate race pace',
-    'marathon pace calculator',
-    'MyApexCalc',
-    'running speed estimator',
-    'split times calculator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Running Pace & Race Calculator | MyApexCalc',
-    description: 'Set your running targets. Calculate miles, estimate target marathon paces, and map out your split times in seconds.',
-    url: 'https://www.myapexcalc.com/calculators/pace',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/TqJgSVm5/pace-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Running Pace Calculator and Split Time Analyzer Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Running Pace & Marathon Calculator | MyApexCalc',
-    description: 'Quickly calculate time, distance, or pace parameters. Plan your race splits and track your running progress effortlessly.',
-    images: ['https://i.ibb.co/TqJgSVm5/pace-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/pace',
-  },
-};
 
 const raceEvents = [
   { label: '400 meters', value: 400, unit: 'meters' },
@@ -110,8 +60,6 @@ const raceEvents = [
   { label: '5 Miles', value: 5, unit: 'miles' },
   { label: '10 Miles', value: 10, unit: 'miles' },
 ];
-
-type PaceMode = 'pace' | 'time' | 'distance';
 
 interface TimeValue {
   h: number;
@@ -198,7 +146,7 @@ export default function PaceCalculatorPage() {
   };
 
   // 1. Solver States
-  const [mode, setMode] = useState<PaceMode>('pace');
+  const [mode, setMode] = useState<'pace' | 'time' | 'distance'>('pace');
   const [time, setTime] = useState<TimeValue>({ h: 0, m: 20, s: 0 });
   const [dist, setDist] = useState(5);
   const [distUnit, setDistUnit] = useState('km');
@@ -566,55 +514,34 @@ export default function PaceCalculatorPage() {
               </Card>
             </div>
           </div>
-          {standardResult && mode !== 'distance' && (
-            <div className="space-y-8 pt-4">
-              <Card className="border-none bg-muted/20">
-                <CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Pace in Different Units</CardTitle></CardHeader>
-                <CardContent className="p-0">
-                  <Table><TableBody>
-                      {standardResult.diffUnits.map(u => (
-                        <TableRow key={u.label}>
-                          <TableCell className="text-xs font-mono font-bold">{u.value}</TableCell>
-                          <TableCell className="text-xs text-muted-foreground">{u.label}</TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody></Table>
-                </CardContent>
-              </Card>
-              <Card><CardHeader><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Popular Race Distances</CardTitle></CardHeader>
-                <CardContent className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {standardResult.predictions.map(p => (
-                    <div key={p.label} className="p-3 border rounded-xl hover:border-primary transition-colors">
-                      <p className="text-[10px] font-black uppercase text-muted-foreground mb-1">{p.label}</p>
-                      <p className="text-lg font-bold text-primary font-mono">{p.time}</p>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <Card className="border-none bg-accent/5"><CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-accent">Kilometer Splits</CardTitle></CardHeader>
-                  <CardContent className="grid grid-cols-2 gap-2">
-                    {standardResult.kmSplits.map((s, i) => (
-                      <div key={i} className="bg-white p-2 rounded-lg border text-center">
-                        <p className="text-[10px] font-black text-muted-foreground">{s.dist}</p>
-                        <p className="text-xs font-mono font-bold text-accent">{s.time}</p>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-                <Card className="border-none bg-primary/5"><CardHeader className="pb-2"><CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">Mile Splits</CardTitle></CardHeader>
-                  <CardContent className="grid grid-cols-2 gap-2">
-                    {standardResult.mileSplits.map((s, i) => (
-                      <div key={i} className="bg-white p-2 rounded-lg border text-center">
-                        <p className="text-[10px] font-black text-muted-foreground">{s.dist}</p>
-                        <p className="text-xs font-mono font-bold text-primary">{s.time}</p>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          )}
+        </section>
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Sub-4 Hour Marathon</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A runner wants to break the 4-hour mark for a <strong>Full Marathon (26.22 miles)</strong>. They need to know their target pace.</p>
+                <p>By entering 4 hours for Time and selecting the Marathon preset, the tool reveals a required target pace of <strong>9 minutes and 9 seconds per mile</strong>.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Treadmill Speed Conversion</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A treadmill shows a speed of <strong>7.5 miles per hour</strong>. The runner wants to know their equivalent per-mile pace.</p>
+                <p>Using the "Pace Converter" mode, entering 7.5 mph instantly shows a pace of <strong>8 minutes per mile</strong>, making it easier to track training intensity against outdoor runs.</p>
+              </CardContent>
+            </Card>
+          </div>
         </section>
 
         <Separator />

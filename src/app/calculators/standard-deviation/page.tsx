@@ -8,14 +8,12 @@ import {
   History, 
   Calculator, 
   ChevronDown, 
-  ChevronUp,
-  BarChart,
-  LayoutGrid,
-  FileText,
-  TrendingUp,
-  Zap,
-  ShieldCheck,
-  ChevronRight
+  ChevronUp, 
+  LayoutGrid, 
+  TrendingUp, 
+  Zap, 
+  ShieldCheck, 
+  Lightbulb
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -31,56 +29,6 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Standard Deviation Calculator | Free Statistics Tool',
-  description: 'Calculate standard deviation, variance, mean, and margin of error instantly. Try our free online standard deviation calculator for both sample and population datasets.',
-  keywords: [
-    'Standard Deviation formula',
-    'equation for standard deviation',
-    'Standard Deviation Calculator',
-    'find the standard deviation',
-    'determining standard deviation',
-    'MyApexCalc',
-    'variance calculator',
-    'population standard deviation solver'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Standard Deviation & Variance Calculator | MyApexCalc',
-    description: 'Analyze your datasets with confidence. Compute standard deviation, variance, mean, and range instantly with our free statistical calculator.',
-    url: 'https://www.myapexcalc.com/calculators/standard-deviation',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/2DNnXpV/standard-deviation-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Standard Deviation Calculator displaying step-by-step statistical formulas and dataset analysis',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Statistical Standard Deviation Tool | MyApexCalc',
-    description: 'Instantly calculate sample or population standard deviation, mean, and variance. Features step-by-step mathematical breakdown.',
-    images: ['https://i.ibb.co/2DNnXpV/standard-deviation-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/standard-deviation',
-  },
-};
 
 export default function StandardDeviationPage() {
   const [dataInput, setDataInput] = useState('10, 12, 23, 23, 16, 23, 21, 16');
@@ -121,7 +69,7 @@ export default function StandardDeviationPage() {
       return {
         level: l.label,
         formula: `${l.multiplier === 1 ? '' : l.multiplier}${type === 'population' ? 'σx̄' : 'sx̄'}`,
-        range: `${mean.toFixed(type === 'population' ? 0 : 0)} ±${margin.toFixed(3)} (±${percent.toFixed(2)}%)`
+        range: `${mean.toFixed(0)} ±${margin.toFixed(3)} (±${percent.toFixed(2)}%)`
       };
     });
 
@@ -191,7 +139,7 @@ export default function StandardDeviationPage() {
           <Card className="bg-primary/5 border-primary/10">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
-                <Info className="w-4 h-4" />
+                <Info className="w-4 h-4 text-primary" />
                 Quick Tip
               </CardTitle>
             </CardHeader>
@@ -350,6 +298,36 @@ export default function StandardDeviationPage() {
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Student Test Scores</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A teacher analyzes scores for a class of 5 students: <strong>85, 90, 88, 92, 85</strong>. They treat this as a <strong>Population</strong>.</p>
+                  <p>The calculator finds a mean of <strong>88</strong> and a standard deviation of <strong>2.83</strong>. This low deviation indicates the students performed consistently close to each other.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Manufacturing Quality Control</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A factory tests a <strong>Sample</strong> of 6 bolts for length (mm): <strong>10.1, 9.9, 10.2, 10.0, 9.8, 10.0</strong>.</p>
+                  <p>The tool calculates a mean of <strong>10.0</strong> and a sample standard deviation of <strong>0.141</strong>. This helps the engineer determine if the machinery is within the required 0.15mm tolerance level.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
@@ -389,13 +367,6 @@ export default function StandardDeviationPage() {
                       &sigma; = &radic;[ &Sigma;(x<sub>i</sub> - &mu;)&sup2; / n ]
                     </div>
                   </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 text-[10px] text-muted-foreground bg-muted/20 p-4 rounded-xl">
-                  <p><strong>x<sub>i</sub></strong>: individual value</p>
-                  <p><strong>x&#772; / &mu;</strong>: arithmetic mean</p>
-                  <p><strong>n</strong>: total data points</p>
-                  <p><strong>&Sigma;</strong>: summation symbol</p>
                 </div>
               </div>
             </section>

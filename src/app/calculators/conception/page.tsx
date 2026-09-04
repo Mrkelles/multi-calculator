@@ -14,7 +14,8 @@ import {
   CheckCircle2,
   AlertCircle,
   TrendingUp,
-  Calculator
+  Calculator,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,64 +23,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { addDays, subDays, format, startOfDay } from 'date-fns';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Conception Calculator | Estimate Conception Date',
-  description: 'Find your estimated date of conception instantly. Input your due date or last period to figure out your conception date with our free online calculator.',
-  keywords: [
-    'ovulation date calculator',
-    'conception calculator',
-    'conception estimator',
-    'conception date calculator',
-    'figure out conception date',
-    'conception date',
-    'conception to birth calculator',
-    'estimated date of conception',
-    'MyApexCalc',
-    'pregnancy conception tracker'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Pregnancy Conception Calculator & Estimator | MyApexCalc',
-    description: 'Pinpoint your exact moment of beginning. Run a quick conception calculation using your due date or cycle milestones with our custom tracker.',
-    url: 'https://www.myapexcalc.com/calculators/conception',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/9mJYJCKw/conception-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Conception Calculator and Milestone Estimator Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Instant Conception Date Estimator | MyApexCalc',
-    description: 'Discover your estimated date of conception and explore your timeline from conception to birth.',
-    images: ['https://i.ibb.co/9mJYJCKw/conception-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/conception',
-  },
-};
-
-type ConceptionMode = 'last-period' | 'ultrasound' | 'due-date';
 
 export default function ConceptionCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);
-  const [mode, setMode] = useState<ConceptionMode>('last-period');
+  const [mode, setMode] = useState<'last-period' | 'ultrasound' | 'due-date'>('last-period');
   const [dateInput, setDateInput] = useState('');
   const [cycleLength, setCycleLength] = useState(28);
   
@@ -356,6 +303,36 @@ export default function ConceptionCalculatorPage() {
 
         {/* Reference & Info Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Planning for an August Baby</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A couple hoping for an <strong>August 15, 2026</strong> due date wants to know their target conception window. By inputting this target date, the calculator works backward 266 days.</p>
+                  <p>The results show the most likely conception dates are between <strong>November 19 and November 23, 2025</strong>, with the fertile intercourse window starting as early as November 16.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Tracing Back from an Ultrasound</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>During a doctor's visit on <strong>January 10, 2026</strong>, an ultrasound confirms the pregnancy is exactly <strong>12 weeks and 3 days</strong> along.</p>
+                  <p>By entering these scan details, the tool calculates that conception likely occurred on or around <strong>October 30, 2025</strong>, helping the parents trace back their timeline to specific memories or milestones.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

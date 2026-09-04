@@ -7,7 +7,6 @@ import {
   History, 
   Plus, 
   Minus, 
-  CalendarDays, 
   Calculator, 
   Info,
   Type,
@@ -15,72 +14,16 @@ import {
   ChevronRight,
   ShieldCheck,
   Zap,
-  Briefcase
+  Briefcase,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
 import { add, sub, format } from 'date-fns';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Time Calculator | Free Time Sheet & Work Hours Tracker',
-  description: 'Calculate elapsed time, add or subtract time, and track your weekly timesheets. Use our free online time calculator for work hours to estimate pay and log shifts.',
-  keywords: [
-    'Time Calculator',
-    'work clock calculator',
-    'time calculator for work hours',
-    'time sheet calculator',
-    'MyApexCalc',
-    'hourly timesheet calculator',
-    'elapsed time tracker'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Interactive Time & Work Hours Calculator | MyApexCalc',
-    description: 'Simplify your shift tracking. Log punch-in and punch-out times, subtract unpaid lunch breaks, and tally cumulative work hours instantly.',
-    url: 'https://www.myapexcalc.com/calculators/time',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/TqJgSVm5/time-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Time Calculator and Work Hours Timesheet Log',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Work Time & Hours Tracker | MyApexCalc',
-    description: 'Quickly add or subtract hours and minutes or track your complete weekly timesheet with built-in break parameters.',
-    images: ['https://i.ibb.co/TqJgSVm5/time-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/time',
-  },
-};
 
 type TimeMode = 'arithmetic' | 'date-offset' | 'expression';
 
@@ -140,9 +83,6 @@ export default function TimeCalculatorPage() {
 
   const expressionResult = useMemo(() => {
     try {
-      // Basic expression parser
-      // Supports units: d, h, m, s
-      // Format: 5h 30m + 1d
       const parts = expr.toLowerCase().split(/(\+|\-)/);
       let totalSeconds = 0;
       let currentOp = '+';
@@ -391,6 +331,36 @@ export default function TimeCalculatorPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Combining Task Durations</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A project manager has three separate tasks taking <strong>2h 45m</strong>, <strong>1h 30m</strong>, and <strong>45m</strong>. They need the total project time.</p>
+                <p>By entering these into the "Expression" mode (2h 45m + 1h 30m + 45m), the tool instantly calculates the total as <strong>5 hours and 0 minutes</strong>, simplifying their scheduling.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Future Appointment Scheduling</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A patient needs to return for a follow-up appointment exactly <strong>48 hours</strong> after their initial visit on <strong>Tuesday at 2:00 PM</strong>.</p>
+                <p>The "Date Offset" mode reveals the exact follow-up time is <strong>Thursday at 2:00 PM</strong>. This handles complex calendar logic like day-of-week transitions automatically.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

@@ -11,7 +11,8 @@ import {
   Info, 
   History, 
   Zap, 
-  ChevronRight 
+  ChevronRight,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,56 +20,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate GPA Calculator | Free Online Grading Calculator',
-  description: 'Calculate your semester and cumulative GPA instantly with our free online GPA calculator. Input your letter grades and credit hours to find your GPA online.',
-  keywords: [
-    'gpa calculator',
-    'gpa',
-    'find gpa online',
-    'grading calculator',
-    'MyApexCalc',
-    'cumulative gpa calculator',
-    'college gpa calculator',
-    'high school gpa'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Interactive GPA & Grading Calculator | MyApexCalc',
-    description: 'Keep your academic goals on track. Check your cumulative score and find your GPA online instantly with our easy-to-use grading tool.',
-    url: 'https://www.myapexcalc.com/calculators/gpa',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/23rG4tH4/gpa-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc GPA Calculator Class and Grade Entry Interface',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free GPA & Cumulative Grading Calculator | MyApexCalc',
-    description: 'Instantly calculate your weighted or unweighted GPA by adding classes, credits, and letter grades.',
-    images: ['https://i.ibb.co/23rG4tH4/gpa-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/gpa',
-  },
-};
 
 const GRADE_POINTS = {
   'A+': 4.0, 'A': 4.0, 'A-': 3.7,
@@ -211,6 +162,36 @@ export default function GPACalculatorPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Full-Time Semester</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A student takes 5 courses: Math (4 credits, <strong>A</strong>), Biology (3 credits, <strong>B</strong>), English (3 credits, <strong>A-</strong>), History (3 credits, <strong>B+</strong>), and Art (2 credits, <strong>A</strong>).</p>
+                <p>The calculator weights the grades by credits (e.g., Math is worth 16 grade points) and finds a final semester GPA of <strong>3.54</strong> across 15 total credits.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Projecting a Final Score</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A student currently has a <strong>2.90 cumulative GPA</strong>. They are entering their final semester and need to reach a <strong>3.0</strong> to graduate with honors.</p>
+                <p>By entering their current totals and adding their target grades for upcoming classes (e.g., straight As in 12 credits), they can see that a GPA of <strong>3.05</strong> is achievable, keeping their academic goals on track.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

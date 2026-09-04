@@ -2,61 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { User, Calendar as CalendarIcon, TrendingUp, Calculator, Info, History, Zap, ChevronRight } from 'lucide-react';
+import { User, Calendar as CalendarIcon, TrendingUp, Calculator, Info, History, Zap, ChevronRight, Lightbulb } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { intervalToDuration } from 'date-fns';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Age Calculator | Live Birthday & Date of Birth Tracker',
-  description: 'Find your exact age in years, months, weeks, days, and seconds with our free online age calculator. Simply input your date of birth to calculate your age instantly.',
-  keywords: [
-    'Age calculator',
-    'calculate your age',
-    'birthday calculator',
-    'Date of birth calculator',
-    'MyApexCalc',
-    'chronological age tracker',
-    'days until next birthday'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Age & Birthday Calculator | MyApexCalc',
-    description: 'Stop counting on your fingers. Discover your precise chronological age and count down the days until your next birthday instantly.',
-    url: 'https://www.myapexcalc.com/calculators/age',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/1J07DMwT/age-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Age Calculator and Chronological Breakdown Interface',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Instant Chronological Age & Birthday Calculator | MyApexCalc',
-    description: 'Calculate your exact age down to the day, hour, and minute with our free online calculator.',
-    images: ['https://i.ibb.co/1J07DMwT/age-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/age',
-  },
-};
 
 export default function AgeCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -156,6 +107,36 @@ export default function AgeCalculatorPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Marathon Entry</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A runner born on <strong>May 15, 1985</strong> is entering a marathon on <strong>October 20, 2026</strong>. To ensure they are placed in the correct age division (e.g., 40-44 category), they need to know their exact age on race day.</p>
+                <p>The calculator reveals they will be <strong>41 years, 5 months, and 5 days old</strong>, confirming their placement in the 40+ category.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Life Milestones</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A person celebrating their 30th birthday (born <strong>January 10, 1996</strong>) wants to know exactly how many days they have been alive on their birthday, <strong>January 10, 2026</strong>.</p>
+                <p>The calculator shows they have lived for exactly <strong>10,957 days</strong>, accounting for leap years in 1996, 2000, 2004, 2008, 2012, 2016, 2020, and 2024.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

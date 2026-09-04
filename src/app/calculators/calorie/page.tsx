@@ -1,65 +1,14 @@
-
 "use client"
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Zap, Calculator, TrendingUp, ChevronRight, History, Info } from 'lucide-react';
+import { Zap, Calculator, TrendingUp, ChevronRight, History, Info, Lightbulb } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Calorie Calculator | Free Daily TDEE & Deficit Tracker',
-  description: 'Estimate your daily caloric needs using our free calorie calculator. Calculate your maintenance baseline, plan a custom calorie deficit, and track your weight loss progress instantly.',
-  keywords: [
-    'calorie calculator',
-    'calorie deficit calculator',
-    'calorie and weight loss calculator',
-    'kcal counter',
-    'calorie counter',
-    'MyApexCalc',
-    'TDEE calculator',
-    'BMR calculator'
-  ],
-  
-  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Daily Calorie & Deficit Calculator | MyApexCalc',
-    description: 'Calculate your daily energy expenditure instantly. Use our scientific kcal counter and weight loss calculator to map out your nutrition benchmarks.',
-    url: 'https://www.myapexcalc.com/calculators/calorie',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/tMhtk144/calorie-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Calorie Calculator and Weight Goals Dashboard Layout',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Interactive Daily Calorie & Kcal Counter | MyApexCalc',
-    description: 'Find your precise daily calorie goals and build a safe, manageable calorie deficit plan based on your active lifestyle.',
-    images: ['https://i.ibb.co/tMhtk144/calorie-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent duplicate indexing
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/calorie',
-  },
-};
 
 export default function CaloriePage() {
   const [age, setAge] = useState(25);
@@ -185,6 +134,36 @@ export default function CaloriePage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Starting a Weight Loss Plan</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A user determines their maintenance TDEE is <strong>2,500 kcal</strong> per day. To lose roughly 1 lb (0.5 kg) per week, they need a cumulative 3,500 kcal deficit.</p>
+                <p>By setting a daily target of <strong>2,000 kcal</strong> (a 500 kcal deficit), the calculator confirms they are on a safe, sustainable pace to reach their goal over several months.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Adjusting for Increased Activity</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>An office worker with a <strong>Sedentary</strong> lifestyle requires <strong>2,000 kcal</strong> for maintenance. They decide to join a gym and exercise 5 days a week (<strong>Active</strong>).</p>
+                <p>The calculator reveals their new maintenance baseline is <strong>2,600 kcal</strong>. This shows they can eat an additional 600 calories per day and still maintain their weight due to their new energy expenditure.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

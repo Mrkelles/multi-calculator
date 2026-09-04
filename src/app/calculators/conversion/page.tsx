@@ -14,7 +14,8 @@ import {
   Calculator,
   TrendingUp,
   ChevronRight,
-  Zap
+  Zap,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,58 +24,6 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'All-in-One Conversion Calculator | Free Unit & Metric Converter',
-  description: 'Convert units of length, weight, and temperature instantly. Try our free online conversion calculator to convert cms to feet, kg to lbs, celsius to fahrenheit, and more.',
-  keywords: [
-    'cms to feet',
-    'convert kg to lbs',
-    'conversion from kilograms to pounds',
-    'celsius to fahrenheit calculator',
-    'km converted to miles',
-    'centimetres to inches converter',
-    'conversion of temperature',
-    'millimeters to inches calculator',
-    'MyApexCalc',
-    'metric conversion tool'
-  ],
-  
-  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Multi-Unit Conversion Calculator | MyApexCalc',
-    description: 'Quickly switch between metric and imperial systems. Convert length, mass, and temperature instantly with zero hassle.',
-    url: 'https://www.myapexcalc.com/calculators/conversion',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/TqJgSVm5/conversion-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Multi-Unit Conversion Calculator Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Metric & Imperial Conversion Calculator | MyApexCalc',
-    description: 'Instantly convert kg to lbs, cms to feet, celsius to fahrenheit, and more with our responsive calculator.',
-    images: ['https://i.ibb.co/TqJgSVm5/conversion-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent duplicate index penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/conversion',
-  },
-};
 
 type ConversionMode = 'length' | 'temperature' | 'area' | 'volume' | 'weight';
 
@@ -330,6 +279,36 @@ export default function ConversionCalculatorPage() {
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Travel Distance</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A traveler is driving from Paris to Berlin and sees a road sign stating the distance is <strong>1,050 kilometers</strong>. They are more familiar with the imperial system.</p>
+                  <p>By inputting "1050" into the Kilometer field, the calculator instantly reveals the distance is <strong>652.44 miles</strong>, helping them better estimate their fuel stops and travel time.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: International Baking</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>An American baker is following a French pastry recipe that calls for an oven temperature of <strong>180° Celsius</strong>.</p>
+                  <p>Using the temperature mode, they convert "180" Celsius to find the equivalent American oven setting of <strong>356° Fahrenheit</strong> (which they would likely round to 350°F or 375°F depending on the oven's precision).</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
@@ -353,7 +332,7 @@ export default function ConversionCalculatorPage() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <p className="font-bold text-sm text-foreground">1. Length Conversions</p>
-                    <p className="text-sm text-muted-foreground">Length transformations require multiplying or dividing by precise metric constants. For instance, when using our centimetres to inches converter or looking up cms to feet ratios, we utilize the following math:</p>
+                    <p className="text-sm text-muted-foreground">Length transformations require multiplying or dividing by precise metric constants. For instance, when using our kilometres to inches converter or looking up cms to feet ratios, we utilize the following math:</p>
                     <div className="bg-muted/50 p-4 rounded-xl font-mono text-sm space-y-2 border">
                       <p>Inches = Centimeters × 0.393701</p>
                       <Separator />

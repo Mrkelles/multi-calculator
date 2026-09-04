@@ -12,7 +12,8 @@ import {
   ShieldCheck,
   Target,
   Calculator,
-  BarChart
+  BarChart,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -29,59 +30,10 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import type { Metadata } from 'next';
-
-const metadata: Metadata = {
-  title: 'Accurate Body Fat Calculator | Free Body Composition Tracker',
-  description: 'Calculate your percentage of body fat instantly. Use our free online body fat calculator to estimate body composition using standard measurements.',
-  keywords: [
-    'calculator bmi female',
-    'body fat index',
-    'percentage of body fat',
-    'body fat calculator',
-    'MyApexCalc',
-    'body composition estimator',
-    'US Navy body fat method'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Body Fat Calculator & Composition Tracker | MyApexCalc',
-    description: 'Track your fitness progress beyond the scale. Estimate your body fat index and lean mass percentages in seconds.',
-    url: 'https://www.myapexcalc.com/calculators/body-fat',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/TqJgSVm5/body-fat-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Body Fat Calculator and Body Composition Visualizer',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Body Fat & Lean Mass Estimator | MyApexCalc',
-    description: 'Understand your body composition. Calculate body fat percentages instantly using simple measurements.',
-    images: ['https://i.ibb.co/TqJgSVm5/body-fat-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/body-fat',
-  },
-};
-
-type Gender = 'male' | 'female';
-type UnitMode = 'us' | 'metric';
 
 const jacksonPollockData = [
   { age: 20, women: 17.7, men: 8.5 },
-  { age: 25, women: 18.4, men: 10.5 },
+  { age: 25, women: 18.4, metal: 10.5 },
   { age: 30, women: 19.3, men: 12.7 },
   { age: 35, women: 21.5, men: 13.7 },
   { age: 40, women: 22.2, men: 15.3 },
@@ -92,8 +44,8 @@ const jacksonPollockData = [
 
 export default function BodyFatCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);
-  const [mode, setMode] = useState<UnitMode>('us');
-  const [gender, setGender] = useState<Gender>('male');
+  const [mode, setMode] = useState<'us' | 'metric'>('us');
+  const [gender, setGender] = useState<'male' | 'female'>('male');
   const [age, setAge] = useState(25);
   const [weight, setWeight] = useState(152);
 
@@ -159,7 +111,7 @@ export default function BodyFatCalculatorPage() {
     const closestAgeRow = jacksonPollockData.reduce((prev, curr) => 
       Math.abs(curr.age - age) < Math.abs(prev.age - age) ? curr : prev
     );
-    const idealBf = gender === 'male' ? closestAgeRow.men : closestAgeRow.women;
+    const idealBf = gender === 'male' ? closestAgeRow.age : closestAgeRow.women;
     const bfToLose = Math.max(0, bodyFatMass - (w_lbs * (idealBf / 100)));
 
     // Category Logic (ACE)
@@ -191,7 +143,7 @@ export default function BodyFatCalculatorPage() {
     };
   }, [isMounted, mode, gender, age, weight, heightFt, heightIn, neckFt, neckIn, waistFt, waistIn, hipFt, hipIn, heightCm, neckCm, waistCm, hipCm]);
 
-  const toggleMode = (newMode: UnitMode) => {
+  const toggleMode = (newMode: 'us' | 'metric') => {
     if (newMode === mode) return;
     if (newMode === 'metric') {
       setHeightCm(Number(((heightFt * 12 + heightIn) * 2.54).toFixed(1)));
@@ -441,6 +393,36 @@ export default function BodyFatCalculatorPage() {
         {/* Informational Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Measuring Body recomposition</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>An athlete weighs <strong>185 lbs</strong> but has significant muscle mass. Their BMI indicates they are "Overweight," but the Navy Method (using neck and waist measurements) reveals a body fat of <strong>14%</strong> (Athlete category).</p>
+                  <p>This comparison helps them understand that their higher weight is due to lean muscle rather than excess fat tissue, providing a much more accurate health snapshot than the scale alone.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Tracking Progress during a Challenge</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>During a 12-week fitness challenge, a participant's weight stays exactly the same at <strong>160 lbs</strong>. However, their waist measurement drops by <strong>2 inches</strong>.</p>
+                  <p>Using the calculator, they discover their body fat dropped from <strong>26% to 22%</strong>. This reveals they successfully burned fat and built muscle simultaneously, which the scale failed to show.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
@@ -465,7 +447,7 @@ export default function BodyFatCalculatorPage() {
                   <div className="space-y-2">
                     <p className="font-bold text-sm text-foreground">1. The U.S. Navy Circumference Method</p>
                     <p className="text-sm text-muted-foreground">Considered the gold standard for home estimation, this formula requires simple neck, waist, and hip circumference measurements along with your height. Because men and women store fat differently, the equations utilize distinct physical calculations:</p>
-                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm space-y-4 border overflow-x-auto">
+                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                       <div className="space-y-1">
                         <p className="text-[10px] uppercase font-bold text-primary">For Men (Measurements in Centimeters):</p>
                         <p>BFP = 86.010 × log₁₀(Waist - Neck) - 70.041 × log₁₀(Height) + 36.76</p>

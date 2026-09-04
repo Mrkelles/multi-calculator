@@ -7,67 +7,16 @@ import {
   TrendingUp, 
   Info, 
   History, 
-  ArrowRightLeft, 
   BarChart, 
   ShieldCheck, 
   ChevronRight,
   Landmark,
-  Clock
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Loan Interest Calculator | MyApexCalc',
-  description: 'Determine the true lifetime interest costs on your personal, auto, or student loans with our free loan interest calculator. Calculate your monthly interest payments instantly.',
-  keywords: [
-    'compound interest calculator',
-    'compound interest',
-    'composite interest calculation',
-    'compound interest formula',
-    'MyApexCalc',
-    'loan interest calculator',
-    'amortization schedule',
-    'debt interest estimator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Free Loan Interest Calculator | MyApexCalc',
-    description: 'Calculate monthly payments and total accrued interest on any loan. Input your principal, interest rate, and term to see your exact amortization schedule.',
-    url: 'https://www.myapexcalc.com/calculators/loan-interest',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/kgN4S2s2/loan-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Loan Interest Calculator UI with Payoff Breakdown',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Live Loan Interest & Payoff Calculator | MyApexCalc',
-    description: 'Quickly estimate your monthly interest charges and see how additional payments can accelerate your debt payoff timeline.',
-    images: ['https://i.ibb.co/kgN4S2s2/loan-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/loan-interest',
-  },
-};
 
 export default function LoanInterestPage() {
   const [loanAmount, setLoanAmount] = useState(25000);
@@ -170,6 +119,36 @@ export default function LoanInterestPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Short vs. Long Term</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A borrower takes a <strong>$15,000 personal loan</strong> at <strong>10% interest</strong>. Loan A is for <strong>3 years</strong>; Loan B is for <strong>5 years</strong>.</p>
+                <p>Loan A has a payment of <strong>$484.01/mo</strong> and costs <strong>$2,424</strong> in interest. Loan B has a lower payment of <strong>$318.71/mo</strong> but costs <strong>$4,122</strong> in interest—nearly $1,700 more for the same principal.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: The Impact of Credit Score</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>Comparing two <strong>$30,000 auto loans</strong> over <strong>60 months</strong>. Applicant A gets a <strong>5% rate</strong>; Applicant B (with lower credit) gets <strong>12%</strong>.</p>
+                <p>Applicant A pays <strong>$566.14/mo</strong> and <strong>$3,968 total interest</strong>. Applicant B pays <strong>$667.33/mo</strong> and <strong>$10,040 total interest</strong>. Improving your rate by 7% saves <strong>$6,072</strong> over five years.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

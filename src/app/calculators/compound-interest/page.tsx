@@ -2,61 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { TrendingUp, History, Info, Calculator, ChevronRight } from 'lucide-react';
+import { TrendingUp, History, Info, Calculator, ChevronRight, Lightbulb } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Compound Interest Calculator | Investment Growth Estimator',
-  description: 'Calculate the exponential growth of your savings with our free compound interest calculator. Input your principal, rate, and frequency to run a composite interest calculation.',
-  keywords: [
-    'compound interest calculator',
-    'compound interest',
-    'composite interest calculation',
-    'compound interest formula',
-    'MyApexCalc',
-    'savings growth estimator',
-    'investment calculator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Compound Interest & Savings Growth Calculator | MyApexCalc',
-    description: 'Watch your wealth build over time. Estimate your long-term returns and visualize compound interest schedules with our interactive dashboard.',
-    url: 'https://www.myapexcalc.com/calculators/compound-interest',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/tt9jyBz/compound-interest-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Compound Interest Calculator Dashboard and Growth Charts',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Instant Savings & Investment Compounder | MyApexCalc',
-    description: 'Calculate future portfolio values instantly using our accurate compound interest modeling tool.',
-    images: ['https://i.ibb.co/tt9jyBz/compound-interest-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/compound-interest',
-  },
-};
 
 export default function CompoundInterestPage() {
   const [initial, setInitial] = useState(10000);
@@ -184,6 +135,36 @@ export default function CompoundInterestPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Retirement Savings Growth</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>An investor starts with <strong>$10,000</strong> and contributes <strong>$500 per month</strong> for 30 years. At a <strong>7% return rate</strong>, their final balance would be <strong>$686,110</strong>.</p>
+                <p>By increasing that return rate to <strong>10%</strong>, the final balance balloons to <strong>$1,260,344</strong>—demonstrating how even small differences in percentage yield massive changes over long horizons.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: The Power of Initial Capital</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>Comparing two investors saving for 20 years at 8%. Investor A starts with <strong>$1,000</strong>; Investor B starts with <strong>$10,000</strong>. Both contribute $200/mo.</p>
+                <p>Investor A ends with <strong>$118,525</strong>. Investor B ends with <strong>$160,568</strong>. That extra $9,000 initial seed results in over <strong>$42,000 additional dollars</strong> after 20 years of compounding.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

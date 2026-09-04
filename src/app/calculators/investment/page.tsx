@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
 import { 
   TrendingUp, 
@@ -8,13 +8,12 @@ import {
   Info, 
   DollarSign, 
   Clock, 
-  Calendar,
-  History,
-  Zap,
-  Target,
-  Calculator,
-  ChevronRight,
-  ShieldCheck
+  History, 
+  Zap, 
+  Calculator, 
+  ChevronRight, 
+  ShieldCheck,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,55 +23,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'Accurate Investment Calculator | Free Investment Growth Calculator',
-  description: 'Project your portfolio growth with our free investment calculator. Model compound interest, recurring contributions, and estimate investment growth over time.',
-  keywords: [
-    'Investment Calculator',
-    'Investment Estimator',
-    'Investment Growth Calculator',
-    'MyApexCalc',
-    'compound interest calculator',
-    'portfolio growth estimator',
-    'financial projection tool'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Interactive Investment Calculator & Growth Estimator | MyApexCalc',
-    description: 'Visualize your path to financial freedom. Calculate future portfolio values, compare return rates, and track compound growth in real-time.',
-    url: 'https://www.myapexcalc.com/calculators/investment',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/9H0bRpTQ/investment-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Investment Calculator Compound Growth Chart and Inputs',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Investment Growth Calculator & Estimator | MyApexCalc',
-    description: 'Map your long-term wealth goals. Adjust annual returns, initial principal, and regular contributions to see your portfolio grow.',
-    images: ['https://i.ibb.co/9H0bRpTQ/investment-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent duplicate index penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/investment',
-  },
-};
 
 type CalcMode = 'end-amount' | 'contribution' | 'return-rate' | 'starting-amount' | 'length';
 
@@ -437,6 +387,36 @@ export default function InvestmentCalculatorPage() {
 
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: College Fund Target</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A parent wants to save <strong>$100,000</strong> for a newborn's college fund in <strong>18 years</strong>. They already have <strong>$5,000</strong> and assume a <strong>7% return</strong>.</p>
+                  <p>The "Contribution" mode reveals they need to save <strong>$202.45 per month</strong>. Adjusting the return to 5% shows the required deposit jumps to $271, highlighting the impact of market performance.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Real Estate Down Payment</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A couple saves <strong>$2,000 monthly</strong> in a <strong>4.5% high-yield account</strong>. They want to know how long it takes to reach <strong>$60,000</strong> for a house deposit.</p>
+                  <p>The "Length" mode reveals they will reach their goal in exactly <strong>2.4 years</strong> (29 months). They can see that they will have contributed $58,000, with interest providing the final $2,000 boost.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

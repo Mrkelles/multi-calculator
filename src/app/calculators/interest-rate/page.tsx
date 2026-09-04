@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
 import { 
   Percent, 
@@ -14,8 +14,8 @@ import {
   Calculator, 
   ChevronRight, 
   ShieldCheck, 
-  BarChart,
-  PieChart as PieChartIcon
+  PieChart as PieChartIcon,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,57 +24,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component to ensure it is picked up by SEO crawlers.
-const metadata: Metadata = {
-  title: 'Accurate Interest Rate Calculator | Free APR & Loan Payment Estimator',
-  description: 'Calculate loan interest, annual percentage rates, and investments instantly. Use our free interest calculator to estimate mortgage payments and analyze true borrowing costs.',
-  keywords: [
-    'mortgage calculator bankrate',
-    'interest amount',
-    'calculator for mortgage payments',
-    'interest calculator',
-    'apr calculator',
-    'MyApexCalc',
-    'loan interest rate',
-    'compound interest estimator'
-  ],
-  
-  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Interest Rate & APR Calculator | MyApexCalc',
-    description: 'Deconstruct your borrowing or growth rates. Calculate interest amounts, analyze mortgage components, and find your true APR easily.',
-    url: 'https://www.myapexcalc.com/calculators/interest-rate',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/j9CpS9cy/interest-rate-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Interest Rate Calculator, APR Solver, and Investment Progression Screen',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Interest Amount & APR Calculator | MyApexCalc',
-    description: 'Determine actual borrowing fees, monthly mortgage percentages, and investment yields in seconds.',
-    images: ['https://i.ibb.co/j9CpS9cy/interest-rate-calculator.png'],
-  },
-
-  // Prevent search engine duplicate penalties with standard canonical parameters
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/interest-rate',
-  },
-};
+import { ChartContainer, ChartTooltip } from '@/components/ui/chart';
 
 export default function InterestRateCalculatorPage() {
   const [startingAmount, setStartingAmount] = useState(10000);
@@ -353,110 +303,131 @@ export default function InterestRateCalculatorPage() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Informational Text Section */}
-        <div className="lg:col-span-12 py-10 space-y-12">
-          <Separator />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
-            <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <TrendingUp className="w-6 h-6" />
-                Master the Cost of Borrowing and Growth with MyApexCalc
-              </h3>
+      {/* Informational Text Section */}
+      <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Planning for a Million</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A 25-year-old starts with <strong>$20,000</strong> and wants to hit <strong>$1,000,000</strong> by age 55 (30 years) with a <strong>$500 monthly contribution</strong>.</p>
+                <p>The calculator determines they need an annual return rate of <strong>8.34%</strong>. This helps them decide between a conservative bond-heavy portfolio and a more aggressive stock-heavy one.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Down Payment Goal</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A couple needs <strong>$80,000</strong> for a house down payment in <strong>5 years</strong>. They already have <strong>$30,000</strong> saved and can add <strong>$600 per month</strong>.</p>
+                <p>The tool reveals they only need a <strong>3.95% return rate</strong>. This shows them that a high-yield savings account or short-term CDs might be sufficient and safer than volatile market investments.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <Separator />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+          <section className="space-y-4">
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+              <TrendingUp className="w-6 h-6" />
+              Master the Cost of Borrowing and Growth with MyApexCalc
+            </h3>
+            <p className="text-muted-foreground leading-relaxed">
+              Whether you are shopping for a home, evaluating a car loan, or opening a high-yield investment account, interest is the primary force that dictates your long-term balance sheet. For borrowers, interest is the fee paid to a lender for using their cash; for savers, it is the reward paid by a financial institution for holding your deposits. Understanding how these rates accumulate is essential to keeping your personal budget healthy. Our free interest calculator simplifies these complex calculations, serving as a comprehensive apr calculator that translates raw percentages into real-world dollars and cents.
+            </p>
+            
+            <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
+              <Calculator className="w-6 h-6" />
+              The Math Behind the Percentages: Calculating True Costs
+            </h3>
+            <div className="space-y-6">
               <p className="text-muted-foreground leading-relaxed">
-                Whether you are shopping for a home, evaluating a car loan, or opening a high-yield investment account, interest is the primary force that dictates your long-term balance sheet. For borrowers, interest is the fee paid to a lender for using their cash; for savers, it is the reward paid by a financial institution for holding your deposits. Understanding how these rates accumulate is essential to keeping your personal budget healthy. Our free interest calculator simplifies these complex calculations, serving as a comprehensive apr calculator that translates raw percentages into real-world dollars and cents.
+                Depending on your financial product, the way your interest amount is calculated can vary significantly. Our multi-function workspace supports both growth modeling and loan installment projections:
               </p>
-              
-              <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
-                <Calculator className="w-6 h-6" />
-                The Math Behind the Percentages: Calculating True Costs
-              </h3>
-              <div className="space-y-6">
-                <p className="text-muted-foreground leading-relaxed">
-                  Depending on your financial product, the way your interest amount is calculated can vary significantly. Our multi-function workspace supports both growth modeling and loan installment projections:
-                </p>
 
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <p className="font-bold text-sm text-foreground">1. Tracking Investment Yields (Compound Interest)</p>
-                    <p className="text-sm text-muted-foreground">When saving or investing, compounding is your best friend. Your interest earnings are reinvested, meaning you earn interest on top of previous interest. The formula to calculate this future accumulated value ($A$) is:</p>
-                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
-                      A = P (1 + r/n)<sup>nt</sup>
-                    </div>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px] text-muted-foreground p-2">
-                      <p><strong>P</strong>: initial principal deposit</p>
-                      <p><strong>r</strong>: annual nominal interest rate</p>
-                      <p><strong>n</strong>: compounding frequency per year</p>
-                      <p><strong>t</strong>: total timeline in years</p>
-                    </div>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">1. Tracking Investment Yields (Compound Interest)</p>
+                  <p className="text-sm text-muted-foreground">When saving or investing, compounding is your best friend. Your interest earnings are reinvested, meaning you earn interest on top of previous interest. The formula to calculate this future accumulated value ($A$) is:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    A = P (1 + r/n)<sup>nt</sup>
                   </div>
+                </div>
 
-                  <div className="space-y-2">
-                    <p className="font-bold text-sm text-foreground">2. Estimating Monthly Liabilities (Mortgage and Loans)</p>
-                    <p className="text-sm text-muted-foreground">For installment liabilities like mortgages, the monthly interest changes over time. While many look to the standard mortgage calculator bankrate structures, our calculator for mortgage payments calculates your fixed monthly payment ($PMT$) utilizing standard mathematical amortization:</p>
-                    <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
-                      PMT = P × [ r(1+r)<sup>n</sup> ] / [ (1+r)<sup>n</sup> - 1 ]
-                    </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed pt-2">
-                      With each monthly payment you make, a portion pays off the interest owed for that month, while the remainder goes toward reducing your outstanding principal balance. Over time, the interest portion shrinks, and the principal portion increases—a progression mapped clearly on our dynamic charts.
-                    </p>
+                <div className="space-y-2">
+                  <p className="font-bold text-sm text-foreground">2. Estimating Monthly Liabilities (Mortgage and Loans)</p>
+                  <p className="text-sm text-muted-foreground">For installment liabilities like mortgages, the monthly interest changes over time. While many look to the standard mortgage calculator bankrate structures, our calculator for mortgage payments calculates your fixed monthly payment ($PMT$) utilizing standard mathematical amortization:</p>
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
+                    PMT = P × [ r(1+r)<sup>n</sup> ] / [ (1+r)<sup>n</sup> - 1 ]
                   </div>
                 </div>
               </div>
-            </section>
+            </div>
+          </section>
 
-            <div className="space-y-8">
-              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
-                  <Info className="w-5 h-5 text-accent" />
-                  Understanding APR vs. APY
-                </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  When comparing rates on credit cards, personal loans, or savings products, you will frequently see two distinct acronyms:
-                </p>
-                <ul className="space-y-6 pt-2">
-                  <li className="flex gap-4">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                      <Landmark className="w-4 h-4 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-bold text-sm">Annual Percentage Rate (APR)</p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">This represents the annual cost of borrowing expressed as a percentage, including interest rates and upfront broker or processing fees. Our calculator helps isolate your true APR, ensuring you see the actual cost of a loan.</p>
-                    </div>
-                  </li>
-                  <li className="flex gap-4">
-                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                      <TrendingUp className="w-4 h-4 text-accent" />
-                    </div>
-                    <div>
-                      <p className="font-bold text-sm">Annual Percentage Yield (APY)</p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">This represents the real annual rate of return earned on an investment, fully accounting for the compounding frequency of the account. APY is usually slightly higher than the nominal rate due to compounding effects.</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+          <div className="space-y-8">
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                <Info className="w-5 h-5 text-accent" />
+                Understanding APR vs. APY
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                When comparing rates on credit cards, personal loans, or savings products, you will frequently see two distinct acronyms:
+              </p>
+              <ul className="space-y-6 pt-2">
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <Landmark className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Annual Percentage Rate (APR)</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">This represents the annual cost of borrowing expressed as a percentage, including interest rates and upfront broker or processing fees. Our calculator helps isolate your true APR, ensuring you see the actual cost of a loan.</p>
+                  </div>
+                </li>
+                <li className="flex gap-4">
+                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <TrendingUp className="w-4 h-4 text-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Annual Percentage Yield (APY)</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">This represents the real annual rate of return earned on an investment, fully accounting for the compounding frequency of the account. APY is usually slightly higher than the nominal rate due to compounding effects.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
 
-              <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 space-y-6">
-                <h4 className="text-lg font-bold text-primary flex items-center gap-2">
-                  <History className="w-5 h-5 text-primary" />
-                  Why Analyze Your Interest Rates with MyApexCalc?
-                </h4>
-                <ul className="space-y-4">
-                  <li className="flex gap-3 text-sm text-muted-foreground">
-                    <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
-                    <span><strong>Instant Parameter Shifting:</strong> Play with rates, payment terms, and deposit amounts to watch your monthly and lifetime calculations update in real-time.</span>
-                  </li>
-                  <li className="flex gap-3 text-sm text-muted-foreground">
-                    <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
-                    <span><strong>Comprehensive Amortization Charts:</strong> Walk through a clean, annual breakdown showing your declining loan balances and cumulative lifetime interest.</span>
-                  </li>
-                  <li className="flex gap-3 text-sm text-muted-foreground">
-                    <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
-                    <span><strong>User-Friendly Precision:</strong> Designed for clarity, our tool eliminates the guesswork by isolating how much you earn or pay down to the fractional cent.</span>
-                  </li>
-                </ul>
-              </div>
+            <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 space-y-6">
+              <h4 className="text-lg font-bold text-primary flex items-center gap-2">
+                <History className="w-5 h-5 text-primary" />
+                Why Analyze Your Interest Rates with MyApexCalc?
+              </h4>
+              <ul className="space-y-4">
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Instant Parameter Shifting:</strong> Play with rates, payment terms, and deposit amounts to watch your monthly and lifetime calculations update in real-time.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>Comprehensive Amortization Charts:</strong> Walk through a clean, annual breakdown showing your declining loan balances and cumulative lifetime interest.</span>
+                </li>
+                <li className="flex gap-3 text-sm text-muted-foreground">
+                  <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
+                  <span><strong>User-Friendly Precision:</strong> Designed for clarity, our tool eliminates the guesswork by isolating how much you earn or pay down to the fractional cent.</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

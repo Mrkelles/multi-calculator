@@ -13,12 +13,12 @@ import {
   History, 
   ChevronRight,
   ShieldCheck,
-  Landmark
+  Landmark,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Slider } from '@/components/ui/slider';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   ChartContainer, 
@@ -27,52 +27,6 @@ import {
 } from '@/components/ui/chart';
 import { Pie, PieChart, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-const metadata: Metadata = {
-  title: 'Accurate Mortgage Calculator | Free Home Payment Estimator',
-  description: 'Estimate your monthly home payments instantly with our free mortgage calculator. Figure out mortgage payments including principal, interest, property taxes, and home insurance.',
-  keywords: [
-    'mortgage calculator',
-    'bankrate mortgage calculator',
-    'figure out mortgage payment',
-    'MyApexCalc',
-    'home loan calculator',
-    'p&i calculator',
-    'monthly housing costs'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Advanced Mortgage Payment Calculator | MyApexCalc',
-    description: 'Break down your home loan costs in seconds. Figure out mortgage payments, interest structures, and taxes with our interactive calculation tool.',
-    url: 'https://www.myapexcalc.com/calculators/mortgage',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/WLfWtgm/mortgage-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Advanced Mortgage Calculator and Monthly Breakdown Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Instant Home Loan & Mortgage Estimator | MyApexCalc',
-    description: 'Accurately figure out your total monthly mortgage obligations, including taxes, interest, and insurance.',
-    images: ['https://i.ibb.co/WLfWtgm/mortgage-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/mortgage',
-  },
-};
 
 export default function MortgagePage() {
   // Inputs
@@ -395,6 +349,36 @@ export default function MortgagePage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Interest Rate Sensitivity</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A buyer is looking at a <strong>$500,000 home</strong> with <strong>20% down ($100k)</strong>. At a <strong>6% interest rate</strong>, the monthly P&I is <strong>$2,398</strong>.</p>
+                <p>If the rate jumps to <strong>7%</strong>, the P&I increases to <strong>$2,661</strong>. Over 30 years, that 1% difference costs the buyer an extra <strong>$94,680 in interest</strong>.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: The PMI Trap</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>Purchasing a <strong>$350,000 condo</strong>. Case A is <strong>5% down ($17.5k)</strong>; Case B is <strong>20% down ($70k)</strong>.</p>
+                <p>With 5% down, the buyer pays for <strong>PMI (~$138/mo)</strong> and higher interest. Putting 20% down eliminates the PMI entirely and lowers the loan amount, saving over <strong>$450 every single month</strong> in total housing costs.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

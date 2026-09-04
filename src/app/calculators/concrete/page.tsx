@@ -8,12 +8,11 @@ import {
   Layers, 
   History, 
   Calculator,
-  LayoutGrid,
   Hash,
-  Pipette,
   TrendingUp,
   ShieldCheck,
-  ChevronRight
+  ChevronRight,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,58 +20,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
-import type { Metadata } from 'next';
-
-const metadata: Metadata = {
-  title: 'Accurate Concrete Calculator | Free Slab & Yardage Estimator',
-  description: 'Calculate concrete volume instantly with our free concrete calculator. Estimate concrete slabs, footings, columns, and find out how many yards or bags you need.',
-  keywords: [
-    'Concrete Calculator',
-    'Concrete Estimator',
-    'concrete measurement calculator',
-    'calculate cement',
-    'concrete slab calculator',
-    'MyApexCalc',
-    'concrete yardage calculator',
-    'bagged concrete estimator'
-  ],
-  
-  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Interactive Concrete & Slab Yardage Calculator | MyApexCalc',
-    description: 'Banish project guesswork. Estimate concrete volume for slabs, footings, or stairs and calculate total bags or cubic yards instantly.',
-    url: 'https://www.myapexcalc.com/calculators/concrete',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/TqJgSVm5/concrete-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Concrete and Construction Material Volume Calculator',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Concrete Slab & Yardage Estimator | MyApexCalc',
-    description: 'Calculate how much concrete you need in cubic yards, cubic feet, or pre-mixed bags for your next DIY or commercial project.',
-    images: ['https://i.ibb.co/TqJgSVm5/concrete-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/concrete',
-  },
-};
-
-type ConcreteMode = 'slab' | 'hole' | 'circular' | 'curb' | 'stairs';
 
 export default function ConcreteCalculatorPage() {
-  const [mode, setMode] = useState<ConcreteMode>('slab');
+  const [mode, setMode] = useState<'slab' | 'hole' | 'circular' | 'curb' | 'stairs'>('slab');
 
   // Density Constant: 133 lbs/ft3 or 2130 kg/m3
   const DENSITY_LBS_FT3 = 133;
@@ -420,6 +370,36 @@ export default function ConcreteCalculatorPage() {
         {/* Informational Text Section */}
         <div className="lg:col-span-12 space-y-12 py-10">
           <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Backyard Patio Slab</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>Estimating materials for a <strong>10' x 10' patio slab</strong> at a standard <strong>4-inch thickness</strong>. The calculator determines you need exactly <strong>1.23 cubic yards</strong> of concrete.</p>
+                  <p>If purchasing pre-mixed bags, you will need approximately <strong>56 bags of 80lb concrete</strong>. Adding a 10% safety margin brings the recommended order to 62 bags.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Cylindrical Fence Posts</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>Calculating concrete for <strong>12 fence post holes</strong>, each with a <strong>12-inch diameter</strong> and <strong>3-foot depth</strong>.</p>
+                  <p>The tool calculates a total volume of <strong>1.05 cubic yards</strong> (roughly 2.36 cubic feet per hole). This would require about <strong>48 bags of 80lb concrete</strong> to complete the entire fence line.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
@@ -498,8 +478,8 @@ export default function ConcreteCalculatorPage() {
                     </div>
                   </li>
                   <li className="flex gap-4">
-                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                      <Pipette className="w-4 h-4 text-accent" />
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
                     </div>
                     <div>
                       <p className="font-bold text-sm">Simultaneous Unit Conversions</p>

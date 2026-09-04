@@ -13,7 +13,8 @@ import {
   TrendingUp,
   ChevronRight,
   Calculator,
-  ShieldCheck
+  ShieldCheck,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,55 +29,6 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'Accurate Salary Calculator | Free Wage & Paycheck Estimator',
-  description: 'Convert your annual salary to hourly, weekly, bi-weekly, or monthly pay instantly. Use our free salary calculator to estimate your paycheck earnings.',
-  keywords: [
-    'Salary Calculator',
-    'pay check calculator',
-    'pay calculator',
-    'wage calculator',
-    'MyApexCalc',
-    'hourly to salary converter',
-    'income breakdown tool'
-  ],
-  
-  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Salary & Paycheck Calculator | MyApexCalc',
-    description: 'Convert and break down your earnings instantly. Easily calculate hourly wages, monthly income, and annual salary values with our free tool.',
-    url: 'https://www.myapexcalc.com/calculators/salary',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/6cNntKby/salary-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Salary and Paycheck Conversion Calculator Interface',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Wage & Paycheck Estimator | MyApexCalc',
-    description: 'Quickly calculate annual, monthly, bi-weekly, and hourly income breakdowns online.',
-    images: ['https://i.ibb.co/6cNntKby/salary-calculator.png'],
-  },
-
-  // Prevent duplicate index penalties by setting a clean canonical pathway
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/salary',
-  },
-};
 
 type SalaryPeriod = 'year' | 'quarter' | 'month' | 'biweek' | 'week' | 'day' | 'hour';
 
@@ -213,7 +165,7 @@ export default function SalaryCalculatorPage() {
 
           <Card className="bg-primary/5 border-primary/10">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-bold flex items-center gap-2">
+              <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
                 <Clock className="w-4 h-4 text-primary" />
                 Work Year Summary
               </CardTitle>
@@ -280,6 +232,36 @@ export default function SalaryCalculatorPage() {
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Hourly to Annual Conversion</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A freelancer is offered a project rate of <strong>$45 per hour</strong>. They plan to work a standard 40-hour week.</p>
+                  <p>By entering 45 in the Hour field, the tool reveals their equivalent annual salary is <strong>$93,600</strong>, helping them compare the offer against permanent full-time roles.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Negotiating a Monthly Budget</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A job seeker is offered an annual salary of <strong>$75,000</strong>. They need to know if this covers their <strong>$3,500 monthly expenses</strong>.</p>
+                  <p>The calculator shows that $75k annually breaks down to <strong>$6,250 per month (gross)</strong>. Even after estimating 25-30% for taxes, they can see they will have roughly $4,500 in take-home pay, comfortably meeting their budget.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
             <section className="space-y-4">
@@ -289,9 +271,6 @@ export default function SalaryCalculatorPage() {
               </h3>
               <p className="text-muted-foreground leading-relaxed">
                 Whether you are interviewing for a new job, negotiating a raise, comparing freelance contracts, or planning your household budget, having a clear grasp of your exact income breakdown is essential. While job listings usually show an annual salary, daily life is budgeted by the week, month, or paycheck. Our free, intuitive Salary Calculator takes the complexity out of personal finance, serving as a comprehensive pay calculator and dynamic wage calculator to map your earnings instantly.
-              </p>
-              <p className="text-xs text-muted-foreground italic bg-muted/30 p-3 rounded-lg border border-dashed">
-                "Understanding Your Gross Earnings vs. Estimated Deductions. Source: The Salary Calculator"
               </p>
               
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
@@ -379,7 +358,7 @@ export default function SalaryCalculatorPage() {
                     </div>
                   </li>
                   <li className="flex gap-4">
-                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
                       <ChevronRight className="w-4 h-4 text-accent" />
                     </div>
                     <div>

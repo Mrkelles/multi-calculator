@@ -14,7 +14,8 @@ import {
   ShieldCheck, 
   ChevronRight,
   Calculator,
-  BarChart
+  BarChart,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,52 +24,6 @@ import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-const metadata: Metadata = {
-  title: 'Website Ad Revenue Calculator | Estimate Monthly Earnings',
-  description: 'Calculate your potential website ad revenue based on pageviews, RPM, and ad units. Estimate annual earnings with traffic quality tier analysis.',
-  keywords: [
-    'ad revenue calculator',
-    'website earnings estimator',
-    'page RPM calculator',
-    'monetize website',
-    'display ad revenue',
-    'MyApexCalc',
-    'adSense revenue estimator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Website Ad Revenue Calculator | MyApexCalc',
-    description: 'Find your site\'s viral earning potential. Calculate ad revenue based on traffic quality, ad frequency, and global RPM benchmarks.',
-    url: 'https://www.myapexcalc.com/calculators/ad-revenue',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/6cNntKby/ad-revenue-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Ad Revenue Calculator Dashboard with Revenue Tiers',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Website Ad Revenue & Earnings Estimator | MyApexCalc',
-    description: 'Instantly calculate potential monthly and annual website ad revenue using customizable RPM and traffic tier metrics.',
-    images: ['https://i.ibb.co/6cNntKby/ad-revenue-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/ad-revenue',
-  },
-};
 
 export default function AdRevenuePage() {
   const [rpm, setRpm] = useState(0.65);
@@ -247,6 +202,36 @@ export default function AdRevenuePage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Niche Blog Growth</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A small niche blog currently has <strong>50,000 monthly pageviews</strong> with an <strong>RPM of $2.00</strong> and 2 ad units per page. This yields <strong>$200/month</strong>.</p>
+                <p>By optimizing the content for higher-paying keywords (increasing RPM to <strong>$5.00</strong>) and increasing ad density to 3 units, the monthly revenue jumps to <strong>$750/month</strong>, even with the same amount of traffic.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Viral Site Analysis</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A viral news site generates <strong>5,000,000 monthly views</strong> but primarily from low-CPC markets (Tier 3), resulting in a low <strong>$0.50 RPM</strong> and 4 ad units ($10,000/mo).</p>
+                <p>By pivoting to more Tier 1 (US/UK) focused content, even if traffic drops to 3,000,000 views, a higher <strong>$1.50 RPM</strong> with the same ad units would result in <strong>$18,000/mo</strong>—an 80% increase in revenue with less traffic.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+        
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

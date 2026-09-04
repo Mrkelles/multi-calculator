@@ -13,12 +13,13 @@ import {
   Landmark,
   TrendingUp,
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { 
   Table, 
@@ -28,52 +29,6 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import type { Metadata } from 'next';
-
-const metadata: Metadata = {
-  title: 'Accurate Sales Tax Calculator | Free Retail Tax Estimator',
-  description: 'Calculate state, county, and local sales tax instantly. Use our free retail tax calculator to estimate sales tax and reverse-calculate pre-tax prices.',
-  keywords: [
-    'Sales Tax Calculator',
-    'estimate sales tax',
-    'retail tax calculator',
-    'MyApexCalc',
-    'reverse sales tax calculator',
-    'sales tax lookup',
-    'consumer tax estimator'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Sales Tax & Retail Calculator | MyApexCalc',
-    description: 'Avoid surprises at the register. Calculate purchase totals, local sales taxes, and itemized receipts in seconds with our free online tool.',
-    url: 'https://www.myapexcalc.com/calculators/sales-tax',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/pB0Zvy7K/sales-tax-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Sales Tax Calculator and Retail Pricing Amortization Screen',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Retail Sales Tax Calculator | MyApexCalc',
-    description: 'Quickly estimate sales tax and final prices or reverse-calculate original prices before tax was added.',
-    images: ['https://i.ibb.co/pB0Zvy7K/sales-tax-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/sales-tax',
-  },
-};
 
 const stateTaxRates = [
   { state: "Alabama", rate: "4.00%" },
@@ -291,6 +246,36 @@ export default function SalesTaxCalculatorPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Adding Tax to a Purchase</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A customer buys a laptop for <strong>$1,200</strong> in a state with a <strong>6.5% sales tax</strong>.</p>
+                <p>The calculator reveals the tax amount is <strong>$78.00</strong>, bringing the final out-of-pocket cost to <strong>$1,278.00</strong>, helping the customer budget for the total expense at the register.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Reverse Tax Calculation</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A business owner receives a receipt for office supplies totaling <strong>$450.00</strong>, which includes a <strong>9% local tax</strong>. They need the pre-tax price for bookkeeping.</p>
+                <p>Using the "Reverse Tax" mode, the tool reveals the original net price was <strong>$412.84</strong>, with <strong>$37.16</strong> paid in sales tax.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

@@ -2,60 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
-import { Percent, TrendingUp, Calculator, Info, History, ChevronRight } from 'lucide-react';
+import { Percent, TrendingUp, Calculator, Info, History, ChevronRight, Lightbulb } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'GPA to Percentage Calculator | Quick GPA Conversion',
-  description: 'Convert your cumulative GPA to an exact percentage instantly. Supports standard 4.0 scales, 5.0 scales, and international conversion formulas.',
-  keywords: [
-    'gpa percentage calculator',
-    'gpa to percentage',
-    'gpa to percentage calculator',
-    'MyApexCalc',
-    'convert gpa to percent',
-    'gpa conversion tool'
-  ],
-  
-  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'GPA to Percentage Calculator | MyApexCalc',
-    description: 'Instantly convert your GPA score to a weighted percentage. Perfect for university admissions and international applications.',
-    url: 'https://www.myapexcalc.com/calculators/gpa-to-percentage',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/271rZN90/gpa-percentage-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc GPA to Percentage Converter and Scale Options',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free GPA to Percentage Calculator | MyApexCalc',
-    description: 'Convert any GPA score to an equivalent grade percentage in seconds with our online tool.',
-    images: ['https://i.ibb.co/271rZN90/gpa-percentage-calculator.png'],
-  },
-
-  // Prevent duplicate index penalties by setting a clean canonical pathway
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/gpa-to-percentage',
-  },
-};
 
 export default function GPAToPercentagePage() {
   const [gpa, setGpa] = useState(3.5);
@@ -126,6 +78,36 @@ export default function GPAToPercentagePage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: International Admissions</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A student from a <strong>10.0 scale system</strong> (e.g., in India) has a <strong>7.8 CGPA</strong>. They are applying to a European university that requires scores in percentages.</p>
+                <p>Using the 10.0 scale converter, they find their equivalent percentage is <strong>78%</strong>, helping them quickly determine if they meet the minimum 75% requirement for the program.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Scholarship Eligibility</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A US student has a <strong>3.6 GPA on a 4.0 scale</strong>. A corporate scholarship board requires applicants to have at least a <strong>90% academic average</strong>.</p>
+                <p>The tool converts the 3.6 GPA into exactly <strong>90.0%</strong>, confirming the student is eligible to apply for the grant.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

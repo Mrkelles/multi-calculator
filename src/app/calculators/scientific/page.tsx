@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useCallback, useEffect } from 'react';
@@ -14,7 +13,8 @@ import {
   Zap,
   ShieldCheck,
   LayoutGrid,
-  Keyboard
+  Keyboard,
+  Lightbulb
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,53 +22,6 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference.
-const metadata: Metadata = {
-  title: 'Free Scientific Calculator | Advanced Online Math & Science Tool',
-  description: 'Solve complex equations instantly with our free online scientific calculator. Perform trigonometric, logarithmic, and algebraic calculations with this advanced tool.',
-  keywords: [
-    'Scientific Calculator',
-    'advanced calculator',
-    'smart calculator',
-    'MyApexCalc',
-    'trigonometry calculator',
-    'logarithmic solver',
-    'engineering calculator online'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Interactive Scientific & Advanced Calculator | MyApexCalc',
-    description: 'Solve equations, calculate trigonometry, and analyze functions. An advanced, responsive, and smart calculator designed for students and professionals.',
-    url: 'https://www.myapexcalc.com/calculators/scientific',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/F42rYBZY/scientific-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Scientific Calculator showing trigonometric, logarithmic, and memory function layout',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Advanced Scientific & Smart Calculator | MyApexCalc',
-    description: 'A powerful online scientific calculator featuring parenthetical grouping, trigonometry, exponentials, and physical constants.',
-    images: ['https://i.ibb.co/F42rYBZY/scientific-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/scientific',
-  },
-};
 
 export default function ScientificCalculatorPage() {
   const [display, setDisplay] = useState('0');
@@ -376,6 +329,36 @@ export default function ScientificCalculatorPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Compound Interest Math</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A student needs to solve the future value formula: <strong>1000 * (1 + 0.05/12)^(12*5)</strong>.</p>
+                <p>Using the scientific engine, they type the expression with parentheses exactly as written. The tool follows PEMDAS order of operations to reveal the result of <strong>1283.35</strong> instantly.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Trigonometric Calculations</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>An engineering student needs to find the vertical component of a vector with a magnitude of <strong>50</strong> at an angle of <strong>30 degrees</strong>.</p>
+                <p>They ensure the calculator is in <strong>DEG</strong> mode, type "50", press "×", and then the "sin" function of "30". The tool reveals the precise height of <strong>25</strong>.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

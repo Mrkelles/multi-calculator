@@ -15,7 +15,8 @@ import {
   Calculator,
   Video,
   Play,
-  Target
+  Target,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,51 +26,6 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference.
-const metadata: Metadata = {
-  title: 'YouTube Revenue Calculator | Estimate Shorts & Video Earnings',
-  description: 'Estimate your video earnings instantly with our free YouTube revenue calculator. Compare Shorts and Long-form payouts using custom RPM and view metrics.',
-  keywords: [
-    'youtube money views calculator',
-    'youtube revenue calculator',
-    'youtube earnings calculator',
-    'estimated youtube earnings',
-    'youtube shorts money calculator',
-    'MyApexCalc',
-    'creator earnings estimator',
-    'CPM calculator'
-  ],
-  
-  openGraph: {
-    title: 'Interactive YouTube Money & Revenue Calculator | MyApexCalc',
-    description: 'Track your potential channel payout. Analyze your estimated youtube earnings for both Shorts and long-form videos with custom RPM variables.',
-    url: 'https://www.myapexcalc.com/calculators/youtube-revenue',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/b5cf2xS0/youtube-revenue-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc YouTube Money Calculator and Milestone Projection Board',
-      },
-    ],
-  },
-
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Estimated YouTube Earnings Calculator | MyApexCalc',
-    description: 'Quickly calculate your potential ad revenue utilizing daily views and customizable CPM bounds for all video formats.',
-    images: ['https://i.ibb.co/b5cf2xS0/youtube-revenue-calculator.png'],
-  },
-
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/youtube-revenue',
-  },
-};
 
 type ContentType = 'long-form' | 'shorts';
 
@@ -248,7 +204,7 @@ export default function YouTubeRevenuePage() {
                   ${Math.round(earnings.yearly).toLocaleString()}
                 </div>
               </CardContent>
-            </Card>
+            </div>
           </div>
 
           <Card>
@@ -297,6 +253,36 @@ export default function YouTubeRevenuePage() {
 
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <Separator />
+
+          {/* Worked Examples Section */}
+          <section className="space-y-6 text-left">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+              <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 1: Educational Niche Performance</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A creator in the <strong>Finance/Tech</strong> niche makes 10-minute videos. They average <strong>20,000 views daily</strong> with a high RPM of <strong>$12.00</strong>.</p>
+                  <p>The calculator reveal they earn <strong>$240 per day</strong>, totaling <strong>$87,600 per year</strong>. This demonstrates how high-value niches can earn significant revenue even with moderate view counts.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-none shadow-sm bg-muted/20">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scenario 2: Viral Shorts Channel</CardTitle>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground space-y-2">
+                  <p>A gaming channel switches to posting 3 Shorts per day, achieving a massive <strong>2,000,000 daily views</strong> but at a lower RPM of <strong>$0.25</strong>.</p>
+                  <p>The tool reveal this channel earns <strong>$500 per day</strong> or <strong>$15,000 per month</strong>. This highlights how the scale of Shorts can match or exceed long-form revenue through pure volume.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
           <Separator />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

@@ -14,7 +14,8 @@ import {
   ChevronUp, 
   History,
   TrendingUp,
-  ChevronRight
+  ChevronRight,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,55 +23,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-/**
- * Metadata for SEO and Social Sharing
- */
-const metadata: Metadata = {
-  title: 'Accurate Fraction Calculator | Free Fraction & Mixed Number Tool',
-  description: 'Add, subtract, multiply, and divide fractions easily with our free fraction calculator. Reduce fractions to their simplest form and convert them to decimals.',
-  keywords: [
-    'Fraction Calculator',
-    'calculate the fraction',
-    'simple fraction calculator',
-    'MyApexCalc',
-    'mixed fractions calculator',
-    'simplify fractions tool',
-    'fraction to decimal converter'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Interactive Fraction Calculator & Simplifier | MyApexCalc',
-    description: 'Simplify fraction math instantly. Solve additions, subtractions, multiplications, and divisions of fractions and mixed numbers in seconds.',
-    url: 'https://www.myapexcalc.com/calculators/fraction',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/6RY2s8Fw/fraction-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Fraction Calculator showing mixed numbers, steps, and simplified results',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Simple Fraction & Mixed Number Calculator | MyApexCalc',
-    description: 'Instantly calculate fractions and view step-by-step math, including common denominators and simplified forms.',
-    images: ['https://i.ibb.co/6RY2s8Fw/fraction-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/fraction',
-  },
-};
 
 /**
  * Utility functions for fraction math
@@ -408,6 +360,36 @@ export default function FractionCalculatorsPage() {
 
         <Separator />
 
+        {/* Worked Examples Section */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Carpentry Measurements</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A woodworker needs to join two boards. One is <strong>2 3/4 inches</strong> thick, and the other is <strong>1 5/8 inches</strong> thick. They need the total thickness.</p>
+                <p>By adding 2 3/4 + 1 5/8, the calculator converts them to 11/4 and 13/8, finds the common denominator (8), and yields <strong>4 3/8 inches</strong> (35/8), ensuring a perfect fit.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Recipe Scaling</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A baker wants to make half a recipe that calls for <strong>3/4 cup of sugar</strong>.</p>
+                <p>By dividing 3/4 by 2 (or multiplying 3/4 by 1/2), the tool reveals they need exactly <strong>3/8 cup</strong>, which can be easily measured using standard kitchen tools.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <Separator />
+
         {/* 2. Mixed Numbers Calculator */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">
@@ -727,8 +709,8 @@ export default function FractionCalculatorsPage() {
                     </div>
                   </li>
                   <li className="flex gap-4">
-                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                      <ChevronRight className="w-4 h-4 text-accent" />
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-primary" />
                     </div>
                     <div>
                       <p className="font-bold text-sm">Mixed and Improper Inputs</p>

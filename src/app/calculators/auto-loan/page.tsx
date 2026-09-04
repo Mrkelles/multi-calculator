@@ -14,62 +14,14 @@ import {
   ShieldCheck,
   ChevronRight,
   Landmark,
-  Clock
+  Clock,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-// Note: Metadata is defined here for reference. In a production Next.js environment, 
-// this would typically be exported from a Server Component (page.tsx) that wraps 
-// this Client Component.
-const metadata: Metadata = {
-  title: 'Accurate Auto Loan Calculator | Estimate Vehicle Payments',
-  description: 'Calculate your monthly car payment instantly with our free auto loan calculator. Input vehicle price, down payment, interest rates, and loan terms to plan your budget.',
-  keywords: [
-    'auto loan calculator',
-    'automobile loan calculator',
-    'estimate vehicle payment',
-    'MyApexCalc',
-    'car payment estimator',
-    'vehicle interest calculator',
-    'car loan amortization'
-  ],
-  
-  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Interactive Auto Loan & Car Payment Calculator | MyApexCalc',
-    description: 'Avoid dealership surprises. Figure out your true monthly cost, calculate interest fees, and estimate vehicle payment options in seconds.',
-    url: 'https://www.myapexcalc.com/calculators/auto-loan',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/GQstbRww/autoloan-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Auto Loan Calculator and Monthly Payment Estimator Dashboard',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Free Automobile Loan Calculator | MyApexCalc',
-    description: 'Instantly calculate car payments, compare loan lengths, and see your total interest costs over time.',
-    images: ['https://i.ibb.co/GQstbRww/autoloan-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent duplicate indexing issues
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/auto-loan',
-  },
-};
 
 export default function AutoLoanPage() {
   // Inputs
@@ -374,6 +326,36 @@ export default function AutoLoanPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <Separator />
+
+        {/* Worked Examples Section */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Comparing Loan Terms</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>Buying a <strong>$30,000 SUV</strong> with <strong>$5,000 down</strong>. Loan A is for <strong>60 months at 5.0%</strong>; Loan B is for <strong>72 months at 7.0%</strong>.</p>
+                <p>Loan A has a monthly payment of <strong>$471.78</strong> and total interest of <strong>$3,306</strong>. Loan B has a monthly payment of <strong>$426.43</strong> but costs <strong>$5,703</strong> in interest—over $2,300 more for a lower monthly bill.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: The Impact of Down Payment</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>Purchasing a <strong>$40,000 truck</strong> at <strong>6.5% interest for 60 months</strong>. Case A is <strong>$0 down</strong>; Case B is <strong>$8,000 down</strong>.</p>
+                <p>With $0 down, the payment is <strong>$782.63/mo</strong>. With $8,000 down, the payment drops to <strong>$626.10/mo</strong>, saving the buyer $156 every single month and reducing total interest by over $1,300.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">

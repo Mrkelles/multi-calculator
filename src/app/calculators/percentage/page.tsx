@@ -14,7 +14,8 @@ import {
   Zap,
   TrendingUp,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  Lightbulb
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -22,54 +23,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-const metadata: Metadata = {
-  title: 'Accurate Percentage Calculator | Free Math & Discount Tool',
-  description: 'Calculate percentages, increases, decreases, and differences instantly. Use our free online percentage calculator to solve any math problem or figure out a percentage.',
-  keywords: [
-    'percentage calculator',
-    'percentage formula',
-    'Find percentage online',
-    'figure out a percentage',
-    'MyApexCalc',
-    'percentage finder',
-    'percentage difference calculator',
-    'percentage of a percentage',
-    'change in percentage formula'
-  ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
-  openGraph: {
-    title: 'Precision Percentage Calculator & Math Tool | MyApexCalc',
-    description: 'Solve percentage problems in seconds. Calculate percentage increases, find percentage values, and figure out proportions easily.',
-    url: 'https://www.myapexcalc.com/calculators/percentage',
-    siteName: 'MyApexCalc',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://i.ibb.co/p6tXgDrR/percentage-calculator.png',
-        width: 1200,
-        height: 630,
-        alt: 'MyApexCalc Percentage Calculator and Multi-Function Math Interface',
-      },
-    ],
-  },
-
-  // Twitter visual preview specs
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Instant Online Percentage Solver | MyApexCalc',
-    description: 'Quickly calculate percent differences, retail discounts, and financial margins using our intuitive web calculator.',
-    images: ['https://i.ibb.co/p6tXgDrR/percentage-calculator.png'],
-  },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
-  alternates: {
-    canonical: 'https://www.myapexcalc.com/calculators/percentage',
-  },
-};
 
 export default function PercentageCalculatorPage() {
   // Visibility Toggles
@@ -214,6 +167,36 @@ export default function PercentageCalculatorPage() {
 
         <Separator />
 
+        {/* Worked Examples Section */}
+        <section className="space-y-6 text-left">
+          <div className="flex items-center gap-3">
+            <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
+            <h3 className="text-2xl font-bold text-primary">Worked Examples</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 1: Retail Discount</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>A shopper sees a jacket originally priced at <strong>$120</strong> with a <strong>35% off</strong> tag. They need the final price.</p>
+                <p>Using the "Value +/- %" tool, they enter 120 as base, 35 as percent, and select "decrease." The tool reveals the discount is $42 and the final price is <strong>$78</strong>.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-none shadow-sm bg-muted/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Scenario 2: Annual Salary Raise</CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground space-y-2">
+                <p>An employee earning <strong>$55,000</strong> receives a raise to <strong>$58,300</strong>. They want to know the percentage increase.</p>
+                <p>By entering 55,000 as the start and 58,300 as the end in the "Percentage Change" tool, the calculator reveals a <strong>6.0% raise</strong>, helping them benchmark their growth.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <Separator />
+
         {/* 2. Percentage Difference Calculator */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">
@@ -314,7 +297,7 @@ export default function PercentageCalculatorPage() {
                 <Button 
                   variant="secondary" 
                   size="sm" 
-                  className="w-full mt-6 bg-white/10 hover:bg-white/20 border-white/10"
+                  className="w-full mt-6 bg-white/10 hover:bg-white/20 border-white/20"
                   onClick={() => setShowChangeValueSteps(!showChangeValueSteps)}
                 >
                   {showChangeValueSteps ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
