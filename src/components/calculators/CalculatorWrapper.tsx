@@ -60,7 +60,11 @@ export function CalculatorWrapper({ children, title, description, icon: Icon }: 
           
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 rounded-full">
+              <Button 
+                variant="default" 
+                size="icon" 
+                className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full shadow-md"
+              >
                 <Share2 className="h-5 w-5" />
                 <span className="sr-only">Share Calculator</span>
               </Button>
