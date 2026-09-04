@@ -9,6 +9,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { addDays, format, differenceInDays } from 'date-fns';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Date Calculator | Add/Subtract Days & Find Duration',
+  description: 'Calculate the exact number of days between two dates or find a target date by adding or subtracting days. Supports leap years and historical tracking.',
+  keywords: ['date calculator', 'days between dates', 'date duration', 'add days to date', 'calendar calculator'],
+};
 
 export default function DateCalculatorPage() {
   const [isMounted, setIsMounted] = useState(false);

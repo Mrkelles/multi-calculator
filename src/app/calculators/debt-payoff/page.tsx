@@ -18,6 +18,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Debt Payoff Calculator | Interest Savings & Payoff Timeline',
+  description: 'Determine how long it will take to pay off your debt. Compare strategies like Debt Snowball or Avalanche to save on interest and reach zero faster.',
+  keywords: ['debt payoff calculator', 'credit card payoff', 'debt reduction strategy', 'interest savings calculator', 'debt free date'],
+};
 
 export default function DebtPayoffPage() {
   const [balance, setBalance] = useState(10000);

@@ -8,6 +8,13 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'GPA to Percentage Calculator | Global Grade Converter',
+  description: 'Convert your GPA from a 4.0, 5.0, or 10.0 scale into an equivalent percentage. Essential for international university admissions.',
+  keywords: ['gpa to percentage', 'grade conversion', '4.0 to percentage', 'academic score converter', 'percentage calculator'],
+};
 
 export default function GPAToPercentagePage() {
   const [gpa, setGpa] = useState(3.5);
@@ -104,9 +111,8 @@ export default function GPAToPercentagePage() {
                 <p>A US student has a <strong>3.6 GPA on a 4.0 scale</strong>. A corporate scholarship board requires applicants to have at least a <strong>90% academic average</strong>.</p>
                 <p>The tool converts the 3.6 GPA into exactly <strong>90.0%</strong>, confirming the student is eligible to apply for the grant.</p>
               </CardContent>
-            </Card>
-          </div>
-        </section>
+            </div>
+          </section>
 
         <Separator />
         

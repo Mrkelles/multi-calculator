@@ -11,6 +11,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Interest Calculator | Simple & Compound Interest Growth',
+  description: 'Calculate simple and compound interest with recurring contributions. View detailed yearly and monthly growth schedules.',
+  keywords: ['interest calculator', 'simple interest', 'compound interest', 'investment growth', 'savings interest'],
+};
 
 export default function InterestCalculatorPage() {
   const [principal, setPrincipal] = useState(10000);

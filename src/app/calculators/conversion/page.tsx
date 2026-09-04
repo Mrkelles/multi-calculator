@@ -24,6 +24,13 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Conversion Calculator | High Precision Unit Converter',
+  description: 'Convert between length, weight, volume, temperature, and area with professional-grade precision. Supports both Metric and Imperial systems.',
+  keywords: ['unit converter', 'metric to imperial', 'measurement conversion', 'length converter', 'weight conversion'],
+};
 
 type ConversionMode = 'length' | 'temperature' | 'area' | 'volume' | 'weight';
 

@@ -20,6 +20,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'GPA Calculator | Academic Semester & Cumulative Planner',
+  description: 'Calculate your semester and cumulative GPA based on course credits and grades. Plan your academic success with our intuitive grading tool.',
+  keywords: ['gpa calculator', 'grade point average', 'college gpa tool', 'weighted gpa', 'academic planning'],
+};
 
 const GRADE_POINTS = {
   'A+': 4.0, 'A': 4.0, 'A-': 3.7,

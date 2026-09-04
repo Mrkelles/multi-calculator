@@ -23,6 +23,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Fraction Calculator | Simplify & Solve Complex Fractions',
+  description: 'Add, subtract, multiply, and divide fractions and mixed numbers. Get step-by-step solutions and decimal conversions for all calculations.',
+  keywords: ['fraction calculator', 'simplify fractions', 'mixed numbers calculator', 'fraction to decimal', 'math solver'],
+};
 
 /**
  * Utility functions for fraction math
@@ -240,7 +247,7 @@ export default function FractionCalculatorsPage() {
       if (bOp === '+') { resN = bn1 * bd2 + bn2 * bd1; resD = bd1 * bd2; steps.push(`(n1*d2 + n2*d1) / (d1*d2)`); }
       else if (bOp === '-') { resN = bn1 * bd2 - bn2 * bd1; resD = bd1 * bd2; steps.push(`(n1*d2 - n2*d1) / (d1*d2)`); }
       else if (bOp === '*') { resN = bn1 * bn2; resD = bd1 * bd2; steps.push(`(n1*n2) / (d1*d2)`); }
-      else if (bOp === '/') { resN = bn1 * bd2; resD = bd1 * bn2; steps.push(`(n1*d2) / (d1*n2)`); }
+      else if (bOp === '/') { resN = bn1 * bd2; resD = bd1 * bn2; steps.push(`(n1*d2) / (n1*n2)`); }
 
       const simple = simplifyBig(resN, resD);
       steps.push(`Simplified by GCD: ${simple.gcd.toString()}`);
@@ -453,7 +460,7 @@ export default function FractionCalculatorsPage() {
                     className="w-full mt-6 bg-white/10 hover:bg-white/20 border-white/20"
                     onClick={() => setShowMixedSteps(!showMixedSteps)}
                   >
-                    {showMixedSteps ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                    {showMixedSteps ? <ChevronUp size(14) /> : <ChevronDown size(14) />}
                     <span className="ml-2">Show Calculation</span>
                   </Button>
                   <div className="text-left">
@@ -499,7 +506,7 @@ export default function FractionCalculatorsPage() {
                 className="mt-6 gap-2"
                 onClick={() => setShowSimplifySteps(!showSimplifySteps)}
               >
-                {showSimplifySteps ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                {showSimplifySteps ? <ChevronUp size(14) /> : <ChevronDown size(14) />}
                 Show Calculation
               </Button>
               <div className="w-full text-left">
@@ -666,7 +673,7 @@ export default function FractionCalculatorsPage() {
                 <div className="space-y-3">
                   <p className="font-bold text-sm text-foreground">1. Adding and Subtracting Fractions (Finding the LCD)</p>
                   <p className="text-sm text-muted-foreground">To add or subtract fractions with unlike denominators, the math engine finds the Least Common Denominator (LCD). For example, to calculate the sum of two fractions (a/b and c/d):</p>
-                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                     a/b + c/d = [(a × d) + (c × b)] / (b × d)
                   </div>
                 </div>
@@ -674,7 +681,7 @@ export default function FractionCalculatorsPage() {
                 <div className="space-y-3">
                   <p className="font-bold text-sm text-foreground">2. Simplifying the Result (Greatest Common Divisor)</p>
                   <p className="text-sm text-muted-foreground">Once an operation is complete, our calculator reduces the fraction using the Greatest Common Divisor (GCD). For instance, if your calculation results in 8/12, our tool calculates that the GCD is 4:</p>
-                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                     (8 ÷ 4) / (12 ÷ 4) = 2/3
                   </div>
                 </div>
@@ -682,7 +689,7 @@ export default function FractionCalculatorsPage() {
                 <div className="space-y-3">
                   <p className="font-bold text-sm text-foreground">3. Handling Mixed Numbers</p>
                   <p className="text-sm text-muted-foreground">A mixed number is converted into an improper fraction before any mathematical operation takes place:</p>
-                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border">
+                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                     Improper Fraction = [(Whole × Denominator) + Numerator] / Denominator
                   </div>
                 </div>

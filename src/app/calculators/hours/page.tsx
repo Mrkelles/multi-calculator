@@ -30,6 +30,13 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Hours Calculator | Total Time & Decimal Hour Tracker',
+  description: 'Calculate the exact hours and minutes between two times or dates. Perfect for payroll, shift tracking, and project management.',
+  keywords: ['hours calculator', 'time between times', 'work hours tracker', 'decimal hours converter', 'shift calculator'],
+};
 
 export default function HoursCalculatorPage() {
   const [mode, setMode] = useState<'times' | 'dates'>('times');

@@ -38,6 +38,13 @@ import {
   startOfDay,
   intervalToDuration
 } from 'date-fns';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Pregnancy Due Date Calculator | Track Your Timeline',
+  description: 'Calculate your estimated due date using your last period, ultrasound, or conception date. Includes a detailed weekly milestone schedule.',
+  keywords: ['due date calculator', 'pregnancy timeline', 'estimated due date', 'baby due date', 'pregnancy week tracker'],
+};
 
 type DueDateMode = 'last-period' | 'ultrasound' | 'conception' | 'ivf';
 

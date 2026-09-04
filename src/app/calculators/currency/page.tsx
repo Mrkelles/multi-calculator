@@ -25,9 +25,16 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Live Currency Converter | Real-Time Global Exchange Rates',
+  description: 'Convert between global currencies with real-time accuracy. Powered by CurrencyFreaks for up-to-the-minute market rates.',
+  keywords: ['currency converter', 'exchange rates', 'forex calculator', 'live currency rates', 'money converter'],
+};
 
 // Access the API key from environment variables. 
-// Note: NEXT_PUBLIC_ prefix is required for client-side access in Next.js.
+// Note: NEXT_PUBLIC_ CURRENCY_KEY must be set in your .env
 const API_KEY = process.env.NEXT_PUBLIC_CURRENCY_KEY;
 const API_URL = `https://api.currencyfreaks.com/v2.0/rates/latest?apikey=${API_KEY}`;
 
