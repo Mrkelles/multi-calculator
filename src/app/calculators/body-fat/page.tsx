@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/table';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: 'Body Fat Calculator | U.S. Navy Method & Composition Analysis',
   description: 'Estimate your body fat percentage using the U.S. Navy circumference method. Track your lean body mass and health category with high precision.',
   keywords: ['body fat calculator', 'body composition', 'navy body fat method', 'lean body mass', 'fitness tracker'],

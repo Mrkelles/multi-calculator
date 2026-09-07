@@ -29,6 +29,13 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import type { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'BMR Calculator | Basal Metabolic Rate Estimator',
+  description: 'Calculate your Basal Metabolic Rate (BMR) using the Mifflin-St Jeor equation. Determine the calories your body burns at rest and plan your fitness goals.',
+  keywords: ['bmr calculator', 'basal metabolic rate', 'calorie needs', 'metabolism estimator', 'TDEE calculator'],
+};
 
 const activityLevels = [
   { label: 'Sedentary: little or no exercise', multiplier: 1.2 },
@@ -179,7 +186,7 @@ export default function BMRCalculatorPage() {
           <Card className="bg-primary/5 border-primary/10">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
-                <Info className="w-4 h-4" />
+                <Info className="w-4 h-4 text-primary" />
                 Medical Standard
               </CardTitle>
             </CardHeader>

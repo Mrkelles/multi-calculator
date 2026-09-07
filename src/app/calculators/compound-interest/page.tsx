@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: 'Compound Interest Calculator | Exponential Wealth Growth',
   description: 'Visualize the power of compounding. Calculate future investment value with monthly contributions and custom compounding frequencies.',
   keywords: ['compound interest calculator', 'investment growth', 'future value estimator', 'wealth building tool', 'APY calculator'],

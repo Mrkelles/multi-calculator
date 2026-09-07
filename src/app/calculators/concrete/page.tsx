@@ -23,7 +23,7 @@ import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: 'Concrete Calculator | Construction Material Estimator',
   description: 'Calculate concrete volume and bag counts for slabs, walls, footings, and columns. Estimate project costs and include wastage margins.',
   keywords: ['concrete calculator', 'cement estimator', 'construction math', 'slab volume', 'material calculator'],
@@ -486,8 +486,8 @@ export default function ConcreteCalculatorPage() {
                     </div>
                   </li>
                   <li className="flex gap-4">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                      <ChevronRight className="w-4 h-4 text-primary" />
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <ChevronRight className="w-4 h-4 text-accent" />
                     </div>
                     <div>
                       <p className="font-bold text-sm">Simultaneous Unit Conversions</p>

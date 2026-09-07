@@ -22,6 +22,13 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Auto Loan Calculator | Monthly Car Payment Estimator',
+  description: 'Calculate your monthly car payment including trade-ins, sales tax, and fees. Compare loan terms and interest rates for the best vehicle financing deal.',
+  keywords: ['auto loan calculator', 'car payment estimator', 'vehicle financing', 'trade-in value', 'loan interest calculator'],
+};
 
 export default function AutoLoanPage() {
   // Inputs
