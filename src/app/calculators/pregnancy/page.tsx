@@ -475,8 +475,8 @@ export default function PregnancyCalculatorPage() {
                   <p>A user is currently in their <strong>First Trimester (Week 10)</strong>. They want to know when they can expect to hear a heartbeat or see noticeable movements.</p>
                   <p>The Milestone Schedule reveals that the heartbeat is detectable by ultrasound around <strong>Week 6</strong>, and significant movements often begin around <strong>Week 18</strong>, helping the user prepare for their next OBGYN appointments.</p>
                 </CardContent>
-              </div>
             </Card>
+            </div>
           </section>
 
           <Separator />
