@@ -16,13 +16,6 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'BMI Calculator | Accurate Body Mass Index & Health Status',
-  description: 'Quickly calculate your Body Mass Index (BMI) using metric or imperial units. Compare your results against official WHO health categories.',
-  keywords: ['bmi calculator', 'body mass index', 'weight status', 'health calculator', 'ideal weight estimator'],
-};
 
 export default function BMIPage() {
   const [weight, setWeight] = useState(70);
@@ -245,7 +238,7 @@ export default function BMIPage() {
             </div>
 
             <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-4">
-              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+              <h4 className="text-xl font-bold text-primary items-center gap-2">
                 <History className="w-5 h-5 text-primary" />
                 Why Track Your BMI with MyApexCalc?
               </h4>

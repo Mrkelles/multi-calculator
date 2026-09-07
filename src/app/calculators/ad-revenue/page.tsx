@@ -24,13 +24,6 @@ import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Website Ad Revenue Calculator | Professional Earnings Estimator',
-  description: 'Estimate your website ad revenue based on monthly pageviews, RPM, and ad density. Analyze traffic quality tiers to project annual income.',
-  keywords: ['ad revenue calculator', 'website earnings estimator', 'RPM calculator', 'blog monetization', 'adsense earnings'],
-};
 
 export default function AdRevenuePage() {
   const [rpm, setRpm] = useState(0.65);
