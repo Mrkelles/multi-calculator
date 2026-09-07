@@ -19,10 +19,50 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Loan Interest Calculator | Total Cost of Borrowing',
-  description: 'Calculate the total interest paid on personal or auto loans. View monthly payments and principal payoff structures.',
-  keywords: ['loan interest calculator', 'borrowing cost', 'auto loan interest', 'personal loan calculator', 'interest payment estimator'],
+const metadata: Metadata = {
+  title: 'Accurate Loan Interest Calculator | MyApexCalc',
+  description: 'Determine the true lifetime interest costs on your personal, auto, or student loans with our free loan interest calculator. Calculate your monthly interest payments instantly.',
+  keywords: [
+    'compound interest calculator',
+    'compound interest',
+    'composite interest calculation',
+    'compound interest formula',
+    'MyApexCalc',
+    'loan interest calculator',
+    'amortization schedule',
+    'debt interest estimator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Free Loan Interest Calculator | MyApexCalc',
+    description: 'Calculate monthly payments and total accrued interest on any loan. Input your principal, interest rate, and term to see your exact amortization schedule.',
+    url: 'https://www.myapexcalc.com/calculators/loan-interest',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/kgN4S2s2/loan-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Loan Interest Calculator UI with Payoff Breakdown',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Live Loan Interest & Payoff Calculator | MyApexCalc',
+    description: 'Quickly estimate your monthly interest charges and see how additional payments can accelerate your debt payoff timeline.',
+    images: ['https://i.ibb.co/kgN4S2s2/loan-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/loan-interest',
+  },
 };
 
 export default function LoanInterestPage() {
@@ -152,6 +192,7 @@ export default function LoanInterestPage() {
                 <p>Comparing two <strong>$30,000 auto loans</strong> over <strong>60 months</strong>. Applicant A gets a <strong>5% rate</strong>; Applicant B (with lower credit) gets <strong>12%</strong>.</p>
                 <p>Applicant A pays <strong>$566.14/mo</strong> and <strong>$3,968 total interest</strong>. Applicant B pays <strong>$667.33/mo</strong> and <strong>$10,040 total interest</strong>. Improving your rate by 7% saves <strong>$6,072</strong> over five years.</p>
               </CardContent>
+              </Card>
             </div>
           </section>
 

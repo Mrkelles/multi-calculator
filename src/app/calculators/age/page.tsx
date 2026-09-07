@@ -11,9 +11,48 @@ import { intervalToDuration } from 'date-fns';
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-  title: 'Age Calculator | Exact Chronological Age & Life Milestones',
-  description: 'Calculate your exact age in years, months, and days. Find out how many total days you have been alive and track upcoming birthday milestones.',
-  keywords: ['age calculator', 'chronological age', 'birthday calculator', 'how old am i', 'date of birth calculator'],
+  title: 'Accurate Age Calculator | Live Birthday & Date of Birth Tracker',
+  description: 'Find your exact age in years, months, weeks, days, and seconds with our free online age calculator. Simply input your date of birth to calculate your age instantly.',
+  keywords: [
+    'Age calculator',
+    'calculate your age',
+    'birthday calculator',
+    'Date of birth calculator',
+    'MyApexCalc',
+    'chronological age tracker',
+    'days until next birthday'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Age & Birthday Calculator | MyApexCalc',
+    description: 'Stop counting on your fingers. Discover your precise chronological age and count down the days until your next birthday instantly.',
+    url: 'https://www.myapexcalc.com/calculators/age',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/1J07DMwT/age-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Age Calculator and Chronological Breakdown Interface',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Chronological Age & Birthday Calculator | MyApexCalc',
+    description: 'Calculate your exact age down to the day, hour, and minute with our free online calculator.',
+    images: ['https://i.ibb.co/1J07DMwT/age-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/age',
+  },
 };
 
 export default function AgeCalculatorPage() {

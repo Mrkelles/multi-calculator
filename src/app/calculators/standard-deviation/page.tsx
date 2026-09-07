@@ -13,7 +13,8 @@ import {
   TrendingUp, 
   Zap, 
   ShieldCheck, 
-  Lightbulb
+  Lightbulb,
+  ChevronRight
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -243,7 +244,7 @@ export default function StandardDeviationPage() {
                   className="w-full gap-2 font-bold"
                   onClick={() => setShowSteps(!showSteps)}
                 >
-                  {showSteps ? <ChevronUp size(14) /> : <ChevronDown size(14) />}
+                  {showSteps ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                   Show Calculation Steps
                 </Button>
 

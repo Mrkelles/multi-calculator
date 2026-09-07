@@ -19,6 +19,54 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import type { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Accurate Inflation Calculator | Free CPI & Dollar Purchasing Power Tool',
+  description: 'Calculate the purchasing power of the US dollar over time with our free inflation calculator. Compare historical prices and track CPI changes from 1913 to today.',
+  keywords: [
+    'Inflation Calculator',
+    'inflation calendar',
+    'dollar inflation calculator',
+    'cpi calculator',
+    'MyApexCalc',
+    'purchasing power calculator',
+    'historical dollar value'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Historical Inflation & Dollar Value Calculator | MyApexCalc',
+    description: 'See how the buying power of a dollar has changed. Track historical buying power and calculate inflation rates instantly.',
+    url: 'https://www.myapexcalc.com/calculators/inflation',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/VpL9DTys/inflation-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Inflation Calculator and Purchasing Power Tracking Interface',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Dollar Inflation & CPI Calculator | MyApexCalc',
+    description: 'Calculate the changing value of money over time using official historical Consumer Price Index (CPI) datasets.',
+    images: ['https://i.ibb.co/VpL9DTys/inflation-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/inflation',
+  },
+};
+
+
 
 // U.S. Annual CPI Averages (1913-2024)
 // Source: Bureau of Labor Statistics (BLS)

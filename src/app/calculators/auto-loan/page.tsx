@@ -25,9 +25,48 @@ import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-  title: 'Auto Loan Calculator | Monthly Car Payment Estimator',
-  description: 'Calculate your monthly car payment including trade-ins, sales tax, and fees. Compare loan terms and interest rates for the best vehicle financing deal.',
-  keywords: ['auto loan calculator', 'car payment estimator', 'vehicle financing', 'trade-in value', 'loan interest calculator'],
+  title: 'Accurate Auto Loan Calculator | Estimate Vehicle Payments',
+  description: 'Calculate your monthly car payment instantly with our free auto loan calculator. Input vehicle price, down payment, interest rates, and loan terms to plan your budget.',
+  keywords: [
+    'auto loan calculator',
+    'automobile loan calculator',
+    'estimate vehicle payment',
+    'MyApexCalc',
+    'car payment estimator',
+    'vehicle interest calculator',
+    'car loan amortization'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Auto Loan & Car Payment Calculator | MyApexCalc',
+    description: 'Avoid dealership surprises. Figure out your true monthly cost, calculate interest fees, and estimate vehicle payment options in seconds.',
+    url: 'https://www.myapexcalc.com/calculators/auto-loan',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/GQstbRww/autoloan-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Auto Loan Calculator and Monthly Payment Estimator Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Automobile Loan Calculator | MyApexCalc',
+    description: 'Instantly calculate car payments, compare loan lengths, and see your total interest costs over time.',
+    images: ['https://i.ibb.co/GQstbRww/autoloan-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent duplicate indexing issues
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/auto-loan',
+  },
 };
 
 export default function AutoLoanPage() {

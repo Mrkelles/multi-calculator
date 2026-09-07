@@ -26,10 +26,52 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Conversion Calculator | High Precision Unit Converter',
-  description: 'Convert between length, weight, volume, temperature, and area with professional-grade precision. Supports both Metric and Imperial systems.',
-  keywords: ['unit converter', 'metric to imperial', 'measurement conversion', 'length converter', 'weight conversion'],
+const metadata: Metadata = {
+  title: 'All-in-One Conversion Calculator | Free Unit & Metric Converter',
+  description: 'Convert units of length, weight, and temperature instantly. Try our free online conversion calculator to convert cms to feet, kg to lbs, celsius to fahrenheit, and more.',
+  keywords: [
+    'cms to feet',
+    'convert kg to lbs',
+    'conversion from kilograms to pounds',
+    'celsius to fahrenheit calculator',
+    'km converted to miles',
+    'centimetres to inches converter',
+    'conversion of temperature',
+    'millimeters to inches calculator',
+    'MyApexCalc',
+    'metric conversion tool'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Multi-Unit Conversion Calculator | MyApexCalc',
+    description: 'Quickly switch between metric and imperial systems. Convert length, mass, and temperature instantly with zero hassle.',
+    url: 'https://www.myapexcalc.com/calculators/conversion',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/conversion-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Multi-Unit Conversion Calculator Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Metric & Imperial Conversion Calculator | MyApexCalc',
+    description: 'Instantly convert kg to lbs, cms to feet, celsius to fahrenheit, and more with our responsive calculator.',
+    images: ['https://i.ibb.co/TqJgSVm5/conversion-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent duplicate index penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/conversion',
+  },
 };
 
 type ConversionMode = 'length' | 'temperature' | 'area' | 'volume' | 'weight';

@@ -24,9 +24,49 @@ import Image from 'next/image';
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-  title: 'Concrete Calculator | Construction Material Estimator',
-  description: 'Calculate concrete volume and bag counts for slabs, walls, footings, and columns. Estimate project costs and include wastage margins.',
-  keywords: ['concrete calculator', 'cement estimator', 'construction math', 'slab volume', 'material calculator'],
+  title: 'Accurate Concrete Calculator | Free Slab & Yardage Estimator',
+  description: 'Calculate concrete volume instantly with our free concrete calculator. Estimate concrete slabs, footings, columns, and find out how many yards or bags you need.',
+  keywords: [
+    'Concrete Calculator',
+    'Concrete Estimator',
+    'concrete measurement calculator',
+    'calculate cement',
+    'concrete slab calculator',
+    'MyApexCalc',
+    'concrete yardage calculator',
+    'bagged concrete estimator'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Concrete & Slab Yardage Calculator | MyApexCalc',
+    description: 'Banish project guesswork. Estimate concrete volume for slabs, footings, or stairs and calculate total bags or cubic yards instantly.',
+    url: 'https://www.myapexcalc.com/calculators/concrete',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/concrete-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Concrete and Construction Material Volume Calculator',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Concrete Slab & Yardage Estimator | MyApexCalc',
+    description: 'Calculate how much concrete you need in cubic yards, cubic feet, or pre-mixed bags for your next DIY or commercial project.',
+    images: ['https://i.ibb.co/TqJgSVm5/concrete-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/concrete',
+  },
 };
 
 export default function ConcreteCalculatorPage() {

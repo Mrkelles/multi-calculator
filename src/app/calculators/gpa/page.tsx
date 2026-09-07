@@ -22,10 +22,50 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'GPA Calculator | Academic Semester & Cumulative Planner',
-  description: 'Calculate your semester and cumulative GPA based on course credits and grades. Plan your academic success with our intuitive grading tool.',
-  keywords: ['gpa calculator', 'grade point average', 'college gpa tool', 'weighted gpa', 'academic planning'],
+const metadata: Metadata = {
+  title: 'Accurate GPA Calculator | Free Online Grading Calculator',
+  description: 'Calculate your semester and cumulative GPA instantly with our free online GPA calculator. Input your letter grades and credit hours to find your GPA online.',
+  keywords: [
+    'gpa calculator',
+    'gpa',
+    'find gpa online',
+    'grading calculator',
+    'MyApexCalc',
+    'cumulative gpa calculator',
+    'college gpa calculator',
+    'high school gpa'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive GPA & Grading Calculator | MyApexCalc',
+    description: 'Keep your academic goals on track. Check your cumulative score and find your GPA online instantly with our easy-to-use grading tool.',
+    url: 'https://www.myapexcalc.com/calculators/gpa',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/23rG4tH4/gpa-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc GPA Calculator Class and Grade Entry Interface',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free GPA & Cumulative Grading Calculator | MyApexCalc',
+    description: 'Instantly calculate your weighted or unweighted GPA by adding classes, credits, and letter grades.',
+    images: ['https://i.ibb.co/23rG4tH4/gpa-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/gpa',
+  },
 };
 
 const GRADE_POINTS = {

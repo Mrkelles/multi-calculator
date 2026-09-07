@@ -40,10 +40,50 @@ import {
 } from 'date-fns';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Pregnancy Due Date Calculator | Track Your Timeline',
-  description: 'Calculate your estimated due date using your last period, ultrasound, or conception date. Includes a detailed weekly milestone schedule.',
-  keywords: ['due date calculator', 'pregnancy timeline', 'estimated due date', 'baby due date', 'pregnancy week tracker'],
+const metadata: Metadata = {
+  title: 'Accurate Due Date Calculator | Pregnancy Birth Date Tracker',
+  description: 'Calculate your estimated due date instantly with our free pregnancy due date calculator. Input your last period or conception date to track your baby milestones.',
+  keywords: [
+    'Due Date Calculator',
+    'pregnancy due date calculator',
+    'estimated due date calculator',
+    'pregnancy chart due date',
+    'pregnancy birth date calculator',
+    'MyApexCalc',
+    'baby due date estimator',
+    'conception date calculator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Pregnancy Due Date Calculator & Milestone Tracker | MyApexCalc',
+    description: 'Track your pregnancy timeline. Estimate your child\'s birth date and visualize your progress month-by-month with our interactive calculator.',
+    url: 'https://www.myapexcalc.com/calculators/due-date',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/KjppCkBz/due-date-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Pregnancy Due Date Calculator and Weekly Progress Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Pregnancy Due Date & Birth Calculator | MyApexCalc',
+    description: 'Find your estimated due date and explore your complete pregnancy timeline instantly.',
+    images: ['https://i.ibb.co/KjppCkBz/due-date-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/due-date',
+  },
 };
 
 type DueDateMode = 'last-period' | 'ultrasound' | 'conception' | 'ivf';

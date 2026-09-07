@@ -29,6 +29,52 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Accurate Sales Tax Calculator | Free Retail Tax Estimator',
+  description: 'Calculate state, county, and local sales tax instantly. Use our free retail tax calculator to estimate sales tax and reverse-calculate pre-tax prices.',
+  keywords: [
+    'Sales Tax Calculator',
+    'estimate sales tax',
+    'retail tax calculator',
+    'MyApexCalc',
+    'reverse sales tax calculator',
+    'sales tax lookup',
+    'consumer tax estimator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Sales Tax & Retail Calculator | MyApexCalc',
+    description: 'Avoid surprises at the register. Calculate purchase totals, local sales taxes, and itemized receipts in seconds with our free online tool.',
+    url: 'https://www.myapexcalc.com/calculators/sales-tax',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/pB0Zvy7K/sales-tax-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Sales Tax Calculator and Retail Pricing Amortization Screen',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Retail Sales Tax Calculator | MyApexCalc',
+    description: 'Quickly estimate sales tax and final prices or reverse-calculate original prices before tax was added.',
+    images: ['https://i.ibb.co/pB0Zvy7K/sales-tax-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/sales-tax',
+  },
+};
 
 const stateTaxRates = [
   { state: "Alabama", rate: "4.00%" },

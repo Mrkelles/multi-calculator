@@ -29,10 +29,49 @@ import { Pie, PieChart, Cell, ResponsiveContainer, Legend } from 'recharts';
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Mortgage Calculator | Total Monthly Home Payment Estimator',
-  description: 'Calculate monthly mortgage payments including principal, interest, taxes, insurance (PITI), and HOA fees.',
-  keywords: ['mortgage calculator', 'monthly house payment', 'home loan estimator', 'PITI calculator', 'mortgage interest calculator'],
+const metadata: Metadata = {
+  title: 'Accurate Mortgage Calculator | Free Home Payment Estimator',
+  description: 'Estimate your monthly home payments instantly with our free mortgage calculator. Figure out mortgage payments including principal, interest, property taxes, and home insurance.',
+  keywords: [
+    'mortgage calculator',
+    'bankrate mortgage calculator',
+    'figure out mortgage payment',
+    'MyApexCalc',
+    'home loan calculator',
+    'p&i calculator',
+    'monthly housing costs'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Advanced Mortgage Payment Calculator | MyApexCalc',
+    description: 'Break down your home loan costs in seconds. Figure out mortgage payments, interest structures, and taxes with our interactive calculation tool.',
+    url: 'https://www.myapexcalc.com/calculators/mortgage',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/WLfWtgm/mortgage-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Advanced Mortgage Calculator and Monthly Breakdown Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Home Loan & Mortgage Estimator | MyApexCalc',
+    description: 'Accurately figure out your total monthly mortgage obligations, including taxes, interest, and insurance.',
+    images: ['https://i.ibb.co/WLfWtgm/mortgage-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/mortgage',
+  },
 };
 
 export default function MortgagePage() {
@@ -382,6 +421,7 @@ export default function MortgagePage() {
                 <p>Purchasing a <strong>$350,000 condo</strong>. Case A is <strong>5% down ($17.5k)</strong>; Case B is <strong>20% down ($70k)</strong>.</p>
                 <p>With 5% down, the buyer pays for <strong>PMI (~$138/mo)</strong> and higher interest. Putting 20% down eliminates the PMI entirely and lowers the loan amount, saving over <strong>$450 every single month</strong> in total housing costs.</p>
               </CardContent>
+              </Card>
             </div>
           </section>
 

@@ -25,10 +25,49 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Fraction Calculator | Simplify & Solve Complex Fractions',
-  description: 'Add, subtract, multiply, and divide fractions and mixed numbers. Get step-by-step solutions and decimal conversions for all calculations.',
-  keywords: ['fraction calculator', 'simplify fractions', 'mixed numbers calculator', 'fraction to decimal', 'math solver'],
+const metadata: Metadata = {
+  title: 'Accurate Fraction Calculator | Free Fraction & Mixed Number Tool',
+  description: 'Add, subtract, multiply, and divide fractions easily with our free fraction calculator. Reduce fractions to their simplest form and convert them to decimals.',
+  keywords: [
+    'Fraction Calculator',
+    'calculate the fraction',
+    'simple fraction calculator',
+    'MyApexCalc',
+    'mixed fractions calculator',
+    'simplify fractions tool',
+    'fraction to decimal converter'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Fraction Calculator & Simplifier | MyApexCalc',
+    description: 'Simplify fraction math instantly. Solve additions, subtractions, multiplications, and divisions of fractions and mixed numbers in seconds.',
+    url: 'https://www.myapexcalc.com/calculators/fraction',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/6RY2s8Fw/fraction-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Fraction Calculator showing mixed numbers, steps, and simplified results',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Simple Fraction & Mixed Number Calculator | MyApexCalc',
+    description: 'Instantly calculate fractions and view step-by-step math, including common denominators and simplified forms.',
+    images: ['https://i.ibb.co/6RY2s8Fw/fraction-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/fraction',
+  },
 };
 
 /**
@@ -460,7 +499,7 @@ export default function FractionCalculatorsPage() {
                     className="w-full mt-6 bg-white/10 hover:bg-white/20 border-white/20"
                     onClick={() => setShowMixedSteps(!showMixedSteps)}
                   >
-                    {showMixedSteps ? <ChevronUp size(14) /> : <ChevronDown size(14) />}
+                    {showMixedSteps ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     <span className="ml-2">Show Calculation</span>
                   </Button>
                   <div className="text-left">
@@ -506,7 +545,7 @@ export default function FractionCalculatorsPage() {
                 className="mt-6 gap-2"
                 onClick={() => setShowSimplifySteps(!showSimplifySteps)}
               >
-                {showSimplifySteps ? <ChevronUp size(14) /> : <ChevronDown size(14) />}
+                {showSimplifySteps ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                 Show Calculation
               </Button>
               <div className="w-full text-left">

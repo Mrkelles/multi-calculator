@@ -29,6 +29,52 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
+import { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Accurate Salary Calculator | Free Wage & Paycheck Estimator',
+  description: 'Convert your annual salary to hourly, weekly, bi-weekly, or monthly pay instantly. Use our free salary calculator to estimate your paycheck earnings.',
+  keywords: [
+    'Salary Calculator',
+    'pay check calculator',
+    'pay calculator',
+    'wage calculator',
+    'MyApexCalc',
+    'hourly to salary converter',
+    'income breakdown tool'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Salary & Paycheck Calculator | MyApexCalc',
+    description: 'Convert and break down your earnings instantly. Easily calculate hourly wages, monthly income, and annual salary values with our free tool.',
+    url: 'https://www.myapexcalc.com/calculators/salary',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/6cNntKby/salary-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Salary and Paycheck Conversion Calculator Interface',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Wage & Paycheck Estimator | MyApexCalc',
+    description: 'Quickly calculate annual, monthly, bi-weekly, and hourly income breakdowns online.',
+    images: ['https://i.ibb.co/6cNntKby/salary-calculator.png'],
+  },
+
+  // Prevent duplicate index penalties by setting a clean canonical pathway
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/salary',
+  },
+};
 
 type SalaryPeriod = 'year' | 'quarter' | 'month' | 'biweek' | 'week' | 'day' | 'hour';
 

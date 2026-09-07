@@ -33,10 +33,49 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Random Number Generator | Unbiased List Picker & Scaler',
-  description: 'Generate random integers or high-precision decimals. Pick random winners from custom lists with zero bias.',
-  keywords: ['random number generator', 'randomizer', 'list picker', 'raffle tool', 'random integer generator'],
+const metadata: Metadata = {
+  title: 'Free Random Number Generator | Instant Secure Randomizer',
+  description: 'Generate single or multiple random numbers instantly with our free random number generator. Customize your range, set limits, and choose to allow or prevent duplicates.',
+  keywords: [
+    'Random Number Generator',
+    'get a random number',
+    'random number maker',
+    'MyApexCalc',
+    'random number picker',
+    'integer generator',
+    'secure randomizer online'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Instant Random Number Generator & Picker | MyApexCalc',
+    description: 'Need to pick a winner, roll a die, or make an unbiased choice? Generate truly randomized numbers in any custom range instantly.',
+    url: 'https://www.myapexcalc.com/calculators/random-number',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/9HQtZjPr/random-number-generator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Random Number Generator and Custom Number Range Picker UI',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Random Number Maker & Picker | MyApexCalc',
+    description: 'Set your minimum and maximum parameters and get a random number instantly. Features custom list sorting and duplicate prevention.',
+    images: ['https://i.ibb.co/9HQtZjPr/random-number-generator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/random-number',
+  },
 };
 
 /**
@@ -520,6 +559,7 @@ export default function RandomNumberGeneratorPage() {
                 <p>A team of 6 coworkers can't decide where to go for lunch. They have 5 options: <strong>Pizza, Sushi, Burgers, Tacos, and Thai</strong>.</p>
                 <p>Using the "List Picker" tab, they paste the options into the text area and click generate. The tool randomly selects "Tacos," settling the debate with zero bias.</p>
               </CardContent>
+              </Card>
             </div>
           </section>
 

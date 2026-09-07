@@ -32,10 +32,50 @@ import {
 } from '@/components/ui/table';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Hours Calculator | Total Time & Decimal Hour Tracker',
-  description: 'Calculate the exact hours and minutes between two times or dates. Perfect for payroll, shift tracking, and project management.',
-  keywords: ['hours calculator', 'time between times', 'work hours tracker', 'decimal hours converter', 'shift calculator'],
+const metadata: Metadata = {
+  title: 'Accurate Hours Calculator | Free Hour to Hour Time Tracker',
+  description: 'Calculate hours between times instantly. Use our free hours calculator to count your work hours, track elapsed time, and compute weekly timesheets.',
+  keywords: [
+    'time to time calculator',
+    'Hours Calculator',
+    'hour to hour calculator',
+    'count my work hours',
+    'calculate your work hours',
+    'MyApexCalc',
+    'elapsed hours tracker',
+    'shift duration calculator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Hour to Hour & Work Hours Calculator | MyApexCalc',
+    description: 'Calculate time to time spans instantly. Easily track elapsed working hours, subtract breaks, and log your shifts with our free tool.',
+    url: 'https://www.myapexcalc.com/calculators/hours',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/hours-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Hours Calculator and Work Shift Tracker Interface',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Work Hours & Hour-to-Hour Calculator | MyApexCalc',
+    description: 'Quickly count your work hours and calculate accurate elapsed time spans between any two clock markers.',
+    images: ['https://i.ibb.co/TqJgSVm5/hours-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/hours',
+  },
 };
 
 export default function HoursCalculatorPage() {

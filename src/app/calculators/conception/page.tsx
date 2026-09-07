@@ -26,9 +26,51 @@ import { addDays, subDays, format, startOfDay } from 'date-fns';
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-  title: 'Conception Calculator | Trace Back Your Pregnancy Start',
-  description: 'Estimate your likely conception date and fertile window based on your due date, last period, or ultrasound results. Professional pregnancy timeline tool.',
-  keywords: ['conception calculator', 'pregnancy start date', 'ovulation window', 'due date reverse calculator', 'fertility tracker'],
+  title: 'Accurate Conception Calculator | Estimate Conception Date',
+  description: 'Find your estimated date of conception instantly. Input your due date or last period to figure out your conception date with our free online calculator.',
+  keywords: [
+    'ovulation date calculator',
+    'conception calculator',
+    'conception estimator',
+    'conception date calculator',
+    'figure out conception date',
+    'conception date',
+    'conception to birth calculator',
+    'estimated date of conception',
+    'MyApexCalc',
+    'pregnancy conception tracker'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Pregnancy Conception Calculator & Estimator | MyApexCalc',
+    description: 'Pinpoint your exact moment of beginning. Run a quick conception calculation using your due date or cycle milestones with our custom tracker.',
+    url: 'https://www.myapexcalc.com/calculators/conception',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/9mJYJCKw/conception-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Conception Calculator and Milestone Estimator Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Conception Date Estimator | MyApexCalc',
+    description: 'Discover your estimated date of conception and explore your timeline from conception to birth.',
+    images: ['https://i.ibb.co/9mJYJCKw/conception-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/conception',
+  },
 };
 
 export default function ConceptionCalculatorPage() {

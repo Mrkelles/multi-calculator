@@ -35,10 +35,50 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Strong Password Generator | Secure Random Keys',
-  description: 'Generate ultra-secure, random passwords with custom entropy settings. Completely private client-side generation.',
-  keywords: ['password generator', 'random password', 'secure keys', 'password maker', 'security tool'],
+const metadata: Metadata = {
+  title: 'Strong Password Generator | Free Random Password Creator',
+  description: 'Generate secure, randomized passwords instantly with our free strong password generator. Customize length, symbols, and numbers to protect your digital accounts.',
+  keywords: [
+    'Password Generator',
+    'password password generator',
+    'make random password',
+    'random password creator/maker',
+    'strong password generator',
+    'MyApexCalc',
+    'secure password maker',
+    'client-side password generator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Instant Strong Password Generator & Randomizer | MyApexCalc',
+    description: 'Keep your online credentials secure. Create cryptographically strong, custom random passwords locally on your device with our zero-trust generator.',
+    url: 'https://www.myapexcalc.com/calculators/password-generator',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/sJmgs3p4/password-generator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Strong Password Generator and Custom Security Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Random Password Creator & Security Tool | MyApexCalc',
+    description: 'Instantly build uncrackable, randomized passwords with custom length and character specifications.',
+    images: ['https://i.ibb.co/sJmgs3p4/password-generator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/password-generator',
+  },
 };
 
 export default function PasswordGeneratorPage() {
@@ -293,6 +333,7 @@ export default function PasswordGeneratorPage() {
                 <p>A developer needs to generate 10 unique, random strings to use as API secret keys. They require them to be <strong>32 characters</strong> long and alphanumeric only (no symbols) to avoid URL encoding issues.</p>
                 <p>By adjusting the slider to 32 and selecting only Upper, Lower, and Numbers, they generate 10 clean, high-entropy strings instantly.</p>
               </CardContent>
+              </Card>
             </div>
           </section>
 

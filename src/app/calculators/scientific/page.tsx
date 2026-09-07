@@ -22,6 +22,56 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { Metadata } from 'next';
+
+
+
+const metadata: Metadata = {
+  title: 'Free Scientific Calculator | Advanced Online Math & Science Tool',
+  description: 'Solve complex equations instantly with our free online scientific calculator. Perform trigonometric, logarithmic, and algebraic calculations with this advanced tool.',
+  keywords: [
+    'Scientific Calculator',
+    'advanced calculator',
+    'smart calculator',
+    'MyApexCalc',
+    'trigonometry calculator',
+    'logarithmic solver',
+    'engineering calculator online'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Scientific & Advanced Calculator | MyApexCalc',
+    description: 'Solve equations, calculate trigonometry, and analyze functions. An advanced, responsive, and smart calculator designed for students and professionals.',
+    url: 'https://www.myapexcalc.com/calculators/scientific',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/F42rYBZY/scientific-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Scientific Calculator showing trigonometric, logarithmic, and memory function layout',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Advanced Scientific & Smart Calculator | MyApexCalc',
+    description: 'A powerful online scientific calculator featuring parenthetical grouping, trigonometry, exponentials, and physical constants.',
+    images: ['https://i.ibb.co/F42rYBZY/scientific-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/scientific',
+  },
+};
+
+
 
 export default function ScientificCalculatorPage() {
   const [display, setDisplay] = useState('0');

@@ -10,11 +10,50 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'GPA to Percentage Calculator | Global Grade Converter',
-  description: 'Convert your GPA from a 4.0, 5.0, or 10.0 scale into an equivalent percentage. Essential for international university admissions.',
-  keywords: ['gpa to percentage', 'grade conversion', '4.0 to percentage', 'academic score converter', 'percentage calculator'],
+const metadata: Metadata = {
+  title: 'GPA to Percentage Calculator | Quick GPA Conversion',
+  description: 'Convert your cumulative GPA to an exact percentage instantly. Supports standard 4.0 scales, 5.0 scales, and international conversion formulas.',
+  keywords: [
+    'gpa percentage calculator',
+    'gpa to percentage',
+    'gpa to percentage calculator',
+    'MyApexCalc',
+    'convert gpa to percent',
+    'gpa conversion tool'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'GPA to Percentage Calculator | MyApexCalc',
+    description: 'Instantly convert your GPA score to a weighted percentage. Perfect for university admissions and international applications.',
+    url: 'https://www.myapexcalc.com/calculators/gpa-to-percentage',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/271rZN90/gpa-percentage-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc GPA to Percentage Converter and Scale Options',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free GPA to Percentage Calculator | MyApexCalc',
+    description: 'Convert any GPA score to an equivalent grade percentage in seconds with our online tool.',
+    images: ['https://i.ibb.co/271rZN90/gpa-percentage-calculator.png'],
+  },
+
+  // Prevent duplicate index penalties by setting a clean canonical pathway
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/gpa-to-percentage',
+  },
 };
+
 
 export default function GPAToPercentagePage() {
   const [gpa, setGpa] = useState(3.5);
@@ -111,6 +150,7 @@ export default function GPAToPercentagePage() {
                 <p>A US student has a <strong>3.6 GPA on a 4.0 scale</strong>. A corporate scholarship board requires applicants to have at least a <strong>90% academic average</strong>.</p>
                 <p>The tool converts the 3.6 GPA into exactly <strong>90.0%</strong>, confirming the student is eligible to apply for the grant.</p>
               </CardContent>
+              </Card>
             </div>
           </section>
 

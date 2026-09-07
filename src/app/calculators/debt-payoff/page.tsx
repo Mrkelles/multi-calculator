@@ -20,10 +20,49 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Debt Payoff Calculator | Interest Savings & Payoff Timeline',
-  description: 'Determine how long it will take to pay off your debt. Compare strategies like Debt Snowball or Avalanche to save on interest and reach zero faster.',
-  keywords: ['debt payoff calculator', 'credit card payoff', 'debt reduction strategy', 'interest savings calculator', 'debt free date'],
+const metadata: Metadata = {
+  title: 'Accurate Debt Payoff Calculator | Free Debt Payoff Planner',
+  description: 'Eliminate your debt faster with our free debt payoff calculator. Plan your debt-free journey, estimate credit card payoff timelines, and compare snowball vs. avalanche payoff methods.',
+  keywords: [
+    'debt payoff calculator',
+    'estimate credit card payoff',
+    'debt payoff planner',
+    'MyApexCalc',
+    'get out of debt',
+    'snowball vs avalanche calculator',
+    'credit card payoff tracker'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Debt Payoff Calculator & Planner | MyApexCalc',
+    description: 'Take control of your liabilities. Calculate your exact debt-free date, model extra payments, and build a customized debt payoff planner.',
+    url: 'https://www.myapexcalc.com/calculators/debt-payoff',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TxT1XQRL/debt-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Debt Payoff Calculator and Interactive Payment Amortization Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Credit Card & Loan Payoff Planner | MyApexCalc',
+    description: 'Estimate your credit card payoff dates and calculate how extra monthly payments can save you thousands in interest fees.',
+    images: ['https://i.ibb.co/TxT1XQRL/debt-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/debt-payoff',
+  },
 };
 
 export default function DebtPayoffPage() {

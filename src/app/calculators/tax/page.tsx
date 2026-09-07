@@ -21,6 +21,52 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
+import { Metadata } from 'next';
+
+
+
+const metadata: Metadata = {
+  title: 'Accurate Income Tax Calculator | MyApexCalc',
+  description: 'Estimate your federal, state, and local tax liabilities with our free income tax calculator. Easily calculate salary deductions and find your true take-home pay.',
+  keywords: [
+    'income tax calculator',
+    'calculate salary',
+    'calculator for tax',
+    'federal income tax',
+    'take home pay calculator',
+    'tax brackets 2026',
+    'MyApexCalc'
+  ],
+  
+  openGraph: {
+    title: 'Free Income Tax Calculator | MyApexCalc',
+    description: 'Stop guessing your tax bill. Calculate salary take-home pay, federal withholdings, and total deductions using our free calculator for tax planning.',
+    url: 'https://www.myapexcalc.com/calculators/tax',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/V0VC2RQK/income-tax-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Income Tax Calculator User Interface',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Federal & State Income Tax Calculator | MyApexCalc',
+    description: 'Instantly calculate your salary deductions and project your annual take-home income with ease.',
+    images: ['https://i.ibb.co/V0VC2RQK/income-tax-calculator.png'],
+  },
+
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/tax',
+  },
+};
+
 
 // 2024 Tax Year Data (Official IRS Brackets)
 const TAX_DATA = {

@@ -39,10 +39,50 @@ import {
 } from '@/components/ui/table';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Pregnancy Calculator | Weekly Progress & Milestone Tracker',
-  description: 'Track your pregnancy week-by-week. Estimate your due date and view baby size milestones based on your cycle.',
-  keywords: ['pregnancy calculator', 'pregnancy tracker', 'due date estimator', 'baby size by week', 'pregnancy milestones'],
+const metadata: Metadata = {
+  title: 'Accurate Pregnancy Calculator | Conception to Birth Tracker',
+  description: 'Track your pregnancy timeline week-by-week. Use our free pregnancy calculator to estimate your conception date, current term, and baby milestones.',
+  keywords: [
+    'ovulation predictor kits',
+    'pregnancy calculator',
+    'ovulation cycle calculator',
+    'pregnancy estimator',
+    'pregnancy term calculator',
+    'conception to birth calculator',
+    'MyApexCalc',
+    'pregnancy timeline'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Pregnancy Calculator & Term Estimator | MyApexCalc',
+    description: 'Monitor your development milestones. Estimate your term progress and ovulation timelines instantly with our interactive pregnancy estimator.',
+    url: 'https://www.myapexcalc.com/calculators/pregnancy',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/GvDqL4Yx/pregnancy-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Pregnancy Calculator Week-by-Week Dashboard Tracker',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Interactive Pregnancy Term & Timeline Calculator | MyApexCalc',
+    description: 'Track your journey from conception to birth with our highly accurate online calendar.',
+    images: ['https://i.ibb.co/GvDqL4Yx/pregnancy-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/pregnancy',
+  },
 };
 
 type PregnancyMode = 'due-date' | 'last-period' | 'ultrasound' | 'conception' | 'ivf';
@@ -361,8 +401,9 @@ export default function PregnancyCalculatorPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </>
-            )}
+              </div>
+            </>
+          )}
         </div>
 
         {results && (
@@ -434,8 +475,8 @@ export default function PregnancyCalculatorPage() {
                   <p>A user is currently in their <strong>First Trimester (Week 10)</strong>. They want to know when they can expect to hear a heartbeat or see noticeable movements.</p>
                   <p>The Milestone Schedule reveals that the heartbeat is detectable by ultrasound around <strong>Week 6</strong>, and significant movements often begin around <strong>Week 18</strong>, helping the user prepare for their next OBGYN appointments.</p>
                 </CardContent>
-              </Card>
-            </div>
+              </div>
+            </Card>
           </section>
 
           <Separator />
@@ -517,6 +558,13 @@ export default function PregnancyCalculatorPage() {
                   </div>
                 </li>
               </ul>
+            </div>
+
+            <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
+              <History className="w-10 h-10 text-primary opacity-40 shrink-0" />
+              <p className="text-[10px] text-muted-foreground leading-tight italic">
+                "In the viral economy, knowing your value is your greatest negotiation tool. Track your metrics to scale your business with precision."
+              </p>
             </div>
           </div>
         </div>

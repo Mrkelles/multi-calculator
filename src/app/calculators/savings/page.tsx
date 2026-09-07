@@ -7,6 +7,53 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Metadata } from 'next';
+
+
+const metadata: Metadata = {
+  title: 'Accurate Savings Calculator | Free Savings Estimator',
+  description: 'Track your financial goals with our free savings calculator. Estimate retirement savings, project compound interest growth, and map out your path to financial freedom.',
+  keywords: [
+    'Savings calculator',
+    'Estimate retirement savings',
+    'savings estimator',
+    'simple savings calculator',
+    'MyApexCalc',
+    'high-yield savings tracker',
+    'wealth projection tool'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Savings Calculator & Estimator | MyApexCalc',
+    description: 'Watch your money grow. Calculate future balances, adjust contribution schedules, and visualize your compound growth curve in real-time.',
+    url: 'https://www.myapexcalc.com/calculators/savings',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/pBFG2MTD/savings-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Savings Calculator and Goal Setting Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Savings Estimator & Compound Tracker | MyApexCalc',
+    description: 'Calculate your future net worth and map out custom savings plans using our intuitive online dashboard.',
+    images: ['https://i.ibb.co/pBFG2MTD/savings-calculator.png'],
+  },
+
+  // Standardize search signals to avoid indexing issues
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/savings',
+  },
+};
 
 export default function SavingsGoalPage() {
   const [goal, setGoal] = useState(50000);

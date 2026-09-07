@@ -20,6 +20,56 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
+import { Metadata } from 'next';
+
+
+
+const metadata: Metadata = {
+  title: 'TikTok Engagement Rate Calculator | Free Analytics Tool',
+  description: 'Calculate your TikTok engagement rate instantly. Check your video metrics, likes, comments, and shares to measure your true audience interaction level.',
+  keywords: [
+    'tiktok engagement rate calculator',
+    'tiktok engagement calculator',
+    'tiktok engagement rate',
+    'calculate tiktok engagement rate',
+    'MyApexCalc',
+    'social media metrics',
+    'influencer analytics',
+    'profile audit tool'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'TikTok Engagement Rate Calculator | MyApexCalc',
+    description: 'Analyze your social performance in seconds. Discover how your profile stacks up by measuring your true tiktok engagement rate.',
+    url: 'https://www.myapexcalc.com/calculators/tiktok-engagement',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/F42Sytpz/tiktok-engagement-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc TikTok Engagement Rate Calculator Analytics Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free TikTok Engagement Calculator | MyApexCalc',
+    description: 'Track your content performance, audit creator accounts, and verify real audience interaction metrics instantly.',
+    images: ['https://i.ibb.co/F42Sytpz/tiktok-engagement-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/tiktok-engagement',
+  },
+};
+
 
 export default function TikTokEngagementPage() {
   const [followers, setFollowers] = useState(10000);

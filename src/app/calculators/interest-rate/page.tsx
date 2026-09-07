@@ -27,10 +27,50 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recha
 import { ChartContainer, ChartTooltip } from '@/components/ui/chart';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Interest Rate Calculator | Required Return for Financial Goals',
-  description: 'Calculate the interest rate required to reach a specific final savings amount over time with contributions.',
-  keywords: ['interest rate calculator', 'required return calculator', 'savings rate solver', 'financial planning', 'investment rate estimator'],
+const metadata: Metadata = {
+  title: 'Accurate Interest Rate Calculator | Free APR & Loan Payment Estimator',
+  description: 'Calculate loan interest, annual percentage rates, and investments instantly. Use our free interest calculator to estimate mortgage payments and analyze true borrowing costs.',
+  keywords: [
+    'mortgage calculator bankrate',
+    'interest amount',
+    'calculator for mortgage payments',
+    'interest calculator',
+    'apr calculator',
+    'MyApexCalc',
+    'loan interest rate',
+    'compound interest estimator'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Interest Rate & APR Calculator | MyApexCalc',
+    description: 'Deconstruct your borrowing or growth rates. Calculate interest amounts, analyze mortgage components, and find your true APR easily.',
+    url: 'https://www.myapexcalc.com/calculators/interest-rate',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/j9CpS9cy/interest-rate-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Interest Rate Calculator, APR Solver, and Investment Progression Screen',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Interest Amount & APR Calculator | MyApexCalc',
+    description: 'Determine actual borrowing fees, monthly mortgage percentages, and investment yields in seconds.',
+    images: ['https://i.ibb.co/j9CpS9cy/interest-rate-calculator.png'],
+  },
+
+  // Prevent search engine duplicate penalties with standard canonical parameters
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/interest-rate',
+  },
 };
 
 export default function InterestRateCalculatorPage() {
@@ -340,6 +380,7 @@ export default function InterestRateCalculatorPage() {
                 <p>A couple needs <strong>$80,000</strong> for a house down payment in <strong>5 years</strong>. They already have <strong>$30,000</strong> saved and can add <strong>$600 per month</strong>.</p>
                 <p>The tool reveals they only need a <strong>3.95% return rate</strong>. This shows them that a high-yield savings account or short-term CDs might be sufficient and safer than volatile market investments.</p>
               </CardContent>
+              </Card>
             </div>
           </section>
 

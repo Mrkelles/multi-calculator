@@ -27,9 +27,48 @@ import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-  title: 'Website Ad Revenue Calculator | Professional Earnings Estimator',
-  description: 'Estimate your website ad revenue based on monthly pageviews, RPM, and ad density. Analyze traffic quality tiers to project annual income.',
-  keywords: ['ad revenue calculator', 'website earnings estimator', 'RPM calculator', 'blog monetization', 'adsense earnings'],
+  title: 'Website Ad Revenue Calculator | Estimate Monthly Earnings',
+  description: 'Calculate your potential website ad revenue based on pageviews, RPM, and ad units. Estimate annual earnings with traffic quality tier analysis.',
+  keywords: [
+    'ad revenue calculator',
+    'website earnings estimator',
+    'page RPM calculator',
+    'monetize website',
+    'display ad revenue',
+    'MyApexCalc',
+    'adSense revenue estimator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Website Ad Revenue Calculator | MyApexCalc',
+    description: 'Find your site\'s viral earning potential. Calculate ad revenue based on traffic quality, ad frequency, and global RPM benchmarks.',
+    url: 'https://www.myapexcalc.com/calculators/ad-revenue',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/6cNntKby/ad-revenue-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Ad Revenue Calculator Dashboard with Revenue Tiers',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Website Ad Revenue & Earnings Estimator | MyApexCalc',
+    description: 'Instantly calculate potential monthly and annual website ad revenue using customizable RPM and traffic tier metrics.',
+    images: ['https://i.ibb.co/6cNntKby/ad-revenue-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/ad-revenue',
+  },
 };
 
 export default function AdRevenuePage() {

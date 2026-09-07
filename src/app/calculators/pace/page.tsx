@@ -46,10 +46,51 @@ import {
 } from 'recharts';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Pace Calculator | Running, Cycling & Athletic Performance',
-  description: 'Calculate running pace, race finish times, and split markers. Predict marathon results based on performance.',
-  keywords: ['pace calculator', 'running pace', 'marathon predictor', 'split time calculator', 'cycling speed'],
+const metadata: Metadata = {
+  title: 'Accurate Pace Calculator | Free Running & Race Pace Tracker',
+  description: 'Calculate your running pace, splits, and finish times instantly. Use our free online pace calculator to plan your next race, marathon, or daily run.',
+  keywords: [
+    'Pace Calculator',
+    'calculate mile',
+    'running pace calculator',
+    'determine running pace',
+    'calculate race pace',
+    'marathon pace calculator',
+    'MyApexCalc',
+    'running speed estimator',
+    'split times calculator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Running Pace & Race Calculator | MyApexCalc',
+    description: 'Set your running targets. Calculate miles, estimate target marathon paces, and map out your split times in seconds.',
+    url: 'https://www.myapexcalc.com/calculators/pace',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/pace-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Running Pace Calculator and Split Time Analyzer Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Running Pace & Marathon Calculator | MyApexCalc',
+    description: 'Quickly calculate time, distance, or pace parameters. Plan your race splits and track your running progress effortlessly.',
+    images: ['https://i.ibb.co/TqJgSVm5/pace-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/pace',
+  },
 };
 
 const raceEvents = [
@@ -548,6 +589,7 @@ export default function PaceCalculatorPage() {
                 <p>A treadmill shows a speed of <strong>7.5 miles per hour</strong>. The runner wants to know their equivalent per-mile pace.</p>
                 <p>Using the "Pace Converter" mode, entering 7.5 mph instantly shows a pace of <strong>8 minutes per mile</strong>, making it easier to track training intensity against outdoor runs.</p>
               </CardContent>
+              </Card>
             </div>
           </section>
 

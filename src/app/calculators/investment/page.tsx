@@ -25,10 +25,49 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Investment Calculator | Multi-Variable Growth Modeling',
-  description: 'Solve for end balance, required contributions, return rate, or time needed to reach your investment goals.',
-  keywords: ['investment calculator', 'future value estimator', 'portfolio growth', 'wealth building tool', 'investment planner'],
+const metadata: Metadata = {
+  title: 'Accurate Investment Calculator | Free Investment Growth Calculator',
+  description: 'Project your portfolio growth with our free investment calculator. Model compound interest, recurring contributions, and estimate investment growth over time.',
+  keywords: [
+    'Investment Calculator',
+    'Investment Estimator',
+    'Investment Growth Calculator',
+    'MyApexCalc',
+    'compound interest calculator',
+    'portfolio growth estimator',
+    'financial projection tool'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Investment Calculator & Growth Estimator | MyApexCalc',
+    description: 'Visualize your path to financial freedom. Calculate future portfolio values, compare return rates, and track compound growth in real-time.',
+    url: 'https://www.myapexcalc.com/calculators/investment',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/9H0bRpTQ/investment-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Investment Calculator Compound Growth Chart and Inputs',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Investment Growth Calculator & Estimator | MyApexCalc',
+    description: 'Map your long-term wealth goals. Adjust annual returns, initial principal, and regular contributions to see your portfolio grow.',
+    images: ['https://i.ibb.co/9H0bRpTQ/investment-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent duplicate index penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/investment',
+  },
 };
 
 type CalcMode = 'end-amount' | 'contribution' | 'return-rate' | 'starting-amount' | 'length';

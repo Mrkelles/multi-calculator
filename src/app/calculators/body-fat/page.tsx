@@ -33,10 +33,50 @@ import {
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-  title: 'Body Fat Calculator | U.S. Navy Method & Composition Analysis',
-  description: 'Estimate your body fat percentage using the U.S. Navy circumference method. Track your lean body mass and health category with high precision.',
-  keywords: ['body fat calculator', 'body composition', 'navy body fat method', 'lean body mass', 'fitness tracker'],
+  title: 'Accurate Body Fat Calculator | Free Body Composition Tracker',
+  description: 'Calculate your percentage of body fat instantly. Use our free online body fat calculator to estimate body composition using standard measurements.',
+  keywords: [
+    'calculator bmi female',
+    'body fat index',
+    'percentage of body fat',
+    'body fat calculator',
+    'MyApexCalc',
+    'body composition estimator',
+    'US Navy body fat method'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Body Fat Calculator & Composition Tracker | MyApexCalc',
+    description: 'Track your fitness progress beyond the scale. Estimate your body fat index and lean mass percentages in seconds.',
+    url: 'https://www.myapexcalc.com/calculators/body-fat',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/body-fat-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Body Fat Calculator and Body Composition Visualizer',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Body Fat & Lean Mass Estimator | MyApexCalc',
+    description: 'Understand your body composition. Calculate body fat percentages instantly using simple measurements.',
+    images: ['https://i.ibb.co/TqJgSVm5/body-fat-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/body-fat',
+  },
 };
+
 
 const jacksonPollockData = [
   { age: 20, women: 17.7, men: 8.5 },

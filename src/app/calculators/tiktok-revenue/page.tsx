@@ -21,6 +21,56 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Metadata } from 'next';
+
+
+const metadata: Metadata = {
+  title: 'TikTok Revenue Calculator | Estimate Your Creator Earnings',
+  description: 'Estimate your potential creator payouts instantly with our free TikTok revenue calculator. Input your view counts, engagement metrics, and follower milestones to project your earnings.',
+  keywords: [
+    'tiktok money calculator',
+    'tik tok money calculation',
+    'tiktok calculator',
+    'tiktok earnings calculator',
+    'tiktok revenue calculator',
+    'MyApexCalc',
+    'creator fund estimator',
+    'tiktok sponsorship calculator'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive TikTok Money & Earnings Calculator | MyApexCalc',
+    description: 'Track your viral earning potential. Run a quick tik tok money calculation based on daily views and brand collaboration ranges with our custom dashboard.',
+    url: 'https://www.myapexcalc.com/calculators/tiktok-revenue',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/mCP1Tm9L/tiktok-revenue-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc TikTok Money Calculator and Creator Dashboard Layout',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Estimated TikTok Earnings & Revenue Calculator | MyApexCalc',
+    description: 'Easily calculate your potential earnings from the Creator Rewards Program and brand sponsorship campaigns.',
+    images: ['https://i.ibb.co/mCP1Tm9L/tiktok-revenue-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/tiktok-revenue',
+  },
+};
+
+
 
 export default function TikTokRevenuePage() {
   const [views, setViews] = useState(50000);

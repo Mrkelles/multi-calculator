@@ -25,10 +25,49 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Payment Calculator | Loan & Credit Card Payoff Planner',
-  description: 'Calculate fixed monthly loan payments or determine how long it will take to pay off a debt with a set budget.',
-  keywords: ['payment calculator', 'loan payment estimator', 'debt payoff planner', 'monthly bill calculator', 'amortization tool'],
+const metadata: Metadata = {
+  title: 'Accurate Payment Calculator | Free Lending & Loan Calculator',
+  description: 'Calculate monthly payments for any personal loan, auto loan, or mortgage instantly with our free payment calculator. Compare lending options and view full amortization schedules.',
+  keywords: [
+    'Payment Calculator',
+    'lending calculator',
+    'Car loan calulator',
+    'MyApexCalc',
+    'monthly payment estimator',
+    'amortization calculator',
+    'personal loan payment'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Loan & Lending Payment Calculator | MyApexCalc',
+    description: 'Estimate your monthly installments in seconds. Run a quick loan or car loan calculation based on principal, interest rate, and term length.',
+    url: 'https://www.myapexcalc.com/calculators/payment',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/Wvx4RW1T/payment-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Interactive Payment and Amortization Calculator Dashboard',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Monthly Payment & Amortization Calculator | MyApexCalc',
+    description: 'Instantly figure out monthly payments, total interest fees, and payoff timelines for any loan structure.',
+    images: ['https://i.ibb.co/Wvx4RW1T/payment-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/payment',
+  },
 };
 
 export default function PaymentCalculatorPage() {
@@ -340,6 +379,7 @@ export default function PaymentCalculatorPage() {
                 <p>A car owner has <strong>$12,000</strong> left on an auto loan at <strong>6% interest</strong>. Their required payment is $250, but they can afford <strong>$400 per month</strong>.</p>
                 <p>Using the "Fixed Payment" mode, they discover they will be debt-free in just <strong>33 months</strong> instead of the original timeline, saving over $600 in remaining interest fees.</p>
               </CardContent>
+              </Card>
             </div>
           </section>
 

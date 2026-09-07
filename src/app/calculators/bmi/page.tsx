@@ -19,9 +19,50 @@ import {
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-  title: 'BMI Calculator | Accurate Body Mass Index & Health Status',
-  description: 'Quickly calculate your Body Mass Index (BMI) using metric or imperial units. Compare your results against official WHO health categories.',
-  keywords: ['bmi calculator', 'body mass index', 'weight status', 'health calculator', 'ideal weight estimator'],
+  title: 'Free BMI Calculator | Live Body Weight Index Calculator',
+  description: 'Calculate your body mass index instantly with our free online BMI calculator. Check your health metrics using the official BMI index chart and standard weight-to-height formula.',
+  keywords: [
+    'bmi calculator',
+    'bmi',
+    'body weight index calculator',
+    'body mass ratio',
+    'bmi index chart',
+    'bmi formula',
+    'MyApexCalc',
+    'health calculator',
+    'ideal body weight'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Accurate BMI Calculator & Chart | MyApexCalc',
+    description: 'Track your body metrics quickly. Input your height and weight to calculate your BMI and evaluate your health score via the standard BMI index chart.',
+    url: 'https://www.myapexcalc.com/calculators/bmi',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/V0rdhfTT/bmi-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc BMI Calculator Dashboard and Category Layout',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Online Body Weight Index Calculator | MyApexCalc',
+    description: 'Instantly measure your body mass ratio using the standard scientific BMI formula.',
+    images: ['https://i.ibb.co/V0rdhfTT/bmi-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index dilution
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/bmi',
+  },
 };
 
 export default function BMIPage() {

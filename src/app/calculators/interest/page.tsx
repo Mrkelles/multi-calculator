@@ -13,10 +13,41 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: 'Interest Calculator | Simple & Compound Interest Growth',
   description: 'Calculate simple and compound interest with recurring contributions. View detailed yearly and monthly growth schedules.',
   keywords: ['interest calculator', 'simple interest', 'compound interest', 'investment growth', 'savings interest'],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Interest Rate & APR Calculator | MyApexCalc',
+    description: 'Deconstruct your borrowing or growth rates. Calculate interest amounts, analyze mortgage components, and find your true APR easily.',
+    url: 'https://www.myapexcalc.com/calculators/interest',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/tt9jyBz/compound-interest-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Interest Rate Calculator, APR Solver, and Investment Progression Screen',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Interest Amount & APR Calculator | MyApexCalc',
+    description: 'Determine actual borrowing fees, monthly mortgage percentages, and investment yields in seconds.',
+    images: ['https://i.ibb.co/tt9jyBz/compound-interest-calculator.png'],
+  },
+
+  // Prevent search engine duplicate penalties with standard canonical parameters
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/interest',
+  },
 };
 
 export default function InterestCalculatorPage() {

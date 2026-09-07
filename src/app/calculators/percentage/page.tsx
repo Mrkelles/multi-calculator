@@ -25,10 +25,51 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Percentage Calculator | Percent Increase, Decrease & Difference',
-  description: 'Perform all types of percentage calculations with step-by-step math. Ideal for retail discounts and financial growth.',
-  keywords: ['percentage calculator', 'percent increase', 'percent decrease', 'percentage difference', 'math tool'],
+const metadata: Metadata = {
+  title: 'Accurate Percentage Calculator | Free Math & Discount Tool',
+  description: 'Calculate percentages, increases, decreases, and differences instantly. Use our free online percentage calculator to solve any math problem or figure out a percentage.',
+  keywords: [
+    'percentage calculator',
+    'percentage formula',
+    'Find percentage online',
+    'figure out a percentage',
+    'MyApexCalc',
+    'percentage finder',
+    'percentage difference calculator',
+    'percentage of a percentage',
+    'change in percentage formula'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Percentage Calculator & Math Tool | MyApexCalc',
+    description: 'Solve percentage problems in seconds. Calculate percentage increases, find percentage values, and figure out proportions easily.',
+    url: 'https://www.myapexcalc.com/calculators/percentage',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/p6tXgDrR/percentage-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Percentage Calculator and Multi-Function Math Interface',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Online Percentage Solver | MyApexCalc',
+    description: 'Quickly calculate percent differences, retail discounts, and financial margins using our intuitive web calculator.',
+    images: ['https://i.ibb.co/p6tXgDrR/percentage-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/percentage',
+  },
 };
 
 export default function PercentageCalculatorPage() {
@@ -52,7 +93,7 @@ export default function PercentageCalculatorPage() {
 
   // 2. Percentage Difference Calculator
   const [d1, setD1] = useState(5000);
-  const [d2, setD2] = useState(20000000);
+  const [d2, setD2] = useState(2000);
 
   const diffResult = useMemo(() => {
     const diff = Math.abs(d1 - d2);
@@ -198,6 +239,7 @@ export default function PercentageCalculatorPage() {
                 <p>An employee earning <strong>$55,000</strong> receives a raise to <strong>$58,300</strong>. They want to know the percentage increase.</p>
                 <p>By entering 55,000 as the start and 58,300 as the end in the "Percentage Change" tool, the calculator reveals a <strong>6.0% raise</strong>, helping them benchmark their growth.</p>
               </CardContent>
+              </Card>
             </div>
           </section>
 

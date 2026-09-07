@@ -11,10 +11,49 @@ import { Separator } from '@/components/ui/separator';
 import { addDays, format, differenceInDays } from 'date-fns';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Date Calculator | Add/Subtract Days & Find Duration',
-  description: 'Calculate the exact number of days between two dates or find a target date by adding or subtracting days. Supports leap years and historical tracking.',
-  keywords: ['date calculator', 'days between dates', 'date duration', 'add days to date', 'calendar calculator'],
+const metadata: Metadata = {
+  title: 'Accurate Date Calculator | Live Day Counter & Date Estimator',
+  description: 'Calculate the exact number of days between two dates or add/subtract days from any target date with our free online date calculator and day counter.',
+  keywords: [
+    'Date calculator',
+    'Date estimator',
+    'Day counter',
+    'days between dates',
+    'add days to date',
+    'calendar calculator',
+    'MyApexCalc'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Precision Date Calculator & Day Counter | MyApexCalc',
+    description: 'Easily calculate calendar intervals. Count the days between dates or estimate target dates with our responsive calculation tool.',
+    url: 'https://www.myapexcalc.com/calculators/date',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/R4d9kg0f/date-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Date Calculator and Calendar Day Counter Interface',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Instant Date Estimator & Day Counter | MyApexCalc',
+    description: 'Find the exact distance between calendar dates or add days to any date instantly.',
+    images: ['https://i.ibb.co/R4d9kg0f/date-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/date',
+  },
 };
 
 export default function DateCalculatorPage() {

@@ -27,11 +27,42 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Live Currency Converter | Real-Time Global Exchange Rates',
-  description: 'Convert between global currencies with real-time accuracy. Powered by CurrencyFreaks for up-to-the-minute market rates.',
-  keywords: ['currency converter', 'exchange rates', 'forex calculator', 'live currency rates', 'money converter'],
-};
+const metadata: Metadata = {
+  title: 'Real-Time Currency Converter | Live Exchange Rates',
+  description: 'Convert global currencies instantly with our free currency converter. Get real-time exchange rates, track the pound to dollar (GBP to USD) conversion, and check live euro to dollar (EUR to USD) charts.',
+  keywords: [
+    'currency converter',
+    'pound to dollar',
+    'euro to dollar',
+    'exchange rate',
+    'live forex rates',
+    'currency exchange calculator',
+    'GBP to USD',
+    'EUR to USD'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Twitter, Discord)
+  openGraph: {
+    title: 'Live Currency Converter - Accurate Exchange Rates',
+    description: 'Calculate live global currencies instantly. Check updated pound to dollar and euro to dollar values based on real-time market exchange rates.',
+    url: 'https://www.myapexcalc.com/calculators/currency', // Swap with your actual production route
+    siteName: 'My Apex Calculator',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/VpQ9gz2g/currency-converter.png', // Replace with your static image path (recommended: 1200x630px)
+        width: 1200,
+        height: 630,
+        alt: 'Myapexcalc Currency Converter Interface',
+      },
+    ],
+  },
+
+  alternates: {
+    canonical: 'https://i.ibb.co/VpQ9gz2g/currency-converter.png',
+  },
+}
 
 // Access the API key from environment variables. 
 // Note: NEXT_PUBLIC_ CURRENCY_KEY must be set in your .env

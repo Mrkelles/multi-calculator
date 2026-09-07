@@ -12,9 +12,49 @@ import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
 
 const metadata: Metadata = {
-  title: 'Calorie Calculator | Daily Energy Expenditure & Weight Goals',
-  description: 'Estimate your daily maintenance calories (TDEE) and create a weight loss or gain plan. Uses the Mifflin-St Jeor equation for scientific accuracy.',
-  keywords: ['calorie calculator', 'TDEE estimator', 'daily caloric needs', 'weight loss calculator', 'nutrition planner'],
+  title: 'Accurate Calorie Calculator | Free Daily TDEE & Deficit Tracker',
+  description: 'Estimate your daily caloric needs using our free calorie calculator. Calculate your maintenance baseline, plan a custom calorie deficit, and track your weight loss progress instantly.',
+  keywords: [
+    'calorie calculator',
+    'calorie deficit calculator',
+    'calorie and weight loss calculator',
+    'kcal counter',
+    'calorie counter',
+    'MyApexCalc',
+    'TDEE calculator',
+    'BMR calculator'
+  ],
+  
+  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Daily Calorie & Deficit Calculator | MyApexCalc',
+    description: 'Calculate your daily energy expenditure instantly. Use our scientific kcal counter and weight loss calculator to map out your nutrition benchmarks.',
+    url: 'https://www.myapexcalc.com/calculators/calorie',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/tMhtk144/calorie-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Calorie Calculator and Weight Goals Dashboard Layout',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Interactive Daily Calorie & Kcal Counter | MyApexCalc',
+    description: 'Find your precise daily calorie goals and build a safe, manageable calorie deficit plan based on your active lifestyle.',
+    images: ['https://i.ibb.co/tMhtk144/calorie-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent duplicate indexing
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/calorie',
+  },
 };
 
 export default function CaloriePage() {

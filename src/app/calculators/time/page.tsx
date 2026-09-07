@@ -24,6 +24,54 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { add, sub, format } from 'date-fns';
+import { Metadata } from 'next';
+
+
+const metadata: Metadata = {
+  title: 'Accurate Time Calculator | Free Time Sheet & Work Hours Tracker',
+  description: 'Calculate elapsed time, add or subtract time, and track your weekly timesheets. Use our free online time calculator for work hours to estimate pay and log shifts.',
+  keywords: [
+    'Time Calculator',
+    'work clock calculator',
+    'time calculator for work hours',
+    'time sheet calculator',
+    'MyApexCalc',
+    'hourly timesheet calculator',
+    'elapsed time tracker'
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Time & Work Hours Calculator | MyApexCalc',
+    description: 'Simplify your shift tracking. Log punch-in and punch-out times, subtract unpaid lunch breaks, and tally cumulative work hours instantly.',
+    url: 'https://www.myapexcalc.com/calculators/time',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/TqJgSVm5/time-calculator.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Time Calculator and Work Hours Timesheet Log',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Work Time & Hours Tracker | MyApexCalc',
+    description: 'Quickly add or subtract hours and minutes or track your complete weekly timesheet with built-in break parameters.',
+    images: ['https://i.ibb.co/TqJgSVm5/time-calculator.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/time',
+  },
+};
+
 
 type TimeMode = 'arithmetic' | 'date-offset' | 'expression';
 

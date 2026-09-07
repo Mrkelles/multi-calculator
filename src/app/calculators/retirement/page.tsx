@@ -8,6 +8,52 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Separator } from '@/components/ui/separator';
+import { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'Advanced Retirement Planner | Savings & Nest Egg Estimator',
+  description: 'Map out your financial future with our free retirement planner. Estimate your nest egg, plan annual contributions, and calculate compound interest growth.',
+  keywords: [
+    'compound interest calculator',
+    'compound interest',
+    'MyApexCalc',
+    'retirement planner',
+    'nest egg calculator',
+    'retirement savings',
+    '401K',
+  ],
+  
+  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
+  openGraph: {
+    title: 'Interactive Retirement Planner & Nest Egg Calculator | MyApexCalc',
+    description: 'Will you have enough to retire? Calculate your long-term retirement savings growth and analyze compounding interest projections instantly.',
+    url: 'https://www.myapexcalc.com/calculators/retirement',
+    siteName: 'MyApexCalc',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://i.ibb.co/mZxhDfz/retirement-planner.png',
+        width: 1200,
+        height: 630,
+        alt: 'MyApexCalc Retirement Planner Dashboard and Future Nest Egg Chart',
+      },
+    ],
+  },
+
+  // Twitter visual preview specs
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Future Retirement Savings Estimator | MyApexCalc',
+    description: 'Determine your target retirement numbers and project savings growth using our interactive planning tool.',
+    images: ['https://i.ibb.co/mZxhDfz/retirement-planner.png'],
+  },
+
+  // Direct search spiders to canonical paths to prevent index duplicate penalties
+  alternates: {
+    canonical: 'https://www.myapexcalc.com/calculators/retirement',
+  },
+};
 
 export default function RetirementPage() {
   const [currentAge, setCurrentAge] = useState(30);
