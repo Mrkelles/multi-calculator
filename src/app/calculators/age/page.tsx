@@ -140,6 +140,7 @@ export default function AgeCalculatorPage() {
                     <p className="text-xs text-muted-foreground uppercase font-bold">Total Weeks</p>
                     <p className="text-2xl font-bold text-accent">{Math.floor(ageDetails.totalDays / 7).toLocaleString()}</p>
                   </CardContent>
+                  </Card>
                 </div>
               </>
           ) : (
