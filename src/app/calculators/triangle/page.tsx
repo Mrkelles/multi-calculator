@@ -25,8 +25,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { Metadata } from 'next';
-
+import type { Metadata } from 'next';
 
 const metadata: Metadata = {
   title: 'Accurate Triangle Calculator | Free Area, Perimeter & Angle Solver',
@@ -96,7 +95,6 @@ export default function TriangleCalculatorPage() {
     const angC = parseFloat(angleC);
 
     const toRad = (val: number) => unit === 'degree' ? val * (Math.PI / 180) : val;
-    const toDeg = (val: number) => unit === 'degree' ? val : val * (180 / Math.PI);
     
     const formatAngle = (rad: number) => {
       const deg = rad * (180 / Math.PI);
@@ -131,7 +129,7 @@ export default function TriangleCalculatorPage() {
     if (anglesProvided >= 2) {
       const sum = (isNaN(rAngA) ? 0 : rAngA) + (isNaN(rAngB) ? 0 : rAngB) + (isNaN(rAngC) ? 0 : rAngC);
       const limit = Math.PI;
-      const epsilon = 0.0001;
+      const epsilonVal = 0.0001;
 
       if (anglesProvided === 2) {
         if (sum >= limit) return { error: "The sum of the provided angles must be less than 180°." };
@@ -140,7 +138,7 @@ export default function TriangleCalculatorPage() {
         else if (isNaN(rAngC)) rAngC = limit - (rAngA + rAngB);
         steps.push(`Calculated the third angle using the Triangle Angle Sum Theorem: ∠A + ∠B + ∠C = 180°`);
       } else if (anglesProvided === 3) {
-        if (Math.abs(sum - limit) > epsilon) return { error: "The sum of provided angles must be exactly 180°." };
+        if (Math.abs(sum - limit) > epsilonVal) return { error: "The sum of provided angles must be exactly 180°." };
       }
     }
 
@@ -205,6 +203,27 @@ export default function TriangleCalculatorPage() {
     const mc = Math.sqrt((2 * ra**2 + 2 * rb**2 - rc**2) / 4);
     const inradius = area / s;
     const circumradius = ra / (2 * Math.sin(rAngA));
+
+    // Determine triangle type
+    const eps = 0.000001;
+    let triangleType = "";
+    if (Math.abs(ra - rb) < eps && Math.abs(rb - rc) < eps) {
+      triangleType = "Equilateral";
+    } else if (Math.abs(ra - rb) < eps || Math.abs(rb - rc) < eps || Math.abs(ra - rc) < eps) {
+      triangleType = "Isosceles";
+    } else {
+      triangleType = "Scalene";
+    }
+
+    const anglesArr = [rAngA, rAngB, rAngC];
+    const rightAng = Math.PI / 2;
+    if (anglesArr.some(ang => Math.abs(ang - rightAng) < eps)) {
+      triangleType = "Right " + triangleType;
+    } else if (anglesArr.some(ang => ang > rightAng + eps)) {
+      triangleType = "Obtuse " + triangleType;
+    } else {
+      triangleType = "Acute " + triangleType;
+    }
 
     return {
       type: triangleType + " Triangle",
