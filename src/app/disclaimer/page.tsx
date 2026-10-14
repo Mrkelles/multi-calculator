@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { Footer } from '@/components/layout/Footer';
 
 export default function DisclaimerPage() {
   return (
@@ -225,10 +227,7 @@ export default function DisclaimerPage() {
           </div>
         </div>
       </main>
-
-      <footer className="border-t py-8 px-6 bg-muted/20 text-center">
-        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} My Apex Calc. Professional precision tools.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

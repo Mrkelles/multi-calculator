@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowLeft, Info, Target, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Footer } from '@/components/layout/Footer';
 
 export default function AboutUsPage() {
   return (
@@ -67,9 +68,7 @@ export default function AboutUsPage() {
         </div>
       </main>
 
-      <footer className="border-t py-8 px-6 bg-muted/20 text-center">
-        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} My Apex Calc. Professional precision tools.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

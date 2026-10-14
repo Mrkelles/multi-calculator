@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Footer } from '@/components/layout/Footer';
 
 export default function PrivacyPolicyPage() {
   return (
@@ -50,13 +51,10 @@ export default function PrivacyPolicyPage() {
                 We implement a variety of security measures to maintain the safety of your information. We use SSL encryption to ensure that data transmitted between your browser and our site is secure.
               </p>
             </section>
-
-            <p className="text-xs pt-8 border-t italic">
-              Last Updated: {new Date().toLocaleDateString()}
-            </p>
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

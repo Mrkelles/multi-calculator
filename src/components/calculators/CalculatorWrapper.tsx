@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { Footer } from '@/components/layout/Footer';
 
 interface CalculatorWrapperProps {
   children: React.ReactNode;
@@ -48,7 +49,7 @@ export function CalculatorWrapper({ children, title, description, icon: Icon }: 
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="flex flex-col min-h-screen">
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
           <SidebarTrigger />
           <div className="flex items-center gap-2 overflow-hidden flex-1">
@@ -105,6 +106,7 @@ export function CalculatorWrapper({ children, title, description, icon: Icon }: 
             {children}
           </div>
         </main>
+        <Footer />
       </SidebarInset>
     </SidebarProvider>
   );

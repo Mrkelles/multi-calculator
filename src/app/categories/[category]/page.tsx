@@ -8,6 +8,7 @@ import { AppSidebar } from '@/components/layout/AppSidebar';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Footer } from '@/components/layout/Footer';
 
 export default function CategoryPage() {
   const params = useParams();
@@ -25,7 +26,7 @@ export default function CategoryPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="flex flex-col min-h-screen">
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
           <SidebarTrigger />
           <div className="flex-1">
@@ -79,6 +80,7 @@ export default function CategoryPage() {
             )}
           </div>
         </main>
+        <Footer />
       </SidebarInset>
     </SidebarProvider>
   );

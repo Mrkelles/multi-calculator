@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { ArrowLeft, Mail, MapPin, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Mail, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Footer } from '@/components/layout/Footer';
 
 export default function ContactUsPage() {
   return (
@@ -92,6 +93,7 @@ export default function ContactUsPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

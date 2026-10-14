@@ -23,6 +23,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
+import { Footer } from '@/components/layout/Footer';
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -203,7 +204,7 @@ export default function HomePage() {
               <section className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary/10 via-background to-accent/10 border border-primary/10 p-8 md:p-12 lg:p-16">
                 <div className="relative z-10 max-w-3xl space-y-6">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-[0.15em]">
-                    <Sparkles className="w-3 h-3" />
+                    <Sparkles className="w-3 v-3" />
                     Free Professional Tools
                   </div>
                   <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold font-headline tracking-tighter text-primary leading-[1.05]">
@@ -307,30 +308,7 @@ export default function HomePage() {
         </div>
       </main>
 
-      <footer className="border-t py-12 px-6 bg-muted/20">
-        <div className="max-w-5xl mx-auto space-y-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex items-center gap-2">
-              <Calculator className="h-5 w-5 text-primary" />
-              <span className="font-headline font-bold text-primary">My Apex Calc</span>
-            </div>
-            <p className="text-xs text-muted-foreground font-medium">© {new Date().getFullYear()} My Apex Calc. Professional precision tools.</p>
-            <div className="flex gap-6">
-               <Link href="/all-calculators" className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors">Dashboard</Link>
-               {categories.map(c => (
-                 <Link key={c.id} href={`/categories/${c.id}`} className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors">{c.name}</Link>
-               ))}
-            </div>
-          </div>
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 border-t pt-8">
-            <Link href="/about-us" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">About Us</Link>
-            <Link href="/contact-us" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Contact Us</Link>
-            <Link href="/privacy-policy" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Privacy Policy</Link>
-            <Link href="/terms-of-use" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Terms of Use</Link>
-            <Link href="/disclaimer" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Disclaimer</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

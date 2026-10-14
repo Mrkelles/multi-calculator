@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowLeft, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Footer } from '@/components/layout/Footer';
 
 export default function TermsOfUsePage() {
   return (
@@ -56,6 +57,7 @@ export default function TermsOfUsePage() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -3,12 +3,13 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/layout/AppSidebar';
+import { Footer } from '@/components/layout/Footer';
 
 export default function AllCalculatorsPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="flex flex-col min-h-screen">
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
           <SidebarTrigger />
           <div className="flex-1">
@@ -44,6 +45,7 @@ export default function AllCalculatorsPage() {
             </div>
           </div>
         </main>
+        <Footer />
       </SidebarInset>
     </SidebarProvider>
   );
