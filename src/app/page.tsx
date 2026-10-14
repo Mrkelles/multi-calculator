@@ -108,6 +108,7 @@ export default function HomePage() {
                     <Link href="/contact-us" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 hover:text-primary transition-colors">Contact</Link>
                     <Link href="/privacy-policy" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 hover:text-primary transition-colors">Privacy</Link>
                     <Link href="/terms-of-use" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 hover:text-primary transition-colors">Terms</Link>
+                    <Link href="/disclaimer" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 hover:text-primary transition-colors">Disclaimer</Link>
                   </div>
                 </div>
               </div>
@@ -205,13 +206,13 @@ export default function HomePage() {
                     <Sparkles className="w-3 h-3" />
                     Free Professional Tools
                   </div>
-                  <h2 className="text-4xl md:text-5xl lg:text-7xl font-extrabold font-headline tracking-tighter text-primary leading-[1.05]">
+                  <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold font-headline tracking-tighter text-primary leading-[1.05]">
                     Precision Tools for <br/>
                     <span className="text-accent">Smarter Decisions.</span>
-                  </h2>
-                  <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-2xl font-medium opacity-90">
+                  </h1>
+                  <h2 className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-2xl font-medium opacity-90">
                     Whether you're managing personal finances, tracking health metrics, or optimizing content revenue, My Apex Calc provides accurate data when it matters most.
-                  </p>
+                  </h2>
                   <div className="flex flex-wrap gap-4 pt-4">
                     <Link 
                       href="/all-calculators" 
@@ -326,6 +327,7 @@ export default function HomePage() {
             <Link href="/contact-us" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Contact Us</Link>
             <Link href="/privacy-policy" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Privacy Policy</Link>
             <Link href="/terms-of-use" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Terms of Use</Link>
+            <Link href="/disclaimer" className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 hover:text-primary transition-colors">Disclaimer</Link>
           </div>
         </div>
       </footer>
