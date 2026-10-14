@@ -28,7 +28,7 @@ import type { Metadata } from 'next';
 
 const metadata: Metadata = {
   title: 'Website Ad Revenue Calculator | Estimate Monthly Earnings',
-  description: 'Calculate your potential website ad revenue based on pageviews, RPM, and ad units. Estimate annual earnings with traffic quality tier analysis.',
+  description: 'Calculate your potential website ad revenue based on pageviews and RPM. Estimate annual earnings with traffic quality tier analysis.',
   keywords: [
     'ad revenue calculator',
     'website earnings estimator',
@@ -42,7 +42,7 @@ const metadata: Metadata = {
   // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
   openGraph: {
     title: 'Precision Website Ad Revenue Calculator | MyApexCalc',
-    description: 'Find your site\'s viral earning potential. Calculate ad revenue based on traffic quality, ad frequency, and global RPM benchmarks.',
+    description: 'Find your site\'s viral earning potential. Calculate ad revenue based on traffic quality and global RPM benchmarks.',
     url: 'https://www.myapexcalc.com/calculators/ad-revenue',
     siteName: 'MyApexCalc',
     locale: 'en_US',
@@ -74,7 +74,6 @@ const metadata: Metadata = {
 export default function AdRevenuePage() {
   const [rpm, setRpm] = useState(0.65);
   const [pageviews, setPageviews] = useState(2000000);
-  const [adUnits, setAdUnits] = useState(4);
   
   // Traffic Tiers (sum to 100%)
   const [tier1, setTier1] = useState(34);
@@ -82,13 +81,12 @@ export default function AdRevenuePage() {
   const [tier3, setTier3] = useState(33);
 
   const results = useMemo(() => {
-    // Basic Monthly Revenue = (Pageviews / 1000) * RPM * Ad Units
-    const monthlyRevenue = (pageviews / 1000) * rpm * adUnits;
+    // Basic Monthly Revenue = (Pageviews / 1000) * RPM
+    const monthlyRevenue = (pageviews / 1000) * rpm;
     const annualRevenue = monthlyRevenue * 12;
 
     // Traffic Quality Multiplier (Conceptual)
     // Tier 1 (US/UK/CA) pays 100%, Tier 2 pays 60%, Tier 3 pays 30%
-    // This provides a range of potential growth
     const qualityScore = (tier1 * 1.0 + tier2 * 0.6 + tier3 * 0.3) / 100;
     
     return {
@@ -98,12 +96,12 @@ export default function AdRevenuePage() {
       highEstimate: annualRevenue * 1.5,
       qualityScore
     };
-  }, [rpm, pageviews, adUnits, tier1, tier2, tier3]);
+  }, [rpm, pageviews, tier1, tier2, tier3]);
 
   return (
     <CalculatorWrapper
       title="Website Ad Revenue Calculator"
-      description="Estimate your annual website revenue based on monthly traffic, RPM, and audience quality tiers."
+      description="Estimate your annual website revenue based on monthly traffic and Page RPM."
       icon={DollarSign}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -119,7 +117,7 @@ export default function AdRevenuePage() {
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <Label className="font-bold">RPM ($ per 1k views)</Label>
+                  <Label className="font-bold">Page RPM ($ per 1k views)</Label>
                   <Badge variant="outline" className="font-mono text-primary">${rpm.toFixed(2)}</Badge>
                 </div>
                 <Slider value={[rpm]} min={0.01} max={5.00} step={0.01} onValueChange={(v) => setRpm(v[0])} />
@@ -138,18 +136,6 @@ export default function AdRevenuePage() {
                 <div className="relative">
                   <Eye className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
                   <Input type="number" className="pl-9" value={pageviews} onChange={(e) => setPageviews(Number(e.target.value))} />
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <Label className="font-bold">Avg. Ad Units per Page</Label>
-                  <Badge variant="outline" className="font-mono text-primary">{adUnits}</Badge>
-                </div>
-                <Slider value={[adUnits]} min={1} max={10} step={1} onValueChange={(v) => setAdUnits(v[0])} />
-                <div className="relative">
-                  <Layout className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                  <Input type="number" className="pl-9" value={adUnits} onChange={(e) => setAdUnits(Number(e.target.value))} />
                 </div>
               </div>
             </CardContent>
@@ -262,8 +248,8 @@ export default function AdRevenuePage() {
                 <CardTitle className="text-lg">Scenario 1: Niche Blog Growth</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground space-y-2">
-                <p>A small niche blog currently has <strong>50,000 monthly pageviews</strong> with an <strong>RPM of $2.00</strong> and 2 ad units per page. This yields <strong>$200/month</strong>.</p>
-                <p>By optimizing the content for higher-paying keywords (increasing RPM to <strong>$5.00</strong>) and increasing ad density to 3 units, the monthly revenue jumps to <strong>$750/month</strong>, even with the same amount of traffic.</p>
+                <p>A small niche blog currently has <strong>50,000 monthly pageviews</strong> with an <strong>RPM of $2.00</strong>. This yields <strong>$100/month</strong>.</p>
+                <p>By optimizing the content for higher-paying keywords and increasing Page RPM to <strong>$5.00</strong>, the monthly revenue jumps to <strong>$250/month</strong>, even with the same amount of traffic.</p>
               </CardContent>
             </Card>
             <Card className="border-none shadow-sm bg-muted/20">
@@ -271,8 +257,8 @@ export default function AdRevenuePage() {
                 <CardTitle className="text-lg">Scenario 2: Viral Site Analysis</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground space-y-2">
-                <p>A viral news site generates <strong>5,000,000 monthly views</strong> but primarily from low-CPC markets (Tier 3), resulting in a low <strong>$0.50 RPM</strong> and 4 ad units ($10,000/mo).</p>
-                <p>By pivoting to more Tier 1 (US/UK) focused content, even if traffic drops to 3,000,000 views, a higher <strong>$1.50 RPM</strong> with the same ad units would result in <strong>$18,000/mo</strong>—an 80% increase in revenue with less traffic.</p>
+                <p>A viral news site generates <strong>5,000,000 monthly views</strong> but primarily from low-CPC markets (Tier 3), resulting in a low <strong>$0.50 RPM</strong> ($2,500/mo).</p>
+                <p>By pivoting to more Tier 1 (US/UK) focused content, even if traffic drops to 3,000,000 views, a higher <strong>$1.50 RPM</strong> would result in <strong>$4,500/mo</strong>—an 80% increase in revenue with less traffic.</p>
               </CardContent>
             </Card>
           </div>
@@ -287,30 +273,29 @@ export default function AdRevenuePage() {
               Take the Guesswork Out of Monetization with MyApexCalc
             </h3>
             <p className="text-muted-foreground leading-relaxed">
-              For digital publishers and website owners, turning traffic into a sustainable income stream requires a deep understanding of ad tech metrics. While many creators focus solely on "total views," the real revenue is driven by a combination of audience quality, ad density, and market-specific bidding competition. Our free online Website Ad Revenue Calculator is designed to demystify these variables, serving as a professional-grade ad revenue estimator to help you map your annual income potential in seconds.
+              For digital publishers and website owners, turning traffic into a sustainable income stream requires a deep understanding of ad tech metrics. While many creators focus solely on "total views," the real revenue is driven by audience quality and Page RPM. Our free online Website Ad Revenue Calculator is designed to demystify these variables, serving as a professional-grade ad revenue estimator to help you map your annual income potential in seconds.
             </p>
             
             <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
               <Calculator className="w-6 h-6" />
-              The Math of Ad Revenue: RPM, Pageviews, and Ad Units
+              The Math of Ad Revenue: RPM and Pageviews
             </h3>
             <div className="space-y-6">
               <p className="text-muted-foreground leading-relaxed">
                 Website monetization is calculated using a standard model that accounts for your total reach and the revenue generated for every thousand impressions. The core formula utilized by our calculator is:
               </p>
               <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
-                Monthly Revenue = (Monthly Pageviews / 1,000) × RPM × Ad Units
+                Monthly Revenue = (Monthly Pageviews / 1,000) × Page RPM
               </div>
               <p className="text-muted-foreground leading-relaxed pt-2">
-                By taking your monthly pageviews and dividing them by 1,000 (the "M" in RPM stands for Mille, the Latin word for thousand), we find the number of "units" of traffic you have. Multiplying this by your RPM (Revenue Per Mille) and the average number of ads per page yields your total monthly gross.
+                By taking your monthly pageviews and dividing them by 1,000 (the "M" in RPM stands for Mille, the Latin word for thousand), we find the number of "units" of traffic you have. Multiplying this by your Page RPM (Revenue Per Mille) yields your total monthly gross.
               </p>
               <div className="bg-primary/5 p-4 rounded-xl border border-primary/10">
                 <p className="font-bold text-sm text-primary mb-2">Example Calculation:</p>
                 <ul className="text-xs space-y-2 text-muted-foreground">
                   <li><strong>Pageviews:</strong> 2,000,000</li>
-                  <li><strong>RPM:</strong> $0.65</li>
-                  <li><strong>Ad Units:</strong> 4</li>
-                  <li className="pt-2 border-t font-bold text-foreground">Annual Revenue = (2,000,000 / 1000) × 0.65 × 4 × 12 = $62,400</li>
+                  <li><strong>Page RPM:</strong> $0.65</li>
+                  <li className="pt-2 border-t font-bold text-foreground">Annual Revenue = (2,000,000 / 1000) × 0.65 × 12 = $15,600</li>
                 </ul>
               </div>
             </div>
