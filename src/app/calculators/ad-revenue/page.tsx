@@ -78,7 +78,6 @@ export default function AdRevenuePage() {
     const annualRevenue = monthlyRevenue * 12;
 
     // Traffic Quality Multiplier (Conceptual)
-    // Tier 1 (US/UK/CA) pays 100%, Tier 2 pays 60%, Tier 3 pays 30%
     const qualityScore = (tier1 * 1.0 + tier2 * 0.6 + tier3 * 0.3) / 100;
     
     return {
@@ -211,16 +210,6 @@ export default function AdRevenuePage() {
               </div>
             </CardContent>
           </Card>
-
-          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 flex gap-4">
-            <Info className="w-6 h-6 text-blue-500 shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <p className="text-sm text-blue-800 font-bold">Industry Benchmark</p>
-              <p className="text-xs text-blue-700 leading-relaxed">
-                Publishers with over 50% Tier 1 traffic typically command RPMs 3x-5x higher than Tier 3 dominant sites. Focus on premium content to attract high-value regions.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
 
