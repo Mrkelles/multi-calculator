@@ -1,17 +1,15 @@
 "use client"
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { CalculatorWrapper } from '@/components/calculators/CalculatorWrapper';
 import { 
   DollarSign, 
   Eye, 
-  Layout, 
   Globe, 
   TrendingUp, 
   Info, 
   History, 
   Zap, 
-  ShieldCheck, 
   ChevronRight,
   Calculator,
   BarChart,
@@ -38,8 +36,6 @@ const metadata: Metadata = {
     'MyApexCalc',
     'adSense revenue estimator'
   ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
   openGraph: {
     title: 'Precision Website Ad Revenue Calculator | MyApexCalc',
     description: 'Find your site\'s viral earning potential. Calculate ad revenue based on traffic quality and global RPM benchmarks.',
@@ -56,16 +52,12 @@ const metadata: Metadata = {
       },
     ],
   },
-
-  // Twitter visual preview specs
   twitter: {
     card: 'summary_large_image',
     title: 'Free Website Ad Revenue & Earnings Estimator | MyApexCalc',
     description: 'Instantly calculate potential monthly and annual website ad revenue using customizable RPM and traffic tier metrics.',
     images: ['https://i.ibb.co/6cNntKby/ad-revenue-calculator.png'],
   },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
   alternates: {
     canonical: 'https://www.myapexcalc.com/calculators/ad-revenue',
   },
@@ -214,7 +206,7 @@ export default function AdRevenuePage() {
                    <span>${results.highEstimate.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
                 </div>
                 <p className="text-[10px] text-muted-foreground italic mt-4">
-                  Estimated 30-250% lift potential based on ad placements, bidding competition, and traffic tiers.
+                  This calculator provides an estimate, not a guarantee of earnings. Actual advertising revenue varies with traffic quality, vistitor geography, advertising demand, ad placement, device type, seasonality, and other factors. Page RPM should reflect the publishers expected revenue per 1,000 page
                 </p>
               </div>
             </CardContent>
