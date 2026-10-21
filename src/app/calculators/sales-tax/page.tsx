@@ -29,7 +29,7 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 const metadata: Metadata = {
   title: 'Accurate Sales Tax Calculator | Free Retail Tax Estimator',
