@@ -17,8 +17,6 @@ const metadata: Metadata = {
   title: 'Interest Calculator | Simple & Compound Interest Growth',
   description: 'Calculate simple and compound interest with recurring contributions. View detailed yearly and monthly growth schedules.',
   keywords: ['interest calculator', 'simple interest', 'compound interest', 'investment growth', 'savings interest'],
-  
-  // Open Graph for social sharing platforms (LinkedIn, Facebook, Discord, X)
   openGraph: {
     title: 'Precision Interest Rate & APR Calculator | MyApexCalc',
     description: 'Deconstruct your borrowing or growth rates. Calculate interest amounts, analyze mortgage components, and find your true APR easily.',
@@ -35,16 +33,12 @@ const metadata: Metadata = {
       },
     ],
   },
-
-  // Twitter visual preview specs
   twitter: {
     card: 'summary_large_image',
     title: 'Free Interest Amount & APR Calculator | MyApexCalc',
     description: 'Determine actual borrowing fees, monthly mortgage percentages, and investment yields in seconds.',
     images: ['https://i.ibb.co/tt9jyBz/compound-interest-calculator.png'],
   },
-
-  // Prevent search engine duplicate penalties with standard canonical parameters
   alternates: {
     canonical: 'https://www.myapexcalc.com/calculators/interest',
   },
@@ -55,9 +49,9 @@ export default function InterestCalculatorPage() {
   const [years, setYears] = useState(5);
   const [rate, setRate] = useState(6);
   const [type, setType] = useState<'compound' | 'simple'>('compound');
-  const [frequency, setFrequency] = useState('12'); // Compounding Frequency
+  const [frequency, setFrequency] = useState('12'); 
   const [contribution, setContribution] = useState(500);
-  const [contributionFrequency, setContributionFrequency] = useState('12'); // 12 for monthly, 1 for yearly
+  const [contributionFrequency, setContributionFrequency] = useState('12'); 
   const [contributionTiming, setContributionTiming] = useState<'beginning' | 'end'>('beginning');
 
   const results = useMemo(() => {
@@ -75,13 +69,11 @@ export default function InterestCalculatorPage() {
     let currentBalance = P;
     let totalInvested = P;
 
-    // We use a monthly simulation for high precision across both simple and compound
     const totalMonths = t * 12;
 
     for (let m = 1; m <= totalMonths; m++) {
       const isContributionMonth = (12 / pmtFreq) === 1 || (m % (12 / pmtFreq) === 0);
 
-      // 1. BEGINNING CONTRIBUTION
       if (contributionTiming === 'beginning' && isContributionMonth) {
         currentBalance += PMT;
         totalInvested += PMT;
@@ -90,12 +82,8 @@ export default function InterestCalculatorPage() {
       let monthInterest = 0;
 
       if (type === 'simple') {
-        // Simple Interest: Each dollar in the account earns interest based on time remaining
-        // We calculate interest on the CURRENT principal balance for 1 month
         monthInterest = (currentBalance * r) / 12;
       } else {
-        // Compound Interest: Compounding n times per year
-        // Effective Monthly Rate = (1 + r/n)^(n/12) - 1
         const monthlyRate = Math.pow(1 + r / n, n / 12) - 1;
         monthInterest = currentBalance * monthlyRate;
         currentBalance += monthInterest;
@@ -103,13 +91,11 @@ export default function InterestCalculatorPage() {
       
       totalIntAccumulated += monthInterest;
 
-      // 2. END CONTRIBUTION
       if (contributionTiming === 'end' && isContributionMonth) {
         currentBalance += PMT;
         totalInvested += PMT;
       }
 
-      // Record Monthly Schedule
       monthlySchedule.push({
         period: m,
         interest: monthInterest,
@@ -117,7 +103,6 @@ export default function InterestCalculatorPage() {
         balance: type === 'simple' ? totalInvested + totalIntAccumulated : currentBalance,
       });
 
-      // Record Yearly Schedule
       if (m % 12 === 0) {
         const year = m / 12;
         yearlySchedule.push({
@@ -142,7 +127,6 @@ export default function InterestCalculatorPage() {
       icon={Calculator}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Input Section */}
         <div className="lg:col-span-5 space-y-6">
           <Card>
             <CardHeader>
@@ -240,31 +224,12 @@ export default function InterestCalculatorPage() {
                       <Label htmlFor="end" className="font-normal cursor-pointer">End</Label>
                     </div>
                   </RadioGroup>
-                  <p className="text-[10px] text-muted-foreground italic">
-                    {contributionTiming === 'beginning' 
-                      ? "Deposits are added before interest is calculated for the period." 
-                      : "Deposits are added after interest is calculated for the period."}
-                  </p>
                 </div>
               </div>
             </CardContent>
           </Card>
-
-          <Card className="bg-primary/5 border-primary/10">
-            <CardHeader>
-              <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
-                <Info className="w-4 h-4 text-primary" />
-                Definitions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-xs space-y-3 text-muted-foreground leading-relaxed">
-              <p><strong>Simple Interest:</strong> Interest calculated only on the principal amounts (initial and added). It does not earn interest on interest.</p>
-              <p><strong>Compound Interest:</strong> Interest earned is added back to the principal, so the next period earns interest on that interest as well.</p>
-            </CardContent>
-          </Card>
         </div>
 
-        {/* Results Section */}
         <div className="lg:col-span-7 space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Card className="bg-primary text-white border-none shadow-lg">
@@ -283,6 +248,15 @@ export default function InterestCalculatorPage() {
                 </h3>
               </CardContent>
             </Card>
+          </div>
+
+          <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+            <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+              <Info size={16} /> Disclaimer
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed italic">
+              Interest calculations are estimates based on the principal, interest rate, time period, compounding method, and contribution assumptions entered. Actual interest earned or paid may differ because of account terms, lender policies, rate changes, fees, taxes, and calculation conventions. This calculator does not represent an offer from a financial institution or guarantee a particular return. Verify all rates and terms with the relevant bank, lender, or financial provider.
+            </p>
           </div>
 
           <Card>
@@ -304,7 +278,7 @@ export default function InterestCalculatorPage() {
                     <Table>
                       <TableHeader className="bg-muted/50">
                         <TableRow>
-                          <TableHead className="w-[80px]">Year</TableHead>
+                          <TableHead>Year</TableHead>
                           <TableHead>Year Interest</TableHead>
                           <TableHead>Total Interest</TableHead>
                           <TableHead className="text-right">Balance</TableHead>
@@ -329,7 +303,7 @@ export default function InterestCalculatorPage() {
                     <Table>
                       <TableHeader className="bg-muted/50 sticky top-0 z-10">
                         <TableRow>
-                          <TableHead className="w-[80px]">Month</TableHead>
+                          <TableHead>Month</TableHead>
                           <TableHead>Interest</TableHead>
                           <TableHead>Total Interest</TableHead>
                           <TableHead className="text-right">Balance</TableHead>
@@ -344,13 +318,6 @@ export default function InterestCalculatorPage() {
                             <TableCell className="text-right font-bold">${row.balance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</TableCell>
                           </TableRow>
                         ))}
-                        {results.monthlySchedule.length > 120 && (
-                          <TableRow>
-                            <TableCell colSpan={4} className="text-center text-muted-foreground py-4 italic">
-                              Showing first 120 months...
-                            </TableCell>
-                          </TableRow>
-                        )}
                       </TableBody>
                     </Table>
                   </div>
@@ -360,11 +327,8 @@ export default function InterestCalculatorPage() {
           </Card>
         </div>
 
-        {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
-
-          {/* Worked Examples Section */}
           <section className="space-y-6 text-left">
             <div className="flex items-center gap-3">
               <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
@@ -391,47 +355,6 @@ export default function InterestCalculatorPage() {
               </Card>
             </div>
           </section>
-
-          <Separator />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <section className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <History className="w-6 h-6" />
-                Understanding Interest
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Interest is essentially the cost of borrowing money or the reward for saving it. At <strong>My Apex Calc</strong>, we provide tools to help you visualize exactly how these percentages translate into real dollars over time. Whether you are looking at a simple car loan or a long-term retirement fund, knowing the difference between simple and compound interest is crucial for financial literacy.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Most modern financial products use <strong>compound interest</strong> because it accounts for the exponential growth of money. As your interest earns interest, your wealth grows at an increasing rate—a phenomenon Einstein famously called the "eighth wonder of the world."
-              </p>
-            </section>
-
-            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary">Key Takeaways</h4>
-              <ul className="space-y-4">
-                <li className="flex gap-3">
-                  <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <div className="h-2 w-2 rounded-full bg-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Timing Matters</p>
-                    <p className="text-xs text-muted-foreground">Contributing at the <strong>Beginning</strong> of a month allows that money to earn interest for that full month, significantly boosting long-term gains.</p>
-                  </div>
-                </li>
-                <li className="flex gap-3">
-                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <div className="h-2 w-2 rounded-full bg-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Frequency is Key</p>
-                    <p className="text-xs text-muted-foreground">The more frequently interest is compounded (e.g., daily vs. annually), the higher the total end balance will be.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
     </CalculatorWrapper>

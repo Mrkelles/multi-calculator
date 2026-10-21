@@ -37,8 +37,6 @@ const metadata: Metadata = {
     'portfolio growth estimator',
     'financial projection tool'
   ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
   openGraph: {
     title: 'Interactive Investment Calculator & Growth Estimator | MyApexCalc',
     description: 'Visualize your path to financial freedom. Calculate future portfolio values, compare return rates, and track compound growth in real-time.',
@@ -55,16 +53,12 @@ const metadata: Metadata = {
       },
     ],
   },
-
-  // Twitter visual preview specs
   twitter: {
     card: 'summary_large_image',
     title: 'Free Investment Growth Calculator & Estimator | MyApexCalc',
     description: 'Map your long-term wealth goals. Adjust annual returns, initial principal, and regular contributions to see your portfolio grow.',
     images: ['https://i.ibb.co/9H0bRpTQ/investment-calculator.png'],
   },
-
-  // Direct search spiders to canonical paths to prevent duplicate index penalties
   alternates: {
     canonical: 'https://www.myapexcalc.com/calculators/investment',
   },
@@ -75,7 +69,6 @@ type CalcMode = 'end-amount' | 'contribution' | 'return-rate' | 'starting-amount
 export default function InvestmentCalculatorPage() {
   const [mode, setMode] = useState<CalcMode>('end-amount');
 
-  // Inputs
   const [startingAmount, setStartingAmount] = useState(25000);
   const [targetAmount, setTargetAmount] = useState(100000);
   const [years, setYears] = useState(10);
@@ -100,7 +93,6 @@ export default function InvestmentCalculatorPage() {
     let finalRate = r;
     let finalContribution = contribution;
 
-    // Simulation logic to calculate future value
     const simulate = (p: number, yrs: number, rate: number, contrib: number) => {
       let balance = p;
       let totalContrib = p;
@@ -170,7 +162,6 @@ export default function InvestmentCalculatorPage() {
       finalYears = solvedValue;
     }
 
-    // Final Schedules based on solved parameters
     const finalSim = simulate(finalP, finalYears, finalRate, finalContribution);
     const yearlySchedule = [];
     const monthlySchedule = [];
@@ -184,7 +175,7 @@ export default function InvestmentCalculatorPage() {
           totalPrincipal: item.totalContrib
         });
       }
-      if (idx < 120) { // Limit monthly to first 10 years for performance
+      if (idx < 120) {
         monthlySchedule.push({
           period: idx + 1,
           balance: item.balance,
@@ -211,7 +202,6 @@ export default function InvestmentCalculatorPage() {
       icon={TrendingUp}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Inputs */}
         <div className="lg:col-span-5 space-y-6">
           <Card>
             <CardHeader>
@@ -322,7 +312,6 @@ export default function InvestmentCalculatorPage() {
           </Card>
         </div>
 
-        {/* Right Column: Results */}
         <div className="lg:col-span-7 space-y-6">
           <Card className="bg-primary text-white border-none shadow-xl">
             <CardContent className="pt-10 pb-10 text-center">
@@ -361,6 +350,15 @@ export default function InvestmentCalculatorPage() {
                 <div className="text-2xl font-bold text-accent">${results.totalInterest.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
               </CardContent>
             </Card>
+          </div>
+
+          <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+            <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+              <Info size={16} /> Disclaimer
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed italic">
+              Investment projections are hypothetical estimates based on the inputs and assumptions provided, including the expected rate of return, investment period, contributions, and compounding frequency. Actual investment performance may be higher or lower than projected, and you may lose some or all of your invested capital. Results may not account for taxes, fees, inflation, market volatility, or other investment costs unless explicitly included. This calculator does not provide investment advice or guarantee returns. Consider consulting a qualified financial adviser before making investment decisions.
+            </p>
           </div>
 
           <Card>
@@ -431,11 +429,8 @@ export default function InvestmentCalculatorPage() {
           </Card>
         </div>
 
-        {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
-
-          {/* Worked Examples Section */}
           <section className="space-y-6 text-left">
             <div className="flex items-center gap-3">
               <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
@@ -474,7 +469,6 @@ export default function InvestmentCalculatorPage() {
               <p className="text-muted-foreground leading-relaxed">
                 Building long-term wealth is rarely about finding a single, overnight windfall. Instead, the most reliable path to financial independence relies on a proven mathematical force: consistency and compound growth over time. Whether you are building a retirement nest egg, saving for a major milestone, or investing in a diversified index fund, understanding how your money multiplies is essential. Our free, interactive Investment Calculator is engineered to serve as your personal Investment Estimator, showing you exactly how small, regular contributions build life-changing momentum.
               </p>
-              
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
                 <Calculator className="w-6 h-6" />
                 The Power of Compounding: How Your Wealth Multiplies
@@ -495,9 +489,6 @@ export default function InvestmentCalculatorPage() {
                   <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">r</span> represents your expected periodic rate of return.</p>
                   <p className="text-xs text-muted-foreground"><span className="font-bold text-foreground">n</span> represents the total number of compounding periods over your investment horizon.</p>
                 </div>
-                <p className="text-muted-foreground leading-relaxed pt-2">
-                  Over short horizons, your total balance is heavily dictated by the physical cash you deposit (PMT). However, over a 10, 20, or 30-year window, the compounding growth curve takes over, turning your earned returns into the primary driver of your portfolio's value.
-                </p>
               </div>
             </section>
 
@@ -507,9 +498,6 @@ export default function InvestmentCalculatorPage() {
                   <Info className="w-5 h-5 text-accent" />
                   Key Factors to Maximize Your Portfolio Growth
                 </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  When adjusting the parameters on our interactive dashboard, keep these essential investment principles in mind:
-                </p>
                 <ul className="space-y-6 pt-2">
                   <li className="flex gap-4">
                     <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
@@ -537,27 +525,6 @@ export default function InvestmentCalculatorPage() {
                       <p className="font-bold text-sm">Accounting for Inflation</p>
                       <p className="text-xs text-muted-foreground leading-relaxed">Inflation gradually erodes purchasing power. Use a conservative real return rate (e.g., 7% instead of 10%) to see your future wealth in today's dollars.</p>
                     </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-primary/5 p-8 rounded-3xl border border-primary/10 space-y-6">
-                <h4 className="text-lg font-bold text-primary flex items-center gap-2">
-                  <History className="w-5 h-5 text-primary" />
-                  Why Project Your Wealth with MyApexCalc?
-                </h4>
-                <ul className="space-y-4">
-                  <li className="flex gap-3 text-sm text-muted-foreground">
-                    <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
-                    <span><strong>Dynamic Real-Time Projections:</strong> Instantly slide your initial principal and monthly contributions to watch your trajectory recalculate as you type.</span>
-                  </li>
-                  <li className="flex gap-3 text-sm text-muted-foreground">
-                    <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
-                    <span><strong>Detailed Breakdown Tables:</strong> Access a yearly breakdown highlighting your cumulative contributions, total interest, and ending balances.</span>
-                  </li>
-                  <li className="flex gap-3 text-sm text-muted-foreground">
-                    <ChevronRight size={14} className="text-accent shrink-0 mt-0.5" />
-                    <span><strong>Multi-Variable Solving:</strong> Solve for any variable—end amount, required contributions, return rate, or length of time.</span>
                   </li>
                 </ul>
               </div>

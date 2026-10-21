@@ -20,7 +20,7 @@ export default function AboutUsPage() {
       <main className="flex-1 p-6 md:p-12 lg:p-20">
         <div className="max-w-4xl mx-auto space-y-12">
           <div className="space-y-4 text-center">
-            <h2 className="text-4xl font-extrabold font-headline tracking-tight text-primary">About My Apex Calc</h2>
+            <h1 className="text-4xl font-extrabold font-headline tracking-tight text-primary">About My Apex Calc</h1>
             <p className="text-muted-foreground text-xl max-w-2xl mx-auto">
               Our mission is to provide the world with a comprehensive suite of free, accurate, and easy-to-use online calculators.
             </p>

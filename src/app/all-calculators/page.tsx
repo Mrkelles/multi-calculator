@@ -5,6 +5,7 @@ import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/s
 import { AppSidebar } from '@/components/layout/AppSidebar';
 import { Footer } from '@/components/layout/Footer';
 
+
 export default function AllCalculatorsPage() {
   return (
     <SidebarProvider>

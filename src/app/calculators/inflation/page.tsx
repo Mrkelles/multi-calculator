@@ -33,8 +33,6 @@ const metadata: Metadata = {
     'purchasing power calculator',
     'historical dollar value'
   ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
   openGraph: {
     title: 'Historical Inflation & Dollar Value Calculator | MyApexCalc',
     description: 'See how the buying power of a dollar has changed. Track historical buying power and calculate inflation rates instantly.',
@@ -51,25 +49,17 @@ const metadata: Metadata = {
       },
     ],
   },
-
-  // Twitter visual preview specs
   twitter: {
     card: 'summary_large_image',
     title: 'Free Dollar Inflation & CPI Calculator | MyApexCalc',
     description: 'Calculate the changing value of money over time using official historical Consumer Price Index (CPI) datasets.',
     images: ['https://i.ibb.co/VpL9DTys/inflation-calculator.png'],
   },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
   alternates: {
     canonical: 'https://www.myapexcalc.com/calculators/inflation',
   },
 };
 
-
-
-// U.S. Annual CPI Averages (1913-2024)
-// Source: Bureau of Labor Statistics (BLS)
 const CPI_DATA: Record<number, number> = {
   1913: 9.9, 1914: 10.0, 1915: 10.1, 1916: 10.9, 1917: 12.8, 1918: 15.1, 1919: 17.3,
   1920: 20.0, 1921: 17.9, 1922: 16.8, 1923: 17.1, 1924: 17.1, 1925: 17.5, 1926: 17.7, 1927: 17.4, 1928: 17.1, 1929: 17.1,
@@ -88,17 +78,14 @@ const CPI_DATA: Record<number, number> = {
 export default function InflationCalculatorPage() {
   const [mode, setMode] = useState<'historical' | 'forward' | 'backward'>('historical');
   
-  // Historical Mode Inputs
   const [hAmount, setHAmount] = useState(100);
   const [startYear, setStartYear] = useState(2000);
   const [endYear, setEndYear] = useState(2024);
 
-  // Forward Mode Inputs (Flat Rate)
   const [fAmount, setFAmount] = useState(1000);
   const [fRate, setFRate] = useState(3.0);
   const [fYears, setFYears] = useState(10);
 
-  // Backward Mode Inputs (Flat Rate)
   const [bAmount, setBAmount] = useState(1000);
   const [bRate, setBRate] = useState(3.0);
   const [bYears, setBYears] = useState(10);
@@ -138,7 +125,6 @@ export default function InflationCalculatorPage() {
       icon={TrendingDown}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Input Section */}
         <div className="lg:col-span-5 space-y-6">
           <Card>
             <CardHeader>
@@ -292,7 +278,6 @@ export default function InflationCalculatorPage() {
           </Card>
         </div>
 
-        {/* Results Section */}
         <div className="lg:col-span-7 space-y-6">
           <Card className="bg-primary text-white border-none shadow-xl">
             <CardContent className="pt-10 pb-10 text-center">
@@ -324,14 +309,13 @@ export default function InflationCalculatorPage() {
             </Card>
           </div>
 
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 flex gap-4">
-            <History className="w-6 h-6 text-blue-500 shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <p className="text-sm text-blue-800 font-bold">Purchasing Power Note</p>
-              <p className="text-xs text-blue-700 leading-relaxed">
-                Inflation reduces the **purchasing power** of each unit of currency. As prices rise, a single dollar buys fewer goods and services than it did in the past.
-              </p>
-            </div>
+          <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+            <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+              <Info size={16} /> Disclaimer
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed italic">
+              Inflation calculations are estimates based on the rates, dates, and monetary values entered or selected. Actual changes in purchasing power may differ because inflation varies across countries, regions, product categories, and time periods. Historical inflation data does not guarantee future price movements. This calculator is intended for educational and informational purposes and should not be used as the sole basis for financial planning or investment decisions.
+            </p>
           </div>
         </div>
 
