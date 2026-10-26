@@ -355,8 +355,53 @@ export default function InterestCalculatorPage() {
               </Card>
             </div>
           </section>
+
+          <Separator />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <section className="space-y-4">
+              <h3 className="text-2xl font-bold text-primary flex items-center gap-2">
+                <History className="w-6 h-6" />
+                Understanding Interest
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Interest is essentially the cost of borrowing money or the reward for saving it. At <strong>My Apex Calc</strong>, we provide tools to help you visualize exactly how these percentages translate into real dollars over time. Whether you are looking at a simple car loan or a long-term retirement fund, knowing the difference between simple and compound interest is crucial for financial literacy.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                Most modern financial products use <strong>compound interest</strong> because it accounts for the exponential growth of money. As your interest earns interest, your wealth grows at an increasing rate—a phenomenon Einstein famously called the "eighth wonder of the world."
+              </p>
+            </section>
+
+            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+              <h4 className="text-xl font-bold text-primary">Key Takeaways</h4>
+              <ul className="space-y-4">
+                <li className="flex gap-3">
+                  <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="h-2 w-2 rounded-full bg-accent" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Timing Matters</p>
+                    <p className="text-xs text-muted-foreground">Contributing at the <strong>Beginning</strong> of a month allows that money to earn interest for that full month, significantly boosting long-term gains.</p>
+                  </div>
+                </li>
+                <li className="flex gap-3">
+                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="h-2 w-2 rounded-full bg-primary" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">Frequency is Key</p>
+                    <p className="text-xs text-muted-foreground">The more frequently interest is compounded (e.g., daily vs. annually), the higher the total end balance will be.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
         </div>
       </div>
+
+
+        
     </CalculatorWrapper>
   );
 }
