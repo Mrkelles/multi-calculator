@@ -183,6 +183,15 @@ export default function CompoundInterestPage() {
       <div className="py-10 space-y-12">
         <Separator />
 
+        <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+          <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+            <Info size={16} /> Disclaimer
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed italic">
+            Compound interest results are mathematical projections based on the initial amount, interest rate, compounding frequency, contribution schedule, and time period entered. Actual savings or investment growth may differ because of changing rates, fees, taxes, inflation, withdrawals, and product-specific terms. Projections assume the inputs and calculation method remain applicable throughout the modeled period. Results are not guaranteed returns or personalized financial advice. Verify account terms and consider professional guidance when making significant financial decisions.
+          </p>
+        </div>
+
         {/* Worked Examples Section */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">
