@@ -224,7 +224,7 @@ export default function IdealWeightCalculatorPage() {
           <Card className="bg-primary/5 border-primary/10">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
-                <Info className="w-4 h-4" />
+                <Info className="w-4 h-4 text-primary" />
                 Note on Formulas
               </CardTitle>
             </CardHeader>
@@ -286,6 +286,15 @@ export default function IdealWeightCalculatorPage() {
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
+
+          <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+            <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+              <Info size={16} /> Disclaimer
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed italic">
+              Ideal body weight results are estimates based on established mathematical formulas and the measurements entered. These formulas provide general reference values and do not account for every individual factor, including muscle mass, body composition, age, medical history, pregnancy, or differences in body structure. There is no single ideal weight that is appropriate for everyone. Do not use this result alone to set weight-loss goals or make health decisions. Consult a qualified healthcare professional for personalized guidance.
+            </p>
+          </div>
 
           {/* Worked Examples Section */}
           <section className="space-y-6 text-left">
