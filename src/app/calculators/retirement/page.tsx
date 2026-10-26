@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Separator } from '@/components/ui/separator';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 const metadata: Metadata = {
   title: 'Advanced Retirement Planner | Savings & Nest Egg Estimator',
@@ -157,6 +157,15 @@ export default function RetirementPage() {
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
         <Separator />
+
+        <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+          <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+            <Info size={16} /> Disclaimer
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed italic">
+            Retirement projections are estimates intended to help you explore possible savings scenarios. Actual retirement income and the amount you may need depend on investment performance, inflation, taxes, pension benefits, healthcare expenses, life expectancy, withdrawals, and changes in your financial circumstances. The calculator cannot predict future market conditions or guarantee that your savings will be sufficient. Use the results as a starting point for retirement planning and consider consulting a qualified financial adviser.
+          </p>
+        </div>
 
         {/* Worked Examples Section */}
         <section className="space-y-6 text-left">
