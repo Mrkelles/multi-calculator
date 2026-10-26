@@ -589,9 +589,18 @@ export default function PaceCalculatorPage() {
                 <p>A treadmill shows a speed of <strong>7.5 miles per hour</strong>. The runner wants to know their equivalent per-mile pace.</p>
                 <p>Using the "Pace Converter" mode, entering 7.5 mph instantly shows a pace of <strong>8 minutes per mile</strong>, making it easier to track training intensity against outdoor runs.</p>
               </CardContent>
-              </Card>
-            </div>
-          </section>
+            </Card>
+          </div>
+        </section>
+
+        <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+          <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+            <Info size={16} /> Disclaimer
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed italic">
+            Pace, speed, distance, and finish-time results are estimates based on the values entered. Actual performance may vary because of fitness level, terrain, elevation, weather, fatigue, equipment, and other conditions. Predicted race times are not guarantees of future performance. Use the results as a general training reference, adjust exercise intensity to your abilities, and consult a qualified healthcare professional before beginning a new exercise program if you have health concerns.
+          </p>
+        </div>
 
         <Separator />
 
