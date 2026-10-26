@@ -183,6 +183,15 @@ export default function BMIPage() {
       <div className="py-10 space-y-12">
         <Separator />
 
+        <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+          <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+            <Info size={16} /> Disclaimer
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed italic">
+            Body Mass Index (BMI) is a screening measure calculated from height and weight. The result provides a general weight-category reference but does not directly measure body fat or distinguish fat from muscle and bone mass. BMI categories may not be appropriate for everyone, including children, adolescents, pregnant individuals, and some athletes. A BMI result alone cannot diagnose a medical condition or determine overall health. Consult a qualified healthcare professional for an assessment that considers your individual circumstances.
+          </p>
+        </div>
+
         {/* Worked Examples Section */}
         <section className="space-y-6">
           <div className="flex items-center gap-3">
