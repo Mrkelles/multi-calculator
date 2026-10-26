@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/chart';
 import { Bar, BarChart as RechartsBarChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { Separator } from '@/components/ui/separator';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 const metadata: Metadata = {
   title: 'Accurate ROI Calculator | Investment Return Calculator',
@@ -368,14 +368,28 @@ export default function ROIPage() {
 
           <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 flex gap-3">
             <Info className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
-            <p className="text-xs text-blue-700 leading-relaxed">
-              <strong>Calculation Logic:</strong> Contributions are simulated monthly. Choosing <strong>Beginning</strong> means deposits earn interest for the full period they are added in, whereas <strong>End</strong> means they only begin earning interest in the subsequent period.
-            </p>
+            <div className="space-y-1">
+              <p className="text-xs text-blue-800 leading-relaxed font-semibold">
+                Calculation Logic:
+              </p>
+              <p className="text-[11px] text-blue-700">
+                Contributions are simulated monthly. Choosing <strong>Beginning</strong> means deposits earn interest for the full period they are added in, whereas <strong>End</strong> means they only begin earning interest in the subsequent period.
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+            <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+              <Info size={16} /> Disclaimer
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed italic">
+              Return on investment (ROI) calculations are based on the costs, gains, contributions, returns, and time period entered. Actual profitability may differ because of operating expenses, transaction costs, taxes, inflation, financing costs, market changes, and other factors that may not be included. A positive projected ROI does not guarantee a profit, and past performance does not ensure future results. This calculator is for general analysis and educational purposes only and does not constitute investment or business advice.
+            </p>
+          </div>
+
           <Separator />
 
           {/* Worked Examples Section */}
@@ -435,43 +449,45 @@ export default function ROIPage() {
               </div>
             </section>
 
-            <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
-              <h4 className="text-xl font-bold text-primary flex items-center gap-2">
-                <Info className="w-5 h-5 text-accent" />
-                Why Use Our Investment Return Calculator?
-              </h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                While the fundamental formula is relatively simple, real-world assets often involve layered parameters, ongoing contributions, and varying timelines. MyApexCalc simplifies this by offering:
-              </p>
-              <ul className="space-y-6 pt-2">
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <History className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Instant Analysis</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Eliminate manual arithmetic and human error. Simply enter your initial values and get results down to the decimal.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
-                    <ArrowRightLeft className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Versatility</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Compare distinct asset classes side-by-side. Use the tool to compare how your real estate investments stack up against stock index funds.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <BarChart className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm">Visual Clarity</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">Get a clean, actionable view of your net profits, capital growth, and investment performance metrics in seconds.</p>
-                  </div>
-                </li>
-              </ul>
+            <div className="space-y-8">
+              <div className="bg-white p-8 rounded-3xl border shadow-sm space-y-6">
+                <h4 className="text-xl font-bold text-primary flex items-center gap-2">
+                  <Info className="w-5 h-5 text-accent" />
+                  Why Use Our Investment Return Calculator?
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  While the fundamental formula is relatively simple, real-world assets often involve layered parameters, ongoing contributions, and varying timelines. MyApexCalc simplifies this by offering:
+                </p>
+                <ul className="space-y-6 pt-2">
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <History className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Instant Analysis</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Eliminate manual arithmetic and human error. Simply enter your initial values and get results down to the decimal.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0 mt-1">
+                      <ArrowRightLeft className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Versatility</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Compare distinct asset classes side-by-side. Use the tool to compare how your real estate investments stack up against stock index funds.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                      <BarChart className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm">Visual Clarity</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">Get a clean, actionable view of your net profits, capital growth, and investment performance metrics in seconds.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
