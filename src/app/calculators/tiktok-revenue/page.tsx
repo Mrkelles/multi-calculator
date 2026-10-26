@@ -21,8 +21,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Metadata } from 'next';
-
+import { type Metadata } from 'next';
 
 const metadata: Metadata = {
   title: 'TikTok Revenue Calculator | Estimate Your Creator Earnings',
@@ -144,6 +143,15 @@ export default function TikTokRevenuePage() {
               <p className="text-[10px] text-muted-foreground">Brand deals typically pay $10 - $25 per 1,000 views depending on niche and engagement.</p>
             </CardContent>
           </Card>
+
+          <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+            <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+              <Info size={16} /> Disclaimer
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed italic">
+              TikTok revenue estimates are illustrative and depend on the monetization model, eligible views, audience characteristics, engagement, region, account eligibility, and other assumptions entered. Actual earnings may differ significantly based on the programs and monetization options available to an account, changing platform rules, brand partnerships, and advertiser demand. Not every view qualifies for payment, and estimates do not guarantee future income. Check your TikTok creator dashboard and applicable program terms for current eligibility requirements and actual earnings.
+            </p>
+          </div>
         </div>
       </div>
 
