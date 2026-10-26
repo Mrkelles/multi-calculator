@@ -181,6 +181,15 @@ export default function DebtPayoffPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+          <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+            <Info size={16} /> Disclaimer
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed italic">
+            Debt payoff estimates are based on the balances, interest rates, payment amounts, and repayment assumptions entered. Actual payoff dates and total interest may differ because of changing rates, fees, penalties, new borrowing, missed payments, and creditor-specific allocation rules. The results do not replace your lender's official statements or constitute personalized debt-management advice. Contact your creditors or a qualified financial counsellor if you are experiencing repayment difficulties or need help choosing a debt repayment strategy.
+          </p>
+        </div>
+
         <Separator />
 
         {/* Worked Examples Section */}
