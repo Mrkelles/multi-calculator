@@ -349,6 +349,15 @@ export default function CurrencyPage() {
 
       {/* Informational Text Section */}
       <div className="lg:col-span-12 py-10 space-y-12">
+        <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+          <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+            <Info size={16} /> Disclaimer
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed italic">
+            Currency conversion results are estimates based on the exchange rate available to or entered into the calculator. Exchange rates fluctuate continuously, and the rate displayed may differ from the rate offered by a bank, payment provider, money transfer service, or currency exchange bureau. Transaction fees, conversion margins, taxes, and settlement timing may affect the final amount received. This calculator does not guarantee a transaction rate or execute currency exchanges. Confirm the applicable rate and charges with your provider before transferring or exchanging money.
+          </p>
+        </div>
+
         <Separator />
 
         {/* Worked Examples Section */}
