@@ -152,6 +152,15 @@ export default function SavingsGoalPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+          <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+            <Info size={16} /> Disclaimer
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed italic">
+            Savings projections are estimates based on the starting balance, regular contributions, interest rate, contribution timing, and compounding assumptions entered. Actual balances may differ because of changing interest rates, account restrictions, withdrawals, fees, taxes, and other conditions. The calculator does not guarantee a particular savings outcome or account return. Check your financial institution's terms and use the results as a general budgeting and savings-planning aid.
+          </p>
+        </div>
+
         <Separator />
 
         {/* Worked Examples Section */}
