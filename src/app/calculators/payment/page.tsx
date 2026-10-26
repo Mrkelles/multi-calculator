@@ -24,6 +24,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
 import type { Metadata } from 'next';
+import { Footer } from '@/components/layout/Footer';
 
 const metadata: Metadata = {
   title: 'Accurate Payment Calculator | Free Lending & Loan Calculator',
@@ -513,7 +514,6 @@ export default function PaymentCalculatorPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </CalculatorWrapper>
   );
 }
