@@ -166,6 +166,15 @@ export default function LoanInterestPage() {
 
       {/* Informational Text Section */}
       <div className="py-10 space-y-12">
+        <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+          <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+            <Info size={16} /> Disclaimer
+          </h4>
+          <p className="text-xs text-muted-foreground leading-relaxed italic">
+            Loan interest and repayment estimates are calculated using the loan amount, interest rate, repayment term, and other details provided. Actual borrowing costs may differ because of lender-specific interest calculations, fees, penalties, variable rates, payment schedules, and contractual terms. The results may not reflect every charge associated with the loan. This calculator is not a loan offer, credit approval, or financial recommendation. Review your loan agreement and confirm the total repayment amount with your lender before borrowing.
+          </p>
+        </div>
+
         <Separator />
 
         {/* Worked Examples Section */}
@@ -192,9 +201,9 @@ export default function LoanInterestPage() {
                 <p>Comparing two <strong>$30,000 auto loans</strong> over <strong>60 months</strong>. Applicant A gets a <strong>5% rate</strong>; Applicant B (with lower credit) gets <strong>12%</strong>.</p>
                 <p>Applicant A pays <strong>$566.14/mo</strong> and <strong>$3,968 total interest</strong>. Applicant B pays <strong>$667.33/mo</strong> and <strong>$10,040 total interest</strong>. Improving your rate by 7% saves <strong>$6,072</strong> over five years.</p>
               </CardContent>
-              </Card>
-            </div>
-          </section>
+            </Card>
+          </div>
+        </section>
 
         <Separator />
         
