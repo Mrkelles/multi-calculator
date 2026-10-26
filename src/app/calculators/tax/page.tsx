@@ -21,9 +21,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
-import { Metadata } from 'next';
-
-
+import { type Metadata } from 'next';
 
 const metadata: Metadata = {
   title: 'Accurate Income Tax Calculator | MyApexCalc',
@@ -66,7 +64,6 @@ const metadata: Metadata = {
     canonical: 'https://www.myapexcalc.com/calculators/tax',
   },
 };
-
 
 // 2024 Tax Year Data (Official IRS Brackets)
 const TAX_DATA = {
@@ -474,6 +471,15 @@ export default function TaxPage() {
 
         {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
+          <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+            <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+              <Info size={16} /> Disclaimer
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed italic">
+              Tax estimates are based on the tax rules, rates, income details, deductions, filing status, and other assumptions used by this calculator. Actual tax liability may differ because tax laws change and individual circumstances can involve credits, exemptions, additional income, local taxes, and other provisions not reflected in the calculation. Estimates may use simplified or specific-year tax rules and may not apply to every jurisdiction. This tool does not provide professional tax or legal advice. Verify current requirements with the relevant tax authority or a qualified tax professional before filing or making tax-related decisions.
+            </p>
+          </div>
+
           <Separator />
 
           {/* Worked Examples Section */}
@@ -581,13 +587,6 @@ export default function TaxPage() {
                   </div>
                 </li>
               </ul>
-              <Separator />
-              <div className="bg-primary/5 p-4 rounded-xl">
-                <p className="text-[10px] text-primary font-bold uppercase tracking-widest mb-1">Disclaimer</p>
-                <p className="text-[10px] text-muted-foreground leading-tight italic">
-                  Calculations are based on 2024 IRS tax brackets and standard FICA rates. This tool is for educational purposes and does not constitute professional tax advice.
-                </p>
-              </div>
             </div>
           </div>
         </div>
