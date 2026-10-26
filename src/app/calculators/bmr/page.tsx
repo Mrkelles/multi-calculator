@@ -304,6 +304,16 @@ export default function BMRCalculatorPage() {
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
 
+          {/* New Disclaimer Section */}
+          <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 space-y-3">
+            <h4 className="text-sm font-black uppercase tracking-widest text-primary flex items-center gap-2">
+              <Info size={16} /> Disclaimer
+            </h4>
+            <p className="text-xs text-muted-foreground leading-relaxed italic">
+              Basal metabolic rate (BMR) results are estimates of the energy your body uses at rest, based on the formula and personal measurements entered. Actual energy expenditure varies with body composition, age, genetics, hormonal factors, health conditions, and other influences. BMR is not the same as total daily calorie expenditure and should not be treated as an exact measure of your calorie needs. Use this result as a general reference and consult a qualified healthcare professional or registered dietitian for personalized nutrition advice.
+            </p>
+          </div>
+
           {/* Worked Examples Section */}
           <section className="space-y-6">
             <div className="flex items-center gap-3">
