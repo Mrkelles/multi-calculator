@@ -1,5 +1,8 @@
+"use client"
+
 import Link from 'next/link';
-import { ArrowLeft, Mail, MessageSquare, AlertCircle, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { useActionState, useEffect } from 'react';
+import { ArrowLeft, Mail, MessageSquare, AlertCircle, ShieldAlert, Info, Calculator, CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -7,8 +10,29 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Footer } from '@/components/layout/Footer';
 import { Separator } from '@/components/ui/separator';
+import { sendContactEmail } from './actions';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ContactUsPage() {
+  const { toast } = useToast();
+  const [state, formAction, isPending] = useActionState(sendContactEmail, null);
+
+  useEffect(() => {
+    if (state?.success) {
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for reaching out. We will get back to you soon.",
+      });
+    }
+    if (state?.error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: state.error,
+      });
+    }
+  }, [state, toast]);
+
   const contactReasons = [
     {
       title: "Calculation Issues",
@@ -85,7 +109,7 @@ export default function ContactUsPage() {
                 </div>
               </section>
 
-              <section className="space-y-4 p-8 rounded-[2rem] bg-primary/5 border border-primary/10">
+              <section className="space-y-4 p-8 rounded-[2.5rem] bg-primary/5 border border-primary/10">
                 <h3 className="text-lg font-bold text-primary flex items-center gap-2">
                   <Mail className="w-5 h-5" />
                   Email Support
@@ -116,32 +140,56 @@ export default function ContactUsPage() {
                   <CardTitle className="text-xl font-bold">Send a Message</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-5">
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    You can also use the contact form on this page. Please provide your name, a valid email address, a subject and a clear description of your enquiry.
-                  </p>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Name</Label>
-                        <Input id="name" placeholder="Full Name" />
+                  {state?.success ? (
+                    <div className="bg-emerald-50 border border-emerald-100 p-8 rounded-2xl text-center space-y-4 animate-in zoom-in-95">
+                      <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto" />
+                      <h3 className="text-xl font-bold text-emerald-900">Message Sent!</h3>
+                      <p className="text-sm text-emerald-700">Thank you for your feedback. We have received your message and will respond if necessary.</p>
+                      <Button variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-100" onClick={() => window.location.reload()}>
+                        Send Another Message
+                      </Button>
+                    </div>
+                  ) : (
+                    <form action={formAction} className="space-y-5">
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        You can also use the contact form on this page. Please provide your name, a valid email address, a subject and a clear description of your enquiry.
+                      </p>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="name">Name</Label>
+                            <Input id="name" name="name" placeholder="Full Name" required disabled={isPending} />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="email">Email</Label>
+                            <Input id="email" name="email" type="email" placeholder="email@example.com" required disabled={isPending} />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="subject">Subject</Label>
+                          <Input id="subject" name="subject" placeholder="What is this about?" required disabled={isPending} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="message">Message</Label>
+                          <Textarea id="message" name="message" placeholder="Describe your enquiry here..." className="min-h-[160px]" required disabled={isPending} />
+                        </div>
+                        <Button 
+                          type="submit" 
+                          className="w-full h-12 text-md font-bold rounded-xl shadow-lg shadow-primary/20"
+                          disabled={isPending}
+                        >
+                          {isPending ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Sending...
+                            </>
+                          ) : (
+                            'Send Message'
+                          )}
+                        </Button>
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" placeholder="email@example.com" />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="subject">Subject</Label>
-                      <Input id="subject" placeholder="What is this about?" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="message">Message</Label>
-                      <Textarea id="message" placeholder="Describe your enquiry here..." className="min-h-[160px]" />
-                    </div>
-                    <Button className="w-full h-12 text-md font-bold rounded-xl shadow-lg shadow-primary/20">
-                      Send Message
-                    </Button>
-                  </div>
+                    </form>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -164,54 +212,4 @@ export default function ContactUsPage() {
       <Footer />
     </div>
   );
-}
-
-// Icons for the list
-function Calculator(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="16" height="20" x="4" y="2" rx="2" />
-      <line x1="8" x2="16" y1="6" y2="6" />
-      <line x1="16" x2="16" y1="14" y2="18" />
-      <path d="M16 10h.01" />
-      <path d="M12 10h.01" />
-      <path d="M8 10h.01" />
-      <path d="M12 14h.01" />
-      <path d="M8 14h.01" />
-      <path d="M12 18h.01" />
-      <path d="M8 18h.01" />
-    </svg>
-  )
-}
-
-function Info(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4" />
-      <path d="M12 8h.01" />
-    </svg>
-  )
 }
