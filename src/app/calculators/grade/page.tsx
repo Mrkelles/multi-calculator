@@ -28,9 +28,8 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
 
-const metadata: Metadata = {
+const metadata = {
   title: 'Accurate Grade Calculator | Free Final Exam & Weighted Grade Solver',
   description: 'Calculate your current course average, compute weighted assignments, and determine the exact score you need on your final exam with our free grade calculator.',
   keywords: [
@@ -44,8 +43,6 @@ const metadata: Metadata = {
     'college GPA projection tool',
     'semester grade planner'
   ],
-  
-  // Open Graph for social platforms (LinkedIn, Facebook, Discord, X)
   openGraph: {
     title: 'Precision Grade & Final Exam Calculator | MyApexCalc',
     description: 'Take control of your GPA. Balance your homework, quizzes, midterms, and map out exactly what you need on finals week with our free grading tool.',
@@ -62,16 +59,12 @@ const metadata: Metadata = {
       },
     ],
   },
-
-  // Twitter visual preview specs
   twitter: {
     card: 'summary_large_image',
     title: 'Free Weighted Course & Final Grade Tool | MyApexCalc',
     description: 'Plan your semester grades in seconds. Input assignment weights and project your final exam scores effortlessly.',
     images: ['https://i.ibb.co/2Y82vR0t/grade-calculator.png'],
   },
-
-  // Direct search spiders to canonical paths to prevent index duplicate penalties
   alternates: {
     canonical: 'https://www.myapexcalc.com/calculators/grade',
   },
@@ -134,14 +127,12 @@ const getLetterGradeFromGpa = (g: number): string => {
 export default function GradeCalculatorPage() {
   const [mode, setMode] = useState<'current' | 'final'>('current');
 
-  // Mode: Current Grade
   const [assignments, setAssignments] = useState<Assignment[]>([
     { id: '1', name: 'Homework 1', grade: '90', weight: 5 },
     { id: '2', name: 'Project', grade: 'B', weight: 20 },
     { id: '3', name: 'Midterm exam', grade: '88', weight: 20 },
   ]);
 
-  // Mode: Final Grade
   const [currentGradeInput, setCurrentGradeInput] = useState('88');
   const [targetGradeInput, setTargetGradeInput] = useState('85');
   const [finalWeightInput, setFinalWeightInput] = useState('40');
@@ -236,8 +227,7 @@ export default function GradeCalculatorPage() {
       icon={BookOpen}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Input Section */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="lg:col-span-7 space-y-6">
           <Card>
             <CardHeader className="pb-4">
               <Tabs value={mode} onValueChange={(v: any) => setMode(v)} className="w-full">
@@ -257,7 +247,6 @@ export default function GradeCalculatorPage() {
                     </Button>
                   </div>
                   
-                  {/* Column Headers */}
                   <div className="grid grid-cols-12 gap-3 px-1 mb-2">
                     <div className="col-span-5"><Label className="text-[10px] uppercase font-black text-muted-foreground/60">Category / Name</Label></div>
                     <div className="col-span-3"><Label className="text-[10px] uppercase font-black text-muted-foreground/60">Grade (% or Letter)</Label></div>
@@ -298,7 +287,7 @@ export default function GradeCalculatorPage() {
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            className="h-8 w-8 text-muted-foreground hover:text-destructive transition-colors"
+                            className="h-8 w-8 text-destructive hover:bg-destructive/10"
                             onClick={() => removeAssignment(a.id)}
                           >
                             <Trash2 size={14} />
@@ -362,42 +351,78 @@ export default function GradeCalculatorPage() {
           </Card>
         </div>
 
-        {/* Results Sidebar */}
-        <div className="lg:col-span-4 space-y-6">
-          <Card className="bg-primary text-white border-none shadow-xl overflow-hidden relative">
-            <div className="absolute top-0 right-0 p-4 opacity-10">
-              <GraduationCap className="w-20 h-20" />
-            </div>
-            <CardHeader className="pb-2 relative z-10">
-              <CardTitle className="text-xs uppercase tracking-widest opacity-70 font-bold text-center">
-                {mode === 'current' ? 'Current Standing' : 'Final Grade Result'}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-center space-y-2 pb-10 relative z-10">
-              <div className="text-4xl font-black font-headline tracking-tighter">
-                {mode === 'current' 
-                  ? `${getLetterGradeFromGpa(currentResult.avgGpa)} (${currentResult.avgGpa.toFixed(2)})` 
-                  : `You will need a grade of ${finalResult.toFixed(1)} or higher on the final.`
-                }
-              </div>
-              
-              <Separator className="bg-white/20 my-4" />
+        <div className="lg:col-span-5 space-y-6">
+          <div className="space-y-1 px-1">
+            <h4 className="text-sm font-bold text-primary uppercase tracking-wider">Grade Calculation Results</h4>
+            <div className="h-0.5 bg-primary/20 w-full rounded-full" />
+            <p className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-widest pt-1">Calculated</p>
+          </div>
+
+          <Card className="border-none shadow-xl overflow-hidden">
+            <CardHeader className="bg-primary/5 border-b py-4">
               <div className="space-y-1">
-                <p className="text-[10px] uppercase font-bold opacity-60">Status</p>
-                <p className="text-xl font-bold">
-                  {mode === 'current' 
-                    ? (currentResult.avgGpa >= 3.7 ? 'Excellent' : currentResult.avgGpa >= 3.0 ? 'Good' : currentResult.avgGpa >= 2.0 ? 'Fair' : 'Low')
-                    : (finalResult > 100 ? 'Needs Extra Credit' : finalResult > 90 ? 'Challenging' : 'Achievable')}
-                </p>
+                <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Selected Grading Scale</p>
+                <h3 className="text-sm font-bold">Standard Grade Scale (4.0 GPA Scale)</h3>
+                <p className="text-[10px] text-muted-foreground font-medium">A+ = 97–100% · F = 0–59%</p>
               </div>
+            </CardHeader>
+            <CardContent className="p-6 space-y-6">
+              {mode === 'current' ? (
+                <div className="space-y-6">
+                  <div className="grid gap-6">
+                    <div className="space-y-1">
+                      <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Percentage Score</Label>
+                      <div className="text-3xl font-black font-headline text-primary">
+                        {currentResult.average.toFixed(1)}%
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Letter Grade</Label>
+                      <div className="text-3xl font-black font-headline text-primary">
+                        {getLetterGradeFromGpa(currentResult.avgGpa)}
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">GPA Points</Label>
+                      <div className="text-3xl font-black font-headline text-primary">
+                        {currentResult.avgGpa.toFixed(2)} <span className="text-sm text-muted-foreground font-medium">/ 4.0</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <Label className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Grading Scale</Label>
+                      <div className="text-3xl font-black font-headline text-primary">
+                        Standard
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <p className="text-xs text-muted-foreground leading-relaxed italic">
+                    Grading Scale Used: Standard Grade Scale (4.0 GPA Scale). Letter grades and GPA points are assigned according to the percentage ranges in this scale. Your institution may use different grading policies.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="bg-primary/5 p-6 rounded-2xl border border-primary/10 text-center">
+                    <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-2">Required Final Exam Grade</p>
+                    <div className="text-4xl font-black font-headline text-primary">
+                      {finalResult.toFixed(1)}%
+                    </div>
+                    <p className="text-[10px] mt-4 text-muted-foreground italic">
+                      {finalResult > 100 ? "You will need extra credit to reach your goal." : finalResult > 90 ? "Target is achievable with high performance." : "Target is well within reach."}
+                    </p>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed italic">
+                    Calculated based on your desired goal of {targetGradeInput}% and the final exam weighting of {finalWeightInput}%.
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
-
-          {mode === 'final' && finalResult > 100 && (
-            <div className="bg-red-50 border border-red-100 p-4 rounded-xl text-red-700 text-xs font-medium leading-relaxed italic">
-              * Based on your current grade and target, you would need more than 100% on the final exam. Consider talking to your instructor about bonus work.
-            </div>
-          )}
 
           <Card>
             <CardHeader className="pb-2">
@@ -415,21 +440,12 @@ export default function GradeCalculatorPage() {
                 <span className="text-muted-foreground">Course Remaining</span>
                 <span className="font-bold">{mode === 'current' ? Math.max(0, 100 - currentResult.totalWeight) : (parseFloat(finalWeightInput) || 0)}%</span>
               </div>
-              {mode === 'current' && (
-                <div className="flex justify-between pt-2 border-t text-accent font-bold">
-                  <span>Current Avg (%)</span>
-                  <span>{currentResult.average.toFixed(2)}%</span>
-                </div>
-              )}
             </CardContent>
           </Card>
         </div>
 
-        {/* Informational Text Section */}
         <div className="lg:col-span-12 py-10 space-y-12">
           <Separator />
-
-          {/* Worked Examples Section */}
           <section className="space-y-6 text-left">
             <div className="flex items-center gap-3">
               <div className="bg-accent/10 p-2 rounded-xl text-accent"><Lightbulb size={24} /></div>
@@ -466,7 +482,7 @@ export default function GradeCalculatorPage() {
                 Take the Stress Out of Finals Week with MyApexCalc
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Whether you are a high school student managing multiple classes, a university student tracking credit hours, or a parent supporting your child's academic progress, tracking class performance can quickly become confusing. Because syllabi frequently divide grades into completely separate categories (such as homework, quizzes, midterms, and finals), running a basic average doesn't provide an accurate overview. Our free online grade calculator serves as an interactive final grade calculator and performance dashboard, helping you project your final scores and target metrics instantly.
+                From high school managing multiple classes to university students tracking credit hours, tracking class performance can quickly become confusing. Because syllabi frequently divide grades into completely separate categories (such as homework, quizzes, midterms, and finals), running a basic average doesn't provide an accurate overview. Our free online grade calculator serves as an interactive final grade calculator and performance dashboard, helping you project your final scores and target metrics instantly.
               </p>
               
               <h3 className="text-2xl font-bold text-primary flex items-center gap-2 pt-4">
@@ -483,16 +499,6 @@ export default function GradeCalculatorPage() {
                   <p className="text-sm text-muted-foreground leading-relaxed">Most educational syllabi use a weighted system where different categories contribute distinct percentages toward your final 100% grade structure. The core weighted grade calculator formula multiplies your average score in each specific category (G) by its assigned decimal weight (W):</p>
                   <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
                     Final Grade = Σ (G<sub>i</sub> × W<sub>i</sub>)
-                  </div>
-                  <p className="text-sm text-muted-foreground pt-2">For example, if your syllabus contains the following breakdown:</p>
-                  <ul className="text-xs text-muted-foreground list-disc pl-6 space-y-1">
-                    <li>Homework (30% weight): 95% average performance</li>
-                    <li>Midterm Exam (40% weight): 82% performance</li>
-                    <li>Attendance (10% weight): 100% performance</li>
-                  </ul>
-                  <p className="text-sm text-muted-foreground pt-2">Before the final exam, the system calculates the accumulated credit relative to the 80% evaluated portion:</p>
-                  <div className="bg-muted/50 p-6 rounded-2xl font-mono text-sm text-center border overflow-x-auto">
-                    Current Average = [(95 × 0.30) + (82 × 0.40) + (100 × 0.10)] / 0.80 = 89.13%
                   </div>
                 </div>
 
@@ -545,18 +551,10 @@ export default function GradeCalculatorPage() {
                   </li>
                 </ul>
               </div>
-
-              <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10 flex items-center gap-4">
-                <BookOpen className="w-10 h-10 text-primary opacity-40 shrink-0" />
-                <p className="text-[10px] text-muted-foreground leading-tight italic">
-                  "Academic success is built on consistent tracking and clear goals. Knowing exactly what you need on finals week removes the guesswork."
-                </p>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Grade Table Reference */}
         <div className="lg:col-span-12 py-10 space-y-8">
           <Separator />
           <div className="max-w-3xl mx-auto space-y-6">
