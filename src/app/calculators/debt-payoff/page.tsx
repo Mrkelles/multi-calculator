@@ -18,9 +18,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import type { Metadata } from 'next';
 
-const metadata: Metadata = {
+const metadata = {
   title: 'Accurate Debt Payoff Calculator | Free Debt Payoff Planner',
   description: 'Eliminate your debt faster with our free debt payoff calculator. Plan your debt-free journey, estimate credit card payoff timelines, and compare snowball vs. avalanche payoff methods.',
   keywords: [
@@ -201,23 +200,30 @@ export default function DebtPayoffPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="border-none shadow-sm bg-muted/20">
               <CardHeader>
-                <CardTitle className="text-lg">Scenario 1: Credit Card Minimums</CardTitle>
+                <CardTitle className="text-lg">Scenario 1: Paying Off Credit Card Debt Faster</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-muted-foreground space-y-2">
-                <p>A user has a <strong>$5,000 balance</strong> on a card with <strong>24% APR</strong>. They are currently paying <strong>$150/month</strong>.</p>
-                <p>The calculator shows they will be in debt for <strong>56 months</strong> and pay <strong>$3,363 in interest</strong>. By increasing the payment to <strong>$300</strong>, they become debt-free in just 21 months and save <strong>$1,885</strong> in interest fees.</p>
+              <CardContent className="text-sm text-muted-foreground space-y-4">
+                <p>A user has a <strong>$5,000 credit card balance</strong> with a <strong>24% APR</strong> and currently makes monthly payments of <strong>$150</strong>.</p>
+                <p>Based on the calculator's estimates, maintaining the $150 monthly payment will take approximately <strong>56 months</strong> to pay off the balance, with around <strong>$3,322 in total interest</strong>.</p>
+                <p>If the user increases their monthly payment to <strong>$300</strong>, the debt can be paid off in approximately <strong>21 months</strong>, with around <strong>$1,143 in total interest</strong>.</p>
+                <p className="font-bold text-foreground">Result: Increasing the monthly payment by $150 reduces the payoff period by approximately 35 months and saves around $2,179 in interest.</p>
               </CardContent>
             </Card>
             <Card className="border-none shadow-sm bg-muted/20">
               <CardHeader>
-                <CardTitle className="text-lg">Scenario 2: Personal Loan Consolidation</CardTitle>
+                <CardTitle className="text-lg">Scenario 2: Comparing Debt Consolidation Options</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-muted-foreground space-y-2">
-                <p>Consolidating <strong>$15,000</strong> of debt into a loan at <strong>8% APR</strong> with a target monthly payment of <strong>$500</strong>.</p>
-                <p>The tool calculates a <strong>34-month</strong> payoff timeline with <strong>$1,787</strong> in total interest. Comparing this to higher-interest credit cards (e.g., 20%) reveals over $5,000 in savings by switching to the lower-rate loan.</p>
+              <CardContent className="text-sm text-muted-foreground space-y-4">
+                <p>A user wants to consolidate <strong>$15,000 in debt</strong> into a personal loan with an <strong>8% APR</strong>, making a target monthly payment of <strong>$500</strong>.</p>
+                <p>The calculator estimates a payoff period of approximately <strong>34 months</strong>, with around <strong>$1,792 in total interest</strong>.</p>
+                <p>For comparison, if the same $15,000 balance carried a <strong>20% APR</strong> and the user maintained the same $500 monthly payment, repayment would take approximately <strong>42 months</strong>, with around <strong>$5,967 in total interest</strong>.</p>
+                <p className="font-bold text-foreground">Result: Under these assumptions, switching from a 20% APR to an 8% APR could reduce interest costs by approximately $4,176 and shorten the repayment period by around 8 months.</p>
               </CardContent>
             </Card>
           </div>
+          <p className="text-[10px] text-muted-foreground italic leading-relaxed pt-2">
+            *Note: These examples are estimates based on fixed APRs, monthly interest calculations, and consistent monthly payments. Actual repayment periods and interest costs may vary depending on payment dates, lender calculation methods, fees, additional charges, and changes in rates. The final payment may be smaller than the regular monthly payment.
+          </p>
         </section>
 
         <Separator />
