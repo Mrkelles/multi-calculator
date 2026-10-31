@@ -85,6 +85,7 @@ const stateTaxRates = [
   { state: "Colorado", rate: "2.90%" },
   { state: "Connecticut", rate: "6.35%" },
   { state: "Delaware", rate: "0.00%" },
+  { state: "District of Columbia", rate: "6.00%" },
   { state: "Florida", rate: "6.00%" },
   { state: "Georgia", rate: "4.00%" },
   { state: "Hawaii", rate: "4.00%" },
@@ -94,7 +95,7 @@ const stateTaxRates = [
   { state: "Iowa", rate: "6.00%" },
   { state: "Kansas", rate: "6.50%" },
   { state: "Kentucky", rate: "6.00%" },
-  { state: "Louisiana", rate: "4.45%" },
+  { state: "Louisiana", rate: "5.00%" },
   { state: "Maine", rate: "5.50%" },
   { state: "Maryland", rate: "6.00%" },
   { state: "Massachusetts", rate: "6.25%" },
@@ -107,7 +108,7 @@ const stateTaxRates = [
   { state: "Nevada", rate: "6.85%" },
   { state: "New Hampshire", rate: "0.00%" },
   { state: "New Jersey", rate: "6.625%" },
-  { state: "New Mexico", rate: "5.125%" },
+  { state: "New Mexico", rate: "4.875%" },
   { state: "New York", rate: "4.00%" },
   { state: "North Carolina", rate: "4.75%" },
   { state: "North Dakota", rate: "5.00%" },
@@ -117,10 +118,10 @@ const stateTaxRates = [
   { state: "Pennsylvania", rate: "6.00%" },
   { state: "Rhode Island", rate: "7.00%" },
   { state: "South Carolina", rate: "6.00%" },
-  { state: "South Dakota", rate: "4.50%" },
+  { state: "South Dakota", rate: "4.20%" },
   { state: "Tennessee", rate: "7.00%" },
   { state: "Texas", rate: "6.25%" },
-  { state: "Utah", rate: "4.85%" },
+  { state: "Utah", rate: "6.10%" },
   { state: "Vermont", rate: "6.00%" },
   { state: "Virginia", rate: "5.30%" },
   { state: "Washington", rate: "6.50%" },
@@ -424,14 +425,14 @@ export default function SalesTaxCalculatorPage() {
           </div>
         </div>
 
-        {/* U.S. State Sales Tax Table (Preserved for user reference) */}
+        {/* U.S. State Sales Tax Table (Updated to 2026) */}
         <section className="space-y-6 pt-10">
           <div className="flex items-center gap-2">
             <Landmark className="w-6 h-6 text-primary" />
-            <h3 className="text-2xl font-bold text-primary">U.S. State Sales Tax Rates (2024 Reference)</h3>
+            <h3 className="text-2xl font-bold text-primary">U.S. State Sales Tax Rates (2026 Reference)</h3>
           </div>
           <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
-            Below are the standard state-level sales tax rates for all 50 states. Please note that many local jurisdictions (counties and cities) may add their own sales taxes on top of these base rates.
+            Below are the standard state-level sales tax rates for all 50 states and the District of Columbia. Please note that many local jurisdictions (counties and cities) may add their own sales taxes on top of these base rates.
           </p>
           <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
             <div className="max-h-[600px] overflow-y-auto">
